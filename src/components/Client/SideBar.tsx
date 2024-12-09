@@ -1,5 +1,4 @@
 import {
- 
   BriefcaseIcon,
   DollarSignIcon,
   ClipboardListIcon,
