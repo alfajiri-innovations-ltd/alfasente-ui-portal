@@ -1,11 +1,6 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Wallet } from "lucide-react";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { ArrowLeft, Wallet } from "lucide-react";
+import FundWalletDetails from "./FundWalletDetails";
 
 export function FundWallet() {
   return (
@@ -16,13 +11,13 @@ export function FundWallet() {
           <span>Fund Wallet</span>
         </div>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Fund your wallet</DialogTitle>
-        </DialogHeader>
+      <DialogContent className="w-[60vw]">
+        <div className="-mt-2 bg-[#EDF0F7] rounded-full h-7 w-7 flex justify-center items-center">
+          <ArrowLeft className="h-4 w-4" />
+        </div>
 
-        <div>
-          <span>Select mobile money provider</span>
+        <div className=" my-0 mx-20">
+          <FundWalletDetails />
         </div>
       </DialogContent>
     </Dialog>
