@@ -1,14 +1,16 @@
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Client from "./pages/Client";
+import Beneficiaries from "./pages/Beneficiaries";
 
 function App() {
   return (
     <>
-      <HashRouter>
+      <BrowserRouter>
         <Routes>
           <Route path="/" element={<Client />} />
+          <Route path="/beneficiaries" element={<Beneficiaries />} />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
     </>
   );
 }

@@ -8,6 +8,39 @@ import { BeneficiariesTable } from "@/components/Client/Tables/BeneficiariesTabl
 import { useState } from "react";
 import { FundWallet } from "@/components/Client/FundWalletDialog";
 
+const lists = [
+  {
+    name: "Staff",
+    members: 46,
+    createdBy: "Grace Kizza",
+    createdAt: "Sat 30 January 2006",
+  },
+  {
+    name: "Interns",
+    members: 150,
+    createdBy: "Mutebire Arnold",
+    createdAt: "Sat 30 January 2006",
+  },
+  {
+    name: "Security",
+    members: 45,
+    createdBy: "Alex Mutebi",
+    createdAt: "Sat 30 January 2006",
+  },
+  {
+    name: "Contractors",
+    members: 10,
+    createdBy: "Luswaata Vicent",
+    createdAt: "Sat 30 January 2006",
+  },
+  {
+    name: "Drivers",
+    members: 20,
+    createdBy: "Alex Mutebi",
+    createdAt: "Sat 30 January 2006",
+  },
+];
+
 function Client() {
   const [viewBalance, setViewBalance] = useState(true);
 
@@ -18,7 +51,7 @@ function Client() {
     <div className="grid grid-cols-5 h-screen">
       <SideBar />
       <main className="col-span-4  bg-white">
-        <DashboardHeader />
+        <DashboardHeader PageTitle="Dashboard" />
 
         <div className="flex flex-col mx-28 my-5">
           <div>
@@ -84,7 +117,7 @@ function Client() {
             </div>
 
             <div>
-              <BeneficiariesTable />
+              <BeneficiariesTable lists={lists} />
             </div>
           </div>
         </div>
