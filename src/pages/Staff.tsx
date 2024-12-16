@@ -4,89 +4,90 @@ import SideBar from "@/components/Client/SideBar";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-import { Download, Filter } from "lucide-react";
+import { Filter, Plus } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
-import { TransactionsTable } from "@/components/Client/Tables/TransactionsTable";
+import { UsersTable } from "@/components/Client/Tables/UsersTable";
 
-const transactions = [
+const users = [
   {
-    transactionType: "Sent",
-    receipient: "Kalule Michael",
-    status: "Success",
+    user_name: "George Kizza",
+    email: "georgekizza@gmail.com",
+    status: "Active",
     createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
-  {
-    transactionType: "Sent",
-    receipient: "Kalule Michael",
-    status: "Success",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
-  {
-    transactionType: "Sent",
-    receipient: "Kalule Michael",
-    status: "Success",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
-  {
-    transactionType: "Sent",
-    receipient: "Kalule Michael",
-    status: "Success",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
-  {
-    transactionType: "Deposit",
-    receipient: "Kalule Michael",
-    status: "Success",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
+    role: "client_admin",
   },
 
   {
-    transactionType: "Deposit",
-    receipient: "Kalule Michael",
-    status: "Success",
+    user_name: "George Kizza",
+    email: "georgekizza@gmail.com",
+    status: "Active",
     createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
+    role: "client_admin",
   },
   {
-    transactionType: "Deposit",
-    receipient: "Kalule Michael",
-    status: "Success",
+    user_name: "George Kizza",
+    email: "georgekizza@gmail.com",
+    status: "Active",
     createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
+    role: "client_admin",
   },
   {
-    transactionType: "Deposit",
-    receipient: "Kalule Michael",
-    status: "Failed",
+    user_name: "George Kizza",
+    email: "georgekizza@gmail.com",
+    status: "Active",
     createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
+    role: "client_employee",
   },
   {
-    transactionType: "Deposit",
-    receipient: "Kalule Michael",
-    status: "Failed",
+    user_name: "George Kizza",
+    email: "georgekizza@gmail.com",
+    status: "Active",
     createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
+    role: "client_admin",
+  },
+
+  {
+    user_name: "George Kizza",
+    email: "georgekizza@gmail.com",
+    status: "Inactive",
+    createdAt: "30 Nov, 2024 11:25 AM",
+    role: "client_employee",
+  },
+  {
+    user_name: "George Kizza",
+    email: "georgekizza@gmail.com",
+    status: "Active",
+    createdAt: "30 Nov, 2024 11:25 AM",
+    role: "client_admin",
+  },
+  {
+    user_name: "George Kizza",
+    email: "georgekizza@gmail.com",
+    status: "Inactive",
+    createdAt: "30 Nov, 2024 11:25 AM",
+    role: "client_admin",
+  },
+  {
+    user_name: "George Kizza",
+    email: "georgekizza@gmail.com",
+    status: "Active",
+    createdAt: "30 Nov, 2024 11:25 AM",
+    role: "client_employee",
   },
 ];
-function Transactions() {
+function Staff() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [activeTab, setActiveTab] = useState<
-    "all" | "deposit" | "success" | "sent" | "failed"
+    "all" | "active" | "admin" | "inactive" | "employee"
   >("all");
 
-  const transactionsPerPage = 8;
+  const UsersPerPage = 8;
 
-  const totalPages = Math.ceil(transactions.length / transactionsPerPage);
-  const currenttransactions = transactions.slice(
-    (currentPage - 1) * transactionsPerPage,
-    currentPage * transactionsPerPage,
+  const totalPages = Math.ceil(users.length / UsersPerPage);
+  const currentusers = users.slice(
+    (currentPage - 1) * UsersPerPage,
+    currentPage * UsersPerPage,
   );
 
   const handlePageChange = (page: number) => {
@@ -95,24 +96,16 @@ function Transactions() {
     }
   };
 
-  const sent = transactions.filter(
-    (transaction) => transaction.transactionType === "Sent",
-  );
-  const deposit = transactions.filter(
-    (transaction) => transaction.transactionType === "Deposit",
-  );
-  const success = transactions.filter(
-    (transaction) => transaction.status === "Success",
-  );
-  const failed = transactions.filter(
-    (transaction) => transaction.status === "Failed",
-  );
+  const active = users.filter((user) => user.status === "Active");
+  const inactive = users.filter((user) => user.status === "Inactive");
+  const admin = users.filter((user) => user.role === "client_admin");
+  const employee = users.filter((user) => user.role === "client_employee");
 
   return (
     <div className="grid grid-cols-5 h-screen">
       <SideBar />
       <main className="col-span-4 bg-white">
-        <DashboardHeader PageTitle="Transactions" />
+        <DashboardHeader PageTitle="Staff" />
 
         <div className="flex flex-col mx-5 my-5">
           <div className="flex justify-between items-center">
@@ -126,54 +119,54 @@ function Transactions() {
                   }  px-2 py-[2px]`}
                   onClick={() => setActiveTab("all")}
                 >
-                  All <span className="mx-1">({transactions.length})</span>
+                  All <span className="mx-1">({users.length})</span>
                 </h4>
 
                 <h4
                   className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                    activeTab === "deposit"
+                    activeTab === "active"
                       ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
                       : "  border-[#F7F9FD]"
                   }  px-2 py-[2px]`}
-                  onClick={() => setActiveTab("deposit")}
+                  onClick={() => setActiveTab("active")}
                 >
-                  Deposited
-                  <span className="mx-1">({deposit.length})</span>
+                  Active
+                  <span className="mx-1">({active.length})</span>
                 </h4>
                 <h4
                   className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                    activeTab === "sent"
+                    activeTab === "inactive"
                       ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
                       : "  border-[#F7F9FD]"
                   }  px-2 py-[2px]`}
-                  onClick={() => setActiveTab("sent")}
+                  onClick={() => setActiveTab("inactive")}
                 >
-                  Sent
-                  <span className="mx-1">({setCurrentPage.length})</span>
-                </h4>
-
-                <h4
-                  className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                    activeTab === "success"
-                      ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                      : "  border-[#F7F9FD]"
-                  }  px-2 py-[2px]`}
-                  onClick={() => setActiveTab("success")}
-                >
-                  Success
-                  <span className="mx-1">({success.length})</span>
+                  Inactive
+                  <span className="mx-1">({inactive.length})</span>
                 </h4>
 
                 <h4
                   className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                    activeTab === "failed"
+                    activeTab === "admin"
                       ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
                       : "  border-[#F7F9FD]"
                   }  px-2 py-[2px]`}
-                  onClick={() => setActiveTab("failed")}
+                  onClick={() => setActiveTab("admin")}
                 >
-                  Failed
-                  <span className="mx-1">({failed.length})</span>
+                  Admin
+                  <span className="mx-1">({admin.length})</span>
+                </h4>
+
+                <h4
+                  className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
+                    activeTab === "employee"
+                      ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                      : "  border-[#F7F9FD]"
+                  }  px-2 py-[2px]`}
+                  onClick={() => setActiveTab("employee")}
+                >
+                  Employees
+                  <span className="mx-1">({employee.length})</span>
                 </h4>
               </div>
             </div>
@@ -187,34 +180,25 @@ function Transactions() {
                 Filter
               </Button>
               <Button>
-                <Download />
-                <span>Export Records</span>
+                <Plus />
+                <span>Add Staff</span>
               </Button>{" "}
             </div>
           </div>
 
           <div className="my-5">
-            {activeTab === "all" && (
-              <TransactionsTable transactions={currenttransactions} />
-            )}
-            {activeTab === "deposit" && (
-              <TransactionsTable transactions={deposit} />
-            )}
-            {activeTab === "sent" && <TransactionsTable transactions={sent} />}
-            {activeTab === "success" && (
-              <TransactionsTable transactions={success} />
-            )}
+            {activeTab === "all" && <UsersTable users={currentusers} />}
+            {activeTab === "active" && <UsersTable users={active} />}
+            {activeTab === "inactive" && <UsersTable users={inactive} />}
+            {activeTab === "admin" && <UsersTable users={admin} />}
 
-            {activeTab === "failed" && (
-              <TransactionsTable transactions={failed} />
-            )}
+            {activeTab === "employee" && <UsersTable users={employee} />}
           </div>
 
           <div className="flex justify-between  items-center ">
             <div className="">
               <span className="font-normal text-[15px]  ">
-                Showing {currenttransactions.length} of {transactions.length}{" "}
-                results
+                Showing {currentusers.length} of {users.length} results
               </span>
             </div>
             <div className="">
@@ -231,4 +215,4 @@ function Transactions() {
   );
 }
 
-export default Transactions;
+export default Staff;

@@ -3,7 +3,7 @@ import SideBar from "@/components/Client/SideBar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-import { ArrowRight, EyeClosed, EyeOffIcon, Send } from "lucide-react";
+import { ArrowRight, EyeClosed, EyeOffIcon } from "lucide-react";
 import { BeneficiariesTable } from "@/components/Client/Tables/BeneficiariesTables";
 import { useState } from "react";
 import { FundWallet } from "@/components/Client/FundWalletDialog";

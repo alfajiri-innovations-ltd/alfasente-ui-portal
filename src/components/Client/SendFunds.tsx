@@ -21,14 +21,12 @@ export function SendFunds() {
   const [previewList, setpreviewList] = useState(false);
   const [items, setItems] = useState<ILists[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const itemsPerPage = 3;
 
   const fetchData = async () => {
     if (isLoading) return;
     setIsLoading(true);
-    setError(null);
 
     try {
       const data = lists.slice((page - 1) * itemsPerPage, page * itemsPerPage);

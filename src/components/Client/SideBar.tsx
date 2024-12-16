@@ -1,11 +1,11 @@
 import {
-  BriefcaseIcon,
-  DollarSignIcon,
   ClipboardListIcon,
   SettingsIcon,
   LayoutDashboard,
   CircleUserRound,
 } from "lucide-react";
+import { PiUsersThreeFill } from "react-icons/pi";
+import { FaMoneyBillTransfer } from "react-icons/fa6";
 
 function SideBar() {
   const currentPath = window.location.pathname;
@@ -23,12 +23,12 @@ function SideBar() {
     },
     {
       title: "Staff",
-      icon: <BriefcaseIcon />,
+      icon: <PiUsersThreeFill className="w-6 h-6" />,
       href: "/staff",
     },
     {
       title: "Transactions",
-      icon: <DollarSignIcon />,
+      icon: <FaMoneyBillTransfer className="w-6 h-6" />,
       href: "/transactions",
     },
     {
