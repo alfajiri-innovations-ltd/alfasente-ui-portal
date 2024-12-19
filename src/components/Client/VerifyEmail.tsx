@@ -1,25 +1,33 @@
 import { useState } from "react";
-import { EmailOtpForm } from "./Forms/EmailOtp";
+import { EmailOtpForm } from "../AuthForms/EmailOtp";
 
-function VerifyEmail() {
+interface IVerifyEmailProps {
+  handleClick: () => void;
+}
+function VerifyEmail({ handleClick }: IVerifyEmailProps) {
   const [resetTimer] = useState(false);
 
   const handleResendOtp = async () => {};
 
   return (
-    <div>
-      <h4>Confirm your email</h4>
-      <p>Enter the verification code sent to ugaka@gmail.com</p>
-      <EmailOtpForm resetTimer={resetTimer} />
+    <div className="">
+      <h4 className="text-[22px] font-semibold my-2 ">Confirm your email</h4>
+      <p>Enter the verification code sent to
+        
+<span className="font-semibold">         ugaka@gmail.com
+</span>
 
-      <div className="my-4">
+         </p>
+      <EmailOtpForm resetTimer={resetTimer} handleClick={handleClick} />
+
+      <div className="my-4 flex justify-center">
         <h4 className="text-inactive">
-          Didn&apos;t get verification code?
+          Didn&apos;t receive  OTP code?
           <span
-            className="text-primary cursor-pointer"
+            className="underline cursor-pointer"
             onClick={handleResendOtp}
           >
-            Resend
+            Resend it
           </span>
         </h4>
       </div>

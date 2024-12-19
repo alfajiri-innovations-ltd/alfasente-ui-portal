@@ -29,7 +29,12 @@ const FormSchema = z.object({
     .min(2, { message: "Field is Required" }),
 });
 
-export function OrganizationDetailsForm() {
+export interface IOrganizationDetailsFormProps {
+  handleClick: () => void;
+}
+export function OrganizationDetailsForm({
+  handleClick,
+}: IOrganizationDetailsFormProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -45,11 +50,12 @@ export function OrganizationDetailsForm() {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
+    handleClick();
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
         <FormField
           control={form.control}
           name="clientName"
@@ -58,8 +64,8 @@ export function OrganizationDetailsForm() {
               <FormLabel>Organisation name</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="shadcn"
-                  className="bg-[#F7F9FD] border-[#DCE1EC]"
+                  placeholder="XXX Company"
+                  className="focus-visible:ring-0 shadow-none border-[#DCE1EC]"
                   {...field}
                 />
               </FormControl>
@@ -80,8 +86,8 @@ export function OrganizationDetailsForm() {
               <FormLabel>Organisation email</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="shadcn"
-                  className="bg-[#F7F9FD] border-[#DCE1EC]"
+                  placeholder="name@gmail.com"
+                  className=" border-[#DCE1EC]"
                   {...field}
                 />
               </FormControl>
@@ -98,8 +104,8 @@ export function OrganizationDetailsForm() {
               <FormLabel>Phone number</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="shadcn"
-                  className="bg-[#F7F9FD] border-[#DCE1EC]"
+                  placeholder="+256 7XX XXX XXX"
+                  className=" border-[#DCE1EC]"
                   {...field}
                 />
               </FormControl>
@@ -111,14 +117,14 @@ export function OrganizationDetailsForm() {
 
         <FormField
           control={form.control}
-          name="clientPhoneNumber"
+          name="physicalAddress"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Physical address</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="shadcn"
-                  className="bg-[#F7F9FD] border-[#DCE1EC]"
+                  placeholder="District/City"
+                  className=" border-[#DCE1EC]"
                   {...field}
                 />
               </FormControl>
@@ -135,8 +141,8 @@ export function OrganizationDetailsForm() {
               <FormLabel>Link to the Certificate of Incorporation</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="shadcn"
-                  className="bg-[#F7F9FD] border-[#DCE1EC]"
+                  placeholder="https://www.example.com"
+                  className=" border-[#DCE1EC]"
                   {...field}
                 />
               </FormControl>
@@ -150,7 +156,7 @@ export function OrganizationDetailsForm() {
           )}
         />
         <div className="">
-          <Button type="submit" className="">
+          <Button type="submit" className="w-full">
             Continue{" "}
           </Button>
         </div>

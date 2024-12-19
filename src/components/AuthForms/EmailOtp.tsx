@@ -24,8 +24,12 @@ const FormSchema = z.object({
     message: "Your one-time password must be 6 characters.",
   }),
 });
+interface IEmailOtpProps {
+  handleClick: () => void;
+  resetTimer: boolean;
+}
 
-export function EmailOtpForm({ resetTimer }: { resetTimer: boolean }) {
+export function EmailOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
   const [value, setValue] = useState("");
   const [timeLeft, setTimeLeft] = useState(600);
   const [isSubmitting] = useState(false);
@@ -62,13 +66,14 @@ export function EmailOtpForm({ resetTimer }: { resetTimer: boolean }) {
   }
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     console.log(data);
+    handleClick();
   };
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full px-4 md:w-full flex flex-col justify-center items-center space-y-6 "
+        className="w-full  flex flex-col px-0  space-y-6 "
       >
         <FormField
           control={form.control}

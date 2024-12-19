@@ -4,13 +4,15 @@ import Beneficiaries from "./pages/Beneficiaries";
 import Transactions from "./pages/Transactions";
 import Staff from "./pages/Staff";
 import AuditLogs from "./pages/AuditLogs";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Client />} />
+          <Route path='/' element={<LandingPage/>}/>
+          <Route path="/dashboard" element={<Client />} />
           <Route path="/beneficiaries" element={<Beneficiaries />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/staff" element={<Staff />} />

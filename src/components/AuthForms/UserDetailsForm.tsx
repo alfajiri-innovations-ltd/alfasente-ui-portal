@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-import { CheckboxDemo } from "../TermsCheckBox";
+import { CheckboxDemo } from "../Client/TermsCheckBox";
 
 const FormSchema = z.object({
   firstName: z.string().min(2, {
@@ -24,17 +24,20 @@ const FormSchema = z.object({
   }),
   role_name: z.string(),
   isEmailVerified: z.boolean(),
-  user_email: z.string().min(2, { message: "Field is Required" }),
+  user_email: z.string().min(2, { message: "Field is Required" }).email(),
   date_of_birth: z.string().min(2, { message: "Field is Required" }),
   lastName: z.string().min(2, { message: "Field is Required" }),
 
-  password: z.string().min(2, { message: "Field is Required" }),
+  password: z.string().min(8, { message: "Field is Required" }),
 });
 
-export function UserDetailsForm() {
+interface IUserDetailsFormProps {
+  handleClick: () => void;
+}
+export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-
+  const [submitting, setSubmitting] = useState(false);
   const togglePassword = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -53,63 +56,72 @@ export function UserDetailsForm() {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    // setSubmitting(true);
     console.log(data);
+    handleClick();
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
-        <FormField
-          control={form.control}
-          name="firstName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>First Name</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="shadcn"
-                  className="bg-[#F7F9FD] border-[#DCE1EC]"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Please provide full legal name as appears on government
-                certification.
-              </FormDescription>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full grid grid-cols-2  space-y-2"
+      >
+        <div className=" col-span-2 flex justify-between gap-3">
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem className="grow">
+                <FormLabel>First Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Lubwama"
+                    className=" border-[#DCE1EC]"
+                    {...field}
+                  />
+                </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="lastName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone number</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="shadcn"
-                  className="bg-[#F7F9FD] border-[#DCE1EC]"
-                  {...field}
-                />
-              </FormControl>
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem className="grow">
+                <FormLabel>Last Name</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Mildred"
+                    className=" border-[#DCE1EC]"
+                    {...field}
+                  />
+                </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <span className="col-span-2">
+          <FormDescription>
+            Please provide full legal name as appears on government
+            certification.
+          </FormDescription>
+        </span>
         <FormField
           control={form.control}
           name="user_email"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2">
               <FormLabel>Personal Email</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="shadcn"
-                  className="bg-[#F7F9FD] border-[#DCE1EC]"
+                  placeholder="johndoe@gmail"
+                  className=" border-[#DCE1EC]"
                   {...field}
                 />
               </FormControl>
@@ -123,12 +135,13 @@ export function UserDetailsForm() {
           control={form.control}
           name="date_of_birth"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="col-span-2">
               <FormLabel>Date of birth</FormLabel>
               <FormControl>
                 <Input
+                  type="date"
                   placeholder="shadcn"
-                  className="bg-[#F7F9FD] border-[#DCE1EC]"
+                  className=" border-[#DCE1EC]"
                   {...field}
                 />
               </FormControl>
@@ -141,7 +154,7 @@ export function UserDetailsForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className="  space-y-1">
+            <FormItem className="  space-y-1 col-span-2">
               <FormLabel className="font-medium text-sm ">Password</FormLabel>
               <FormControl>
                 <div className="flex border border-input h-10 justify-between items-center pr-4 rounded-md overflow-hidden">
@@ -180,22 +193,22 @@ export function UserDetailsForm() {
             checked={termsAccepted}
             onCheckedChange={setTermsAccepted}
             label={
-              <div>
+              <div className="mx-1">
                 I acknowledge that I have reviewed and agreed to Alfasente's{" "}
-                <span className="text-primary ">
+                <span className="text-primary underline ">
                   <Link to={"/privacy-policy"}>Terms and Conditions</Link>
                 </span>{" "}
                 and{" "}
-                <span className="text-primary">
+                <span className="text-primary underline">
                   <Link to={"/terms-and-conditions"}>Privacy Policy</Link>
                 </span>
               </div>
             }
           />
         </div>
-        <div className="">
-          <Button type="submit" className="">
-            Register{" "}
+        <div className="col-span-2">
+          <Button type="submit" className="w-full my-2 bg-[#C8CFDE]">
+            {submitting ? "Registering..." : " Register"}
           </Button>
         </div>
       </form>

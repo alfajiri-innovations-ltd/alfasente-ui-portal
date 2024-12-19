@@ -14,7 +14,7 @@ export function CheckboxDemo({
   return (
     <div className="flex items-center space-x-1">
       <Checkbox
-        className="w-3 h-3"
+        className="w-4 h-4"
         id="terms"
         checked={checked}
         onCheckedChange={onCheckedChange}

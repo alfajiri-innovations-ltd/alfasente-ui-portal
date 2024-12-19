@@ -14,7 +14,7 @@ function SideBar() {
     {
       title: "Dashboard",
       icon: <LayoutDashboard />,
-      href: "/",
+      href: "/dashboard",
     },
     {
       title: "Beneficiaries",
