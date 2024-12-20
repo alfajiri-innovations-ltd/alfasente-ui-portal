@@ -12,7 +12,7 @@ function NavItems() {
           About Us
         </Link>
       </li>
-      
+
       <li
         className={`cursor-pointer text-textcolor ${pathname === "/contact-us" && "text-texthighlight font-semibold"}  active:text-primary `}
       >

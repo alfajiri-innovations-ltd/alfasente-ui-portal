@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { getClient, setClient } from "@/lib/cookies/UserMangementCookie";
 
 const FormSchema = z.object({
   clientName: z.string().min(2, {
@@ -20,48 +21,56 @@ const FormSchema = z.object({
   }),
   walletBalance: z.number().min(0),
   isApproved: z.boolean(),
-  clientEmail: z.string().min(2, { message: "Field is Required" }),
-  physicalAddress: z.string().min(2, { message: "Field is Required" }),
-  clientPhoneNumber: z.string().min(2, { message: "Field is Required" }),
-
+  clientEmail: z.string().email({ message: "Invalid email address" }).min(1, {
+    message: "Field is required",
+  }),
+  physicalAddress: z.string().min(2, { message: "Field is required" }),
+  clientPhoneNumber: z.string().min(2, { message: "Field is required" }),
   certificateOfIncorparation: z
     .string()
-    .min(2, { message: "Field is Required" }),
+    .url({ message: "Invalid URL" })
+    .min(2, {
+      message: "Field is required",
+    }),
 });
 
 export interface IOrganizationDetailsFormProps {
   handleClick: () => void;
 }
+
 export function OrganizationDetailsForm({
   handleClick,
 }: IOrganizationDetailsFormProps) {
+  const client = getClient() || {};
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      clientName: "",
-      clientPhoneNumber: "",
-      clientEmail: "",
-      walletBalance: 0,
-      isApproved: false,
-      certificateOfIncorparation: "",
-      physicalAddress: "",
+      clientName: client.clientName || "",
+      clientPhoneNumber: client.clientPhoneNumber || "",
+      clientEmail: client.clientEmail || "",
+      walletBalance: client.walletBalance || 0,
+      isApproved: client.isApproved || false,
+      certificateOfIncorparation: client.certificateOfIncorparation || "",
+      physicalAddress: client.physicalAddress || "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    console.log("Submitted Data:", data);
+    setClient(data);
     handleClick();
-  }
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
         <FormField
           control={form.control}
           name="clientName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Organisation name</FormLabel>
+              <FormLabel>Organization Name</FormLabel>
               <FormControl>
                 <Input
                   placeholder="XXX Company"
@@ -70,46 +79,45 @@ export function OrganizationDetailsForm({
                 />
               </FormControl>
               <FormDescription>
-                Please provide full legal name as appears on government
+                Please provide the full legal name as it appears on government
                 certification.
               </FormDescription>
-
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="clientEmail"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Organisation email</FormLabel>
+              <FormLabel>Organization Email</FormLabel>
               <FormControl>
                 <Input
                   placeholder="name@gmail.com"
-                  className=" border-[#DCE1EC]"
+                  className="border-[#DCE1EC]"
                   {...field}
                 />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="clientPhoneNumber"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Phone number</FormLabel>
+              <FormLabel>Phone Number</FormLabel>
               <FormControl>
                 <Input
                   placeholder="+256 7XX XXX XXX"
-                  className=" border-[#DCE1EC]"
+                  className="border-[#DCE1EC]"
                   {...field}
                 />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
@@ -120,44 +128,44 @@ export function OrganizationDetailsForm({
           name="physicalAddress"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Physical address</FormLabel>
+              <FormLabel>Physical Address</FormLabel>
               <FormControl>
                 <Input
                   placeholder="District/City"
-                  className=" border-[#DCE1EC]"
+                  className="border-[#DCE1EC]"
                   {...field}
                 />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="certificateOfIncorparation"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Link to the Certificate of Incorporation</FormLabel>
+              <FormLabel>Certificate of Incorporation Link</FormLabel>
               <FormControl>
                 <Input
                   placeholder="https://www.example.com"
-                  className=" border-[#DCE1EC]"
+                  className="border-[#DCE1EC]"
                   {...field}
                 />
               </FormControl>
               <FormDescription>
-                Please provide a link to the Certificate of Incorporation that
-                can be viewed online.
+                Provide a link to the Certificate of Incorporation that can be
+                viewed online.
               </FormDescription>
-
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="">
+
+        <div className="mt-4">
           <Button type="submit" className="w-full">
-            Continue{" "}
+            Continue
           </Button>
         </div>
       </form>

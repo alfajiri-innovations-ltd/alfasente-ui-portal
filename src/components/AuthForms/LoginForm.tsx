@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,7 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { setAuthUser, setUserToken } from "@/lib/cookies/UserMangementCookie";
+import { LogIn } from "@/lib/api-routes";
 
 const FormSchema = z.object({
   user_email: z.string().min(2, { message: "Field is Required" }).email(),
@@ -29,6 +30,7 @@ interface IUserDetailsFormProps {
 export function LoginForm({ handleClick }: IUserDetailsFormProps) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const navigate = useNavigate();
   const togglePassword = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -41,11 +43,38 @@ export function LoginForm({ handleClick }: IUserDetailsFormProps) {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    // setSubmitting(true);
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    setSubmitting(true);
     console.log(data);
-    handleClick();
-  }
+
+    try {
+      const response = await fetch(LogIn, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const responseBody = await response.text();
+
+      if (response.ok) {
+        const res = JSON.parse(responseBody);
+        setUserToken(res.token);
+        setAuthUser(res.user);
+        navigate("/dashboard");
+
+        console.log("Login Successful, Redirecting you...");
+      } else if (responseBody === "User account unverified") {
+      } else {
+        console.log(responseBody);
+      }
+    } catch (error: any) {
+      console.log("An Error occurred, try again: " + error.toString());
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Form {...form}>
@@ -107,9 +136,14 @@ export function LoginForm({ handleClick }: IUserDetailsFormProps) {
           )}
         />
 
-        <span className="text-primary flex justify-end">Forgot password?</span>
+        <span
+          className="text-primary flex justify-end  col-span-2 cursor-pointer"
+          onClick={handleClick}
+        >
+          Forgot password?
+        </span>
         <div className="col-span-2">
-          <Button type="submit" className="w-full my-2 bg-[#C8CFDE]">
+          <Button type="submit" className="w-full my-2 bg-[#8D35AA]">
             {submitting ? "Submitting..." : " Login"}
           </Button>
         </div>

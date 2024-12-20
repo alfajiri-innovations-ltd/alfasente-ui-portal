@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,24 +14,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
-
 const FormSchema = z.object({
   user_email: z.string().min(2, { message: "Field is Required" }).email(),
-
 });
 
 interface IUserDetailsFormProps {
   handleClick: () => void;
 }
 export function ForgotPasswordForm({ handleClick }: IUserDetailsFormProps) {
-  const [submitting, setSubmitting] = useState(false);
-  
+  const [submitting] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       user_email: "",
-    }
+    },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -66,9 +62,8 @@ export function ForgotPasswordForm({ handleClick }: IUserDetailsFormProps) {
           )}
         />
 
-
         <div className="col-span-2">
-          <Button type="submit" className="w-full my-2 bg-[#C8CFDE]">
+          <Button type="submit" className="w-full my-2 bg-[#8D35AA]">
             {submitting ? "Submitting..." : " Reset Password"}
           </Button>
         </div>

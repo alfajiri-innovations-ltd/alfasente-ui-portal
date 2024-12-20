@@ -25,48 +25,51 @@ export function SignUp() {
         <Button>Sign Up</Button>
       </DialogTrigger>
 
-      <DialogContent className="w-[60vw] ">
-          {currentStep > 1 && (
-            <ArrowLeft
-              className="h-4 w-4 cursor-pointer"
-              onClick={handlePreviousStep}
-            />
-          )}
+      <DialogContent className="w-[60vw] h-[98vh] ">
+        {currentStep > 1 && (
+          <ArrowLeft
+            className="h-4 w-4 cursor-pointer"
+            onClick={handlePreviousStep}
+          />
+        )}
 
-          <div className="px-40">
+        <div className="px-40">
           <Progress value={(currentStep / 4) * 100} className="w-full  " />
 
-        {currentStep === 1 && (
-          <>
-            <h5 className="text-left my-2 font-semibold text-[22px]">Tell us about your organization</h5>
-            <OrganizationDetailsForm handleClick={handleNextStep} />
-            <p className="flex justify-center my-2">
-              <span>Already registered?</span>
-              <span className="underline">Login here</span>
-            </p>
-          </>
-        )}
+          {currentStep === 1 && (
+            <>
+              <h5 className="text-left my-2 font-semibold text-[22px]">
+                Tell us about your organization
+              </h5>
+              <OrganizationDetailsForm handleClick={handleNextStep} />
+              <p className="flex justify-center my-2">
+                <span>Already registered?</span>
+                <span className="underline">Login here</span>
+              </p>
+            </>
+          )}
 
-        {currentStep === 2 && (
-          <>
-            <h5 className="text-left font-semibold text-[22px] my-2">Setup your profile</h5>
-            <UserDetailsForm handleClick={handleNextStep} />
-          </>
-        )}
+          {currentStep === 2 && (
+            <>
+              <h5 className="text-left font-semibold text-[22px] my-2">
+                Setup your profile
+              </h5>
+              <UserDetailsForm handleClick={handleNextStep} />
+            </>
+          )}
 
-        {currentStep === 3 && (
-          <>
-            <VerifyEmail handleClick={handleNextStep} />
-          </>
-        )}
+          {currentStep === 3 && (
+            <>
+              <VerifyEmail handleClick={handleNextStep} />
+            </>
+          )}
 
-        {currentStep === 4 && (
-          <>
-            <SuccessScreen />
-          </>
-        )}
-
-</div>
+          {currentStep === 4 && (
+            <>
+              <SuccessScreen />
+            </>
+          )}
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -30,7 +30,7 @@ interface IEmailOtpProps {
   resetTimer: boolean;
 }
 
-export function EmailOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
+export function PaaswordOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
   const [value, setValue] = useState("");
   const [timeLeft, setTimeLeft] = useState(600);
   const [isSubmitting, setSubmitting] = useState(false);
@@ -92,6 +92,7 @@ export function EmailOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
       } else {
         form.reset();
         setValue("");
+        handleClick();
       }
     } catch (error) {
       console.log(error);

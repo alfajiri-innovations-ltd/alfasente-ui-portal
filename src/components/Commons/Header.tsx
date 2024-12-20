@@ -1,5 +1,5 @@
+import { Login } from "../Client/Login";
 import { SignUp } from "../Client/Signup";
-import { Button } from "../ui/button";
 import NavItems from "./NavItems";
 
 function Header() {
@@ -8,8 +8,8 @@ function Header() {
       <h3 className="font-bold text-lg">AlfaSente</h3>
       <NavItems />
       <div className="flex gap-3">
-        <Button variant={"outline"}>Login</Button>
-        <SignUp/>
+        <Login />
+        <SignUp />
       </div>
     </div>
   );

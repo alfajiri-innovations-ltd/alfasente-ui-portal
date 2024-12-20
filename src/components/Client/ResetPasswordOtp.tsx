@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { EmailOtpForm } from "../AuthForms/EmailOtp";
+import { PaaswordOtpForm } from "../AuthForms/PasswordResetOtpForm";
 
 interface IVerifyEmailProps {
   handleClick: () => void;
 }
-function VerifyEmail({ handleClick }: IVerifyEmailProps) {
+function ResetOtp({ handleClick }: IVerifyEmailProps) {
   const email = localStorage.getItem("email");
 
   const [resetTimer] = useState(false);
@@ -13,16 +13,16 @@ function VerifyEmail({ handleClick }: IVerifyEmailProps) {
 
   return (
     <div className="">
-      <h4 className="text-[22px] font-semibold my-2  ">Confirm your email</h4>
+      <h4 className="text-[22px] font-semibold my-2  ">Password reset</h4>
       <span className="">
-        Enter the verification code sent to
+        Enter the code sent to
         <span className="font-semibold"> {email}</span>
       </span>
-      <EmailOtpForm resetTimer={resetTimer} handleClick={handleClick} />
+      <PaaswordOtpForm resetTimer={resetTimer} handleClick={handleClick} />
 
       <div className="my-4 flex justify-center">
         <h4 className="text-inactive">
-          Didn&apos;t receive OTP code?
+          Didn&apos;t receive the code?
           <span className="underline cursor-pointer" onClick={handleResendOtp}>
             Resend it
           </span>
@@ -32,4 +32,4 @@ function VerifyEmail({ handleClick }: IVerifyEmailProps) {
   );
 }
 
-export default VerifyEmail;
+export default ResetOtp;
