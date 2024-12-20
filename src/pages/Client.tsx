@@ -3,12 +3,13 @@ import SideBar from "@/components/Client/SideBar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-import { ArrowRight, EyeClosed, EyeOffIcon, Send } from "lucide-react";
+import { ArrowRight, EyeClosed, EyeOffIcon } from "lucide-react";
 import { BeneficiariesTable } from "@/components/Client/Tables/BeneficiariesTables";
 import { useState } from "react";
 import { FundWallet } from "@/components/Client/FundWalletDialog";
+import { SendFunds } from "@/components/Client/SendFunds";
 
-const lists = [
+export const lists = [
   {
     name: "Staff",
     members: 46,
@@ -83,11 +84,8 @@ function Client() {
 
             <div className="flex gap-3  ">
               <FundWallet />
+              <SendFunds />
 
-              <div className="flex px-2 py-1 gap-1 items-center bg-secondary text-white text-[15px] rounded-[8px]">
-                <Send className="h-4 w-4" />
-                <span>Send Funds</span>
-              </div>
               <div className="flex px-2 py-1 gap-1 items-center bg-[#F9EBFE] text-[#4F1762] text-[15px] rounded-[8px]">
                 <img
                   src="/images/icons/transactions.svg"
