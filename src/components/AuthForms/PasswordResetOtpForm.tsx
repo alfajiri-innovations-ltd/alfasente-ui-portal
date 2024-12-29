@@ -18,7 +18,8 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useEffect, useState } from "react";
-import { VerifyEmail } from "@/lib/api-routes";
+import { VerifyPasswordOtp } from "@/lib/api-routes";
+import { ErrorToast, SuccessToast } from "../ui/Toasts";
 
 const FormSchema = z.object({
   pin: z.number().min(6, {
@@ -74,7 +75,7 @@ export function PaaswordOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
     const otpNumber = parseInt(value, 10);
 
     try {
-      const response = await fetch(VerifyEmail, {
+      const response = await fetch(VerifyPasswordOtp, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,14 +86,17 @@ export function PaaswordOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
         }),
       });
 
-      if (response.ok) {
-        handleClick();
+      console.log(response);
 
-        localStorage.removeItem("email");
+      if (response.ok) {
+        SuccessToast("OTP has been successfully verified");
+        setTimeout(() => {
+          handleClick();
+        }, 3000);
       } else {
+        ErrorToast("Invalid OTP");
         form.reset();
         setValue("");
-        handleClick();
       }
     } catch (error) {
       console.log(error);

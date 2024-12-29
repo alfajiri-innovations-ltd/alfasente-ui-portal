@@ -17,6 +17,7 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { setAuthUser, setUserToken } from "@/lib/cookies/UserMangementCookie";
 import { LogIn } from "@/lib/api-routes";
+import { ErrorToast, SuccessToast } from "../ui/Toasts";
 
 const FormSchema = z.object({
   user_email: z.string().min(2, { message: "Field is Required" }).email(),
@@ -26,8 +27,9 @@ const FormSchema = z.object({
 
 interface IUserDetailsFormProps {
   handleClick: () => void;
+  HandleLogin: () => void;
 }
-export function LoginForm({ handleClick }: IUserDetailsFormProps) {
+export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -45,7 +47,6 @@ export function LoginForm({ handleClick }: IUserDetailsFormProps) {
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setSubmitting(true);
-    console.log(data);
 
     try {
       const response = await fetch(LogIn, {
@@ -57,20 +58,25 @@ export function LoginForm({ handleClick }: IUserDetailsFormProps) {
       });
 
       const responseBody = await response.text();
+      const res = JSON.parse(responseBody);
 
+
+      const message = res.result.code;
       if (response.ok) {
-        const res = JSON.parse(responseBody);
         setUserToken(res.token);
-        setAuthUser(res.user);
+        setAuthUser(res.userData);
         navigate("/dashboard");
 
-        console.log("Login Successful, Redirecting you...");
+        SuccessToast("Login Successful, Redirecting You ...");
       } else if (responseBody === "User account unverified") {
+        ErrorToast("User account unverified");
+      } else if (message === 401) {
+        HandleLogin();
       } else {
-        console.log(responseBody);
+        ErrorToast("Invalid username or password");
       }
     } catch (error: any) {
-      console.log("An Error occurred, try again: " + error.toString());
+      ErrorToast("Try Again Later");
     } finally {
       setSubmitting(false);
     }

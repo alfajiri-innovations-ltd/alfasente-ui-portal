@@ -14,21 +14,29 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { ResetPassword } from "@/lib/api-routes";
+import { SuccessToast } from "../ui/Toasts";
+
+interface IEmailOtpProps {
+  handleClick: () => void;
+}
 
 const FormSchema = z
   .object({
-    newPassword: z
+    new_password: z
       .string()
       .min(8, { message: "Password must have atleast 8 alphanumerics" }),
     confirmPassword: z.string(),
   })
-  .refine((data) => data.newPassword === data.confirmPassword, {
+  .refine((data) => data.new_password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });
 
-export function ResetPasswordForm() {
-  const [submitting] = useState(false);
+export function ResetPasswordForm({ handleClick }: IEmailOtpProps) {
+  const email = localStorage.getItem("email");
+
+  const [submitting, setSubmitting] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
@@ -42,13 +50,42 @@ export function ResetPasswordForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      newPassword: "",
+      new_password: "",
       confirmPassword: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
-    console.log(values);
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    setSubmitting(true);
+
+    try {
+      const response = await fetch(ResetPassword, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_email: email,
+          new_password: data.new_password,
+        }),
+      });
+
+      const responseBody = await response.text();
+
+      if (response.ok) {
+        SuccessToast("Password Reset Successful, ");
+
+        setTimeout(() => {
+          handleClick();
+        }, 3000);
+      } else {
+        console.log(responseBody);
+      }
+    } catch (error: any) {
+      console.log("An Error occurred, try again: " + error.toString());
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -59,7 +96,7 @@ export function ResetPasswordForm() {
       >
         <FormField
           control={form.control}
-          name="newPassword"
+          name="new_password"
           render={({ field }) => (
             <FormItem className="my-2">
               <FormLabel className="font-medium text-sm ">Password</FormLabel>

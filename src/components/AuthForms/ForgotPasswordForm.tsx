@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { ForgotPassword } from "@/lib/api-routes";
+import { ErrorToast, SuccessToast } from "../ui/Toasts";
 
 const FormSchema = z.object({
   user_email: z.string().min(2, { message: "Field is Required" }).email(),
@@ -22,7 +24,7 @@ interface IUserDetailsFormProps {
   handleClick: () => void;
 }
 export function ForgotPasswordForm({ handleClick }: IUserDetailsFormProps) {
-  const [submitting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -31,11 +33,37 @@ export function ForgotPasswordForm({ handleClick }: IUserDetailsFormProps) {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    // setSubmitting(true);
-    console.log(data);
-    handleClick();
-  }
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    setSubmitting(true);
+
+    try {
+      const response = await fetch(ForgotPassword, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const responseBody = await response.text();
+      const res = JSON.parse(responseBody);
+
+      if (response.ok) {
+        localStorage.setItem("email", data.user_email);
+        SuccessToast(`Otp sucessfully sent to ${data.user_email}`);
+
+        setTimeout(() => {
+          handleClick();
+        }, 3000);
+      } else {
+        ErrorToast("Invalid Email");
+      }
+    } catch (error: any) {
+      console.log("An Error occurred, try again: " + error.toString());
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Form {...form}>
@@ -63,7 +91,11 @@ export function ForgotPasswordForm({ handleClick }: IUserDetailsFormProps) {
         />
 
         <div className="col-span-2">
-          <Button type="submit" className="w-full my-2 bg-[#8D35AA]">
+          <Button
+            type="submit"
+            className="w-full my-2 bg-[#8D35AA]"
+            disabled={submitting}
+          >
             {submitting ? "Submitting..." : " Reset Password"}
           </Button>
         </div>
