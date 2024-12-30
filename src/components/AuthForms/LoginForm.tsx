@@ -56,13 +56,14 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
         },
         body: JSON.stringify(data),
       });
+      console.log(response);
 
       const responseBody = await response.text();
       const res = JSON.parse(responseBody);
 
-
       const message = res.result.code;
-      if (response.ok) {
+
+      if (response.status === 200) {
         setUserToken(res.token);
         setAuthUser(res.userData);
         navigate("/dashboard");
