@@ -45,9 +45,6 @@ export function ForgotPasswordForm({ handleClick }: IUserDetailsFormProps) {
         body: JSON.stringify(data),
       });
 
-      const responseBody = await response.text();
-      const res = JSON.parse(responseBody);
-
       if (response.ok) {
         localStorage.setItem("email", data.user_email);
         SuccessToast(`Otp sucessfully sent to ${data.user_email}`);

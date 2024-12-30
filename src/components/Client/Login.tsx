@@ -22,17 +22,18 @@ export function Login() {
 
   const HandleLogin = () => {
     showWaitScreen(!waitScreen);
-  
+
     setTimeout(() => {
       showWaitScreen(false);
     }, 10000);
   };
-  
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"outline"}>Login</Button>
+        <Button variant={"outline"} className="rounded-[40px] text-sm">
+          Login
+        </Button>
       </DialogTrigger>
 
       <DialogContent className="w-[60vw] min-h-[60vh]  ">

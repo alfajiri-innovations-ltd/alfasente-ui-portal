@@ -22,7 +22,9 @@ export function SignUp() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Sign Up</Button>
+        <Button className="bg-[#8D35AA] rounded-[40px] text-sm">
+          Create account
+        </Button>
       </DialogTrigger>
 
       <DialogContent className="w-[60vw] h-[98vh] ">
