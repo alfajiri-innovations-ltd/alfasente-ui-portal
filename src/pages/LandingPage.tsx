@@ -1,5 +1,8 @@
 import Header from "@/components/Commons/Header";
 import Hero from "@/components/Commons/LandingPage/Hero";
+import Journey from "@/components/Commons/LandingPage/Journey";
+import Question from "@/components/Commons/LandingPage/Question";
+import SuccessStories from "@/components/Commons/LandingPage/SuccessStories";
 // import SuccessStories from "@/components/Commons/LandingPage/SuccessStories";
 // import Trusted from "@/components/Commons/LandingPage/Trusted";
 
@@ -12,13 +15,13 @@ function LandingPage() {
         <Hero />
 
         {/* <Trusted /> */}
-        {/* <SuccessStories /> */}
-        {/*
+        <SuccessStories />
+        <Journey />
+        <Question  /> 
 
-          <Features />
-          <Journey />
+
+       
          
-          <Question isLoggedIn={isLoggedIn} /> */}
       </div>
     </div>
   );

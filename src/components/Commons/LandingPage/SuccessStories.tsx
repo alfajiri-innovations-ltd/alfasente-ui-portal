@@ -3,45 +3,44 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 export default function SuccessStories() {
   const testimonials = [
     {
       quote:
-        "Using Phronesis has transformed how we analyze CT scans. The speed and accuracy are unmatched!",
-      author: "Dr. Joseph Bukenya",
-      designation: "Radiologist, MedPro Health Solutions",
+      "Switching to Alfasente streamlined our payroll process. Payments are now fast, accurate, and stress-free!",
+         author: "John Kitende",
+      designation: "CFO, XYZ Corp",
+    },
+    {
+      quote:"Alfasente has saved us hours every month. The seamless integration with our accounts is a game-changer!",
+      author: " Sarah Kamya",
+      designation: " Finance Director, ABC Enterprises",
     },
     {
       quote:
-        "The AI analysis has reduced our diagnosis time by 40%, allowing us to focus more on patient care.",
-      author: "Dr. Sarah Kamya",
-      designation: "Lead Physician, Global Health Initiative",
+        "Security is a top priority, and Alfasente’s encryption ensures complete confidence in every transaction.",
+      author: "Emily Wang",
+      designation: "Head of Operations, GreenTech",
     },
     {
       quote:
-        "Phronesis has made our workflow seamless and fast. I can access patient data and results in one place.",
-      author: "Dr. Emily Wang",
-      designation: "Head of Radiology, CareWell Clinics",
+      "Switching to Alfasente streamlined our payroll process. Payments are now fast, accurate, and stress-free!",
+         author: "John Kitende",
+      designation: "CFO, XYZ Corp",
+    },
+    {
+      quote:"Alfasente has saved us hours every month. The seamless integration with our accounts is a game-changer!",
+      author: " Sarah Kamya",
+      designation: " Finance Director, ABC Enterprises",
     },
     {
       quote:
-        "Phronesis has transformed the way we diagnose scans. The AI's accuracy and speed have drastically improved our workflow.",
-      author: "Dr. Joseph Bukenya",
-      designation: "Radiologist, MedPro Health Solutions",
-      rating: 5,
-    },
-    {
-      quote:
-        "The precision and efficiency of Phronesis AI have allowed us to save countless hours in diagnosis, leading to better patient outcomes.",
-      author: "Dr. Sarah Kamya",
-      designation: "Lead Physician, Global Health Initiative",
-    },
-    {
-      quote:
-        "Integrating AI into our radiology department has streamlined our workflow. Phronesis has been key to that transformation.",
-      author: "Dr. Emily Wang",
-      designation: "Head of Radiology, CareWell Clinics",
+        "Security is a top priority, and Alfasente’s encryption ensures complete confidence in every transaction.",
+      author: "Emily Wang",
+      designation: "Head of Operations, GreenTech",
     },
   ];
 
@@ -49,7 +48,7 @@ export default function SuccessStories() {
     <section className="flex flex-col mt-14 lg:mt-36" id="testimonials">
       <div className="flex items-center justify-between mb-3">
         <div className="flex flex-col">
-          <h3 className=" font-semibold text-3xl">
+          <h3 className=" font-medium text-3xl">
             Customer experiences that speak volumes
           </h3>
         </div>
@@ -96,7 +95,7 @@ export default function SuccessStories() {
                 </Avatar>
                 <div>
                   <p className="font-bold text-base">{testimonial.author}</p>
-                  <p className="text-sm text-primary italic">
+                  <p className="text-sm text-[#5C6474] ">
                     {testimonial.designation}
                   </p>
                 </div>

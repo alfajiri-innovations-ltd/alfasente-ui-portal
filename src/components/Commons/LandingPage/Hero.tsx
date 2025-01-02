@@ -25,7 +25,7 @@ function Hero() {
       <div className="flex flex-col lg:flex-row my-3 items-center gap-4">
         <Button
           onClick={HandleClick}
-          className="text-white rounded-[40px] hover:bg-[#EBAD00] hover:text-white bg-[#8D35AA]"
+          className="text-white rounded-[40px] p-5 hover:bg-[#EBAD00] hover:text-white bg-[#8D35AA]"
         >
           Manage payments{" "}
           <span>
