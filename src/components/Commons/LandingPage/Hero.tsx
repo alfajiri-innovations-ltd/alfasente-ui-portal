@@ -9,8 +9,12 @@ function Hero() {
   };
   return (
     <div
-      className="flex justify-center flex-col items-center mt-20 lg:mt-10"
+      className="flex justify-center flex-col relative items-center mt-20 lg:mt-10  "
       id="home"
+
+      style={{
+        background: "linear-gradient(to top, #DABDE3 42%, #8D35AA33 45%, #8D35AA36 50%, #8D35AA39 55%, #8D35AA4D 30%, #FFFFFF 20%)",
+      }}
     >
       <h3 className="font-extrabold text-3xl leading-[46px] lg:text-4xl lg:leading-[56px]">
         Simplify Payments To Many
@@ -33,7 +37,7 @@ function Hero() {
           </span>
         </Button>
       </div>
-      <div className="w-[60vw] h-[50vh] overflow-clip mt-8 shadow-primary shadow-2xl">
+      <div className="w-[60vw] h-[50vh] overflow-clip mt-8 ">
         <img src="/images/heroimage.png" alt="AdminDashboard" />
       </div>
     </div>

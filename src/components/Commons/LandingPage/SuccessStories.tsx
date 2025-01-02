@@ -45,7 +45,7 @@ export default function SuccessStories() {
   ];
 
   return (
-    <section className="flex flex-col mt-14 lg:mt-36" id="testimonials">
+    <section className="flex flex-col mt-14 lg:mt-20 px-[4vw]" id="testimonials">
       <div className="flex items-center justify-between mb-3">
         <div className="flex flex-col">
           <h3 className=" font-medium text-3xl">
@@ -53,7 +53,7 @@ export default function SuccessStories() {
           </h3>
         </div>
         <div className="flex justify-end items-center gap-3 p-4">
-          <div className="prev rounded-full p-1 border border-[#CDCED7]">
+          <div className="prev rounded-full p-1 border border-[#D4DAE6] ">
             <ArrowLeft className="h-5 w-5 text-black" />
           </div>
           <div className="next rounded-full p-1 border border-[#CDCED7]">
@@ -81,14 +81,14 @@ export default function SuccessStories() {
           },
           1024: {
             slidesPerView: 3,
-            spaceBetween: 30,
+            spaceBetween: 10,
           },
         }}
       >
         {testimonials.map((testimonial, index) => (
           <SwiperSlide key={index} data-hash={`slide${index + 1}`}>
-            <div className="flex flex-col gap-1  lg:min-h-[161px]  p-4 text-[#666666] rounded-[10px] border border-[#D4DAE6]">
-              <div className="flex items-center gap-4 mt-3  ">
+            <div className="flex flex-col gap-1  lg:min-h-[150px]  p-2 text-[#666666] rounded-[10px] border border-[#D4DAE6] hover:bg-[#F7F9FD]">
+              <div className="flex items-center gap-4 mt-2  ">
                 <Avatar>
                   <AvatarImage src="/images/user-profile.jfif" alt="@shadcn" />
                   <AvatarFallback>CN</AvatarFallback>

@@ -19,7 +19,7 @@ function Journey() {
   return (
     <section
       id="journey"
-      className="flex flex-col justify-center items-center mt-14 lg:mt-20"
+      className="flex flex-col px-[4vw] justify-center items-center mt-14 lg:mt-20"
     >
       <h3 className="font-bold text-[#666666] text-[21px]">How It Works</h3>
 

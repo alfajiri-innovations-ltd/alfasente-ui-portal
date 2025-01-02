@@ -8,7 +8,7 @@ function Question() {
     navigate("/signup");
   };
   return (
-    <div className="flex justify-center items-center bg-[#7E249A] mt-14 lg:mt-20 gap-10 text-white rounded-[20px] p-5">
+    <div className="flex mx-[4vw] justify-center items-center bg-[#7E249A] mt-14 lg:mt-20 gap-10 text-white rounded-[20px] p-5">
       <div>
         <h5 className="font-medium  text-2xl lg:text-[26px]">
           Ready to Simplify
