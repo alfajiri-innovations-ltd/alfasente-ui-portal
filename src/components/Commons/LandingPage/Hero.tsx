@@ -13,7 +13,7 @@ function Hero() {
       id="home"
 
       style={{
-        background: "linear-gradient(to top, #DABDE3 42%, #8D35AA33 45%, #8D35AA36 50%, #8D35AA39 55%, #8D35AA4D 30%, #FFFFFF 20%)",
+        background: "linear-gradient(to top, #DABDE3 42%, #8D35AA33 45%, #8D35AA36, #8D35AA39, #8D35AA4D 30%, #FFFFFF 20%)",
       }}
     >
       <h3 className="font-extrabold text-3xl leading-[46px] lg:text-4xl lg:leading-[56px]">

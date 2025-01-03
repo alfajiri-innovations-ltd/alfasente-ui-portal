@@ -1,12 +1,15 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Navigation } from "swiper/modules";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import {  ChevronLeft, ChevronRight } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import 'swiper/css';
-import 'swiper/css/navigation';
+import 'swiper/swiper-bundle.css';
+import { useState } from "react";
 
 export default function SuccessStories() {
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   const testimonials = [
     {
       quote:
@@ -44,6 +47,9 @@ export default function SuccessStories() {
     },
   ];
 
+  const hasMultipleSlides = testimonials.length > 1; 
+
+
   return (
     <section className="flex flex-col mt-14 lg:mt-20 px-[4vw]" id="testimonials">
       <div className="flex items-center justify-between mb-3">
@@ -53,11 +59,19 @@ export default function SuccessStories() {
           </h3>
         </div>
         <div className="flex justify-end items-center gap-3 p-4">
-          <div className="prev rounded-full p-1 border border-[#D4DAE6] ">
-            <ArrowLeft className="h-5 w-5 text-black" />
+          <div className={`prev rounded-full p-1 border border-[#D4DAE6] ${
+              currentIndex === 0 ? "bg-[white]" : "bg-[#E59339]"} `}>
+            <ChevronLeft className="h-5 w-5 text-black" />
           </div>
-          <div className="next rounded-full p-1 border border-[#CDCED7]">
-            <ArrowRight className="h-5 w-5 text-black" />
+          <div
+            className={`next rounded-full p-1 border border-[#CDCED7] ${
+              currentIndex !== 0 ? "bg-[white]" : "bg-[#E59339]"}`}
+          >
+            <ChevronRight
+              className={`h-5 w-5 ${
+                hasMultipleSlides ? "text-[#8D35AA]" : "text-black"
+              }`}
+            />
           </div>
         </div>
       </div>
@@ -83,7 +97,12 @@ export default function SuccessStories() {
             slidesPerView: 3,
             spaceBetween: 10,
           },
+
+          
         }}
+
+        onSlideChange={(swiper) => setCurrentIndex(swiper.activeIndex)}
+
       >
         {testimonials.map((testimonial, index) => (
           <SwiperSlide key={index} data-hash={`slide${index + 1}`}>
