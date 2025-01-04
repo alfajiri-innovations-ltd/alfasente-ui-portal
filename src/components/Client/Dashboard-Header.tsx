@@ -18,7 +18,7 @@ function DashboardHeader({ PageTitle }: DashboardHeaderProps) {
         <Input
           type="search"
           placeholder="Search for anything here..."
-          className="hidden lg:flex w-[20vw] border-none outtline-none focus:ring-0 focus-visible:ring-0 shadow-none"
+          className="hidden lg:flex w-[20vw] border-none outtline-none focus:ring-0 focus-visible:ring-0 shadow-none bg-[#EDF0F7]"
         />
       </div>
       <div className="flex items-center gap-2">

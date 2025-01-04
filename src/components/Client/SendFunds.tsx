@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import PreviewList from "./PreviewList";
 import { ArrowLeft, Search, Send } from "lucide-react";
-import { lists } from "@/pages/Client";
+import { lists } from "@/pages/ClientDashboard";
 import { ILists } from "./Tables/BeneficiariesTables";
 import { HiMiniUsers } from "react-icons/hi2";
 import { getRandomColor } from "./Tables/MembersTable";
@@ -71,7 +71,7 @@ export function SendFunds() {
       </DialogTrigger>
 
       <DialogContent
-        className={`w-[70vw] flex flex-col py-6 ${!previewList && "px-60"}`}
+        className={`w-[50vw] flex flex-col py-6 ${!previewList && "px-20"}`}
       >
         <ArrowLeft
           className={`h-4 w-4 cursor-pointer ${!previewList && "hidden"}`}
@@ -94,7 +94,7 @@ export function SendFunds() {
                 <Input
                   type="search"
                   placeholder="Search for list"
-                  className="hidden lg:flex w-[20vw] border-none outtline-none focus:ring-0 focus-visible:ring-0 shadow-none placeholder:text-sm"
+                  className="hidden lg:flex w-[20vw] border-none outtline-none bg-[#EDF0F7]  focus:ring-0 focus-visible:ring-0 shadow-none placeholder:text-sm"
                 />
               </div>{" "}
               <div className="h-[200px] overflow-auto my-4 scrollbar-hidden">

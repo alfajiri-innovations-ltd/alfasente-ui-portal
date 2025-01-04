@@ -42,7 +42,7 @@ export const lists = [
   },
 ];
 
-function Client() {
+function ClientDashboard() {
   const [viewBalance, setViewBalance] = useState(true);
 
   const HandleClick = () => {
@@ -124,4 +124,4 @@ function Client() {
   );
 }
 
-export default Client;
+export default ClientDashboard;

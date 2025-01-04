@@ -68,9 +68,7 @@ export default function SuccessStories() {
               currentIndex !== 0 ? "bg-[white]" : "bg-[#E59339]"}`}
           >
             <ChevronRight
-              className={`h-5 w-5 ${
-                hasMultipleSlides ? "text-[#8D35AA]" : "text-black"
-              }`}
+              className={`h-5 w-5 `}
             />
           </div>
         </div>
