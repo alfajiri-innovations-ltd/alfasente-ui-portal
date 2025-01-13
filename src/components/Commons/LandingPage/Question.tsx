@@ -12,7 +12,7 @@ function Question() {
       <div>
         <h5 className="font-medium  text-2xl lg:text-[26px]">
           Ready to Simplify
-          <br/> 
+          <br />
           Bulk Payments?{" "}
         </h5>
 

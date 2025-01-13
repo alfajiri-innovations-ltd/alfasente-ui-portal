@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {  ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 function Hero() {
@@ -11,9 +11,9 @@ function Hero() {
     <div
       className="flex justify-center flex-col relative items-center mt-20 lg:mt-10  "
       id="home"
-
       style={{
-        background: "linear-gradient(to top, #DABDE3 42%, #8D35AA33 45%, #8D35AA36, #8D35AA39, #8D35AA4D 30%, #FFFFFF 20%)",
+        background:
+          "linear-gradient(to top, #DABDE3 42%, #8D35AA33 45%, #8D35AA36, #8D35AA39, #8D35AA4D 30%, #FFFFFF 20%)",
       }}
     >
       <h3 className="font-extrabold text-3xl leading-[46px] lg:text-4xl lg:leading-[56px]">

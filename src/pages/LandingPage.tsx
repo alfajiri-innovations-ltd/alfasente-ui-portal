@@ -15,7 +15,6 @@ function LandingPage() {
       <div className="px-[4vw] lg:px-0">
         <Hero />
 
-
         <Features />
         <Trusted />
         <SuccessStories />
@@ -23,8 +22,7 @@ function LandingPage() {
         <Question />
 
         <Footer />
-        </div>
-
+      </div>
     </div>
   );
 }

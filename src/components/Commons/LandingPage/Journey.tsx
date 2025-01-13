@@ -34,9 +34,7 @@ function Journey() {
             </h4>
 
             <span className=" font-semibold"> {step.title}</span>
-            <p className="font-normal text-[15px]">
-              {step.description}
-            </p>
+            <p className="font-normal text-[15px]">{step.description}</p>
           </div>
         ))}
       </div>

@@ -8,3 +8,10 @@ export interface IClient {
 
   certificateOfIncorparation: string;
 }
+
+export interface IUser {
+  firstName: string;
+  lastName: string;
+  userId: number;
+  clientId?: number;
+}

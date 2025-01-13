@@ -14,14 +14,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { Check, EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -181,7 +179,7 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
             <FormItem className="space-y-1 col-span-2 ">
               <FormLabel> Role</FormLabel>
               <FormControl>
-                <Select onValueChange={field.onChange} value={field.value} >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select Role" />
                   </SelectTrigger>
