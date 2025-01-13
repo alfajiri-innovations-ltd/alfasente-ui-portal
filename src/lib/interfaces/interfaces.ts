@@ -15,3 +15,9 @@ export interface IUser {
   userId: number;
   clientId?: number;
 }
+export interface IMembers {
+  beneficiary_name: string;
+  reason: string;
+  amount: number;
+  mobileMoneyNumber: string;
+}

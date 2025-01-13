@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -17,37 +17,28 @@ import PreviewList from "./PreviewList";
 import { ArrowLeft } from "lucide-react";
 
 export function UploadBeneficiaries() {
-  const [previewList, setpreviewList] = useState(false);
-
-  const HandleClick = () => {
-    setpreviewList(!previewList);
-  };
+  const [previewList, setPreviewList] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
+    null
+  );
 
-  useEffect(() => {
-    const savedFile = localStorage.getItem("uploadedFile");
-    if (savedFile) {
-      const parsedFile = JSON.parse(savedFile);
-      setFile(parsedFile);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (file) {
-      const fileData = {
-        name: file.name,
-        size: file.size,
-      };
-      localStorage.setItem("uploadedFile", JSON.stringify(fileData));
-    } else {
-      localStorage.removeItem("uploadedFile");
-    }
-  }, [file]);
+  const handleTogglePreview = () => {
+    setPreviewList(!previewList);
+  };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile && selectedFile.type.includes("sheet")) {
       setFile(selectedFile);
+
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(selectedFile);
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          setFileContent(e.target.result);
+        }
+      };
     } else {
       alert("Please upload a valid Excel file.");
     }
@@ -55,6 +46,7 @@ export function UploadBeneficiaries() {
 
   const handleRemoveFile = () => {
     setFile(null);
+    setFileContent(null);
   };
 
   return (
@@ -63,14 +55,14 @@ export function UploadBeneficiaries() {
         <Button>Upload List</Button>
       </DialogTrigger>
 
-      <div className="text-primary cursor-pointer flex items-center gap-2"></div>
-
       <DialogContent
-        className={`w-[50vw] flex flex-col py-6 ${!previewList && "justify-center items-center"}`}
+        className={`w-[50vw] flex flex-col py-6 ${
+          !previewList && "justify-center items-center"
+        }`}
       >
         <ArrowLeft
           className={`h-4 w-4 cursor-pointer ${!previewList && "hidden"}`}
-          onClick={HandleClick}
+          onClick={handleTogglePreview}
         />
 
         {!previewList ? (
@@ -79,7 +71,18 @@ export function UploadBeneficiaries() {
               <DialogTitle>Upload Beneficiary List</DialogTitle>
               <DialogDescription>
                 Ensure the list follows the correct format.
-                <span className="text-primary"> Download Template</span>
+                <span
+                  className="text-primary cursor-pointer"
+                  onClick={() => {
+                    const link = document.createElement("a");
+                    link.href = "/Template.xlsx";
+                    link.download = "Beneficiary_Template.xlsx";
+                    link.click();
+                  }}
+                >
+                  {" "}
+                  Download Template
+                </span>
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 pb-6 border rounded-[12px] border-[#C8CFDE] w-[80%] ">
@@ -107,7 +110,7 @@ export function UploadBeneficiaries() {
             {file && (
               <div className="mt-4 p-2 border rounded-md flex justify-between bg-[#F7F9FD] items-center w-[80%]">
                 <div className="flex items-center gap-1.5">
-                  <div className=" bg-white border p-1 rounded-sm">
+                  <div className="bg-white border p-1 rounded-sm">
                     <img src="/images/icons/file-icon.svg" alt="File" />
                   </div>
                   <div>
@@ -124,10 +127,12 @@ export function UploadBeneficiaries() {
             )}
           </>
         ) : (
-          <PreviewList />
+          <PreviewList fileContent={fileContent} />
         )}
         <DialogFooter
-          className={`${previewList ? "w-full px-40" : "w-[40%]"}  flex justify-between items-center`}
+          className={`${
+            previewList ? "w-full px-40" : "w-[40%]"
+          }  flex justify-between items-center`}
         >
           <Button type="submit" variant={"outline"} className="">
             Cancel
@@ -136,7 +141,7 @@ export function UploadBeneficiaries() {
             <Button
               type="submit"
               className="bg-[#8D35AA]"
-              onClick={HandleClick}
+              onClick={handleTogglePreview}
             >
               Preview List
             </Button>
@@ -144,7 +149,7 @@ export function UploadBeneficiaries() {
             <Button
               type="submit"
               className="bg-[#8D35AA]"
-              onClick={HandleClick}
+              onClick={handleTogglePreview}
             >
               Submit for Approval{" "}
             </Button>
