@@ -1,7 +1,7 @@
 function Trusted() {
   return (
-    <div className="mt-20">
-      <h3 className="text-center my-3 font-medium text-3xl">
+    <div className="relative mt-[480px] px-[4vw] ">
+      <h3 className="text-center my-5 font-medium text-3xl">
         Why businesses choose Alfasente
       </h3>
 

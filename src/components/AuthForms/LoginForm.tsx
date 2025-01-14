@@ -56,28 +56,40 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
         },
         body: JSON.stringify(data),
       });
-      console.log(response);
 
+      // Ensure we handle both response status and the body correctly
       const responseBody = await response.text();
-      const res = JSON.parse(responseBody);
+      let res;
+      try {
+        res = JSON.parse(responseBody);
+      } catch (parseError) {
+        console.error("Error parsing response:", parseError);
+        ErrorToast("Unexpected server response.");
+        return;
+      }
 
-      const message = res.result.code;
+      const message = res?.result?.code;
 
       if (response.status === 200) {
         setUserToken(res.token);
         setAuthUser(res.userData);
         navigate("/dashboard");
-
         SuccessToast("Login Successful, Redirecting You ...");
-      } else if (responseBody === "User account unverified") {
-        ErrorToast("User account unverified");
-      } else if (message === 401) {
-        HandleLogin();
       } else {
-        ErrorToast("Invalid username or password");
+        switch (message) {
+          case 401:
+            HandleLogin();
+            break;
+          case "User account unverified":
+            ErrorToast("User account unverified. Please verify your email.");
+            break;
+          default:
+            ErrorToast("Invalid username or password");
+        }
       }
     } catch (error: any) {
-      ErrorToast("Try Again Later");
+      console.error("Login error:", error);
+      ErrorToast("An error occurred. Please try again later.");
     } finally {
       setSubmitting(false);
     }
@@ -119,7 +131,7 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
                   <Input
                     type={passwordVisible ? "text" : "password"}
                     placeholder="Enter your password"
-                    className="h-12 border-none focus-visible:ring-0 focus-visible:ring-offset-0  "
+                    className="h-12 border-none focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none  "
                     {...field}
                   />
                   <p onClick={togglePassword}>
@@ -150,7 +162,11 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
           Forgot password?
         </span>
         <div className="col-span-2">
-          <Button type="submit" className="w-full my-2 bg-[#8D35AA]">
+          <Button
+            type="submit"
+            className="w-full my-2 bg-[#8D35AA]"
+            disabled={submitting}
+          >
             {submitting ? "Submitting..." : " Login"}
           </Button>
         </div>

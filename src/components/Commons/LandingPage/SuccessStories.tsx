@@ -1,64 +1,78 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Navigation } from "swiper/modules";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import "swiper/swiper-bundle.css";
+import { useState } from "react";
 
 export default function SuccessStories() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
   const testimonials = [
     {
       quote:
-        "Using Phronesis has transformed how we analyze CT scans. The speed and accuracy are unmatched!",
-      author: "Dr. Joseph Bukenya",
-      designation: "Radiologist, MedPro Health Solutions",
+        "Switching to Alfasente streamlined our payroll process. Payments are now fast, accurate, and stress-free!",
+      author: "John Kitende",
+      designation: "CFO, XYZ Corp",
     },
     {
       quote:
-        "The AI analysis has reduced our diagnosis time by 40%, allowing us to focus more on patient care.",
-      author: "Dr. Sarah Kamya",
-      designation: "Lead Physician, Global Health Initiative",
+        "Alfasente has saved us hours every month. The seamless integration with our accounts is a game-changer!",
+      author: " Sarah Kamya",
+      designation: " Finance Director, ABC Enterprises",
     },
     {
       quote:
-        "Phronesis has made our workflow seamless and fast. I can access patient data and results in one place.",
-      author: "Dr. Emily Wang",
-      designation: "Head of Radiology, CareWell Clinics",
+        "Security is a top priority, and Alfasente’s encryption ensures complete confidence in every transaction.",
+      author: "Emily Wang",
+      designation: "Head of Operations, GreenTech",
     },
     {
       quote:
-        "Phronesis has transformed the way we diagnose scans. The AI's accuracy and speed have drastically improved our workflow.",
-      author: "Dr. Joseph Bukenya",
-      designation: "Radiologist, MedPro Health Solutions",
-      rating: 5,
+        "Switching to Alfasente streamlined our payroll process. Payments are now fast, accurate, and stress-free!",
+      author: "John Kitende",
+      designation: "CFO, XYZ Corp",
     },
     {
       quote:
-        "The precision and efficiency of Phronesis AI have allowed us to save countless hours in diagnosis, leading to better patient outcomes.",
-      author: "Dr. Sarah Kamya",
-      designation: "Lead Physician, Global Health Initiative",
+        "Alfasente has saved us hours every month. The seamless integration with our accounts is a game-changer!",
+      author: " Sarah Kamya",
+      designation: " Finance Director, ABC Enterprises",
     },
     {
       quote:
-        "Integrating AI into our radiology department has streamlined our workflow. Phronesis has been key to that transformation.",
-      author: "Dr. Emily Wang",
-      designation: "Head of Radiology, CareWell Clinics",
+        "Security is a top priority, and Alfasente’s encryption ensures complete confidence in every transaction.",
+      author: "Emily Wang",
+      designation: "Head of Operations, GreenTech",
     },
   ];
 
   return (
-    <section className="flex flex-col mt-14 lg:mt-36" id="testimonials">
+    <section
+      className="flex flex-col mt-14 lg:mt-20 px-[4vw]"
+      id="testimonials"
+    >
       <div className="flex items-center justify-between mb-3">
         <div className="flex flex-col">
-          <h3 className=" font-semibold text-3xl">
+          <h3 className=" font-medium text-3xl">
             Customer experiences that speak volumes
           </h3>
         </div>
         <div className="flex justify-end items-center gap-3 p-4">
-          <div className="prev rounded-full p-1 border border-[#CDCED7]">
-            <ArrowLeft className="h-5 w-5 text-black" />
+          <div
+            className={`prev rounded-full p-1 border border-[#D4DAE6] ${
+              currentIndex === 0 ? "bg-[white]" : "bg-[#E59339]"
+            } `}
+          >
+            <ChevronLeft className="h-5 w-5 text-black" />
           </div>
-          <div className="next rounded-full p-1 border border-[#CDCED7]">
-            <ArrowRight className="h-5 w-5 text-black" />
+          <div
+            className={`next rounded-full p-1 border border-[#CDCED7] ${
+              currentIndex !== 0 ? "bg-[white]" : "bg-[#E59339]"
+            }`}
+          >
+            <ChevronRight className={`h-5 w-5 `} />
           </div>
         </div>
       </div>
@@ -82,21 +96,22 @@ export default function SuccessStories() {
           },
           1024: {
             slidesPerView: 3,
-            spaceBetween: 30,
+            spaceBetween: 10,
           },
         }}
+        onSlideChange={(swiper) => setCurrentIndex(swiper.activeIndex)}
       >
         {testimonials.map((testimonial, index) => (
           <SwiperSlide key={index} data-hash={`slide${index + 1}`}>
-            <div className="flex flex-col gap-1  lg:min-h-[161px]  p-4 text-[#666666] rounded-[10px] border border-[#D4DAE6]">
-              <div className="flex items-center gap-4 mt-3  ">
+            <div className="flex flex-col gap-1  lg:min-h-[150px]  p-2 text-[#666666] rounded-[10px] border border-[#D4DAE6] hover:bg-[#F7F9FD]">
+              <div className="flex items-center gap-4 mt-2  ">
                 <Avatar>
                   <AvatarImage src="/images/user-profile.jfif" alt="@shadcn" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="font-bold text-base">{testimonial.author}</p>
-                  <p className="text-sm text-primary italic">
+                  <p className="text-sm text-[#5C6474] ">
                     {testimonial.designation}
                   </p>
                 </div>

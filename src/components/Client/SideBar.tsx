@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 function SideBar() {
   const currentPath = window.location.pathname;
@@ -45,13 +46,15 @@ function SideBar() {
 
   return (
     <aside className=" h-full bg-gray-100 p-4">
-      <div>
-        <img
-          src="/images/logos/alfasente-logo.svg"
-          alt="Alfasente"
-          width={150}
-        />
-      </div>
+      <Link to="/">
+        <div>
+          <img
+            src="/images/logos/alfasente-logo.svg"
+            alt="Alfasente"
+            width={150}
+          />
+        </div>
+      </Link>
       <div className="flex border items-center px-2 py-1 rounded-[5px] gap-3">
         <img src="/images/icons/enterprise.svg" alt="Alfasente" width={25} />
         <div className="flex flex-col">

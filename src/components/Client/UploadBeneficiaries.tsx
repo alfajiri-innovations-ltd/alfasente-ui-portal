@@ -66,7 +66,7 @@ export function UploadBeneficiaries() {
       <div className="text-primary cursor-pointer flex items-center gap-2"></div>
 
       <DialogContent
-        className={`w-[70vw] flex flex-col py-6 ${!previewList && "justify-center items-center"}`}
+        className={`w-[50vw] flex flex-col py-6 ${!previewList && "justify-center items-center"}`}
       >
         <ArrowLeft
           className={`h-4 w-4 cursor-pointer ${!previewList && "hidden"}`}
@@ -75,19 +75,19 @@ export function UploadBeneficiaries() {
 
         {!previewList ? (
           <>
-            <DialogHeader className="text-center">
+            <DialogHeader className="text-left">
               <DialogTitle>Upload Beneficiary List</DialogTitle>
               <DialogDescription>
                 Ensure the list follows the correct format.
                 <span className="text-primary"> Download Template</span>
               </DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-6 border rounded-[12px] border-[#C8CFDE] w-[43%] ">
+            <div className="grid gap-4 pb-6 border rounded-[12px] border-[#C8CFDE] w-[80%] ">
               <Label
                 htmlFor="fileUpload"
                 className="flex flex-col w-full justify-center items-center"
               >
-                <span>
+                <span className="my-4">
                   <MdUploadFile className="h-10 w-10" />
                 </span>
                 <span className="flex gap-1">
@@ -105,7 +105,7 @@ export function UploadBeneficiaries() {
             </div>
 
             {file && (
-              <div className="mt-4 p-2 border rounded-md flex justify-between bg-[#F7F9FD] items-center w-[40%]">
+              <div className="mt-4 p-2 border rounded-md flex justify-between bg-[#F7F9FD] items-center w-[80%]">
                 <div className="flex items-center gap-1.5">
                   <div className=" bg-white border p-1 rounded-sm">
                     <img src="/images/icons/file-icon.svg" alt="File" />
