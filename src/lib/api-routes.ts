@@ -11,3 +11,9 @@ export const ForgotPassword = `${import.meta.env.VITE_BACKEND_API_URL}/forgotpas
 export const VerifyPasswordOtp = `${import.meta.env.VITE_BACKEND_API_URL}/verifyPasswordOtp`;
 
 export const ResetPassword = `${import.meta.env.VITE_BACKEND_API_URL}/resetpassword`;
+
+export const FetchUser = (user_email: string) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/user/${user_email}`;
+
+export const FetchClient = (clientId: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/client/${clientId}`;

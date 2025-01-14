@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {  ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 function Hero() {
@@ -9,8 +9,12 @@ function Hero() {
   };
   return (
     <div
-      className="flex justify-center flex-col items-center mt-20 lg:mt-10"
+      className="flex justify-center flex-col relative items-center mt-20 lg:mt-10  "
       id="home"
+      style={{
+        background:
+          "linear-gradient(to top, #DABDE3 42%, #8D35AA33 45%, #8D35AA36, #8D35AA39, #8D35AA4D 30%, #FFFFFF 20%)",
+      }}
     >
       <h3 className="font-extrabold text-3xl leading-[46px] lg:text-4xl lg:leading-[56px]">
         Simplify Payments To Many
@@ -25,7 +29,7 @@ function Hero() {
       <div className="flex flex-col lg:flex-row my-3 items-center gap-4">
         <Button
           onClick={HandleClick}
-          className="text-white rounded-[40px] hover:bg-[#EBAD00] hover:text-white bg-[#8D35AA]"
+          className="text-white rounded-[40px] p-5 hover:bg-[#EBAD00] hover:text-white bg-[#8D35AA]"
         >
           Manage payments{" "}
           <span>
@@ -33,7 +37,7 @@ function Hero() {
           </span>
         </Button>
       </div>
-      <div className="w-[60vw] h-[50vh] overflow-clip mt-8 shadow-primary shadow-2xl">
+      <div className="w-[60vw] h-[50vh] overflow-clip mt-8 ">
         <img src="/images/heroimage.png" alt="AdminDashboard" />
       </div>
     </div>

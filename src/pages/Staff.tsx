@@ -4,9 +4,10 @@ import SideBar from "@/components/Client/SideBar";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-import { Filter, Plus } from "lucide-react";
+import { Filter } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 import { UsersTable } from "@/components/Client/Tables/UsersTable";
+import { InviteStaff } from "@/components/Client/InviteStaffDialog";
 
 const users = [
   {
@@ -179,10 +180,7 @@ function Staff() {
                 </span>
                 Filter
               </Button>
-              <Button>
-                <Plus />
-                <span>Add Staff</span>
-              </Button>{" "}
+              <InviteStaff />
             </div>
           </div>
 

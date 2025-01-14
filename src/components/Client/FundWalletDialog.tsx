@@ -11,12 +11,12 @@ export function FundWallet() {
           <span>Fund Wallet</span>
         </div>
       </DialogTrigger>
-      <DialogContent className="w-[60vw]">
+      <DialogContent className="w-[40vw]">
         <div className="-mt-2 bg-[#EDF0F7] rounded-full h-7 w-7 flex justify-center items-center">
           <ArrowLeft className="h-4 w-4" />
         </div>
 
-        <div className=" my-0 mx-20">
+        <div className=" my-0">
           <FundWalletDetails />
         </div>
       </DialogContent>
