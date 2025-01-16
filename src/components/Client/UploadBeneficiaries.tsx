@@ -13,11 +13,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MdUploadFile } from "react-icons/md";
 import { LiaTimesSolid } from "react-icons/lia";
+import * as XLSX from "xlsx";
 import PreviewList from "./PreviewList";
 import { ArrowLeft } from "lucide-react";
+import { UploadList } from "@/lib/api-routes";
+import { getUserToken ,getAuthUser} from "@/lib/cookies/UserMangementCookie";
+
 
 export function UploadBeneficiaries() {
   const [previewList, setPreviewList] = useState(false);
+  const [submit,setIsSubmitting] = useState(false);
+  const token=getUserToken();
+  const nuser=getAuthUser();
+  const clientID= nuser.clientID;
   const [file, setFile] = useState<File | null>(null);
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
     null
@@ -47,6 +55,82 @@ export function UploadBeneficiaries() {
   const handleRemoveFile = () => {
     setFile(null);
     setFileContent(null);
+  };
+
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    if (!fileContent) {
+      alert("No file content to submit.");
+      return;
+    }
+
+    try {
+      const workbook = XLSX.read(fileContent, { type: "buffer" });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      const jsonData: any[] = XLSX.utils.sheet_to_json(sheet, { defval: null });
+
+     
+      const [headers, ...rows] = XLSX.utils.sheet_to_json(sheet, {
+        header: 1,
+        defval: null,
+      }) as any;
+
+      const formattedMembers = rows.map((row: any[]) =>
+        headers.reduce((acc: any, header: string, index: number) => {
+          let value = row[index] || null;
+      
+         
+          if (header === "mobileMoneyNumber" && value !== null) {
+            value = String(value).padStart(10, "0"); 
+          }
+      
+          acc[header] = value;
+          return acc;
+        }, { 
+          clientID: isNaN(Number(clientID)) ? 0 : Number(clientID),
+         }) 
+      );
+
+      const payload = {
+        name: `${sheetName}`, 
+        members: formattedMembers,
+        clientID: isNaN(Number(clientID)) ? 0 : Number(clientID),
+      };
+
+      console.log("Submitting payload:", payload);
+
+      console.log("Members:", formattedMembers)
+
+      
+     
+
+      fetch(UploadList, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization:`Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert("List submitted successfully.");
+          } else {
+            alert("Failed to submit the list.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error submitting list:", error);
+          alert("An error occurred while submitting the list.");
+        });
+    } catch (error) {
+      console.error("Error processing file:", error);
+      alert("Failed to process the uploaded file.");
+    } finally{
+      setIsSubmitting(false);
+
+    }
   };
 
   return (
@@ -149,7 +233,8 @@ export function UploadBeneficiaries() {
             <Button
               type="submit"
               className="bg-[#8D35AA]"
-              onClick={handleTogglePreview}
+              onClick={handleSubmit}
+              disabled={submit}
             >
               Submit for Approval{" "}
             </Button>

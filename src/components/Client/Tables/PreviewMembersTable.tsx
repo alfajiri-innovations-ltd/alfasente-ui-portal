@@ -44,7 +44,7 @@ export function PreviewMembersTable({ members }: IMembersTable) {
                 />
               </span>
 
-              {member.beneficiary_name}
+              {member.beneficiaryName}
             </TableCell>
             <TableCell>0{member.mobileMoneyNumber}</TableCell>
 
