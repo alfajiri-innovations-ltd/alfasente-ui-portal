@@ -9,8 +9,6 @@ import {
 import { IMembers } from "@/lib/interfaces/interfaces";
 import { HiMiniUsers } from "react-icons/hi2";
 
-
-
 export interface IMembersTable {
   members?: IMembers[];
   member?: IMembers;

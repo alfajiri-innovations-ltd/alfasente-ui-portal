@@ -21,3 +21,12 @@ export interface IMembers {
   amount: number;
   mobileMoneyNumber: string;
 }
+
+export interface IList {
+  id: number;
+  name: string;
+  createdAt: string;
+  createdBy: string;
+  status: string;
+  members: IMembers[];
+}

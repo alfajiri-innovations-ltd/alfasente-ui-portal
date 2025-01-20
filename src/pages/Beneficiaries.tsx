@@ -9,83 +9,14 @@ import { Filter } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 import ViewMembers from "@/components/Client/ViewMembers";
 import { UploadBeneficiaries } from "@/components/Client/UploadBeneficiaries";
+import { GetLists } from "@/lib/services/FetchClientLists";
+import { IList } from "@/lib/interfaces/interfaces";
 
-const lists = [
-  {
-    name: "Staff",
-    members: 46,
-    status: "Pending",
-    createdBy: "Grace Kizza",
-    createdAt: "Sat 30 January 2006",
-  },
-  {
-    name: "Interns",
-    members: 150,
-    status: "Approved",
-
-    createdBy: "Mutebire Arnold",
-    createdAt: "Sat 30 January 2006",
-  },
-  {
-    name: "pending",
-    members: 45,
-    status: "Rejected",
-
-    createdBy: "Alex Mutebi",
-    createdAt: "Sat 30 January 2006",
-  },
-  {
-    name: "Contractors",
-    members: 10,
-    status: "Approved",
-
-    createdBy: "Luswaata Vicent",
-    createdAt: "Sat 30 January 2006",
-  },
-  {
-    name: "Drivers",
-    members: 20,
-    status: "Rejected",
-
-    createdBy: "Alex Mutebi",
-    createdAt: "Sat 30 January 2006",
-  },
-
-  {
-    name: "Interns",
-    members: 150,
-    status: "Approved",
-
-    createdBy: "Mutebire Arnold",
-    createdAt: "Sat 30 January 2006",
-  },
-  {
-    name: "pending",
-    members: 45,
-    status: "Rejected",
-
-    createdBy: "Alex Mutebi",
-    createdAt: "Sat 30 January 2006",
-  },
-  {
-    name: "Contractors",
-    members: 10,
-    status: "Approved",
-
-    createdBy: "Luswaata Vicent",
-    createdAt: "Sat 30 January 2006",
-  },
-  {
-    name: "Drivers",
-    members: 20,
-    status: "Rejected",
-
-    createdBy: "Alex Mutebi",
-    createdAt: "Sat 30 January 2006",
-  },
-];
-function Beneficiaries() {
+function BeneficiariesPage() {
   const [currentPage, setCurrentPage] = useState(1);
+
+  const Lists: IList[] = GetLists();
+  console.log(Lists);
 
   const [ViewBeneficiarylist, setViewBeneficiarylist] = useState(false);
 
@@ -99,8 +30,8 @@ function Beneficiaries() {
 
   const ListsPerPage = 8;
 
-  const totalPages = Math.ceil(lists.length / ListsPerPage);
-  const currentLists = lists.slice(
+  const totalPages = Math.ceil(Lists!.length / ListsPerPage);
+  const currentLists = Lists!.slice(
     (currentPage - 1) * ListsPerPage,
     currentPage * ListsPerPage,
   );
@@ -111,9 +42,9 @@ function Beneficiaries() {
     }
   };
 
-  const rejectedLists = lists.filter((list) => list.status === "Rejected");
-  const pendingLists = lists.filter((list) => list.status === "Pending");
-  const approvedLists = lists.filter((list) => list.status === "Approved");
+  const rejectedLists = Lists?.filter((list) => list.status === "rejected");
+  const pendingLists = Lists.filter((list) => list.status === "pending");
+  const approvedLists = Lists.filter((list) => list.status === "approved");
 
   return (
     <div className="grid grid-cols-5 h-screen">
@@ -135,7 +66,7 @@ function Beneficiaries() {
                       }  px-2 py-[2px]`}
                       onClick={() => setActiveTab("all")}
                     >
-                      All <span className="mx-1">({lists.length})</span>
+                      All <span className="mx-1">({Lists.length})</span>
                     </h4>
 
                     <h4
@@ -217,7 +148,7 @@ function Beneficiaries() {
               <div className="flex justify-between  items-center ">
                 <div className="">
                   <span className="font-normal text-[15px]  ">
-                    Showing {currentLists.length} of {lists.length} results
+                    Showing {currentLists.length} of {Lists.length} results
                   </span>
                 </div>
                 <div className="">
@@ -238,4 +169,4 @@ function Beneficiaries() {
   );
 }
 
-export default Beneficiaries;
+export default BeneficiariesPage;

@@ -4,15 +4,13 @@ import { PaginationDemo } from "./Pagination";
 import { PreviewMembersTable } from "./Tables/PreviewMembersTable";
 import { IMembers } from "@/lib/interfaces/interfaces";
 
-
-
 interface PreviewListProps {
-  fileContent: any; 
+  fileContent?: any;
 }
 
 function PreviewList({ fileContent }: PreviewListProps) {
   const [sheetName, setSheetName] = useState<string>("");
- 
+
   const [currentPage, setCurrentPage] = useState(1);
   const [members, setMembers] = useState<IMembers[]>([]);
 
@@ -20,14 +18,12 @@ function PreviewList({ fileContent }: PreviewListProps) {
   const totalPages = Math.ceil(members.length / MembersPerPage);
   const currentMembers = members.slice(
     (currentPage - 1) * MembersPerPage,
-    currentPage * MembersPerPage
+    currentPage * MembersPerPage,
   );
 
   useEffect(() => {
     if (fileContent) {
       try {
-     
-
         const workbook = XLSX.read(fileContent, { type: "buffer" });
 
         console.log(workbook);
@@ -37,27 +33,22 @@ function PreviewList({ fileContent }: PreviewListProps) {
 
         setSheetName(sheetName);
 
-        
-
         const jsonData: any[] = XLSX.utils.sheet_to_json(sheet, {
-          defval: null, 
-          header: 1,   
+          defval: null,
+          header: 1,
         });
-
 
         const [headers, ...rows] = jsonData;
         console.log("Parsed Data:", jsonData);
 
         const parsedMembers = rows.map((row: any[]) =>
           headers.reduce((acc: any, header: string, index: number) => {
-            acc[header] = row[index] || null; 
+            acc[header] = row[index] || null;
             return acc;
-          }, {})
+          }, {}),
         );
 
-        console.log(parsedMembers)
-
-      
+        console.log(parsedMembers);
 
         setMembers(parsedMembers);
       } catch (error) {
@@ -76,9 +67,7 @@ function PreviewList({ fileContent }: PreviewListProps) {
     <div className="my-3">
       <div className="flex items-center justify-between my-2">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-xl uppercase">
-          {sheetName}
-          </span>
+          <span className="font-semibold text-xl uppercase">{sheetName}</span>
         </div>
       </div>
 
