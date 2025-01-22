@@ -12,14 +12,16 @@ import {
 import { Input } from "@/components/ui/input";
 import PreviewList from "./PreviewList";
 import { ArrowLeft, Search, Send } from "lucide-react";
-import { lists } from "@/pages/ClientDashboard";
-import { ILists } from "./Tables/BeneficiariesTables";
+
 import { HiMiniUsers } from "react-icons/hi2";
 import { getRandomColor } from "./Tables/MembersTable";
+import { IList } from "@/lib/interfaces/interfaces";
+import { GetLists } from "@/lib/services/FetchClientLists";
 
 export function SendFunds() {
   const [previewList, setpreviewList] = useState(false);
-  const [items, setItems] = useState<ILists[]>([]);
+  const [items, setItems] = useState<IList[]>([]);
+  const lists: IList[] = GetLists();
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const itemsPerPage = 3;
@@ -114,7 +116,7 @@ export function SendFunds() {
                       {item.name}
                     </div>
 
-                    <div className="flex">{item.members}</div>
+                    <div className="flex">{item.members.length}</div>
                   </div>
                 ))}
 

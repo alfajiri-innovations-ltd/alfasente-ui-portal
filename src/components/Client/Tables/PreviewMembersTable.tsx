@@ -6,14 +6,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { IMembers } from "@/lib/interfaces/interfaces";
 import { HiMiniUsers } from "react-icons/hi2";
-
-export interface IMembers {
-  name: string;
-  mobileMoneyNumber: string;
-  amount: number;
-  reason: string;
-}
 
 export interface IMembersTable {
   members?: IMembers[];
@@ -48,9 +42,9 @@ export function PreviewMembersTable({ members }: IMembersTable) {
                 />
               </span>
 
-              {member.name}
+              {member.beneficiaryName}
             </TableCell>
-            <TableCell>{member.mobileMoneyNumber}</TableCell>
+            <TableCell>0{member.mobileMoneyNumber}</TableCell>
 
             <TableCell className="">{member.amount}</TableCell>
 

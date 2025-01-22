@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,41 +13,39 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MdUploadFile } from "react-icons/md";
 import { LiaTimesSolid } from "react-icons/lia";
+import * as XLSX from "xlsx";
 import PreviewList from "./PreviewList";
 import { ArrowLeft } from "lucide-react";
+import { UploadList } from "@/lib/api-routes";
+import { getUserToken, getAuthUser } from "@/lib/cookies/UserMangementCookie";
 
 export function UploadBeneficiaries() {
-  const [previewList, setpreviewList] = useState(false);
-
-  const HandleClick = () => {
-    setpreviewList(!previewList);
-  };
+  const [previewList, setPreviewList] = useState(false);
+  const [submit, setIsSubmitting] = useState(false);
+  const token = getUserToken();
+  const nuser = getAuthUser();
+  const clientID = nuser.clientID;
   const [file, setFile] = useState<File | null>(null);
+  const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
+    null,
+  );
 
-  useEffect(() => {
-    const savedFile = localStorage.getItem("uploadedFile");
-    if (savedFile) {
-      const parsedFile = JSON.parse(savedFile);
-      setFile(parsedFile);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (file) {
-      const fileData = {
-        name: file.name,
-        size: file.size,
-      };
-      localStorage.setItem("uploadedFile", JSON.stringify(fileData));
-    } else {
-      localStorage.removeItem("uploadedFile");
-    }
-  }, [file]);
+  const handleTogglePreview = () => {
+    setPreviewList(!previewList);
+  };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile && selectedFile.type.includes("sheet")) {
       setFile(selectedFile);
+
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(selectedFile);
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          setFileContent(e.target.result);
+        }
+      };
     } else {
       alert("Please upload a valid Excel file.");
     }
@@ -55,6 +53,79 @@ export function UploadBeneficiaries() {
 
   const handleRemoveFile = () => {
     setFile(null);
+    setFileContent(null);
+  };
+
+  const handleSubmit = () => {
+    setIsSubmitting(true);
+    if (!fileContent) {
+      alert("No file content to submit.");
+      return;
+    }
+
+    try {
+      const workbook = XLSX.read(fileContent, { type: "buffer" });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+
+      const [headers, ...rows] = XLSX.utils.sheet_to_json(sheet, {
+        header: 1,
+        defval: null,
+      }) as any;
+
+      const formattedMembers = rows.map((row: any[]) =>
+        headers.reduce(
+          (acc: any, header: string, index: number) => {
+            let value = row[index] || null;
+
+            if (header === "mobileMoneyNumber" && value !== null) {
+              value = String(value).padStart(10, "0");
+            }
+
+            acc[header] = value;
+            return acc;
+          },
+          {
+            clientID: isNaN(Number(clientID)) ? 0 : Number(clientID),
+          },
+        ),
+      );
+
+      const payload = {
+        name: `${sheetName}`,
+        members: formattedMembers,
+        clientID: isNaN(Number(clientID)) ? 0 : Number(clientID),
+      };
+
+      console.log("Submitting payload:", payload);
+
+      console.log("Members:", formattedMembers);
+
+      fetch(UploadList, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert("List submitted successfully.");
+          } else {
+            alert("Failed to submit the list.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error submitting list:", error);
+          alert("An error occurred while submitting the list.");
+        });
+    } catch (error) {
+      console.error("Error processing file:", error);
+      alert("Failed to process the uploaded file.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -63,14 +134,14 @@ export function UploadBeneficiaries() {
         <Button>Upload List</Button>
       </DialogTrigger>
 
-      <div className="text-primary cursor-pointer flex items-center gap-2"></div>
-
       <DialogContent
-        className={`w-[50vw] flex flex-col py-6 ${!previewList && "justify-center items-center"}`}
+        className={`w-[50vw] flex flex-col py-6 ${
+          !previewList && "justify-center items-center"
+        }`}
       >
         <ArrowLeft
           className={`h-4 w-4 cursor-pointer ${!previewList && "hidden"}`}
-          onClick={HandleClick}
+          onClick={handleTogglePreview}
         />
 
         {!previewList ? (
@@ -79,7 +150,18 @@ export function UploadBeneficiaries() {
               <DialogTitle>Upload Beneficiary List</DialogTitle>
               <DialogDescription>
                 Ensure the list follows the correct format.
-                <span className="text-primary"> Download Template</span>
+                <span
+                  className="text-primary cursor-pointer"
+                  onClick={() => {
+                    const link = document.createElement("a");
+                    link.href = "/Template.xlsx";
+                    link.download = "Beneficiary_Template.xlsx";
+                    link.click();
+                  }}
+                >
+                  {" "}
+                  Download Template
+                </span>
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 pb-6 border rounded-[12px] border-[#C8CFDE] w-[80%] ">
@@ -107,7 +189,7 @@ export function UploadBeneficiaries() {
             {file && (
               <div className="mt-4 p-2 border rounded-md flex justify-between bg-[#F7F9FD] items-center w-[80%]">
                 <div className="flex items-center gap-1.5">
-                  <div className=" bg-white border p-1 rounded-sm">
+                  <div className="bg-white border p-1 rounded-sm">
                     <img src="/images/icons/file-icon.svg" alt="File" />
                   </div>
                   <div>
@@ -124,10 +206,12 @@ export function UploadBeneficiaries() {
             )}
           </>
         ) : (
-          <PreviewList />
+          <PreviewList fileContent={fileContent} />
         )}
         <DialogFooter
-          className={`${previewList ? "w-full px-40" : "w-[40%]"}  flex justify-between items-center`}
+          className={`${
+            previewList ? "w-full px-40" : "w-[40%]"
+          }  flex justify-between items-center`}
         >
           <Button type="submit" variant={"outline"} className="">
             Cancel
@@ -136,7 +220,7 @@ export function UploadBeneficiaries() {
             <Button
               type="submit"
               className="bg-[#8D35AA]"
-              onClick={HandleClick}
+              onClick={handleTogglePreview}
             >
               Preview List
             </Button>
@@ -144,7 +228,8 @@ export function UploadBeneficiaries() {
             <Button
               type="submit"
               className="bg-[#8D35AA]"
-              onClick={HandleClick}
+              onClick={handleSubmit}
+              disabled={submit}
             >
               Submit for Approval{" "}
             </Button>

@@ -5,11 +5,12 @@ import {
 } from "@/components/ui/popover";
 import { MoreHorizontal, UserCircle } from "lucide-react";
 import { RenameList } from "./RenameListDialog";
-import { ILists } from "./Tables/BeneficiariesTables";
+
 import { DeleteList } from "./DeleteDialog";
+import { IList } from "@/lib/interfaces/interfaces";
 
 interface ActionProps {
-  list?: ILists;
+  list?: IList;
   HandleClick?: () => void;
 }
 export function ActionsPopover({ list, HandleClick }: ActionProps) {
