@@ -1,15 +1,16 @@
 import { ArrowLeft } from "lucide-react";
-import { getStatusBadge, ILists } from "./Tables/BeneficiariesTables";
+import { getStatusBadge } from "./Tables/BeneficiariesTables";
 import { Badge } from "../ui/badge";
 import { MembersTable } from "./Tables/MembersTable";
 import { useState } from "react";
 import { PaginationDemo } from "./Pagination";
 import { ApproveList } from "./ApproveList";
 import { RejectList } from "./RejectList";
+import { IList } from "@/lib/interfaces/interfaces";
 
 interface IViewProps {
   CloseView: () => void;
-  list?: ILists;
+  list?: IList;
 }
 
 const members = [

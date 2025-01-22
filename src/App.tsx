@@ -1,11 +1,15 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import Beneficiaries from "./pages/Beneficiaries";
-import Transactions from "./pages/Transactions";
-import Staff from "./pages/Staff";
-import AuditLogs from "./pages/AuditLogs";
-import LandingPage from "./pages/LandingPage";
+
+import React from "react";
+
+const BeneficiariesPage = React.lazy(() => import("@/pages/Beneficiaries"));
+const ClientDashboard = React.lazy(() => import("@/pages/ClientDashboard"));
+const Transactions = React.lazy(() => import("@/pages/Transactions"));
+const Staff = React.lazy(() => import("@/pages/Staff"));
+const AuditLogs = React.lazy(() => import("@/pages/AuditLogs"));
+const LandingPage = React.lazy(() => import("@/pages/LandingPage"));
+
 import { Toaster } from "@/components/ui/sonner";
-import ClientDashboard from "./pages/ClientDashboard";
 
 function App() {
   return (
@@ -16,7 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<ClientDashboard />} />
-          <Route path="/beneficiaries" element={<Beneficiaries />} />
+          <Route path="/beneficiaries" element={<BeneficiariesPage />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/staff" element={<Staff />} />
           <Route path="/audit-logs" element={<AuditLogs />} />

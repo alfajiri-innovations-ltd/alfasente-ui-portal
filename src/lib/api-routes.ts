@@ -17,3 +17,8 @@ export const FetchUser = (user_email: string) =>
 
 export const FetchClient = (clientId: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/client/${clientId}`;
+
+export const UploadList = `${import.meta.env.VITE_BACKEND_API_URL}/uploadList`;
+
+export const FetchClientLists = (clientId: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/getListsByClientId?clientID=${clientId}`;

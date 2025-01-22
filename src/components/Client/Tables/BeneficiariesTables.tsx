@@ -10,23 +10,17 @@ import {
 import { useLocation } from "react-router-dom";
 import { ActionsPopover } from "../ActionsPopover";
 
-export interface ILists {
-  name: string;
-  members: number;
-  createdBy: string;
-  createdAt: string;
-  status?: string;
-}
-
 import { HiMiniUsers } from "react-icons/hi2";
 import { getRandomColor } from "./MembersTable";
+import { IList } from "@/lib/interfaces/interfaces";
+import { formatDate } from "@/lib/Utilities/FormatDate";
 
 export interface IBeneficiariesTableProps {
-  lists?: ILists[];
-  list?: ILists;
+  lists?: IList[];
+  list?: IList;
   HandleClick?: () => void;
 }
-export function getStatusBadge(status: ILists["status"]) {
+export function getStatusBadge(status: IList["status"]) {
   switch (status) {
     case "Rejected":
       return "bg-[#FFEAE9] text-[#A9302D] border-[#FFD9D7]";
@@ -62,7 +56,7 @@ export function BeneficiariesTable({
       <TableBody>
         {lists?.map((list, index) => (
           <TableRow key={index}>
-            <TableCell className="font-medium flex items-center gap-1">
+            <TableCell className="font-medium flex items-center gap-1.5 ">
               <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
                 <HiMiniUsers
                   style={{
@@ -71,9 +65,9 @@ export function BeneficiariesTable({
                 />
               </span>
 
-              {list.name}
+              <span className="capitalize"> {list.name}</span>
             </TableCell>{" "}
-            <TableCell>{list.members}</TableCell>
+            <TableCell>{list.members.length}</TableCell>
             {pathname === "/beneficiaries" && (
               <TableCell>
                 <Badge
@@ -84,7 +78,7 @@ export function BeneficiariesTable({
               </TableCell>
             )}
             <TableCell className="">{list.createdBy}</TableCell>
-            <TableCell>{list.createdAt}</TableCell>
+            <TableCell>{formatDate(list.createdAt)}</TableCell>
             <TableCell>
               <ActionsPopover list={list} HandleClick={HandleClick} />{" "}
             </TableCell>

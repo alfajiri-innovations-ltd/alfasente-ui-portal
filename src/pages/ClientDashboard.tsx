@@ -10,45 +10,16 @@ import { useState } from "react";
 import { FundWallet } from "@/components/Client/FundWalletDialog";
 import { SendFunds } from "@/components/Client/SendFunds";
 import { GetUser } from "@/lib/services/GetUser";
-
-export const lists = [
-  {
-    name: "Staff",
-    members: 46,
-    createdBy: "Grace Kizza",
-    createdAt: "Sat 30 January 2006",
-  },
-  {
-    name: "Interns",
-    members: 150,
-    createdBy: "Mutebire Arnold",
-    createdAt: "Sat 30 January 2006",
-  },
-  {
-    name: "Security",
-    members: 45,
-    createdBy: "Alex Mutebi",
-    createdAt: "Sat 30 January 2006",
-  },
-  {
-    name: "Contractors",
-    members: 10,
-    createdBy: "Luswaata Vicent",
-    createdAt: "Sat 30 January 2006",
-  },
-  {
-    name: "Drivers",
-    members: 20,
-    createdBy: "Alex Mutebi",
-    createdAt: "Sat 30 January 2006",
-  },
-];
+import { GetLists } from "@/lib/services/FetchClientLists";
+import { IList } from "@/lib/interfaces/interfaces";
+import { Link } from "react-router-dom";
 
 function ClientDashboard() {
   const User = GetUser();
   const [user, setUser] = useState(false);
   const [viewBalance, setViewBalance] = useState(true);
-  console.log(User);
+  const Lists: IList[] = GetLists();
+  console.log(Lists);
   const HandleClick = () => {
     setViewBalance(!viewBalance);
   };
@@ -116,20 +87,23 @@ function ClientDashboard() {
               <div className="gap-1 flex ">
                 <span className="font-semibold text-lg">Beneficiary Lists</span>
                 <Badge variant="outline" className="rounded-full p-2">
-                  20
+                  {Lists.length}
                 </Badge>
               </div>
 
               <Button className="text-white bg-secondary px-2">
-                See All
-                <span>
-                  <ArrowRight />
-                </span>
+                <Link to="/beneficiaries" className="flex items-center gap-1">
+                  {" "}
+                  See All
+                  <span>
+                    <ArrowRight />
+                  </span>
+                </Link>
               </Button>
             </div>
 
             <div>
-              <BeneficiariesTable lists={lists} />
+              <BeneficiariesTable lists={Lists} />
             </div>
           </div>
         </div>
