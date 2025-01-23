@@ -6,6 +6,9 @@ import {
 } from "lucide-react";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
+import { SlEnvolope } from "react-icons/sl";
+import { PiBuildingOfficeLight } from "react-icons/pi";
+
 import { Link } from "react-router-dom";
 
 function SideBar() {
@@ -16,6 +19,17 @@ function SideBar() {
       title: "Dashboard",
       icon: <LayoutDashboard />,
       href: "/dashboard",
+    },
+
+    {
+      title: "Applications",
+      icon: <SlEnvolope className="w-6 h-6"  />,
+      href: "/applications",
+    },
+    {
+      title: "Organisations",
+      icon: <PiBuildingOfficeLight className="w-6 h-6"  />,
+      href: "/organisations",
     },
     {
       title: "Beneficiaries",
@@ -31,6 +45,11 @@ function SideBar() {
       title: "Transactions",
       icon: <FaMoneyBillTransfer className="w-6 h-6" />,
       href: "/transactions",
+    },
+    {
+      title: "Teams",
+      icon: <PiUsersThreeFill className="w-6 h-6" />,
+      href: "/teams",
     },
     {
       title: "Audit Logs",

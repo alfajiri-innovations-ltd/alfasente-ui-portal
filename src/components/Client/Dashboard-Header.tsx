@@ -9,7 +9,7 @@ interface DashboardHeaderProps {
 
 function DashboardHeader({ PageTitle }: DashboardHeaderProps) {
   return (
-    <div className="flex justify-between items-center px-4 py-3 shadow-sm">
+    <div className="flex justify-between border-b border-[#DCE1EC] items-center px-4 py-3 ">
       <span className="text-2xl font-bold">{PageTitle}</span>
 
       <div className="flex  bg-[#EDF0F7] items-center px-1 rounded-full  lg:px-3 lg:rounded-[10px]">

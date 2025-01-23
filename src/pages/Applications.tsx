@@ -6,102 +6,88 @@ import { Button } from "@/components/ui/button";
 
 import { Download, Filter } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
-import { AuditlogsTable } from "@/components/Client/Tables/AuditLogsTable";
+import { ApplicationsTable } from "@/components/Admin/Tables/ApplicationsTable";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-export const auditlogs = [
+const applications = [
   {
     user_name: "George Kizza",
-    event: "georgekizza@gmail.com",
+    email: "georgekizza@gmail.com",
     createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_admin",
-    organization: "KCB Bank",
+    status : "Pending",
+    organization:'KCB Bank'
   },
 
   {
     user_name: "George Kizza",
-    event: "Invited Sarah to the platform",
+    email: "georgekizza@gmail.com",
     createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_admin",
-    organization: "KCB Bank",
+    status : "Approved",
+    organization:'KCB Bank'
   },
   {
     user_name: "George Kizza",
-    event: "Invited Sarah to the platform",
+    email: "georgekizza@gmail.com",
     createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_admin",
-    organization: "KCB Bank",
+    status : "Rejected",
+    organization:'KCB Bank'
   },
   {
     user_name: "George Kizza",
-    event: "Invited Sarah to the platform",
+    email: "georgekizza@gmail.com",
     createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_employee",
-    organization: "KCB Bank",
+    status : "Pending",
+    organization:'KCB Bank'
   },
   {
     user_name: "George Kizza",
-    event: "Invited Sarah to the platform",
+    email: "georgekizza@gmail.com",
     createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_admin",
-    organization: "KCB Bank",
+    status : "Pending",
+    organization:'KCB Bank'
   },
 
   {
     user_name: "George Kizza",
-    event: "Invited Sarah to the platform",
-    status: "Inactive",
+    email: "georgekizza@gmail.com",
     createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_employee",
-    organization: "KCB Bank",
+    status : "Approved",
+    organization:'KCB Bank'
   },
   {
     user_name: "George Kizza",
-    event: "Invited Sarah to the platform",
+    email: "georgekizza@gmail.com",
     createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_admin",
-    organization: "KCB Bank",
+    status : "Pending",
+    organization:'KCB Bank'
   },
   {
     user_name: "George Kizza",
-    event: "Invited Sarah to the platform",
-    status: "Inactive",
+    email: "georgekizza@gmail.com",
     createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_admin",
-    organization: "KCB Bank",
+    status : "Pending",
+    organization:'KCB Bank'
   },
   {
     user_name: "George Kizza",
-    event: "Invited Sarah to the platform",
+    email: "georgekizza@gmail.com",
     createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_employee",
-    organization: "KCB Bank",
+    status : "Pending",
+    organization:'KCB Bank'
   },
 ];
-function AuditLogs() {
+function ApplicationsPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [activeTab, setActiveTab] = useState<"all" | "admin" | "employee">(
-    "all"
-  );
+  const [activeTab, setActiveTab] = useState<
+  "all" | "pending" | "rejected" | "approved"
+>("all");
 
-  const AuditLogsPerPage = 8;
+  const ApplicationsPerPage = 8;
 
-  const role_name = "admin";
-
-  const totalPages = Math.ceil(auditlogs.length / AuditLogsPerPage);
-  const currentauditlogs = auditlogs.slice(
-    (currentPage - 1) * AuditLogsPerPage,
-    currentPage * AuditLogsPerPage
+  const totalPages = Math.ceil(applications.length / ApplicationsPerPage);
+  const currentapplications = applications.slice(
+    (currentPage - 1) * ApplicationsPerPage,
+    currentPage * ApplicationsPerPage,
   );
 
   const handlePageChange = (page: number) => {
@@ -110,40 +96,18 @@ function AuditLogs() {
     }
   };
 
-  const admin = auditlogs.filter(
-    (auditlog) => auditlog.role === "client_admin"
-  );
-  const employee = auditlogs.filter(
-    (auditlog) => auditlog.role === "client_employee"
-  );
-
+  const rejectedappplications = applications?.filter((application) => application.status === "Rejected");
+  const pendingapplications = applications.filter((application) => application.status === "Pending");
+  const approvedapplications = applications.filter((application) => application.status === "Approved");
   return (
     <div className="grid grid-cols-5 h-screen">
       <SideBar />
       <main className="col-span-4 bg-white">
-        <DashboardHeader PageTitle="Audit Logs" />
+        <DashboardHeader PageTitle="Applications " />
 
         <div className="flex flex-col mx-5 my-5">
           <div className="flex justify-between items-center">
-            {role_name === "admin" ? (
-              <>
-                <Select>
-                  <SelectTrigger className="min-w-[180px] w-[200px]">
-                    <SelectValue placeholder="All Organisations (20)" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Organizations</SelectLabel>
-                      <SelectItem value="kcb">KCB Bank</SelectItem>
-                      <SelectItem value="equity">Equity Bank</SelectItem>
-                     
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </>
-            ) : (
-              <>
-                <div className="flex  items-center p-1.5 justify-center">
+          <div className="flex  items-center p-1.5 justify-center">
                   <div className="flex  md:gap-2  text-[15px] font-medium">
                     <h4
                       className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
@@ -153,36 +117,45 @@ function AuditLogs() {
                       }  px-2 py-[2px]`}
                       onClick={() => setActiveTab("all")}
                     >
-                      All <span className="mx-1">({auditlogs.length})</span>
+                      All <span className="mx-1">({applications.length})</span>
                     </h4>
 
                     <h4
                       className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                        activeTab === "admin"
+                        activeTab === "pending"
                           ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
                           : "  border-[#F7F9FD]"
                       }  px-2 py-[2px]`}
-                      onClick={() => setActiveTab("admin")}
+                      onClick={() => setActiveTab("pending")}
                     >
-                      Admin
-                      <span className="mx-1">({admin.length})</span>
+                      Pending
+                      <span className="mx-1">({pendingapplications.length})</span>
+                    </h4>
+                    <h4
+                      className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
+                        activeTab === "approved"
+                          ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                          : "  border-[#F7F9FD]"
+                      }  px-2 py-[2px]`}
+                      onClick={() => setActiveTab("approved")}
+                    >
+                      Approved
+                      <span className="mx-1">({approvedapplications.length})</span>
                     </h4>
 
                     <h4
                       className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                        activeTab === "employee"
+                        activeTab === "rejected"
                           ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
                           : "  border-[#F7F9FD]"
                       }  px-2 py-[2px]`}
-                      onClick={() => setActiveTab("employee")}
+                      onClick={() => setActiveTab("rejected")}
                     >
-                      Employees
-                      <span className="mx-1">({employee.length})</span>
+                      Rejected
+                      <span className="mx-1">({rejectedappplications.length})</span>
                     </h4>
                   </div>
                 </div>
-              </>
-            )}
 
             <div className="flex items-center gap-2">
               {" "}
@@ -194,30 +167,30 @@ function AuditLogs() {
               </Button>
               <Button>
                 <Download />
-                <span>Export Logs</span>
+                <span>Export </span>
               </Button>{" "}
             </div>
           </div>
 
           <div className="my-5">
             {activeTab === "all" && (
-              <AuditlogsTable
-                auditlogs={currentauditlogs}
-                role_name={role_name}
-              />
+              <ApplicationsTable applications={currentapplications} />
             )}
 
-            {activeTab === "admin" && <AuditlogsTable auditlogs={admin} />}
+            {activeTab === "pending" && <ApplicationsTable applications={pendingapplications} />}
 
-            {activeTab === "employee" && (
-              <AuditlogsTable auditlogs={employee} />
+            {activeTab === "rejected" && (
+              <ApplicationsTable applications={rejectedappplications} />
+            )}
+             {activeTab === "approved" && (
+              <ApplicationsTable applications={approvedapplications} />
             )}
           </div>
 
           <div className="flex justify-between  items-center ">
             <div className="">
               <span className="font-normal text-[15px]  ">
-                Showing {currentauditlogs.length} of {auditlogs.length} results
+                Showing {currentapplications.length} of {applications.length} results
               </span>
             </div>
             <div className="">
@@ -234,4 +207,4 @@ function AuditLogs() {
   );
 }
 
-export default AuditLogs;
+export default ApplicationsPage;

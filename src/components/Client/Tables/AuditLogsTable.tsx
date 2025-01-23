@@ -14,6 +14,7 @@ export interface IAuditLogs {
   role: string;
   createdAt: string;
   event: string;
+  organization: string;
 }
 
 import { HiMiniUsers } from "react-icons/hi2";
@@ -21,16 +22,18 @@ import { getRole } from "./UsersTable";
 
 export interface IAuditLogsTable {
   auditlogs?: IAuditLogs[];
-  auditlog?: IAuditLogs;
+  auditlog?: IAuditLogs
+  role_name?: string;
 }
 
-export function AuditlogsTable({ auditlogs }: IAuditLogsTable) {
+export function AuditlogsTable({ auditlogs,role_name }: IAuditLogsTable) {
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead className="">Staff</TableHead>
-          <TableHead>Role</TableHead>
+          {role_name==='admin' ? <TableHead>Organisation</TableHead>:          <TableHead>Role</TableHead>
+          }
           <TableHead>Event</TableHead>
 
           <TableHead className="">Date Added</TableHead>
@@ -38,7 +41,7 @@ export function AuditlogsTable({ auditlogs }: IAuditLogsTable) {
       </TableHeader>
       <TableBody>
         {auditlogs?.map((auditlog, index) => (
-          <TableRow key={index}>
+          <TableRow key={index} className="h-[50px] odd:bg-[#F7F9FD] even:bg-[#FBFDFF]">
             <TableCell className="font-medium flex items-center gap-1">
               <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
                 <HiMiniUsers />
@@ -48,7 +51,9 @@ export function AuditlogsTable({ auditlogs }: IAuditLogsTable) {
             </TableCell>
 
             <TableCell>
-              {" "}
+
+              {role_name ==='admin' ? <span>{auditlog.organization}</span>:<>
+              
               <Badge
                 variant={"outline"}
                 className={`border rounded-full py-1 px-2 gap-1 text-[14px] flex items-center w-min`}
@@ -57,7 +62,9 @@ export function AuditlogsTable({ auditlogs }: IAuditLogsTable) {
                   className={`${getRole(auditlog.role)} h-2 w-2 rounded-full`}
                 ></div>
                 {auditlog.role === "client_admin" ? "Admin" : "Employee"}
-              </Badge>
+              </Badge></>}
+              {" "}
+             
             </TableCell>
             <TableCell>{auditlog.event}</TableCell>
 

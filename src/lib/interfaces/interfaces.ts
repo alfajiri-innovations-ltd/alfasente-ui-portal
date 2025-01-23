@@ -14,6 +14,7 @@ export interface IUser {
   lastName: string;
   userId: number;
   clientId?: number;
+  role_name?: string;
 }
 export interface IMembers {
   beneficiaryName: string;
