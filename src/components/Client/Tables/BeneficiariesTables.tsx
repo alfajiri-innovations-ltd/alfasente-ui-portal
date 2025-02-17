@@ -20,7 +20,7 @@ export interface IBeneficiariesTableProps {
   list?: IList;
   HandleClick?: () => void;
 }
-export function getStatusBadge(status: IList["status"]) {
+export function getStatusBadge(status: IList["status"] | undefined) {
   switch (status) {
     case "Rejected":
       return "bg-[#FFEAE9] text-[#A9302D] border-[#FFD9D7]";

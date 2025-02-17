@@ -24,6 +24,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CreateUser } from "@/lib/api-routes";
+import { ErrorToast, SuccessToast } from "../ui/Toasts";
+import { useUser } from "@/hooks/UserContext";
 
 const FormSchema = z.object({
   firstName: z.string().min(2, {
@@ -34,7 +36,7 @@ const FormSchema = z.object({
   user_email: z.string().min(2, { message: "Field is Required" }).email(),
   date_of_birth: z.string().min(2, { message: "Field is Required" }),
   lastName: z.string().min(2, { message: "Field is Required" }),
-
+  clientID: z.number(),
   password: z.string().min(8, { message: "Field is Required" }),
 });
 
@@ -43,7 +45,9 @@ interface IUserDetailsFormProps {
 }
 export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const user = useUser();
 
+  console.log(user);
   const [submitting, setSubmitting] = useState(false);
   const togglePassword = () => {
     setPasswordVisible(!passwordVisible);
@@ -58,6 +62,7 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
       password: "",
       date_of_birth: "",
       role_name: "",
+      clientID: user?.clientId,
       isEmailVerified: true,
     },
   });
@@ -76,13 +81,13 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
       console.log(userResponse);
 
       if (userResponse.ok) {
+        SuccessToast("Invitation sent successfully");
         setTimeout(() => {
-          localStorage.removeItem("client");
           onClose();
-        }, 2000);
+        }, 1000);
       }
     } catch (error) {
-      console.error("An error occurred:", error);
+      ErrorToast("An error occurred:");
     } finally {
       setSubmitting(false);
     }

@@ -22,3 +22,9 @@ export const UploadList = `${import.meta.env.VITE_BACKEND_API_URL}/uploadList`;
 
 export const FetchClientLists = (clientId: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/getListsByClientId?clientID=${clientId}`;
+
+export const FetchAllOrganizations = () =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/getallclients`;
+
+export const ApproveClient = () =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/approveClient`;
