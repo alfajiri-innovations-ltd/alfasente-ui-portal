@@ -9,22 +9,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-export interface IApplications {
-  user_name: string;
-  status: string;
-  createdAt: string;
-
-  organization: string;
-  email: string;
-}
+import { IClient } from "@/lib/interfaces/interfaces";
+import { formatDate } from "@/lib/Utilities/FormatDate";
 
 import { HiMiniUsers } from "react-icons/hi2";
 
 export interface ApplicationsTable {
-  applications?: IApplications[];
-  application?: IApplications;
+  applications?: IClient[];
+  application?: IClient;
 }
+const day = new Date();
 
 export function ApplicationsTable({ applications }: ApplicationsTable) {
   return (
@@ -45,28 +39,28 @@ export function ApplicationsTable({ applications }: ApplicationsTable) {
             className="h-[50px] odd:bg-[#F7F9FD] even:bg-[#FBFDFF]"
           >
             <TableCell className="font-medium flex items-center gap-1">
-              <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
+              <span className="rounded-full bg-[#E4E8F1] flex justify-center gap-1 items-center p-1.5">
                 <HiMiniUsers />
               </span>
 
-              {application.user_name}
+              {application.userId?.firstName}
+              {application.userId?.lastName}
             </TableCell>
-            <TableCell>{application.organization}</TableCell>
-            <TableCell>{application.email}</TableCell>
+            <TableCell>{application.clientName}</TableCell>
+            <TableCell>{application.clientEmail}</TableCell>
 
             <TableCell>
               <Badge
                 variant={"outline"}
-                className={`border ${getStatusBadge(application.status)} capitalize rounded-full py-1 px-2 gap-1 text-[14px] flex items-center w-min`}
+                className={`border ${getStatusBadge(application?.isApproved)} capitalize rounded-full py-1 px-2 gap-1 text-[14px] flex items-center w-min`}
               >
-                
-                {application.status}
+                {application.isApproved}
               </Badge>{" "}
             </TableCell>
 
-            <TableCell>{application.createdAt}</TableCell>
+            <TableCell>{formatDate(day.toISOString())}</TableCell>
             <TableCell>
-              <ActionsPopover />{" "}
+              <ActionsPopover clientID={application.clientID} />{" "}
             </TableCell>
           </TableRow>
         ))}

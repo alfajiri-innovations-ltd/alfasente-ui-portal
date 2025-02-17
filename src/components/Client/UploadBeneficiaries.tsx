@@ -18,8 +18,14 @@ import PreviewList from "./PreviewList";
 import { ArrowLeft } from "lucide-react";
 import { UploadList } from "@/lib/api-routes";
 import { getUserToken, getAuthUser } from "@/lib/cookies/UserMangementCookie";
+import { ErrorToast, SuccessToast } from "../ui/Toasts";
 
 export function UploadBeneficiaries() {
+  const [DialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleClose = () => {
+    setIsDialogOpen(false);
+  };
   const [previewList, setPreviewList] = useState(false);
   const [submit, setIsSubmitting] = useState(false);
   const token = getUserToken();
@@ -27,7 +33,7 @@ export function UploadBeneficiaries() {
   const clientID = nuser.clientID;
   const [file, setFile] = useState<File | null>(null);
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
-    null,
+    null
   );
 
   const handleTogglePreview = () => {
@@ -47,7 +53,7 @@ export function UploadBeneficiaries() {
         }
       };
     } else {
-      alert("Please upload a valid Excel file.");
+      ErrorToast("Please upload a valid Excel file.");
     }
   };
 
@@ -59,7 +65,7 @@ export function UploadBeneficiaries() {
   const handleSubmit = () => {
     setIsSubmitting(true);
     if (!fileContent) {
-      alert("No file content to submit.");
+      ErrorToast("No file content");
       return;
     }
 
@@ -87,8 +93,8 @@ export function UploadBeneficiaries() {
           },
           {
             clientID: isNaN(Number(clientID)) ? 0 : Number(clientID),
-          },
-        ),
+          }
+        )
       );
 
       const payload = {
@@ -111,25 +117,25 @@ export function UploadBeneficiaries() {
       })
         .then((response) => {
           if (response.ok) {
-            alert("List submitted successfully.");
+            SuccessToast("List submitted successfully.");
           } else {
-            alert("Failed to submit the list.");
+            ErrorToast("List already exists.");
           }
         })
         .catch((error) => {
           console.error("Error submitting list:", error);
-          alert("An error occurred while submitting the list.");
+          ErrorToast("An error occurred while submitting the list.");
         });
     } catch (error) {
       console.error("Error processing file:", error);
-      alert("Failed to process the uploaded file.");
+      ErrorToast("Failed to process the uploaded file.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button>Upload List</Button>
       </DialogTrigger>
@@ -213,7 +219,12 @@ export function UploadBeneficiaries() {
             previewList ? "w-full px-40" : "w-[40%]"
           }  flex justify-between items-center`}
         >
-          <Button type="submit" variant={"outline"} className="">
+          <Button
+            type="submit"
+            variant={"outline"}
+            className=""
+            onClick={handleClose}
+          >
             Cancel
           </Button>
           {!previewList ? (
@@ -231,7 +242,7 @@ export function UploadBeneficiaries() {
               onClick={handleSubmit}
               disabled={submit}
             >
-              Submit for Approval{" "}
+              {submit ? "Submitting..." : "Submit for Approval"}
             </Button>
           )}
         </DialogFooter>

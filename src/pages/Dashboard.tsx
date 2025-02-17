@@ -18,12 +18,16 @@ import { PiBuildingOfficeLight } from "react-icons/pi";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { AuditlogsTable } from "@/components/Client/Tables/AuditLogsTable";
 import { auditlogs } from "./AuditLogs";
+import { useUser } from "@/hooks/UserContext";
+import { GetClients } from "@/lib/services/FetchAllOrganizations";
 
 function Dashboard() {
   const User = GetUser();
-  const role_name = "admin";
+  const nuser = useUser();
 
-  const DashboardAuditlogs=auditlogs.slice(0,5)
+  const userRole = nuser?.role_name || "admin";
+
+  const DashboardAuditlogs = auditlogs.slice(0, 5);
 
   const [user, setUser] = useState(false);
   const [viewBalance, setViewBalance] = useState(true);
@@ -38,6 +42,9 @@ function Dashboard() {
       setUser(false);
     }
   }, []);
+
+  const Clients = GetClients();
+  console.log(Clients);
 
   const AdminCards = [
     {
@@ -56,7 +63,7 @@ function Dashboard() {
       title: "Transactions Processed",
       number: 120,
       description: "Transactions completed yesterday.",
-      icon: <FaMoneyBillTransfer className="w-4 h-4 fill-[#308242]"  />,
+      icon: <FaMoneyBillTransfer className="w-4 h-4 fill-[#308242]" />,
     },
   ];
   return (
@@ -65,7 +72,7 @@ function Dashboard() {
       <main className="col-span-4  bg-white">
         <DashboardHeader PageTitle="Dashboard" />
 
-        {role_name === "admin" ? (
+        {userRole === "admin" ? (
           <>
             <div>
               <div className="grid grid-cols-3 gap-5 mx-5 my-5">
@@ -77,17 +84,23 @@ function Dashboard() {
                     >
                       <div className="flex items-center justify-between p-4 ">
                         <div className="flex flex-col">
-                          <span className="text-[#5C6474] text-[17px]">{card.title}</span>
+                          <span className="text-[#5C6474] text-[17px]">
+                            {card.title}
+                          </span>
 
-                          <span className="text-[#222222] font-semibold text-base">{card.number}</span>
+                          <span className="text-[#222222] font-semibold text-base">
+                            {card.number}
+                          </span>
                         </div>
-                        <div className="rounded-full p-1.5 bg-[#F7F9FD]">{card.icon}</div>
+                        <div className="rounded-full p-1.5 bg-[#F7F9FD]">
+                          {card.icon}
+                        </div>
                       </div>
 
                       <hr />
-                    <div className="p-2 text-[#848EA2] text-xs">
-                    {card.description}
-                    </div>
+                      <div className="p-2 text-[#848EA2] text-xs">
+                        {card.description}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -96,9 +109,7 @@ function Dashboard() {
               <div className="mx-5 my-10">
                 <div className="flex justify-between">
                   <div className="gap-1 flex ">
-                    <span className="font-semibold text-lg">
-                     Audit Logs
-                    </span>
+                    <span className="font-semibold text-lg">Audit Logs</span>
                     <Badge variant="outline" className="rounded-full p-2">
                       {Lists.length}
                     </Badge>
@@ -119,10 +130,12 @@ function Dashboard() {
                 </div>
 
                 <div>
-                <AuditlogsTable auditlogs={DashboardAuditlogs} role_name={role_name} />
+                  <AuditlogsTable
+                    auditlogs={DashboardAuditlogs}
+                    role_name={userRole}
+                  />
                 </div>
               </div>
-          
             </div>
           </>
         ) : (
@@ -132,49 +145,51 @@ function Dashboard() {
                 {" "}
                 <h3 className="font-normal text-base">Welcome,</h3>
                 {!user ? (
-                  <span className="font-normal text-[24px] italic ">
-                    {User?.firstName} {User?.lastName}
+                  <span className="font-normal text-[24px] flex gap-1.5 italic ">
+                    {nuser?.firstName} {nuser?.lastName}
                   </span>
                 ) : (
                   <Skeleton className="h-4 w-[200px] bg-slate-500" />
                 )}
               </div>
 
-              <div className=" px-8 py-12 rounded-[10px] my-4 space-y-4 bg-primary bg-contain bg-hero-pattern bg-right bg-no-repeat">
-                <div className="flex items-center gap-3">
-                  <span className="text-white font-semibold">
-                    Wallet Balance
+              {userRole === "admin " && (
+                <div className=" px-8 py-12 rounded-[10px] my-4 space-y-4 bg-primary bg-contain bg-hero-pattern bg-right bg-no-repeat">
+                  <div className="flex items-center gap-3">
+                    <span className="text-white font-semibold">
+                      Wallet Balance
+                    </span>
+                    {viewBalance ? (
+                      <EyeClosed
+                        className="text-white h-4 w-4"
+                        onClick={HandleClick}
+                      />
+                    ) : (
+                      <EyeOffIcon
+                        className="text-white h-4 w-4"
+                        onClick={HandleClick}
+                      />
+                    )}
+                  </div>
+                  <span className="text-white text-lg font-bold my-5">
+                    {viewBalance ? "UGX 3,000,300" : "XXXXXX"}
                   </span>
-                  {viewBalance ? (
-                    <EyeClosed
-                      className="text-white h-4 w-4"
-                      onClick={HandleClick}
-                    />
-                  ) : (
-                    <EyeOffIcon
-                      className="text-white h-4 w-4"
-                      onClick={HandleClick}
-                    />
-                  )}
-                </div>
-                <span className="text-white text-lg font-bold my-5">
-                  {viewBalance ? "UGX 3,000,300" : "XXXXXX"}
-                </span>
 
-                <div className="flex gap-3  ">
-                  <FundWallet />
-                  <SendFunds />
+                  <div className="flex gap-3  ">
+                    <FundWallet />
+                    <SendFunds />
 
-                  <div className="flex px-2 py-1 gap-1 items-center bg-[#F9EBFE] text-[#4F1762] text-[15px] rounded-[8px]">
-                    <img
-                      src="/images/icons/transactions.svg"
-                      width={20}
-                      alt="Transactions"
-                    />
-                    <span>Transactions</span>
+                    <div className="flex px-2 py-1 gap-1 items-center bg-[#F9EBFE] text-[#4F1762] text-[15px] rounded-[8px]">
+                      <img
+                        src="/images/icons/transactions.svg"
+                        width={20}
+                        alt="Transactions"
+                      />
+                      <span>Transactions</span>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               <div className="my-5">
                 <div className="flex justify-between">

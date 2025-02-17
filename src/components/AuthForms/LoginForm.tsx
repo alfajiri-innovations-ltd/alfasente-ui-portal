@@ -57,7 +57,6 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
         body: JSON.stringify(data),
       });
 
-      // Ensure we handle both response status and the body correctly
       const responseBody = await response.text();
       let res;
       try {

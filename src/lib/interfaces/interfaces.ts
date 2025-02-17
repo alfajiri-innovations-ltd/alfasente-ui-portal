@@ -1,12 +1,15 @@
 export interface IClient {
   clientName: string;
   walletBalance: number;
-  isApproved: boolean;
+  isApproved?: string;
   clientEmail: string;
   physicalAddress: string;
   clientPhoneNumber: string;
+  clientID?:number;
 
   certificateOfIncorparation: string;
+
+  userId?: IUser;
 }
 
 export interface IUser {
@@ -14,7 +17,8 @@ export interface IUser {
   lastName: string;
   userId: number;
   clientId?: number;
-  role_name?: string;
+  role_name: string;
+  user_email:string;
 }
 export interface IMembers {
   beneficiaryName: string;

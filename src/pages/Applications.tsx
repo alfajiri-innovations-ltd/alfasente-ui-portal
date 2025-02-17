@@ -7,77 +7,79 @@ import { Button } from "@/components/ui/button";
 import { Download, Filter } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 import { ApplicationsTable } from "@/components/Admin/Tables/ApplicationsTable";
+import { GetClients } from "@/lib/services/FetchAllOrganizations";
 
-const applications = [
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    status : "Pending",
-    organization:'KCB Bank'
-  },
+// const applications = [
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     status : "Pending",
+//     organization:'KCB Bank'
+//   },
 
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    status : "Approved",
-    organization:'KCB Bank'
-  },
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    status : "Rejected",
-    organization:'KCB Bank'
-  },
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    status : "Pending",
-    organization:'KCB Bank'
-  },
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    status : "Pending",
-    organization:'KCB Bank'
-  },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     status : "Approved",
+//     organization:'KCB Bank'
+//   },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     status : "Rejected",
+//     organization:'KCB Bank'
+//   },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     status : "Pending",
+//     organization:'KCB Bank'
+//   },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     status : "Pending",
+//     organization:'KCB Bank'
+//   },
 
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    status : "Approved",
-    organization:'KCB Bank'
-  },
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    status : "Pending",
-    organization:'KCB Bank'
-  },
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    status : "Pending",
-    organization:'KCB Bank'
-  },
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    status : "Pending",
-    organization:'KCB Bank'
-  },
-];
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     status : "Approved",
+//     organization:'KCB Bank'
+//   },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     status : "Pending",
+//     organization:'KCB Bank'
+//   },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     status : "Pending",
+//     organization:'KCB Bank'
+//   },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     status : "Pending",
+//     organization:'KCB Bank'
+//   },
+// ];
 function ApplicationsPage() {
   const [currentPage, setCurrentPage] = useState(1);
-
+ const applications = GetClients();
+  console.log(applications);
   const [activeTab, setActiveTab] = useState<
   "all" | "pending" | "rejected" | "approved"
 >("all");
@@ -96,9 +98,9 @@ function ApplicationsPage() {
     }
   };
 
-  const rejectedappplications = applications?.filter((application) => application.status === "Rejected");
-  const pendingapplications = applications.filter((application) => application.status === "Pending");
-  const approvedapplications = applications.filter((application) => application.status === "Approved");
+  const rejectedappplications = applications?.filter((application) => application.isApproved === "Rejected");
+  const pendingapplications = applications.filter((application) => application.isApproved === "Pending");
+  const approvedapplications = applications.filter((application) => application.isApproved === "Approved");
   return (
     <div className="grid grid-cols-5 h-screen">
       <SideBar />
