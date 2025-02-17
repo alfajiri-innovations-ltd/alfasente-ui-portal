@@ -91,7 +91,7 @@ function AuditLogs() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [activeTab, setActiveTab] = useState<"all" | "admin" | "employee">(
-    "all"
+    "all",
   );
 
   const AuditLogsPerPage = 8;
@@ -101,7 +101,7 @@ function AuditLogs() {
   const totalPages = Math.ceil(auditlogs.length / AuditLogsPerPage);
   const currentauditlogs = auditlogs.slice(
     (currentPage - 1) * AuditLogsPerPage,
-    currentPage * AuditLogsPerPage
+    currentPage * AuditLogsPerPage,
   );
 
   const handlePageChange = (page: number) => {
@@ -111,10 +111,10 @@ function AuditLogs() {
   };
 
   const admin = auditlogs.filter(
-    (auditlog) => auditlog.role === "client_admin"
+    (auditlog) => auditlog.role === "client_admin",
   );
   const employee = auditlogs.filter(
-    (auditlog) => auditlog.role === "client_employee"
+    (auditlog) => auditlog.role === "client_employee",
   );
 
   return (
@@ -136,7 +136,6 @@ function AuditLogs() {
                       <SelectLabel>Organizations</SelectLabel>
                       <SelectItem value="kcb">KCB Bank</SelectItem>
                       <SelectItem value="equity">Equity Bank</SelectItem>
-                     
                     </SelectGroup>
                   </SelectContent>
                 </Select>

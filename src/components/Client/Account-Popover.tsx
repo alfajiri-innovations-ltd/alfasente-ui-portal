@@ -29,7 +29,10 @@ export function AccountPopover() {
 
             <span>Profile</span>
           </div>
-          <div className="flex items-center gap-1 cursor-pointer " onClick={handleLogOut}>
+          <div
+            className="flex items-center gap-1 cursor-pointer "
+            onClick={handleLogOut}
+          >
             <span>
               <LogOut className="w-4 h-4 text-destructive" />
             </span>

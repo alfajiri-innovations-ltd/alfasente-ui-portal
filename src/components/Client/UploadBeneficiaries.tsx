@@ -33,7 +33,7 @@ export function UploadBeneficiaries() {
   const clientID = nuser.clientID;
   const [file, setFile] = useState<File | null>(null);
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
-    null
+    null,
   );
 
   const handleTogglePreview = () => {
@@ -93,8 +93,8 @@ export function UploadBeneficiaries() {
           },
           {
             clientID: isNaN(Number(clientID)) ? 0 : Number(clientID),
-          }
-        )
+          },
+        ),
       );
 
       const payload = {

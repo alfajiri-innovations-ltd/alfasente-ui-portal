@@ -81,10 +81,8 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
       console.log(userResponse);
 
       if (userResponse.ok) {
-
         SuccessToast("Invitation sent successfully");
         setTimeout(() => {
-        
           onClose();
         }, 1000);
       }

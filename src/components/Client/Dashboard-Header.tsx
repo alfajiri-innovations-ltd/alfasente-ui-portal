@@ -9,8 +9,7 @@ interface DashboardHeaderProps {
 }
 
 function DashboardHeader({ PageTitle }: DashboardHeaderProps) {
-
-   const user = useUser();
+  const user = useUser();
   return (
     <div className="flex justify-between border-b border-[#DCE1EC] items-center px-4 py-3 ">
       <span className="text-2xl font-bold">{PageTitle}</span>
@@ -31,7 +30,8 @@ function DashboardHeader({ PageTitle }: DashboardHeaderProps) {
         </Avatar>
 
         <div className="flex flex-col gap-1 text-sm">
-          <span className="flex gap-1.5">{user?.firstName}
+          <span className="flex gap-1.5">
+            {user?.firstName}
 
             <span>{user?.lastName}</span>
           </span>

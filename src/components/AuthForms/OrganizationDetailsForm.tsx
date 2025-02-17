@@ -49,7 +49,7 @@ export function OrganizationDetailsForm({
       clientPhoneNumber: client.clientPhoneNumber || "",
       clientEmail: client.clientEmail || "",
       walletBalance: client.walletBalance || 0,
-   
+
       certificateOfIncorparation: client.certificateOfIncorparation || "",
       physicalAddress: client.physicalAddress || "",
     },

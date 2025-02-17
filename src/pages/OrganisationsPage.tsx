@@ -111,7 +111,7 @@ function Organisations() {
   const totalPages = Math.ceil(organizations.length / organizationsPerPage);
   const currentorganizations = organizations.slice(
     (currentPage - 1) * organizationsPerPage,
-    currentPage * organizationsPerPage
+    currentPage * organizationsPerPage,
   );
 
   const handlePageChange = (page: number) => {

@@ -79,7 +79,7 @@ function SideBar() {
     },
   ];
   const filteredItems = sidebarItems.filter((item) =>
-    item.roles.includes(userRole)
+    item.roles.includes(userRole),
   );
 
   return (

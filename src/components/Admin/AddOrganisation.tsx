@@ -22,8 +22,7 @@ export function AddOrganisation() {
       <DialogContent className="sm:max-w-[425px]">
         <span>Add Organisation</span>
 
-        <OrganizationForm/>
-
+        <OrganizationForm />
       </DialogContent>
     </Dialog>
   );

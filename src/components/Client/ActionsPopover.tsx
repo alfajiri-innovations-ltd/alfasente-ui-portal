@@ -13,7 +13,7 @@ import { ViewApplication } from "../Admin/ReviewApplication";
 
 interface ActionProps {
   list?: IList;
-  clientID?:number
+  clientID?: number;
   HandleClick?: () => void;
 }
 export function ActionsPopover({ list, clientID, HandleClick }: ActionProps) {

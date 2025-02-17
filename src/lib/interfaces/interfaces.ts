@@ -5,7 +5,7 @@ export interface IClient {
   clientEmail: string;
   physicalAddress: string;
   clientPhoneNumber: string;
-  clientID?:number;
+  clientID?: number;
 
   certificateOfIncorparation: string;
 
@@ -18,7 +18,7 @@ export interface IUser {
   userId: number;
   clientId?: number;
   role_name: string;
-  user_email:string;
+  user_email: string;
 }
 export interface IMembers {
   beneficiaryName: string;
