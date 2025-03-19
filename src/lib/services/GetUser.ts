@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 
-import { IUser } from "../interfaces/interfaces";
+import { IUsers } from "../interfaces/interfaces";
 import { getAuthUser } from "../cookies/UserMangementCookie";
 import { FetchUser } from "../api-routes";
 
 export function GetUser() {
-  const [user, setUser] = useState<IUser>();
-  const email = getAuthUser().email;
+  const [user, setUser] = useState<IUsers>();
+  const email = getAuthUser().user_email;
+
+  
 
   useEffect(() => {
     const fetchuser = async () => {
@@ -15,6 +17,7 @@ export function GetUser() {
         if (response.ok) {
           const data = await response.json();
           setUser(data);
+          console.log(data);
         } else {
         }
       } catch (error) {}

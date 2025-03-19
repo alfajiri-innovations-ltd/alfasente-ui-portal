@@ -9,14 +9,9 @@ import {
 } from "@/components/ui/table";
 import { ActionsPopover } from "../ActionsPopover";
 import { FaRegUser } from "react-icons/fa";
+import { IUsers } from "@/lib/interfaces/interfaces";
 
-export interface IUsers {
-  user_name: string;
-  email: string;
-  role: string;
-  createdAt: string;
-  status?: string;
-}
+
 
 export interface IUsersTableProps {
   users?: IUsers[];
@@ -24,11 +19,11 @@ export interface IUsersTableProps {
 }
 export function getStatusBadge(status: IUsers["status"]) {
   switch (status) {
-    case "Active":
+    case "maker":
       return "bg-[#FFEAE9] text-[#A9302D] border-[#FFD9D7]";
 
-    case "Inactive":
-      return "bg-[#ECF8EF] text-[#308242] border-[#C5E9CD]";
+    case "checker":
+      return "bg-[#308E9] text-[#308242] border-[#C5E9CD]";
 
     default:
       return "bg-red-100 text-red-500";
@@ -67,14 +62,14 @@ export function UsersTable({ users }: IUsersTableProps) {
                 <FaRegUser />
               </span>
 
-              {user.user_name}
+              {`${user.firstName} ${user.lastName}`}
             </TableCell>{" "}
-            <TableCell>{user.email}</TableCell>
+            <TableCell>{user.user_email}</TableCell>
             <TableCell>
               <Badge
-                className={`border rounded-full py-1 px-1.5 text-[14px] ${getStatusBadge(user.status)}`}
+                className={`border capitalize rounded-full py-1 px-1.5 text-[14px] ${getStatusBadge(user.status || 'checker')}`}
               >
-                {user.status}{" "}
+                {user.status || 'checker'}
               </Badge>
             </TableCell>
             <TableCell>
@@ -84,12 +79,14 @@ export function UsersTable({ users }: IUsersTableProps) {
                 className={`border rounded-full py-1 px-2 gap-1 text-[14px] flex items-center w-min`}
               >
                 <div
-                  className={`${getRole(user.role)} h-2 w-2 rounded-full`}
+                  className={`${getRole(user.role_name.roleName)} h-2 w-2 rounded-full`}
                 ></div>
-                {user.role === "client_admin" ? "Admin" : "Employee"}
+                {user.role_name.roleName === "client_admin"
+                  ? "Admin"
+                  : "Employee"}
               </Badge>
             </TableCell>
-            <TableCell>{user.createdAt}</TableCell>
+            <TableCell>{user.date_of_birth}</TableCell>
             <TableCell>
               <ActionsPopover />{" "}
             </TableCell>

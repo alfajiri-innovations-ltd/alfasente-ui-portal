@@ -4,6 +4,14 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import {
   Form,
   FormControl,
   FormField,
@@ -12,18 +20,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Check } from "lucide-react";
+
 import { useState } from "react";
 import ConfirmPaymentDetails from "./ConfirmPaymentDetails";
 
 const FormSchema = z.object({
-  amount: z.string().min(1, { message: "Amount is required" }),
-  number: z.string().min(9, { message: "Enter a valid number" }),
+  amount: z
+    .number()
+    .min(1000, { message: "Amount must be at least 1,000" })
+    .max(3000000, { message: "Amount cannot exceed 3,000,000" }),
+
+  accountNumber: z.string().min(9, { message: "Enter a valid number" }),
   network: z.string().min(1, { message: "Please select a network" }),
 });
 
 function FundWalletDetails() {
   const [Paymentdetails, setShowPaymentDetails] = useState(false);
+
+  const [Details, setDetails] = useState({
+    amount: "",
+    accountNumber: "",
+    network: "",
+  });
 
   const handleClick = () => {
     setShowPaymentDetails(!Paymentdetails);
@@ -32,14 +50,21 @@ function FundWalletDetails() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      amount: "",
-      number: "",
+      amount: undefined,
+      accountNumber: "",
       network: "",
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
+
+    const formattedData = {
+      ...data,
+      amount: data.amount.toString(),
+    };
+
+    setDetails(formattedData);
     handleClick();
   }
 
@@ -47,85 +72,55 @@ function FundWalletDetails() {
     <>
       {!Paymentdetails ? (
         <>
-          <h3 className="font-bold mb-2">Fund your wallet</h3>
-
           <div className="space-y-4">
-            <h3 className="text-lg font-bold">Select Mobile Money Provider</h3>
+            <h3 className="text-base font-medium my-3">
+              Select Mobile Money Provider
+            </h3>
 
-            <div className="flex space-x-4">
-              <div
-                onClick={() => form.setValue("network", "mtn")}
-                className={`relative border rounded-lg p-2 flex-1 cursor-pointer ${
-                  form.watch("network") === "mtn"
-                    ? "border-black"
-                    : "border-gray-300"
-                }`}
+            <div className="flex flex-col gap-2">
+              <Select
+                value={form.watch("network")}
+                onValueChange={(value) => form.setValue("network", value)}
               >
-                <input
-                  type="radio"
-                  name="network"
-                  value="mtn"
-                  checked={form.watch("network") === "mtn"}
-                  onChange={() => form.setValue("network", "mtn")}
-                  className="absolute top-2 right-2 hidden"
-                />
-                <div
-                  className={`absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center ${
-                    form.watch("network") === "mtn"
-                      ? "bg-black text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  {form.watch("network") === "mtn" && (
-                    <Check className="h-4 w-4" />
-                  )}
-                </div>
-                <div className="bg-yellow-400 rounded-full w-10 h-10 items-center flex justify-center">
-                  <img
-                    src="/images/logos/MTN.svg"
-                    alt="MTN"
-                    className="w-8 h-8"
-                  />
-                </div>
-                <p className="text-sm font-normal mt-2">MTN MoMo</p>
-              </div>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select Network " className="py-2" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="mtn">
+                    <div className="flex items-center space-x-2">
+                      <div className="bg-yellow-400 rounded-full w-8 h-8 items-center flex justify-center">
+                        <img
+                          src="/images/logos/MTN.svg"
+                          alt="MTN"
+                          className="w-8 h-8"
+                        />
+                      </div>
 
-              <div
-                onClick={() => form.setValue("network", "airtel")}
-                className={`relative border rounded-lg p-2 flex-1 cursor-pointer ${
-                  form.watch("network") === "airtel"
-                    ? "border-black"
-                    : "border-gray-300"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="network"
-                  value="airtel"
-                  checked={form.watch("network") === "airtel"}
-                  onChange={() => form.setValue("network", "airtel")}
-                  className="absolute top-2 right-2 hidden"
-                />
-                <div
-                  className={`absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center ${
-                    form.watch("network") === "airtel"
-                      ? "bg-black text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  {form.watch("network") === "airtel" && (
-                    <Check className="h-4 w-4" />
-                  )}
-                </div>
-                <div className="bg-red-600 rounded-full w-10 h-10 items-center flex justify-center">
-                  <img
-                    src="/images/logos/Airtel.svg"
-                    alt="Airtel"
-                    className="w-9 h-9 rounded-full"
-                  />
-                </div>
-                <p className="text-sm font-normal mt-2">Airtel Money</p>
-              </div>
+                      <span>MTN MoMo</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="airtel">
+                    <div className="flex items-center space-x-2 py-2">
+                      <div className="bg-red-600 rounded-full w-8 h-8 items-center flex justify-center">
+                        <img
+                          src="/images/logos/Airtel.svg"
+                          alt="Airtel"
+                          className="w-9 h-9 rounded-full"
+                        />
+                      </div>
+                      <span>Airtel Money</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+
+             <div>
+             {form.formState.errors.network && (
+                <p className="text-red-500 text-sm">
+                  {form.formState.errors.network.message}
+                </p>
+              )}
+             </div>
             </div>
 
             <Form {...form}>
@@ -138,7 +133,12 @@ function FundWalletDetails() {
                   name="amount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Enter Amount</FormLabel>
+                      <FormLabel className="flex justify-between">
+                        Enter Amount
+                        <span className="text-[#7A8397] font-normal text-xs">
+                          Min: UGX 1,000 | Max: UGX 3,000,000
+                        </span>
+                      </FormLabel>
                       <FormControl>
                         <div className="flex items-center border rounded-lg">
                           <span className="px-3 py-2 text-gray-700 rounded-l-md">
@@ -147,7 +147,11 @@ function FundWalletDetails() {
                           <Input
                             {...field}
                             placeholder="Amount"
-                            type="text"
+                            type="number"
+                            onChange={(e) => {
+                              const value = e.target.valueAsNumber || 0;
+                              field.onChange(value);
+                            }}
                             className="border-none focus-visible:ring-0 focus:ring-0 outline-none shadow-none"
                           />
                         </div>
@@ -159,10 +163,10 @@ function FundWalletDetails() {
 
                 <FormField
                   control={form.control}
-                  name="number"
+                  name="accountNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Enter Number</FormLabel>
+                      <FormLabel>Enter your number</FormLabel>
                       <FormControl>
                         <div className="flex items-center border rounded-lg">
                           <span className="px-3 py-2 text-gray-700 rounded-l-md">
@@ -188,7 +192,7 @@ function FundWalletDetails() {
           </div>
         </>
       ) : (
-        <ConfirmPaymentDetails />
+        <ConfirmPaymentDetails details={Details} />
       )}
     </>
   );

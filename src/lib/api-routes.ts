@@ -28,3 +28,16 @@ export const FetchAllOrganizations = () =>
 
 export const ApproveClient = () =>
   `${import.meta.env.VITE_BACKEND_API_URL}/approveClient`;
+
+export const GetListbyId = (listId: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/getList/${listId}`;
+
+export const GetMembersByListId = (listId: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/mnobeneficiaries/${listId}`;
+
+export const GetUsersByClientId=(clientId: number) =>`${import.meta.env.VITE_BACKEND_API_URL}/users/${clientId}`
+
+export const RejectList=()=>`${import.meta.env.VITE_BACKEND_API_URL}/rejectList`
+
+export const ApproveListEndPoint=()=> `${import.meta.env.VITE_BACKEND_API_URL}/approveList`
+

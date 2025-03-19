@@ -66,7 +66,7 @@ export function SendFunds() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="flex px-2 py-1 cursor-pointer gap-1 items-center bg-secondary text-white text-[15px] rounded-[8px]">
+        <div className="flex px-2 h-10 cursor-pointer gap-1 items-center bg-primary text-white text-[15px] rounded-[8px]">
           <Send className="h-4 w-4" />
           <span>Send Funds</span>
         </div>

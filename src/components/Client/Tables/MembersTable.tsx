@@ -12,7 +12,7 @@ import { EditBeneficiary } from "../EditBeneficiary";
 import { DeleteBeneficiary } from "../DeleteBeneficiary";
 
 export interface IMembers {
-  name: string;
+  beneficiaryName: string;
   mobileMoneyNumber: string;
   amount: number;
   reason: string;
@@ -51,7 +51,7 @@ export function MembersTable({ members }: IMembersTable) {
                 />
               </span>
 
-              {member.name}
+              {member.beneficiaryName}
             </TableCell>
             <TableCell>{member.mobileMoneyNumber}</TableCell>
 

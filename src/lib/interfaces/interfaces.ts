@@ -9,22 +9,27 @@ export interface IClient {
 
   certificateOfIncorparation: string;
 
-  userId?: IUser;
+  userId?: IUsers;
 }
 
-export interface IUser {
+export interface IUsers {
   firstName: string;
   lastName: string;
-  userId: number;
-  clientId?: number;
-  role_name: string;
   user_email: string;
+  date_of_birth: string;
+  role_name: {
+    roleId: number;
+    roleName: string;
+  };
+  createdAt?: string;
+  status: string;
 }
 export interface IMembers {
   beneficiaryName: string;
   reason: string;
   amount: number;
   mobileMoneyNumber: string;
+  serviceProvider?: string;
 }
 
 export interface IList {
@@ -33,5 +38,21 @@ export interface IList {
   createdAt: string;
   createdBy: string;
   status: string;
+  members: string;
+}
+
+export interface listsWithMembers{
   members: IMembers[];
+  id: number;
+  name: string;
+  createdAt: string;
+  createdBy: string;
+  status: string;
+}[]
+
+
+export interface IDetails{
+  accountNumber:string,
+  amount:string,
+  network:string
 }

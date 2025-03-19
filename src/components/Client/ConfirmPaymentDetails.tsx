@@ -2,9 +2,16 @@ import { Edit } from "lucide-react";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import AuthorizeDeposit from "./AuthorizeDeposit";
+import { IDetails } from "@/lib/interfaces/interfaces";
 
-function ConfirmPaymentDetails() {
+interface IConfirmDetails {
+  details: IDetails;
+}
+
+function ConfirmPaymentDetails({ details }: IConfirmDetails) {
   const [AuthoriseDeposit, setShowAuthorizeDeposit] = useState(false);
+
+  console.log(details);
 
   const handleClick = () => {
     setShowAuthorizeDeposit(!AuthoriseDeposit);
@@ -25,19 +32,16 @@ function ConfirmPaymentDetails() {
 
           <div className="flex items-center justify-between">
             <span>Network</span>
-            <span>MTN Momo</span>
+            <span className="capitalize">{details.network==="mtn"?'Mtn MoMo':`${details.network}`}</span>
           </div>
           <div className="flex items-center justify-between">
             <span>Mobile Number</span>
-            <span>+256788210793</span>
+            <span>+256{details.accountNumber}</span>
           </div>
-          <div className="flex items-center justify-between">
-            <span>Network</span>
-            <span>MTN Momo</span>
-          </div>
+       
           <div className="flex items-center justify-between">
             <span>Amount</span>
-            <span>UGX 2,000,000</span>
+            <span>UGX {details.amount}</span>
           </div>
           <div className="flex items-center justify-between">
             <span>Service Fee</span>

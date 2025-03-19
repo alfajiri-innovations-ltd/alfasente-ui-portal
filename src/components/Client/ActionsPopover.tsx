@@ -7,15 +7,19 @@ import { MoreHorizontal, UserCircle } from "lucide-react";
 import { RenameList } from "./RenameListDialog";
 
 import { DeleteList } from "./DeleteDialog";
-import { IClient, IList } from "@/lib/interfaces/interfaces";
+import { IClient, IList, listsWithMembers } from "@/lib/interfaces/interfaces";
 import { useLocation } from "react-router-dom";
 import { ViewApplication } from "../Admin/ReviewApplication";
 
 interface ActionProps {
-  list?: IList;
+  list?: listsWithMembers;
+  listId?:number;
+ 
   clientID?: number;
-  HandleClick?: () => void;
+  HandleClick?: (listId:number) => void
 }
+
+
 export function ActionsPopover({ list, clientID, HandleClick }: ActionProps) {
   const location = useLocation();
   const { pathname } = location;
@@ -31,7 +35,11 @@ export function ActionsPopover({ list, clientID, HandleClick }: ActionProps) {
           <>
             <div
               className="flex items-center gap-1 cursor-pointer text-[#000000CC]"
-              onClick={HandleClick}
+              onClick={() => {
+                if (list?.id) {
+                  HandleClick?.(list.id);
+                }
+              }}
             >
               <UserCircle className="h-4 w-4" />
 

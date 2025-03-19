@@ -8,79 +8,83 @@ import { Filter } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 import { UsersTable } from "@/components/Client/Tables/UsersTable";
 import { InviteStaff } from "@/components/Client/InviteStaffDialog";
+import { GetUsers } from "@/lib/services/GetUsersByOrganization";
 
-const users = [
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    status: "Active",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_admin",
-  },
+// const users = [
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     status: "Active",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     role: "client_admin",
+//   },
 
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    status: "Active",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_admin",
-  },
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    status: "Active",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_admin",
-  },
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    status: "Active",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_employee",
-  },
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    status: "Active",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_admin",
-  },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     status: "Active",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     role: "client_admin",
+//   },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     status: "Active",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     role: "client_admin",
+//   },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     status: "Active",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     role: "client_employee",
+//   },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     status: "Active",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     role: "client_admin",
+//   },
 
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    status: "Inactive",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_employee",
-  },
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    status: "Active",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_admin",
-  },
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    status: "Inactive",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_admin",
-  },
-  {
-    user_name: "George Kizza",
-    email: "georgekizza@gmail.com",
-    status: "Active",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    role: "client_employee",
-  },
-];
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     status: "Inactive",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     role: "client_employee",
+//   },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     status: "Active",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     role: "client_admin",
+//   },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     status: "Inactive",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     role: "client_admin",
+//   },
+//   {
+//     user_name: "George Kizza",
+//     email: "georgekizza@gmail.com",
+//     status: "Active",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     role: "client_employee",
+//   },
+// ];
 function Staff() {
   const [currentPage, setCurrentPage] = useState(1);
 
+  const users = GetUsers();
+  console.log(users);
+
   const [activeTab, setActiveTab] = useState<
-    "all" | "active" | "admin" | "inactive" | "employee"
+    "all" | "makers" | "admin" | "checkers" | "employee"
   >("all");
 
   const UsersPerPage = 8;
@@ -88,7 +92,7 @@ function Staff() {
   const totalPages = Math.ceil(users.length / UsersPerPage);
   const currentusers = users.slice(
     (currentPage - 1) * UsersPerPage,
-    currentPage * UsersPerPage,
+    currentPage * UsersPerPage
   );
 
   const handlePageChange = (page: number) => {
@@ -97,10 +101,10 @@ function Staff() {
     }
   };
 
-  const active = users.filter((user) => user.status === "Active");
-  const inactive = users.filter((user) => user.status === "Inactive");
-  const admin = users.filter((user) => user.role === "client_admin");
-  const employee = users.filter((user) => user.role === "client_employee");
+  const active = users.filter((user) => user.status === "maker");
+  const inactive = users.filter((user) => user.status === "checker");
+  const admin = users.filter((user) => user.role_name.roleName === "client_admin");
+  const employee = users.filter((user) => user.role_name.roleName === "client_employee");
 
   return (
     <div className="grid grid-cols-5 h-screen">
@@ -125,24 +129,24 @@ function Staff() {
 
                 <h4
                   className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                    activeTab === "active"
+                    activeTab === "makers"
                       ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
                       : "  border-[#F7F9FD]"
                   }  px-2 py-[2px]`}
-                  onClick={() => setActiveTab("active")}
+                  onClick={() => setActiveTab("makers")}
                 >
-                  Active
+                  Makers
                   <span className="mx-1">({active.length})</span>
                 </h4>
                 <h4
                   className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                    activeTab === "inactive"
+                    activeTab === "checkers"
                       ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
                       : "  border-[#F7F9FD]"
                   }  px-2 py-[2px]`}
-                  onClick={() => setActiveTab("inactive")}
+                  onClick={() => setActiveTab("checkers")}
                 >
-                  Inactive
+                  Checkers
                   <span className="mx-1">({inactive.length})</span>
                 </h4>
 
@@ -186,8 +190,8 @@ function Staff() {
 
           <div className="my-5">
             {activeTab === "all" && <UsersTable users={currentusers} />}
-            {activeTab === "active" && <UsersTable users={active} />}
-            {activeTab === "inactive" && <UsersTable users={inactive} />}
+            {activeTab === "makers" && <UsersTable users={active} />}
+            {activeTab === "checkers" && <UsersTable users={inactive} />}
             {activeTab === "admin" && <UsersTable users={admin} />}
 
             {activeTab === "employee" && <UsersTable users={employee} />}
