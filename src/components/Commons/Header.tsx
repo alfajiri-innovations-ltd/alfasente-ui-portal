@@ -4,14 +4,15 @@ import NavItems from "./NavItems";
 
 function Header() {
   return (
-    <div className="flex justify-between items-center py-1 px-10 border-b border-[#DCE1EC] ">
-      <div>
+    <div className="flex lg:px-[6.25vw]  justify-between sticky top-0 z-50 bg-white/80 backdrop-blur-[36px] items-center py-[19.5px]  border-b border-[#DCE1EC]  transition-all duration-300">
+      <div className="h-[38px] w-[154px] flex items-center justify-center overflow-hidden">
         <img
-          src="/images/logos/alfasente-logo.svg"
+          src="/images/logos/alfasente-logo.png"
           alt="Alfasente"
-          width={150}
+          className="h-full w-full object-cover"
         />
-      </div>{" "}
+      </div>
+
       <NavItems />
       <div className="flex gap-3">
         <Login />

@@ -31,7 +31,10 @@ export function Login() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={"outline"} className="rounded-[40px] text-sm">
+        <Button
+          variant={"outline"}
+          className="rounded-[40px] h-11 hover:bg-[#FBFDFF] bg-[#E4E8F1] text-[#000000E5] border-none px-5 text-sm"
+        >
           Login
         </Button>
       </DialogTrigger>

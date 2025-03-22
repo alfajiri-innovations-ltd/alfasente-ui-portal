@@ -32,20 +32,29 @@ const FormSchema = z.object({
 
   accountNumber: z.string().min(9, { message: "Enter a valid number" }),
   network: z.string().min(1, { message: "Please select a network" }),
-});
+  airtelAllocation: z
+    .number()
+    .min(1000, { message: "Amount must be at least 1,000" }),
 
-function FundWalletDetails() {
-  const [Paymentdetails, setShowPaymentDetails] = useState(false);
+  mtnAllocation: z
+    .number()
+    .min(1000, { message: "Amount must be at least 1,000" }),
+});
+interface IFundWalletDetails {
+  handleNextStep:()=>void;
+}
+function FundWalletDetails({handleNextStep}:IFundWalletDetails) {
+  // const [Paymentdetails, setShowPaymentDetails] = useState(false);
 
   const [Details, setDetails] = useState({
     amount: "",
     accountNumber: "",
     network: "",
+    airtelAllocation: 0,
+    mtnAllocation: 0,
   });
 
-  const handleClick = () => {
-    setShowPaymentDetails(!Paymentdetails);
-  };
+  
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -53,6 +62,8 @@ function FundWalletDetails() {
       amount: undefined,
       accountNumber: "",
       network: "",
+      airtelAllocation: undefined,
+      mtnAllocation: undefined,
     },
   });
 
@@ -65,13 +76,13 @@ function FundWalletDetails() {
     };
 
     setDetails(formattedData);
-    handleClick();
+   handleNextStep();
   }
 
   return (
     <>
-      {!Paymentdetails ? (
-        <>
+    
+       
           <div className="space-y-4">
             <h3 className="text-base font-medium my-3">
               Select Mobile Money Provider
@@ -114,13 +125,13 @@ function FundWalletDetails() {
                 </SelectContent>
               </Select>
 
-             <div>
-             {form.formState.errors.network && (
-                <p className="text-red-500 text-sm">
-                  {form.formState.errors.network.message}
-                </p>
-              )}
-             </div>
+              <div>
+                {form.formState.errors.network && (
+                  <p className="text-red-500 text-sm">
+                    {form.formState.errors.network.message}
+                  </p>
+                )}
+              </div>
             </div>
 
             <Form {...form}>
@@ -161,6 +172,65 @@ function FundWalletDetails() {
                   )}
                 />
 
+                <div>
+                  <h3>Wallet Allocation</h3>
+                  <div className="flex justify-between gap-4 my-3">
+                    
+                    <FormField
+                      control={form.control}
+                      name="airtelAllocation"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Airtel Money Wallet</FormLabel>
+                          <FormControl>
+                            <div className="flex items-center border rounded-lg">
+                              <span className="px-3 py-2 text-gray-700 rounded-l-md">
+                                UGX
+                              </span>
+                              <Input
+                                {...field}
+                                type="number"
+                                onChange={(e) =>
+                                  field.onChange(e.target.valueAsNumber || 0)
+                                }
+                                className="border-none focus-visible:ring-0 focus:ring-0 outline-none shadow-none"
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                 
+                    <FormField
+                      control={form.control}
+                      name="mtnAllocation"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>MTN Money Wallet</FormLabel>
+                          <FormControl>
+                            <div className="flex items-center border rounded-lg">
+                              <span className="px-3 py-2 text-gray-700 rounded-l-md">
+                                UGX
+                              </span>
+                              <Input
+                                {...field}
+                                type="number"
+                                onChange={(e) =>
+                                  field.onChange(e.target.valueAsNumber || 0)
+                                }
+                                className="border-none focus-visible:ring-0 focus:ring-0 outline-none shadow-none"
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
                 <FormField
                   control={form.control}
                   name="accountNumber"
@@ -191,10 +261,8 @@ function FundWalletDetails() {
             </Form>
           </div>
         </>
-      ) : (
-        <ConfirmPaymentDetails details={Details} />
-      )}
-    </>
+     
+   
   );
 }
 
