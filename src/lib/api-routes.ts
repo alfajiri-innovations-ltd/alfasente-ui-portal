@@ -41,3 +41,7 @@ export const RejectList=()=>`${import.meta.env.VITE_BACKEND_API_URL}/rejectList`
 
 export const ApproveListEndPoint=()=> `${import.meta.env.VITE_BACKEND_API_URL}/approveList`
 
+
+export const GetAuditLogsByOrganization=(clientID:number)=>`${import.meta.env.VITE_BACKEND_API_URL}/auditlogs/organization/${clientID}`
+
+export const GetAllAuditLogs=()=>`${import.meta.env.VITE_BACKEND_API_URL}/auditlogs`

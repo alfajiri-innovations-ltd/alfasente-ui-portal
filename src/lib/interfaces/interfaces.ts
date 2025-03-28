@@ -6,6 +6,7 @@ export interface IClient {
   physicalAddress: string;
   clientPhoneNumber: string;
   clientID?: number;
+  date_of_birth: string;
 
   certificateOfIncorparation: string;
 
@@ -17,12 +18,28 @@ export interface IUsers {
   lastName: string;
   user_email: string;
   date_of_birth: string;
+  userId: number;
+
   role_name: {
     roleId: number;
     roleName: string;
   };
   createdAt?: string;
   status: string;
+  clientID?:number
+}
+
+export interface IUser {
+  firstName: string;
+  lastName: string;
+  user_email: string;
+  date_of_birth: string;
+  userId: number;
+
+  role_name:string;
+  createdAt?: string;
+  status: string;
+  clientID?:number
 }
 export interface IMembers {
   beneficiaryName: string;
@@ -41,18 +58,30 @@ export interface IList {
   members: string;
 }
 
-export interface listsWithMembers{
+export interface listsWithMembers {
   members: IMembers[];
   id: number;
   name: string;
   createdAt: string;
   createdBy: string;
   status: string;
-}[]
+}
+[];
+
+export interface IDetails {
+  accountNumber: string;
+  amount: string;
+  network: string;
+}
 
 
-export interface IDetails{
-  accountNumber:string,
-  amount:string,
-  network:string
+export interface IAuditLogs {
+ created_by: string;
+  role: string;
+  created_at: string;
+  event: string;
+  organization: {
+                organization_id: number,
+                organization_name: string
+            },
 }

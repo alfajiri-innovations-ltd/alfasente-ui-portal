@@ -11,15 +11,16 @@ import { FundWallet } from "@/components/Client/FundWalletDialog";
 import { SendFunds } from "@/components/Client/SendFunds";
 import { GetUser } from "@/lib/services/GetUser";
 import { GetLists } from "@/lib/services/FetchClientLists";
-import { IList, listsWithMembers } from "@/lib/interfaces/interfaces";
+import {  listsWithMembers } from "@/lib/interfaces/interfaces";
 import { Link } from "react-router-dom";
 import { SlEnvolope } from "react-icons/sl";
 import { PiBuildingOfficeLight } from "react-icons/pi";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { AuditlogsTable } from "@/components/Client/Tables/AuditLogsTable";
-import { auditlogs } from "./AuditLogs";
+
 import { useUser } from "@/hooks/UserContext";
 import { GetClients } from "@/lib/services/FetchAllOrganizations";
+import { GetAllLogs } from "@/lib/services/FetchAllAuditLogs";
 
 function Dashboard() {
   const User = GetUser();
@@ -28,6 +29,8 @@ function Dashboard() {
   const userRole = nuser?.role_name || "admin";
 
   console.log("iiiiiii", userRole);
+
+  const auditlogs=GetAllLogs()
 
   const DashboardAuditlogs = auditlogs.slice(0, 5);
 

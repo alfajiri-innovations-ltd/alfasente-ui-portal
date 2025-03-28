@@ -10,6 +10,8 @@ const AuditLogs = React.lazy(() => import("@/pages/AuditLogs"));
 const LandingPage = React.lazy(() => import("@/pages/LandingPage"));
 const ApplicationsPage = React.lazy(() => import("@/pages/Applications"));
 
+const SettingsPage = React.lazy(() => import("@/pages/SettingsPage"));
+
 import { Toaster } from "@/components/ui/sonner";
 import Organisations from "@/pages/OrganisationsPage";
 import { UserProvider } from "./hooks/UserContext";
@@ -30,6 +32,7 @@ function App() {
             <Route path="/audit-logs" element={<AuditLogs />} />
             <Route path="/applications" element={<ApplicationsPage />} />
             <Route path="/organisations" element={<Organisations />} />
+            <Route path="/settings" element={<SettingsPage />} />
           </Routes>
         </BrowserRouter>
       </UserProvider>
