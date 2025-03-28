@@ -18,7 +18,7 @@ import { formatDate } from "@/lib/Utilities/FormatDate";
 export interface IBeneficiariesTableProps {
   lists?: listsWithMembers[];
   list?: listsWithMembers;
-  HandleClick?: (list:IList) => void;
+  HandleClick?: (list:listsWithMembers) => void;
 }
 export function getStatusBadge(status: IList["status"] | undefined) {
   switch (status) {
