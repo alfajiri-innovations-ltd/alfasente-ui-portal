@@ -7,6 +7,12 @@ export interface IClient {
   clientPhoneNumber: string;
   clientID?: number;
   date_of_birth: string;
+  walletID: {
+    walletID: number,
+    airtelWalletBalance: string,
+    mtnWalletBalance: string,
+    totalWalletBalance: string
+}
 
   certificateOfIncorparation: string;
 
@@ -84,4 +90,38 @@ export interface IAuditLogs {
                 organization_id: number,
                 organization_name: string
             },
+}
+
+
+export interface ITransaction{
+  clientID: number;
+  beneficiaryMobileNumber?: string;
+  sourceOfFunds?: string;
+  transactionID: string;
+  mainAmount: string;
+  airtelCharge?:number;
+  mtnCharge?:number;
+  proofOfCredit?:string;
+  airtelWalletBalance?:number;
+  mtnWalletBalance?:number;
+  beneficiaryName?:string;
+
+  
+  transactionType: string;
+  alfasenteCharge?: number;
+  currency: string;
+  narration: string;
+  status: string;
+  liquidationDate: Date;
+  recordDate: Date;
+}
+
+
+export interface IWallet{
+
+  walletID: number
+  airtelWalletBalance:string,
+  "mtnWalletBalance": "0",
+  "totalWalletBalance": "0"
+
 }

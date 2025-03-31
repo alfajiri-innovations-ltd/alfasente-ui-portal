@@ -10,17 +10,19 @@ import { DeleteList } from "./DeleteDialog";
 import { IClient, IList, listsWithMembers } from "@/lib/interfaces/interfaces";
 import { useLocation } from "react-router-dom";
 import { ViewApplication } from "../Admin/ReviewApplication";
+import { ViewTransactionDialog } from "./ViewTransaction";
 
 interface ActionProps {
   list?: listsWithMembers;
   listId?:number;
+  transactionID?:string;
  
   clientID?: number;
   HandleClick?: (listId:number) => void
 }
 
 
-export function ActionsPopover({ list, clientID, HandleClick }: ActionProps) {
+export function ActionsPopover({ list, clientID, HandleClick ,transactionID}: ActionProps) {
   const location = useLocation();
   const { pathname } = location;
   return (
@@ -29,11 +31,14 @@ export function ActionsPopover({ list, clientID, HandleClick }: ActionProps) {
         <MoreHorizontal className="w-4 h-4 relative" />
       </PopoverTrigger>
       <PopoverContent className="w-[15vw] text-[15px] absolute right-1 space-y-2">
-        {pathname === "/applications" ? (
-          <ViewApplication clientID={clientID} />
-        ) : (
-          <>
-            <div
+        {pathname === "/applications" && (
+          <ViewApplication clientID={clientID} />)
+        
+  }  
+         
+          {pathname === "/beneficiaries" && (
+            <>
+              <div
               className="flex items-center gap-1 cursor-pointer text-[#000000CC]"
               onClick={() => {
                 if (list?.id) {
@@ -46,9 +51,10 @@ export function ActionsPopover({ list, clientID, HandleClick }: ActionProps) {
               <span>View members</span>
             </div>
             <RenameList list={list} />
-            <DeleteList />
-          </>
-        )}
+            <DeleteList /></>
+          )}
+         
+      {pathname === "/transactions"   && (<ViewTransactionDialog transactionID={transactionID}/>)}
       </PopoverContent>
     </Popover>
   );

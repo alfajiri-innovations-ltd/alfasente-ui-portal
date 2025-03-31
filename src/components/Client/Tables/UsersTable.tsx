@@ -10,6 +10,7 @@ import {
 import { ActionsPopover } from "../ActionsPopover";
 import { FaRegUser } from "react-icons/fa";
 import { IUsers } from "@/lib/interfaces/interfaces";
+import { formatDate } from "@/lib/Utilities/FormatDate";
 
 
 
@@ -86,7 +87,7 @@ export function UsersTable({ users }: IUsersTableProps) {
                   : "Employee"}
               </Badge>
             </TableCell>
-            <TableCell>{user.date_of_birth}</TableCell>
+            <TableCell>{user.createdAt ? formatDate(user.createdAt) : user.date_of_birth}</TableCell>
             <TableCell>
               <ActionsPopover />{" "}
             </TableCell>

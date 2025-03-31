@@ -20,11 +20,18 @@ import { AuditlogsTable } from "@/components/Client/Tables/AuditLogsTable";
 
 import { useUser } from "@/hooks/UserContext";
 import { GetClients } from "@/lib/services/FetchAllOrganizations";
+import {GetClient} from "@/lib/services/GetClientById";
 import { GetAllLogs } from "@/lib/services/FetchAllAuditLogs";
+import {GetWallet} from "@/lib/services/fetchWalletById";
 
 function Dashboard() {
   const User = GetUser();
   const nuser = useUser();
+
+  const client= GetClient()
+  const Wallet =client?.walletID
+
+  console.log("---->",Wallet)
 
   const userRole = nuser?.role_name || "admin";
 
@@ -204,7 +211,9 @@ function Dashboard() {
                           )}
                         </div>
                         <span className="text-white text-lg font-bold ">
-                          {viewAirtelBalance ? "UGX 3,000,300" : "XXXXXX"}
+                          {viewAirtelBalance ? `UGX ${Wallet
+?.airtelWalletBalance
+}` : "XXXXXX"}
                         </span>
                       </div>
                     </div>
@@ -239,7 +248,7 @@ function Dashboard() {
                           )}
                         </div>
                         <span className="text-white text-lg font-bold ">
-                          {viewMtnBalance ? "UGX 3,000,300" : "XXXXXX"}
+                          {viewMtnBalance ? `UGX ${Wallet?.mtnWalletBalance}` : "XXXXXX"}
                         </span>
                       </div>
                     </div>

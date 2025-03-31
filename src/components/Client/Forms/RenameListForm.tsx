@@ -15,6 +15,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { IBeneficiariesTableProps } from "../Tables/BeneficiariesTables";
+import { RenameList } from "@/lib/api-routes";
+import { ErrorToast, SuccessToast } from "@/components/ui/Toasts";
+import { useState } from "react";
+import { getUserToken } from "@/lib/cookies/UserMangementCookie";
+import { listsWithMembers } from "@/lib/interfaces/interfaces";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -22,7 +27,14 @@ const FormSchema = z.object({
   }),
 });
 
-export function RenameListForm({ list }: IBeneficiariesTableProps) {
+interface RenameListProps {
+  list: listsWithMembers;
+  handleClose: () => void;
+}
+export function RenameListForm({ list,handleClose }: RenameListProps) {
+  const [submitting, setSubmitting] = useState(false);
+  const token = getUserToken();
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -30,9 +42,39 @@ export function RenameListForm({ list }: IBeneficiariesTableProps) {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
-  }
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    setSubmitting(true);
+
+    try {
+      if (!list?.id) {
+        throw new Error("List ID is undefined.");
+      }
+
+      const response = await fetch(RenameList(list.id), {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const responseBody = await response.json();
+
+      console.log(responseBody);
+
+      if (response.status === 200) {
+        SuccessToast(responseBody.message);
+        handleClose();
+      } else {
+      }
+    } catch (error: any) {
+      ErrorToast("An error occurred. Please try again later.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Form {...form}>
@@ -55,8 +97,8 @@ export function RenameListForm({ list }: IBeneficiariesTableProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="float-right">
-          Save Changes
+        <Button type="submit" className="float-right" disabled={submitting}>
+          {submitting ? "Submitting" : "Save Changes"}
         </Button>
       </form>
     </Form>
