@@ -78,6 +78,9 @@ export interface IDetails {
   accountNumber: string;
   amount: string;
   network: string;
+  mtnAllocation:number;
+  airtelAllocation:number;
+  totalFee?:number;
 }
 
 

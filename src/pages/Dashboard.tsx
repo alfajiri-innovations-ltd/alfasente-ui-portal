@@ -21,8 +21,7 @@ import { AuditlogsTable } from "@/components/Client/Tables/AuditLogsTable";
 import { useUser } from "@/hooks/UserContext";
 import { GetClients } from "@/lib/services/FetchAllOrganizations";
 import {GetClient} from "@/lib/services/GetClientById";
-import { GetAllLogs } from "@/lib/services/FetchAllAuditLogs";
-import {GetWallet} from "@/lib/services/fetchWalletById";
+import { useGetAllLogs } from "@/lib/services/FetchAllAuditLogs";
 
 function Dashboard() {
   const User = GetUser();
@@ -37,13 +36,13 @@ function Dashboard() {
 
   console.log("iiiiiii", userRole);
 
-  const auditlogs=GetAllLogs()
+  const auditlogs=useGetAllLogs()
 
   const DashboardAuditlogs = auditlogs.slice(0, 5);
 
   const [user, setUser] = useState(false);
-  const [viewAirtelBalance, setViewAirtelBalance] = useState(true);
-  const [viewMtnBalance, setViewMtnBalance] = useState(true);
+  const [viewAirtelBalance, setViewAirtelBalance] = useState(false);
+  const [viewMtnBalance, setViewMtnBalance] = useState(false);
 
   const Lists: listsWithMembers[] = GetLists();
   console.log(Lists);
@@ -129,13 +128,13 @@ function Dashboard() {
                   <div className="gap-1 flex ">
                     <span className="font-semibold text-lg">Audit Logs</span>
                     <Badge variant="outline" className="rounded-full p-2">
-                      {Lists.length}
+                      {auditlogs?.length}
                     </Badge>
                   </div>
 
                   <Button className="text-white bg-secondary px-2">
                     <Link
-                      to="/beneficiaries"
+                      to="/audit-logs"
                       className="flex items-center gap-1"
                     >
                       {" "}

@@ -4,7 +4,7 @@ import { IAuditLogs } from "../interfaces/interfaces";
 import { getAuthUser, getUserToken } from "../cookies/UserMangementCookie";
 import {  GetAuditLogsByOrganization } from "../api-routes";
 
-export function GetOrganizationLogs() {
+export function useGetOrganizationLogs() {
   const [AuditLogs, setAuditLogs] = useState<IAuditLogs[]>([]);
   const token = getUserToken();
   const clientID = getAuthUser().clientID;

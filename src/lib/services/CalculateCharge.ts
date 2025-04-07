@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 
-import { IAuditLogs } from "../interfaces/interfaces";
-import { getUserToken } from "../cookies/UserMangementCookie";
-import {  GetAllAuditLogs } from "../api-routes";
 
-export function useGetAllLogs() {
-  const [AuditLogs, setAuditLogs] = useState<IAuditLogs[]>([]);
+import { getUserToken } from "../cookies/UserMangementCookie";
+import {  CalculateChargeByListId } from "../api-routes";
+
+export function CalculateCharge(listId:number) {
+  const [Charges, setCharges] = useState<any>();
   const token = getUserToken();
 
   useEffect(() => {
-    const fetchlogs = async () => {
+    const calculatecharge = async () => {
       try {
-        const response = await fetch(GetAllAuditLogs(), {
+        const response = await fetch(CalculateChargeByListId(listId), {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -22,14 +22,14 @@ export function useGetAllLogs() {
 
           console.log(data);
 
-          setAuditLogs(data.AuditLogs);
+          setCharges(data.Charges);
         } else {
         }
       } catch (error) {}
     };
 
-    fetchlogs();
+    calculatecharge();
   }, []);
 
-  return AuditLogs;
+  return Charges;
 }

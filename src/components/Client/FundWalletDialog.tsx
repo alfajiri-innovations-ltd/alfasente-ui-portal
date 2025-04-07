@@ -12,6 +12,14 @@ import SuccessFulTopUp from "./SuccessFulTopup";
 
 export function FundWallet() {
   const [DialogOpen, setIsDialogOpen] = useState(false);
+  const [Details, setDetails] = useState({
+      amount: "",
+      accountNumber: "",
+      network: "",
+      airtelAllocation: 0,
+      mtnAllocation: 0,
+      
+    });
 
   const [activeTab, setActiveTab] = useState("Self Top-up");
   const [currentStep, setCurrentStep] = useState(1);
@@ -83,15 +91,15 @@ export function FundWallet() {
             )}
 
           {activeTab === "Self Top-up" && currentStep === 1 && (
-            <FundWalletDetails handleNextStep={handleNextStep} />
+            <FundWalletDetails handleNextStep={handleNextStep} setFundDetails={setDetails} details={Details} />
           )}
 
           {activeTab === "Self Top-up" && currentStep === 2 && (
-            <ConfirmPaymentDetails handleNextStep={handleNextStep} />
+            <ConfirmPaymentDetails handleNextStep={handleNextStep} details={Details}  handlePreviousStep={handlePreviousStep} />
           )}
 
           {activeTab === "Self Top-up" && currentStep === 3 && (
-            <AuthorizeDeposit handleNextStep={handleNextStep} />
+            <AuthorizeDeposit handleNextStep={handleNextStep} details={Details} />
           )}
 
           {activeTab === "Self Top-up" && currentStep === 4 && (

@@ -1,7 +1,7 @@
 import DashboardHeader from "@/components/Client/Dashboard-Header";
 import SideBar from "@/components/Client/SideBar";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 import { Download, Filter } from "lucide-react";
@@ -17,23 +17,53 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { GetOrganizationLogs } from "@/lib/services/FetchOrganizationAuditLogs";
+import { useGetOrganizationLogs } from "@/lib/services/FetchOrganizationAuditLogs";
+
+import {useGetAllLogs } from "@/lib/services/FetchAllAuditLogs"
 import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
 
 function AuditLogs() {
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [auditLogs, setAuditLogs] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const  adminLogs  = useGetAllLogs(); 
+
+  const ClientLogs= useGetOrganizationLogs()
+
+  console.log("---->",ClientLogs)
+
+
+
   const [activeTab, setActiveTab] = useState<
     "all" | "admin" | "employee" | "system"
   >("all");
-  const auditlogs = GetOrganizationLogs();
+  const role_name = getAuthUser().role_name;
+
+ 
+
+  console.log(role_name)
+  useEffect(() => {
+    if (role_name === "admin") {
+      console.log("Admin role detected, using audit logs from hook");
+      setAuditLogs(adminLogs); 
+    } else {
+      setLoading(true);
+     setAuditLogs(ClientLogs)
+       
+      
+    }
+  }, [role_name, adminLogs]);
+
+  console.log(auditLogs)
 
   const AuditLogsPerPage = 8;
 
-  const role_name = getAuthUser().role_name;
+ 
 
-  const totalPages = Math.ceil(auditlogs.length / AuditLogsPerPage);
-  const currentauditlogs = auditlogs.slice(
+  const totalPages = Math.ceil(auditLogs?.length / AuditLogsPerPage);
+  const currentauditlogs = auditLogs?.slice(
     (currentPage - 1) * AuditLogsPerPage,
     currentPage * AuditLogsPerPage
   );
@@ -44,13 +74,13 @@ function AuditLogs() {
     }
   };
 
-  const admin = auditlogs.filter(
+  const admin = auditLogs?.filter(
     (auditlog) => auditlog.role === "client_admin"
   );
-  const employee = auditlogs.filter(
+  const employee = auditLogs?.filter(
     (auditlog) => auditlog.role === "client_employee"
   );
-  const system = auditlogs.filter((auditlog) => auditlog.role === "System");
+  const system = auditLogs?.filter((auditlog) => auditlog.role === "System");
 
   return (
     <div className="grid grid-cols-5 h-screen">
@@ -87,7 +117,7 @@ function AuditLogs() {
                       }  px-2 py-[2px]`}
                       onClick={() => setActiveTab("all")}
                     >
-                      All <span className="mx-1">({auditlogs.length})</span>
+                      All <span className="mx-1">({auditLogs?.length})</span>
                     </h4>
 
                     <h4
@@ -165,7 +195,7 @@ function AuditLogs() {
           <div className="flex justify-between  items-center ">
             <div className="">
               <span className="font-normal text-[15px]  ">
-                Showing {currentauditlogs.length} of {auditlogs.length} results
+                Showing {currentauditlogs?.length} of {auditLogs?.length} results
               </span>
             </div>
             <div className="">

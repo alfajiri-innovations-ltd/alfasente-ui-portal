@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import SuccessFulDeposit from "./SuccessFulDeposit";
-
+import { IDetails } from "@/lib/interfaces/interfaces";
 
 interface IAuthorizeDeposit {
-  handleNextStep:()=>void;
+  handleNextStep: () => void;
+  details: IDetails;
 }
-function AuthorizeDeposit({handleNextStep}:IAuthorizeDeposit) {
-  
-
+function AuthorizeDeposit({ handleNextStep, details }: IAuthorizeDeposit) {
   useEffect(() => {
     const timer = setTimeout(() => {
       handleNextStep();
@@ -18,19 +16,18 @@ function AuthorizeDeposit({handleNextStep}:IAuthorizeDeposit) {
 
   return (
     <>
-     
-        <div className="space-y-3">
-          <h3 className="font-semibold text-2xl">Authorize Deposit</h3>
-          <p className="font-normal text-sm">
-            A payment prompt has been sent to +256788210793. Enter your PIN to
-            authorize deposit of UGX 2,000,000.
-          </p>
+      <div className="space-y-3">
+        <h3 className="font-semibold text-2xl">Authorize Deposit</h3>
+        <p className="font-normal text-sm">
+          {` A payment prompt has been sent to +256${details.accountNumber}. Enter your PIN to
+            authorize deposit of UGX ${details.totalFee?.toLocaleString()}`}
+          .
+        </p>
 
-          <div className="flex justify-center ">
-            <img src="/images/logos/authorize.svg" alt="Notifications" />
-          </div>
+        <div className="flex justify-center ">
+          <img src="/images/logos/authorize.svg" alt="Notifications" />
         </div>
-   
+      </div>
     </>
   );
 }

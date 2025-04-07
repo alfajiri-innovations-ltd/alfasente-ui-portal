@@ -70,4 +70,11 @@ export const GetAllTransactions = () =>
 export const GetTransactionById = (transactionID: string) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/transaction/${transactionID}`;
 
-export const GetWalletById =(walletID: number)=>`${import.meta.env.VITE_BACKEND_API_URL}/wallet/${walletID}`
+export const GetWalletById = (walletID: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/wallet/${walletID}`;
+
+export const CalculateChargeByListId = (listID: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/calculate-charge/${listID}`;
+
+export const CollectMoney = () =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/collect-money`;
