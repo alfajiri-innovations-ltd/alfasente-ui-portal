@@ -9,7 +9,7 @@ import Trusted from "@/components/Commons/LandingPage/Trusted";
 
 function LandingPage() {
   return (
-    <div className="  ">
+    <div className=" xs:w-[100vw]  overflow-x-hidden overflow-y-auto ">
 
       <div className="   ">
       <Header />

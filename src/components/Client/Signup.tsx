@@ -22,7 +22,7 @@ export function SignUp() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-primary h-11 rounded-[40px] hover:bg-[#7E249A] text-sm shadow-none">
+        <Button className="flex w-full bg-primary h-11 rounded-[40px] hover:bg-[#7E249A] text-sm shadow-none">
           Create account
         </Button>
       </DialogTrigger>

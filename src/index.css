@@ -63,6 +63,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: "Host Grotesk", serif;
+    width: 100%;
+    height: 100%;
   }
 
   .dotted {

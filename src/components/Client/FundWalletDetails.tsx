@@ -92,7 +92,7 @@ function FundWalletDetails({ handleNextStep,setFundDetails,details }: IFundWalle
               onValueChange={(value) => form.setValue("network", value)}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Network " className="py-2" />
+                <SelectValue placeholder="Select Network " className="p-2" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="mtn">

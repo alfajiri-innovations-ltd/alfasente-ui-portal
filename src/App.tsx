@@ -11,6 +11,7 @@ const LandingPage = React.lazy(() => import("@/pages/LandingPage"));
 const ApplicationsPage = React.lazy(() => import("@/pages/Applications"));
 
 const SettingsPage = React.lazy(() => import("@/pages/SettingsPage"));
+const AboutUs = React.lazy(() => import("@/pages/AboutUs"));
 
 import { Toaster } from "@/components/ui/sonner";
 import Organisations from "@/pages/OrganisationsPage";
@@ -33,7 +34,8 @@ function App() {
             <Route path="/applications" element={<ApplicationsPage />} />
             <Route path="/organisations" element={<Organisations />} />
             <Route path="/settings" element={<SettingsPage />} />
-          </Routes>
+            <Route path="/about" element={<AboutUs />} />
+            </Routes>
         </BrowserRouter>
       </UserProvider>
     </>

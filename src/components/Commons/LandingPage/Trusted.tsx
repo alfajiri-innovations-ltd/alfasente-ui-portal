@@ -28,7 +28,7 @@ function Trusted() {
         Why businesses choose Alfasente
       </h3>
 
-      <div className="grid grid-cols-2 gap-7">
+      <div className="xl:grid grid-cols-2 gap-7">
         {items.map((item,index)=>(
            <div className="border border-[#E4E8F1] rounded-[10px] px-5 py-3 " key={index}>
            <div className="rounded ">
