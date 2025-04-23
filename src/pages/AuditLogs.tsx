@@ -26,13 +26,13 @@ function AuditLogs() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [auditLogs, setAuditLogs] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+
+
   const  adminLogs  = useGetAllLogs(); 
 
   const ClientLogs= useGetOrganizationLogs()
 
-  console.log("---->",ClientLogs)
+ 
 
 
 
@@ -46,17 +46,17 @@ function AuditLogs() {
   console.log(role_name)
   useEffect(() => {
     if (role_name === "admin") {
-      console.log("Admin role detected, using audit logs from hook");
+      
       setAuditLogs(adminLogs); 
     } else {
-      setLoading(true);
+      
      setAuditLogs(ClientLogs)
        
       
     }
   }, [role_name, adminLogs]);
 
-  console.log(auditLogs)
+ 
 
   const AuditLogsPerPage = 8;
 

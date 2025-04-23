@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { IDetails } from "@/lib/interfaces/interfaces";
 
 interface IAuthorizeDeposit {

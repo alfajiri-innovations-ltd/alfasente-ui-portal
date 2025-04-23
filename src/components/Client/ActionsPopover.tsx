@@ -7,7 +7,7 @@ import { MoreHorizontal, UserCircle } from "lucide-react";
 import { RenameList } from "./RenameListDialog";
 
 import { DeleteList } from "./DeleteDialog";
-import { IClient, IList, listsWithMembers } from "@/lib/interfaces/interfaces";
+import {  listsWithMembers } from "@/lib/interfaces/interfaces";
 import { useLocation } from "react-router-dom";
 import { ViewApplication } from "../Admin/ReviewApplication";
 import { ViewTransactionDialog } from "./ViewTransaction";

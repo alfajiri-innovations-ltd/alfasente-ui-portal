@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { FetchClient,GetUserById } from "@/lib/api-routes";
+import { FetchClient, GetUserById } from "@/lib/api-routes";
 
-
-
-import {FetchUserById} from "@/lib/services/FetchUserById";
 import { EyeIcon } from "lucide-react";
 import { RejectAplication } from "./RejectApplication";
-import {ApproveApplication}  from "./ApproveApplication";
+import { ApproveApplication } from "./ApproveApplication";
 async function fetchApplication(clientID: number) {
   const response = await fetch(FetchClient(clientID), {});
   if (!response.ok) {
@@ -27,9 +24,10 @@ async function fetchUser(userId: number) {
 
 interface ViewApplicationDetails {
   clientID?: number;
+  onClose?: () => void;
 }
 
-export function ViewApplication({ clientID }: ViewApplicationDetails) {
+export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
   const [client, setClient] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,21 +36,21 @@ export function ViewApplication({ clientID }: ViewApplicationDetails) {
   useEffect(() => {
     const fetchClientWithUser = async () => {
       if (!clientID) return;
-  
+
       setLoading(true);
-  
+
       try {
         const clientData = await fetchApplication(clientID);
-  
+
         if (!clientData?.userId) {
           throw new Error("User ID not found for this client");
         }
-  
-        const userData =await fetchUser(clientData.userId); 
-  
+
+        const userData = await fetchUser(clientData.userId);
+
         setClient({
           ...clientData,
-          user: userData, 
+          user: userData,
         });
       } catch (err: any) {
         setError(err.message);
@@ -60,20 +58,24 @@ export function ViewApplication({ clientID }: ViewApplicationDetails) {
         setLoading(false);
       }
     };
-  
+
     fetchClientWithUser();
   }, [clientID]);
 
-
   const handleClose = () => {
     setIsDialogOpen(false);
-  }
-  
-  
+  };
+
   return (
-    <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen} >
+    <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <div className="flex gap-1 items-center cursor-pointer">
+        <div
+          className="flex gap-1 items-center cursor-pointer"
+          onClick={() => {
+            setIsDialogOpen(true);
+            onClose?.();
+          }}
+        >
           <span className="">
             <EyeIcon className="h-4 w-4" />
           </span>
@@ -165,7 +167,6 @@ export function ViewApplication({ clientID }: ViewApplicationDetails) {
                   <span>Status</span>
                   <span>{client?.isApproved}</span>
                 </div>
-
               </div>
             </div>
           </div>
@@ -177,9 +178,12 @@ export function ViewApplication({ clientID }: ViewApplicationDetails) {
           </Button>
 
           <div className="flex items-center gap-2">
-          {clientID && <RejectAplication clientID={clientID} onClose={handleClose} />}
-{
-           clientID &&  <ApproveApplication clientID={clientID} onClose={handleClose}/>}
+            {clientID && (
+              <RejectAplication clientID={clientID} onClose={handleClose} />
+            )}
+            {clientID && (
+              <ApproveApplication clientID={clientID} onClose={handleClose} />
+            )}
           </div>
         </div>
       </DialogContent>

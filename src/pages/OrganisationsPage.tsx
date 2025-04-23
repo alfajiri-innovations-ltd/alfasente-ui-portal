@@ -4,7 +4,7 @@ import SideBar from "@/components/Client/SideBar";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-import { Filter, Plus } from "lucide-react";
+import { Filter } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 
 import { OrganizationsTable } from "@/components/Admin/Tables/OrganisationsTable";

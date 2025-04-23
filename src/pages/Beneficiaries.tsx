@@ -10,19 +10,19 @@ import { PaginationDemo } from "@/components/Client/Pagination";
 import ViewMembers from "@/components/Client/ViewMembers";
 import { UploadBeneficiaries } from "@/components/Client/UploadBeneficiaries";
 import { GetLists } from "@/lib/services/FetchClientLists";
-import { IList, listsWithMembers } from "@/lib/interfaces/interfaces";
+import {  listsWithMembers } from "@/lib/interfaces/interfaces";
 
 function BeneficiariesPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedListId, setSelectedListId] = useState<number | null>(null);
 
   const Lists: listsWithMembers[] = GetLists();
-  console.log(Lists);
+
 
   const [ViewBeneficiarylist, setViewBeneficiarylist] = useState(false);
 
-  const HandleClick = (List?: IList) => {
-    console.log(List?.id);
+  const HandleClick = (List?: listsWithMembers) => {
+   
     if (List?.id) {
       setSelectedListId(List.id);
     }
@@ -136,25 +136,25 @@ function BeneficiariesPage() {
                   {activeTab === "all" && (
                     <BeneficiariesTable
                       lists={currentLists}
-                      HandleClick={(list: IList) => HandleClick(list)}
+                      HandleClick={(list: listsWithMembers) => HandleClick(list)}
                     />
                   )}
                   {activeTab === "pending" && (
                     <BeneficiariesTable
                       lists={pendingLists}
-                      HandleClick={(list: IList) => HandleClick(list)}
+                      HandleClick={(list: listsWithMembers) => HandleClick(list)}
                     />
                   )}
                   {activeTab === "approved" && (
                     <BeneficiariesTable
                       lists={approvedLists}
-                      HandleClick={(list: IList) => HandleClick(list)}
+                      HandleClick={(list: listsWithMembers) => HandleClick(list)}
                     />
                   )}
                   {activeTab === "rejected" && (
                     <BeneficiariesTable
                       lists={rejectedLists}
-                      HandleClick={(list: IList) => HandleClick(list)}
+                      HandleClick={(list: listsWithMembers) => HandleClick(list)}
                     />
                   )}
                 </div>

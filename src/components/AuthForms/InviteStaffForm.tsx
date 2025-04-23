@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CreateUser, InviteUser } from "@/lib/api-routes";
+import {  InviteUser } from "@/lib/api-routes";
 import { ErrorToast, SuccessToast } from "../ui/Toasts";
 import { useUser } from "@/hooks/UserContext";
 import { getUserToken } from "@/lib/cookies/UserMangementCookie";

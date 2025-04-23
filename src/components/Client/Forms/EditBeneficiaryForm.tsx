@@ -29,7 +29,7 @@ export function EditBeneficiaryForm({ member }: IMembersTable) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: member?.name,
+      name: member?.beneficiaryName,
       mobileMoneyNumber: member?.mobileMoneyNumber,
       reason: member?.reason,
       amount: member?.amount,

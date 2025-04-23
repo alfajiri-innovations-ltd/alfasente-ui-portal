@@ -25,7 +25,7 @@ export function RejectAplication({ clientID ,onClose }: RejectApplicationProps) 
       <DialogTrigger asChild>
         <Button
         onClick={() => { 
-          setIsOpen(true);
+          setIsDialogOpen(true);
           onClose();
         }}
           variant={"outline"}

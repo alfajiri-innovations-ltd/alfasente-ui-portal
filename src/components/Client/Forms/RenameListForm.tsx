@@ -14,7 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { IBeneficiariesTableProps } from "../Tables/BeneficiariesTables";
 import { RenameList } from "@/lib/api-routes";
 import { ErrorToast, SuccessToast } from "@/components/ui/Toasts";
 import { useState } from "react";

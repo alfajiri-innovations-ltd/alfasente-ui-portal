@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { RejectListForm, RejectListFormProps } from "./Forms/RejectListForm";
+import { RejectListForm } from "./Forms/RejectListForm";
 import { Button } from "../ui/button";
 import { useState } from "react";
 export interface RejectListProps {

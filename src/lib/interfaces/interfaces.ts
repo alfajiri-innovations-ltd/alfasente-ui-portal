@@ -8,11 +8,11 @@ export interface IClient {
   clientID?: number;
   date_of_birth: string;
   walletID: {
-    walletID: number,
-    airtelWalletBalance: string,
-    mtnWalletBalance: string,
-    totalWalletBalance: string
-}
+    walletID: number;
+    airtelWalletBalance: string;
+    mtnWalletBalance: string;
+    totalWalletBalance: string;
+  };
 
   certificateOfIncorparation: string;
 
@@ -32,7 +32,7 @@ export interface IUsers {
   };
   createdAt?: string;
   status: string;
-  clientID?:number
+  clientID?: number;
 }
 
 export interface IUser {
@@ -42,10 +42,10 @@ export interface IUser {
   date_of_birth: string;
   userId: number;
 
-  role_name:string;
+  role_name: string;
   createdAt?: string;
   status: string;
-  clientID?:number
+  clientID?: number;
 }
 export interface IMembers {
   beneficiaryName: string;
@@ -78,38 +78,35 @@ export interface IDetails {
   accountNumber: string;
   amount: string;
   network: string;
-  mtnAllocation:number;
-  airtelAllocation:number;
-  totalFee?:number;
+  mtnAllocation: number;
+  airtelAllocation: number;
+  totalFee?: number;
 }
 
-
 export interface IAuditLogs {
- created_by: string;
+  created_by: string;
   role: string;
   created_at: string;
   event: string;
   organization: {
-                organization_id: number,
-                organization_name: string
-            },
+    organization_id: number;
+    organization_name: string;
+  };
 }
 
-
-export interface ITransaction{
+export interface ITransaction {
   clientID: number;
   beneficiaryMobileNumber?: string;
   sourceOfFunds?: string;
   transactionID: string;
   mainAmount: string;
-  airtelCharge?:number;
-  mtnCharge?:number;
-  proofOfCredit?:string;
-  airtelWalletBalance?:number;
-  mtnWalletBalance?:number;
-  beneficiaryName?:string;
+  airtelCharge?: number;
+  mtnCharge?: number;
+  proofOfCredit?: string;
+  airtelWalletBalance?: number;
+  mtnWalletBalance?: number;
+  beneficiaryName?: string;
 
-  
   transactionType: string;
   alfasenteCharge?: number;
   currency: string;
@@ -119,12 +116,9 @@ export interface ITransaction{
   recordDate: Date;
 }
 
-
-export interface IWallet{
-
-  walletID: number
-  airtelWalletBalance:string,
-  "mtnWalletBalance": "0",
-  "totalWalletBalance": "0"
-
+export interface IWallet {
+  walletID: number;
+  airtelWalletBalance: string;
+  mtnWalletBalance: string;
+  totalWalletBalance: string;
 }
