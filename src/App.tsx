@@ -1,5 +1,5 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-
+import PageNotFound from "@/pages/PageNotFound";
 import React from "react";
 
 const BeneficiariesPage = React.lazy(() => import("@/pages/Beneficiaries"));
@@ -35,7 +35,8 @@ function App() {
             <Route path="/organisations" element={<Organisations />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/about" element={<AboutUs />} />
-            </Routes>
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
         </BrowserRouter>
       </UserProvider>
     </>
