@@ -78,3 +78,5 @@ export const CalculateChargeByListId = (listID: number) =>
 
 export const CollectMoney = () =>
   `${import.meta.env.VITE_BACKEND_API_URL}/collect-money`;
+
+export const ManualTopUp =()=>`${import.meta.env.VITE_BACKEND_API_URL}/manual-top`;

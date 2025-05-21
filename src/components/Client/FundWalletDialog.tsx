@@ -21,6 +21,14 @@ export function FundWallet() {
       
     });
 
+    const [ManualDetails, setManualDetails] = useState({
+      amount: "",
+      proofOfCredit: "",
+      airtelAllocation: 0,
+      mtnAllocation: 0,
+      transactionID: "",
+    });
+
   const [activeTab, setActiveTab] = useState("Self Top-up");
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -107,11 +115,11 @@ export function FundWallet() {
           )}
 
           {activeTab === "Manual Top-up" && currentStep === 1 && (
-            <ManualWalletDetails handleNextStep={handleNextStep} />
+            <ManualWalletDetails handleNextStep={handleNextStep} setManualDetails={setManualDetails} />
           )}
 
           {activeTab === "Manual Top-up" && currentStep === 2 && (
-            <SuccessFulTopUp />
+            <SuccessFulTopUp ManualTopUpDetails={ManualDetails} />
           )}
         </div>
       </DialogContent>

@@ -13,9 +13,9 @@ const ApplicationsPage = React.lazy(() => import("@/pages/Applications"));
 const SettingsPage = React.lazy(() => import("@/pages/SettingsPage"));
 const AboutUs = React.lazy(() => import("@/pages/AboutUs"));
 
-import { Toaster } from "@/components/ui/sonner";
 import Organisations from "@/pages/OrganisationsPage";
 import { UserProvider } from "./hooks/UserContext";
+import { Toaster } from "./components/ui/toaster";
 
 function App() {
   return (
