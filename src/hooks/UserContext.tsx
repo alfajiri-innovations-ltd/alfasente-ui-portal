@@ -15,6 +15,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const user = getAuthUser();
+
     if (user) {
       setUser({
         firstName: user.firstName || "",
@@ -30,6 +31,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       });
     }
   }, []);
+
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }

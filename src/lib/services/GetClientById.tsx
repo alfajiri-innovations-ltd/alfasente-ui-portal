@@ -7,7 +7,14 @@ import { FetchClient } from "../api-routes";
 export function GetClient() {
   const [Client, setClient] = useState<IClient>();
 
-  const clientId = getAuthUser().clientID;
+
+  const clientId = getAuthUser()?.clientID;
+
+  if (!clientId) {
+    
+    console.warn("No client ID found");
+    return null;
+  }
  
 
   useEffect(() => {

@@ -13,20 +13,21 @@ const ApplicationsPage = React.lazy(() => import("@/pages/Applications"));
 const SettingsPage = React.lazy(() => import("@/pages/SettingsPage"));
 const AboutUs = React.lazy(() => import("@/pages/AboutUs"));
 
+const AdminDashboard = React.lazy(() => import("@/pages/Admin/DashboardPage"));
+
 import Organisations from "@/pages/OrganisationsPage";
 import { UserProvider } from "./hooks/UserContext";
-import { Toaster } from "./components/ui/toaster";
 
 function App() {
   return (
     <>
       <UserProvider>
-        <Toaster />
 
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
+
             <Route path="/beneficiaries" element={<BeneficiariesPage />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/staff" element={<Staff />} />
@@ -35,6 +36,10 @@ function App() {
             <Route path="/organisations" element={<Organisations />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/about" element={<AboutUs />} />
+
+
+            //Admin Routes
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
             </Routes>
         </BrowserRouter>
       </UserProvider>

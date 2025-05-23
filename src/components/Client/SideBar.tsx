@@ -17,10 +17,13 @@ function SideBar() {
   const currentPath = window.location.pathname;
   const user = useUser();
 
+  console.log("--->",user);
+
   const client = GetClient();
 
 
-  const userRole = user?.role_name || "admin";
+  const userRole = user?.role_name;
+  console.log(userRole);
   const sidebarItems = [
     {
       title: "Dashboard",
@@ -78,8 +81,8 @@ function SideBar() {
       roles: ["admin", "client_employee", "client_admin"],
     },
   ];
-  const filteredItems = sidebarItems.filter((item) =>
-    item.roles.includes(userRole),
+  const filteredItems = sidebarItems.filter(
+    (item) => userRole && item.roles.includes(userRole)
   );
 
   return (
@@ -93,7 +96,7 @@ function SideBar() {
           />
         </div>
       </Link>
-      {user?.role_name !== "admin" && (
+      {user?.role_name === "client_admin" ? (
         <div className="flex border items-center px-2 py-1 rounded-[5px] gap-3">
           <img src="/images/icons/enterprise.svg" alt="Alfasente" width={25} />
           <div className="flex flex-col">
@@ -101,7 +104,7 @@ function SideBar() {
             <span className="text-[12px] font-normal">10 staff</span>
           </div>
         </div>
-      )}
+      ):''}
       <ul className="space-y-2 my-5">
         {filteredItems.map((item, index) => (
           <li key={index}>

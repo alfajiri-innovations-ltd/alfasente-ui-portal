@@ -58,6 +58,7 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
       });
 
       const responseBody = await response.text();
+
       let res;
       try {
         res = JSON.parse(responseBody);
@@ -72,8 +73,16 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
       if (response.status === 200) {
         setUserToken(res.token);
         setAuthUser(res.userData);
-        navigate("/dashboard");
+
         SuccessToast("Login Successful, Redirecting You ...");
+
+        setTimeout(() => {
+          if (res.userData?.role_name === "admin") {
+            navigate("/admin/dashboard");
+          } else {
+            navigate("/dashboard");
+          }
+        }, 2000);
       } else {
         switch (message) {
           case 401:
@@ -109,6 +118,7 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
               <FormControl>
                 <Input
                   placeholder="johndoe@gmail"
+                  disabled={submitting}
                   className=" border-[#DCE1EC]"
                   {...field}
                 />
@@ -130,6 +140,7 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
                   <Input
                     type={passwordVisible ? "text" : "password"}
                     placeholder="Enter your password"
+                    disabled={submitting}
                     className=" border-none focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none  "
                     {...field}
                   />
