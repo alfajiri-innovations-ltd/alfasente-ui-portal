@@ -1,35 +1,46 @@
+// useCalculateCharge.ts
 import { useEffect, useState } from "react";
-
-
 import { getUserToken } from "../cookies/UserMangementCookie";
-import {  CalculateChargeByListId } from "../api-routes";
+import { CalculateChargeByListId } from "../api-routes";
 
-export function CalculateCharge(listId:number) {
-  const [Charges, setCharges] = useState<any>();
+interface ICalculateCharge {
+  listId?: number;
+  clientId: number;
+  beneficiary?: any;
+}
+
+export function useCalculateCharge({ listId, clientId, beneficiary }: ICalculateCharge) {
+  const [charges, setCharges] = useState<any>(null);
   const token = getUserToken();
 
+
   useEffect(() => {
-    const calculatecharge = async () => {
+    const calculateCharge = async () => {
       try {
-        const response = await fetch(CalculateChargeByListId(listId), {
+        const payload: Record<string, any> = { clientId };
+        if (listId) payload.listId = listId;
+        else if (beneficiary) payload.beneficiary = beneficiary;
+
+        const response = await fetch(CalculateChargeByListId(), {
+          method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
+          body: JSON.stringify(payload),
         });
 
         if (response.ok) {
           const data = await response.json();
-
-          console.log(data);
-
           setCharges(data.Charges);
-        } else {
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("Charge calculation error", error);
+      }
     };
 
-    calculatecharge();
-  }, []);
+    calculateCharge();
+  }, [listId, clientId, beneficiary, token]);
 
-  return Charges;
+  return charges;
 }

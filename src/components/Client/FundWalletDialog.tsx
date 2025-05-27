@@ -10,7 +10,12 @@ import AuthorizeDeposit from "./AuthorizeDeposit";
 import SuccessFulDeposit from "./SuccessFulDeposit";
 import SuccessFulTopUp from "./SuccessFulTopup";
 
-export function FundWallet() {
+interface FundWalletProps {
+  onClick?: () => void;
+}
+
+
+export function FundWallet({onClick}: FundWalletProps) {
   const [DialogOpen, setIsDialogOpen] = useState(false);
   const [Details, setDetails] = useState({
       amount: "",

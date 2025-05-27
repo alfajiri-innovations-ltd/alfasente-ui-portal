@@ -73,8 +73,8 @@ export const GetTransactionById = (transactionID: string) =>
 export const GetWalletById = (walletID: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/wallet/${walletID}`;
 
-export const CalculateChargeByListId = (listID: number) =>
-  `${import.meta.env.VITE_BACKEND_API_URL}/calculate-charge/${listID}`;
+export const CalculateChargeByListId = () =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/calculate-charge`;
 
 export const CollectMoney = () =>
   `${import.meta.env.VITE_BACKEND_API_URL}/collect-money`;

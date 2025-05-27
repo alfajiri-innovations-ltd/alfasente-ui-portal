@@ -3,6 +3,7 @@ import OrganizationSettings from "@/components/Client/OrganizationSettings";
 import SecuritySettings from "@/components/Client/SecuritySettings";
 import SideBar from "@/components/Client/SideBar";
 import UserSettings from "@/components/Client/UserSettings";
+import Layout from "@/components/Commons/Layout";
 import { Building2, LockKeyhole, User } from "lucide-react";
 import { useState } from "react";
 function SettingsPage() {
@@ -15,10 +16,7 @@ function SettingsPage() {
   ];
 
   return (
-    <div className="grid grid-cols-5 h-screen">
-      <SideBar />
-      <main className="col-span-4 bg-white">
-        <DashboardHeader PageTitle="Settings" />
+    <Layout title="Settings">
 
         <div className=" mx-20 my-10">
           <div className="relative">
@@ -50,8 +48,7 @@ function SettingsPage() {
             {activeTab === "Security" && <SecuritySettings />}
           </div>
         </div>
-      </main>
-    </div>
+     </Layout>
   );
 }
 

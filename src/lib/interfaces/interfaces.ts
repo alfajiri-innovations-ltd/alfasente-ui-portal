@@ -71,6 +71,7 @@ export interface listsWithMembers {
   createdAt: string;
   createdBy: string;
   status: string;
+  clientID:number
 }
 [];
 

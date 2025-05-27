@@ -21,6 +21,7 @@ import { useGetOrganizationLogs } from "@/lib/services/FetchOrganizationAuditLog
 
 import {useGetAllLogs } from "@/lib/services/FetchAllAuditLogs"
 import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
+import Layout from "@/components/Commons/Layout";
 
 function AuditLogs() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -83,10 +84,7 @@ function AuditLogs() {
   const system = auditLogs?.filter((auditlog) => auditlog.role === "System");
 
   return (
-    <div className="grid grid-cols-5 h-screen">
-      <SideBar />
-      <main className="col-span-4 bg-white">
-        <DashboardHeader PageTitle="Audit Logs" />
+    <Layout title="Audit Logs">
 
         <div className="flex flex-col mx-5 my-5">
           <div className="flex justify-between items-center">
@@ -207,8 +205,7 @@ function AuditLogs() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+    </Layout>
   );
 }
 

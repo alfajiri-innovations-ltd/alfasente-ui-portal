@@ -12,7 +12,7 @@ const Layout = ({ children, title }: Props) => {
     <>
       <Toaster  />
 
-      <main className="grid grid-cols-5 h-full">
+      <main className="grid grid-cols-5 h-screen">
         <SideBar />
         <section className="col-span-4  bg-white">
           <DashboardHeader PageTitle={title} />
