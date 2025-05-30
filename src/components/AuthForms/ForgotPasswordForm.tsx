@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { ForgotPassword } from "@/lib/api-routes";
-import { ErrorToast, SuccessToast } from "../ui/Toasts";
+import { toast } from "@/hooks/use-toast";
 
 const FormSchema = z.object({
   user_email: z.string().min(2, { message: "Field is Required" }).email(),
@@ -47,16 +47,29 @@ export function ForgotPasswordForm({ handleClick }: IUserDetailsFormProps) {
 
       if (response.ok) {
         localStorage.setItem("email", data.user_email);
-        SuccessToast(`Otp sucessfully sent to ${data.user_email}`);
+
+        toast({
+          variant: "success",
+          title: "Successful",
+          description: `Otp sucessfully sent to ${data.user_email}`,
+        });
 
         setTimeout(() => {
           handleClick();
         }, 3000);
       } else {
-        ErrorToast("Invalid Email");
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: "Invalid Email.",
+        });
       }
     } catch (error: any) {
-      console.log("An Error occurred, try again: " + error.toString());
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: "An expected error occured.",
+      });
     } finally {
       setSubmitting(false);
     }

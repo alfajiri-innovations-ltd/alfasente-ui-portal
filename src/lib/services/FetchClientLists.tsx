@@ -11,7 +11,6 @@ export function GetLists() {
   useEffect(() => {
     const fetchListsWithMembers = async () => {
       try {
-  
         const response = await fetch(FetchClientLists(clientId), {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -22,7 +21,6 @@ export function GetLists() {
 
         const listsData: IList[] = await response.json();
 
-      
         const listsWithMembers = await Promise.all(
           listsData.map(async (list) => {
             try {
@@ -38,7 +36,7 @@ export function GetLists() {
               return { ...list, members: membersData };
             } catch (error) {
               console.error(error);
-              return { ...list, members: [] }; 
+              return { ...list, members: [] };
             }
           })
         );

@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import DashboardHeader from "@/components/Client/Dashboard-Header";
-import SideBar from "@/components/Client/SideBar";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";

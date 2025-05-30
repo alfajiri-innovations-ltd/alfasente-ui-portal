@@ -1,7 +1,7 @@
-import DashboardHeader from "@/components/Client/Dashboard-Header";
+
 import OrganizationSettings from "@/components/Client/OrganizationSettings";
 import SecuritySettings from "@/components/Client/SecuritySettings";
-import SideBar from "@/components/Client/SideBar";
+
 import UserSettings from "@/components/Client/UserSettings";
 import Layout from "@/components/Commons/Layout";
 import { Building2, LockKeyhole, User } from "lucide-react";

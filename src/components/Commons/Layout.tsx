@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import SideBar from "../Client/SideBar";
 import DashboardHeader from "../Client/Dashboard-Header";
-import { Toaster } from "../ui/toaster";
 
 interface Props {
   children: ReactNode;
@@ -10,7 +9,6 @@ interface Props {
 const Layout = ({ children, title }: Props) => {
   return (
     <>
-      <Toaster  />
 
       <main className="grid grid-cols-5 h-screen">
         <SideBar />

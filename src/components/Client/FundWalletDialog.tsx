@@ -15,7 +15,7 @@ interface FundWalletProps {
 }
 
 
-export function FundWallet({onClick}: FundWalletProps) {
+export function FundWallet() {
   const [DialogOpen, setIsDialogOpen] = useState(false);
   const [Details, setDetails] = useState({
       amount: "",

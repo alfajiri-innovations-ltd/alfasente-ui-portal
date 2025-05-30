@@ -1,4 +1,3 @@
-import { listsWithMembers } from "@/lib/interfaces/interfaces";
 import {
   Accordion,
   AccordionContent,

@@ -17,19 +17,22 @@ function SideBar() {
   const currentPath = window.location.pathname;
   const user = useUser();
 
-  console.log("--->",user);
-
   const client = GetClient();
 
-
   const userRole = user?.role_name;
-  console.log(userRole);
+
   const sidebarItems = [
     {
       title: "Dashboard",
       icon: <LayoutDashboard />,
+      href: "/admin/dashboard",
+      roles: ["admin"],
+    },
+    {
+      title: "Dashboard",
+      icon: <LayoutDashboard />,
       href: "/dashboard",
-      roles: ["admin", "client_employee", "client_admin"],
+      roles: ["client_employee", "client_admin"],
     },
 
     {
@@ -48,7 +51,7 @@ function SideBar() {
       title: "Beneficiaries",
       icon: <CircleUserRound />,
       href: "/beneficiaries",
-      roles: ["admin", "client_employee", "client_admin"],
+      roles: ["client_employee", "client_admin"],
     },
     {
       title: "Staff",
@@ -59,8 +62,21 @@ function SideBar() {
     {
       title: "Transactions",
       icon: <FaMoneyBillTransfer className="w-6 h-6" />,
+      href: "/admin/transactions",
+      roles: ["admin"],
+    },
+    {
+      title: "Manual top-up",
+      icon: <FaMoneyBillTransfer className="w-6 h-6" />,
+      href: "/admin/manuals",
+      roles: ["admin"],
+    },
+
+    {
+      title: "Transactions",
+      icon: <FaMoneyBillTransfer className="w-6 h-6" />,
       href: "/transactions",
-      roles: ["admin", "client_employee", "client_admin"],
+      roles: ["client_employee", "client_admin"],
     },
     {
       title: "Teams",
@@ -104,7 +120,9 @@ function SideBar() {
             <span className="text-[12px] font-normal">10 staff</span>
           </div>
         </div>
-      ):''}
+      ) : (
+        ""
+      )}
       <ul className="space-y-2 my-5">
         {filteredItems.map((item, index) => (
           <li key={index}>

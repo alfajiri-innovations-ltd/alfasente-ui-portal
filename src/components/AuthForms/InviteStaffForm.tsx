@@ -24,9 +24,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {  InviteUser } from "@/lib/api-routes";
-import { ErrorToast, SuccessToast } from "../ui/Toasts";
 import { useUser } from "@/hooks/UserContext";
 import { getUserToken } from "@/lib/cookies/UserMangementCookie";
+import { toast } from "@/hooks/use-toast";
 
 const FormSchema = z.object({
   firstName: z.string().min(2, {
@@ -81,16 +81,23 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
         },
         body: JSON.stringify(data),
       });
-      console.log(userResponse);
 
       if (userResponse.ok) {
-        SuccessToast("Invitation sent successfully");
+        toast({
+          variant: "success",
+          title: "Successful",
+          description: "Invitation sent successfully",
+        });
         setTimeout(() => {
           onClose();
         }, 1000);
       }
     } catch (error) {
-      ErrorToast("An error occurred:");
+       toast({
+          variant: "destructive",
+          title: "Failure",
+          description: "Unexpected server reponse",
+        });
     } finally {
       setSubmitting(false);
     }

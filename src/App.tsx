@@ -17,17 +17,21 @@ const AdminDashboard = React.lazy(() => import("@/pages/Admin/DashboardPage"));
 
 import Organisations from "@/pages/OrganisationsPage";
 import { UserProvider } from "./hooks/UserContext";
+import AdminTransactions from "./pages/Admin/TransactionsPage";
+import ManualTransactions from "./pages/Admin/ManualsPage";
+import { Toaster } from "./components/ui/toaster";
+// import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
     <>
-      <UserProvider>
+      <Toaster />
 
+      <UserProvider>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
-
             <Route path="/beneficiaries" element={<BeneficiariesPage />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/staff" element={<Staff />} />
@@ -36,11 +40,11 @@ function App() {
             <Route path="/organisations" element={<Organisations />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/about" element={<AboutUs />} />
-
-
             //Admin Routes
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            </Routes>
+            <Route path="/admin/transactions" element={<AdminTransactions />} />
+            <Route path="/admin/manuals" element={<ManualTransactions />} />
+          </Routes>
         </BrowserRouter>
       </UserProvider>
     </>

@@ -18,13 +18,12 @@ import { GetLists } from "@/lib/services/FetchClientLists";
 import PaymentOverView from "./PaymentOverView";
 import { AddBeneficiaryForm } from "./Forms/AddBeneficiaryForm";
 import PaymentOverViewIndividual from "./PreviewIndividual";
-import { FundWallet } from "./FundWalletDialog";
 
 export function SendFunds() {
   const [previewList, setPreviewList] = useState(false);
   const [items, setItems] = useState<listsWithMembers[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked] = useState(false);
   const [checkedListId, setCheckedListId] = useState<number | null>(null);
   const [DialogOpen, setFundWalletDialog] = useState(false);
 

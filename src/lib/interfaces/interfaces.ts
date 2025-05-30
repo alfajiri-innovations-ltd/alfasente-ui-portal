@@ -53,15 +53,17 @@ export interface IMembers {
   amount: number;
   mobileMoneyNumber: string;
   serviceProvider?: string;
+  clientID: number;
 }
 
 export interface IList {
   id: number;
   name: string;
   createdAt: string;
+  clientID: number;
   createdBy: string;
   status: string;
-  members: string;
+  members?: string;
 }
 
 export interface listsWithMembers {
@@ -71,9 +73,9 @@ export interface listsWithMembers {
   createdAt: string;
   createdBy: string;
   status: string;
-  clientID:number
+  clientID: number;
 }
-[];
+
 
 export interface IDetails {
   accountNumber: string;
@@ -103,10 +105,13 @@ export interface ITransaction {
   mainAmount: string;
   airtelCharge?: number;
   mtnCharge?: number;
+  organizationName?: string;
+  userName?: string;
   proofOfCredit?: string;
   airtelWalletBalance?: number;
   mtnWalletBalance?: number;
   beneficiaryName?: string;
+  OrganisationName?: string;
 
   transactionType: string;
   alfasenteCharge?: number;

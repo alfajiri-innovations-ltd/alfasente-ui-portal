@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/input-otp";
 import { useEffect, useState } from "react";
 import { VerifyEmail } from "@/lib/api-routes";
-import { ErrorToast, SuccessToast } from "../ui/Toasts";
+import { toast } from "@/hooks/use-toast";
 
 const FormSchema = z.object({
   pin: z.number().min(6, {
@@ -69,9 +69,8 @@ export function EmailOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
     setValue(value);
     form.setValue("pin", parseInt(value, 10));
   }
-  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = async () => {
     setSubmitting(true);
-    console.log(data);
     const otpNumber = parseInt(value, 10);
 
     try {
@@ -87,20 +86,32 @@ export function EmailOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
       });
 
       if (response.ok) {
-        SuccessToast("OTP has been successfully verified");
+        toast({
+          variant: "success",
+          title: "Successful",
+          description: "OTP verified successfully",
+        });
         setTimeout(() => {
           handleClick();
         }, 3000);
 
         localStorage.removeItem("email");
       } else {
-        ErrorToast("Invalid OTP");
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: "Invalid OTP.",
+        });
 
         form.reset();
         setValue("");
       }
     } catch (error) {
-      console.log(error);
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: `${error}`,
+      });
     } finally {
       setSubmitting(false);
     }

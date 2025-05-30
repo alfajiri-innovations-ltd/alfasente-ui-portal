@@ -1,5 +1,4 @@
-import DashboardHeader from "@/components/Client/Dashboard-Header";
-import SideBar from "@/components/Client/SideBar";
+
 
 import { BeneficiariesTable } from "@/components/Client/Tables/BeneficiariesTables";
 import { useState } from "react";

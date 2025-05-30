@@ -14,11 +14,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { Check, EyeIcon, EyeOffIcon } from "lucide-react";
+import {  EyeIcon, EyeOffIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CheckboxDemo } from "../Client/TermsCheckBox";
 import { CreateClient, CreateUser } from "@/lib/api-routes";
-import { SuccessToast } from "../SuccessToast";
+import { toast } from "@/hooks/use-toast";
 
 const FormSchema = z.object({
   firstName: z.string().min(2, {
@@ -39,7 +39,6 @@ interface IUserDetailsFormProps {
 export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [toastVisible, setToastVisible] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const togglePassword = () => {
@@ -70,7 +69,6 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
         },
         body: JSON.stringify(data),
       });
-      console.log(userResponse);
       if (userResponse.ok) {
         const userData = await userResponse.json();
         const userId = userData.userId;
@@ -91,9 +89,14 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
           body: JSON.stringify(clientData),
         });
 
-        console.log(clientResponse);
         if (clientResponse.ok) {
-          setToastVisible(true);
+          const email = localStorage.getItem("email");
+
+          toast({
+            variant: "success",
+            title: "Successful",
+            description: `All set! please verify your email sent to ${email}`,
+          });
 
           setTimeout(() => {
             localStorage.removeItem("client");
@@ -105,16 +108,22 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
         }
       } else {
         const userError = await userResponse.json();
-        console.error("User creation failed:", userError);
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: `User creation failed. ${userError.message}`,
+        });
       }
     } catch (error) {
-      console.error("An error occurred:", error);
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: `${error}`,
+      });
     } finally {
       setSubmitting(false);
     }
   };
-
-  const email = localStorage.getItem("email");
 
   return (
     <Form {...form}>
@@ -122,17 +131,6 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full grid  grid-cols-2 relative  space-y-2"
       >
-        {toastVisible && (
-          <SuccessToast>
-            <div className="flex gap-1 items-center w-full absolute -top-28  left-1/2 px-[1px] transform -translate-x-1/2 bg-green-500 text-white py-2 rounded-md shadow-md">
-              <div className="rounded-full bg-white flex justify-center items-center p-[2px]">
-                <Check className="w-4 h-4 text-black" />
-              </div>
-              <span>All set! please verify your email sent to {email}</span>
-            </div>
-          </SuccessToast>
-        )}
-
         <div className=" col-span-2 flex justify-between gap-3">
           <FormField
             control={form.control}
