@@ -23,7 +23,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CreateUser } from "@/lib/api-routes";
+import {  InviteUser } from "@/lib/api-routes";
+import { ErrorToast, SuccessToast } from "../ui/Toasts";
+import { useUser } from "@/hooks/UserContext";
+import { getUserToken } from "@/lib/cookies/UserMangementCookie";
 
 const FormSchema = z.object({
   firstName: z.string().min(2, {
@@ -34,7 +37,7 @@ const FormSchema = z.object({
   user_email: z.string().min(2, { message: "Field is Required" }).email(),
   date_of_birth: z.string().min(2, { message: "Field is Required" }),
   lastName: z.string().min(2, { message: "Field is Required" }),
-
+  clientID: z.number(),
   password: z.string().min(8, { message: "Field is Required" }),
 });
 
@@ -43,6 +46,8 @@ interface IUserDetailsFormProps {
 }
 export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const user = useUser();
+  const token = getUserToken();
 
   const [submitting, setSubmitting] = useState(false);
   const togglePassword = () => {
@@ -58,6 +63,7 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
       password: "",
       date_of_birth: "",
       role_name: "",
+      clientID: user?.clientID,
       isEmailVerified: true,
     },
   });
@@ -66,9 +72,11 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
     setSubmitting(true);
 
     try {
-      const userResponse = await fetch(CreateUser, {
+      const userResponse = await fetch(InviteUser, {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
+
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
@@ -76,13 +84,13 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
       console.log(userResponse);
 
       if (userResponse.ok) {
+        SuccessToast("Invitation sent successfully");
         setTimeout(() => {
-          localStorage.removeItem("client");
           onClose();
-        }, 2000);
+        }, 1000);
       }
     } catch (error) {
-      console.error("An error occurred:", error);
+      ErrorToast("An error occurred:");
     } finally {
       setSubmitting(false);
     }
@@ -232,7 +240,11 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
         />
 
         <div className="col-span-2 ">
-          <Button type="submit" className="w-full my-4 bg-[#8D35AA]">
+          <Button
+            type="submit"
+            className="w-full my-4 bg-[#8D35AA]"
+            disabled={submitting}
+          >
             {submitting ? "Submitting..." : " Invite Staff"}
           </Button>
         </div>

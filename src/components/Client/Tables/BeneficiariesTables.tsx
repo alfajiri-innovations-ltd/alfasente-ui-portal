@@ -12,15 +12,15 @@ import { ActionsPopover } from "../ActionsPopover";
 
 import { HiMiniUsers } from "react-icons/hi2";
 import { getRandomColor } from "./MembersTable";
-import { IList } from "@/lib/interfaces/interfaces";
+import { IList, listsWithMembers } from "@/lib/interfaces/interfaces";
 import { formatDate } from "@/lib/Utilities/FormatDate";
 
 export interface IBeneficiariesTableProps {
-  lists?: IList[];
-  list?: IList;
-  HandleClick?: () => void;
+  lists?: listsWithMembers[];
+  list?: listsWithMembers;
+  HandleClick?: (list:listsWithMembers) => void;
 }
-export function getStatusBadge(status: IList["status"]) {
+export function getStatusBadge(status: IList["status"] | undefined) {
   switch (status) {
     case "Rejected":
       return "bg-[#FFEAE9] text-[#A9302D] border-[#FFD9D7]";
@@ -71,7 +71,7 @@ export function BeneficiariesTable({
             {pathname === "/beneficiaries" && (
               <TableCell>
                 <Badge
-                  className={`border rounded-full py-1 px-1.5 text-[14px] ${getStatusBadge(list.status)}`}
+                  className={`border rounded-full capitalize py-1 px-1.5 text-[14px] ${getStatusBadge(list.status)}`}
                 >
                   {list.status}{" "}
                 </Badge>
@@ -80,7 +80,8 @@ export function BeneficiariesTable({
             <TableCell className="">{list.createdBy}</TableCell>
             <TableCell>{formatDate(list.createdAt)}</TableCell>
             <TableCell>
-              <ActionsPopover list={list} HandleClick={HandleClick} />{" "}
+            <ActionsPopover list={list} HandleClick={()=>HandleClick?.(list)} />
+
             </TableCell>
           </TableRow>
         ))}

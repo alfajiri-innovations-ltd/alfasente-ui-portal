@@ -1,31 +1,44 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-
+import PageNotFound from "@/pages/PageNotFound";
 import React from "react";
 
 const BeneficiariesPage = React.lazy(() => import("@/pages/Beneficiaries"));
-const ClientDashboard = React.lazy(() => import("@/pages/ClientDashboard"));
+const Dashboard = React.lazy(() => import("@/pages/Dashboard"));
 const Transactions = React.lazy(() => import("@/pages/Transactions"));
 const Staff = React.lazy(() => import("@/pages/Staff"));
 const AuditLogs = React.lazy(() => import("@/pages/AuditLogs"));
 const LandingPage = React.lazy(() => import("@/pages/LandingPage"));
+const ApplicationsPage = React.lazy(() => import("@/pages/Applications"));
+
+const SettingsPage = React.lazy(() => import("@/pages/SettingsPage"));
+const AboutUs = React.lazy(() => import("@/pages/AboutUs"));
 
 import { Toaster } from "@/components/ui/sonner";
+import Organisations from "@/pages/OrganisationsPage";
+import { UserProvider } from "./hooks/UserContext";
 
 function App() {
   return (
     <>
-      <Toaster />
+      <UserProvider>
+        <Toaster />
 
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/dashboard" element={<ClientDashboard />} />
-          <Route path="/beneficiaries" element={<BeneficiariesPage />} />
-          <Route path="/transactions" element={<Transactions />} />
-          <Route path="/staff" element={<Staff />} />
-          <Route path="/audit-logs" element={<AuditLogs />} />
-        </Routes>
-      </BrowserRouter>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/beneficiaries" element={<BeneficiariesPage />} />
+            <Route path="/transactions" element={<Transactions />} />
+            <Route path="/staff" element={<Staff />} />
+            <Route path="/audit-logs" element={<AuditLogs />} />
+            <Route path="/applications" element={<ApplicationsPage />} />
+            <Route path="/organisations" element={<Organisations />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </UserProvider>
     </>
   );
 }

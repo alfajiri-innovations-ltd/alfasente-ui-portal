@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -9,26 +11,19 @@ import {
 } from "@/components/ui/table";
 import { ActionsPopover } from "../ActionsPopover";
 
-export interface ITransactions {
-  transactionType: string;
-  amount: number;
-  receipient: string;
-  createdAt: string;
-  status?: string;
-}
-
 import { MdOutlineArrowDownward, MdOutlineArrowUpward } from "react-icons/md";
+import { ITransaction } from "@/lib/interfaces/interfaces";
 
 export interface ITransactionsTableProps {
-  transactions?: ITransactions[];
-  transaction?: ITransactions;
+  transactions?: ITransaction[];
+  transaction?: ITransaction;
 }
-export function getStatusBadge(status: ITransactions["status"]) {
+export function getStatusBadge(status: ITransaction["status"]) {
   switch (status) {
-    case "Failed":
+    case "FAILED":
       return "bg-[#FFEAE9] text-[#A9302D] border-[#FFD9D7]";
 
-    case "Success":
+    case "SUCCESSFUL":
       return "bg-[#ECF8EF] text-[#308242] border-[#C5E9CD]";
 
     default:
@@ -52,7 +47,7 @@ export function TransactionsTable({ transactions }: ITransactionsTableProps) {
           <TableRow key={index}>
             <TableCell className="font-medium flex items-center gap-1">
               <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
-                {transaction.transactionType === "Sent" ? (
+                {transaction.transactionType === "Disbursement Transaction" ? (
                   <MdOutlineArrowUpward
                     style={{
                       fill: "#7F1F26",
@@ -67,9 +62,11 @@ export function TransactionsTable({ transactions }: ITransactionsTableProps) {
                 )}
               </span>
 
-              {transaction.transactionType}
+              {transaction.transactionType === "Disbursement Transaction"
+                ? "Sent"
+                : "Deposited"}
             </TableCell>{" "}
-            <TableCell>{transaction.amount}</TableCell>
+            <TableCell>{transaction.mainAmount}</TableCell>
             <TableCell>
               <Badge
                 className={`border rounded-full py-1 px-1.5 text-[14px] ${getStatusBadge(transaction.status)}`}
@@ -77,10 +74,16 @@ export function TransactionsTable({ transactions }: ITransactionsTableProps) {
                 {transaction.status}{" "}
               </Badge>
             </TableCell>
-            <TableCell>{transaction.receipient}</TableCell>
-            <TableCell>{transaction.createdAt}</TableCell>
             <TableCell>
-              <ActionsPopover />{" "}
+              {transaction.beneficiaryName ||
+                transaction.beneficiaryMobileNumber ||
+                transaction.sourceOfFunds}
+            </TableCell>
+            <TableCell>
+              {format(transaction.recordDate, "yyyy-MM-dd HH:mm")}
+            </TableCell>
+            <TableCell>
+              <ActionsPopover transactionID={transaction.transactionID} />{" "}
             </TableCell>
           </TableRow>
         ))}

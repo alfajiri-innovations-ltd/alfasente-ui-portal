@@ -7,12 +7,24 @@ import {
 } from "@/components/ui/dialog";
 import { RejectListForm } from "./Forms/RejectListForm";
 import { Button } from "../ui/button";
+import { useState } from "react";
+export interface RejectListProps {
+  listId: number;
+}
+export function RejectList({ listId }: RejectListProps) {
+  const [DialogOpen, setIsDialogOpen] = useState(false);
 
-export function RejectList() {
+  const handleClose = () => {
+    setIsDialogOpen(false);
+  };
+
   return (
-    <Dialog>
+    <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant={"outline"} className=" justify-self-end  ">
+        <Button
+          variant={"outline"}
+          className=" bg-[#D93E39] text-white justify-self-end  "
+        >
           Reject List{" "}
         </Button>
       </DialogTrigger>
@@ -21,7 +33,7 @@ export function RejectList() {
         <DialogHeader>
           <DialogTitle>Reject List</DialogTitle>
         </DialogHeader>
-        <RejectListForm />
+        <RejectListForm listId={listId} handleClose={handleClose} />
       </DialogContent>
     </Dialog>
   );

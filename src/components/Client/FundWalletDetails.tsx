@@ -4,6 +4,14 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import {
   Form,
   FormControl,
   FormField,
@@ -12,184 +20,240 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Check } from "lucide-react";
-import { useState } from "react";
-import ConfirmPaymentDetails from "./ConfirmPaymentDetails";
+
+
+import { ScrollArea } from "../ui/scroll-area";
+import { IDetails } from "@/lib/interfaces/interfaces";
 
 const FormSchema = z.object({
-  amount: z.string().min(1, { message: "Amount is required" }),
-  number: z.string().min(9, { message: "Enter a valid number" }),
+  amount: z
+    .number()
+    .min(1000, { message: "Amount must be at least 1,000" })
+    .max(3000000, { message: "Amount cannot exceed 3,000,000" }),
+
+  accountNumber: z.string().min(9, { message: "Enter a valid number" }),
   network: z.string().min(1, { message: "Please select a network" }),
+  airtelAllocation: z
+    .number()
+    .min(1000, { message: "Amount must be at least 1,000" }),
+
+  mtnAllocation: z
+    .number()
+    .min(1000, { message: "Amount must be at least 1,000" }),
 });
-
-function FundWalletDetails() {
-  const [Paymentdetails, setShowPaymentDetails] = useState(false);
-
-  const handleClick = () => {
-    setShowPaymentDetails(!Paymentdetails);
-  };
+interface IFundWalletDetails {
+  handleNextStep: () => void;
+  details:IDetails;
+  setFundDetails: React.Dispatch<React.SetStateAction<IDetails>>;
+}
+function FundWalletDetails({ handleNextStep,setFundDetails,details }: IFundWalletDetails) {
+  // const [Details, setDetails] = useState({
+  //   amount: "",
+  //   accountNumber: "",
+  //   network: "",
+  //   airtelAllocation: 0,
+  //   mtnAllocation: 0,
+  // });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      amount: "",
-      number: "",
-      network: "",
+      amount: details.amount ? Number(details.amount) : undefined,
+      accountNumber:details.accountNumber ||"" ,
+      network: details.network || "",
+      airtelAllocation:details.airtelAllocation || undefined,
+      mtnAllocation:details.mtnAllocation || undefined,
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
-    handleClick();
+
+    const formattedData = {
+      ...data,
+      amount: data.amount.toString(),
+    };
+
+    setFundDetails(formattedData);
+    handleNextStep();
   }
 
   return (
     <>
-      {!Paymentdetails ? (
-        <>
-          <h3 className="font-bold mb-2">Fund your wallet</h3>
+      <ScrollArea className="h-[500px]">
+        <div className="space-y-4">
+          <h3 className="text-base font-medium my-3">
+            Select Mobile Money Provider
+          </h3>
 
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold">Select Mobile Money Provider</h3>
+          <div className="flex flex-col gap-2">
+            <Select
+              value={form.watch("network")}
+              onValueChange={(value) => form.setValue("network", value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Network " className="p-2" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mtn">
+                  <div className="flex items-center space-x-2">
+                    <div className="bg-yellow-400 rounded-full w-8 h-8 items-center flex justify-center">
+                      <img
+                        src="/images/logos/MTN.svg"
+                        alt="MTN"
+                        className="w-8 h-8"
+                      />
+                    </div>
 
-            <div className="flex space-x-4">
-              <div
-                onClick={() => form.setValue("network", "mtn")}
-                className={`relative border rounded-lg p-2 flex-1 cursor-pointer ${
-                  form.watch("network") === "mtn"
-                    ? "border-black"
-                    : "border-gray-300"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="network"
-                  value="mtn"
-                  checked={form.watch("network") === "mtn"}
-                  onChange={() => form.setValue("network", "mtn")}
-                  className="absolute top-2 right-2 hidden"
-                />
-                <div
-                  className={`absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center ${
-                    form.watch("network") === "mtn"
-                      ? "bg-black text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  {form.watch("network") === "mtn" && (
-                    <Check className="h-4 w-4" />
-                  )}
-                </div>
-                <div className="bg-yellow-400 rounded-full w-10 h-10 items-center flex justify-center">
-                  <img
-                    src="/images/logos/MTN.svg"
-                    alt="MTN"
-                    className="w-8 h-8"
-                  />
-                </div>
-                <p className="text-sm font-normal mt-2">MTN MoMo</p>
-              </div>
+                    <span>MTN MoMo</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="airtel">
+                  <div className="flex items-center space-x-2 py-2">
+                    <div className="bg-red-600 rounded-full w-8 h-8 items-center flex justify-center">
+                      <img
+                        src="/images/logos/Airtel.svg"
+                        alt="Airtel"
+                        className="w-9 h-9 rounded-full"
+                      />
+                    </div>
+                    <span>Airtel Money</span>
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
 
-              <div
-                onClick={() => form.setValue("network", "airtel")}
-                className={`relative border rounded-lg p-2 flex-1 cursor-pointer ${
-                  form.watch("network") === "airtel"
-                    ? "border-black"
-                    : "border-gray-300"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="network"
-                  value="airtel"
-                  checked={form.watch("network") === "airtel"}
-                  onChange={() => form.setValue("network", "airtel")}
-                  className="absolute top-2 right-2 hidden"
-                />
-                <div
-                  className={`absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center ${
-                    form.watch("network") === "airtel"
-                      ? "bg-black text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  {form.watch("network") === "airtel" && (
-                    <Check className="h-4 w-4" />
-                  )}
-                </div>
-                <div className="bg-red-600 rounded-full w-10 h-10 items-center flex justify-center">
-                  <img
-                    src="/images/logos/Airtel.svg"
-                    alt="Airtel"
-                    className="w-9 h-9 rounded-full"
-                  />
-                </div>
-                <p className="text-sm font-normal mt-2">Airtel Money</p>
-              </div>
+            <div>
+              {form.formState.errors.network && (
+                <p className="text-red-500 text-sm">
+                  {form.formState.errors.network.message}
+                </p>
+              )}
             </div>
-
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6"
-              >
-                <FormField
-                  control={form.control}
-                  name="amount"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Enter Amount</FormLabel>
-                      <FormControl>
-                        <div className="flex items-center border rounded-lg">
-                          <span className="px-3 py-2 text-gray-700 rounded-l-md">
-                            UGX
-                          </span>
-                          <Input
-                            {...field}
-                            placeholder="Amount"
-                            type="text"
-                            className="border-none focus-visible:ring-0 focus:ring-0 outline-none shadow-none"
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="number"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Enter Number</FormLabel>
-                      <FormControl>
-                        <div className="flex items-center border rounded-lg">
-                          <span className="px-3 py-2 text-gray-700 rounded-l-md">
-                            +256
-                          </span>
-                          <Input
-                            {...field}
-                            placeholder="Phone Number"
-                            className="border-none focus-visible:ring-0 shadow-none"
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <Button type="submit" className="w-full">
-                  Proceed to Pay
-                </Button>
-              </form>
-            </Form>
           </div>
-        </>
-      ) : (
-        <ConfirmPaymentDetails />
-      )}
+
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex justify-between">
+                      Enter Amount
+                      <span className="text-[#7A8397] font-normal text-xs">
+                        Min: UGX 1,000 | Max: UGX 3,000,000
+                      </span>
+                    </FormLabel>
+                    <FormControl>
+                      <div className="flex items-center border rounded-lg">
+                        <span className="px-3 py-2 text-gray-700 rounded-l-md">
+                          UGX
+                        </span>
+                        <Input
+                          {...field}
+                          placeholder="Amount"
+                          type="number"
+                          onChange={(e) => {
+                            const value = e.target.valueAsNumber || 0;
+                            field.onChange(value);
+                          }}
+                          className="border-none focus-visible:ring-0 focus:ring-0 outline-none shadow-none"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div>
+                <h3>Wallet Allocation</h3>
+                <div className="flex justify-between gap-4 my-3">
+                  <FormField
+                    control={form.control}
+                    name="airtelAllocation"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Airtel Money Wallet</FormLabel>
+                        <FormControl>
+                          <div className="flex items-center border rounded-lg">
+                            <span className="px-3 py-2 text-gray-700 rounded-l-md">
+                              UGX
+                            </span>
+                            <Input
+                              {...field}
+                              type="number"
+                              onChange={(e) =>
+                                field.onChange(e.target.valueAsNumber || 0)
+                              }
+                              className="border-none focus-visible:ring-0 focus:ring-0 outline-none shadow-none"
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="mtnAllocation"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>MTN Money Wallet</FormLabel>
+                        <FormControl>
+                          <div className="flex items-center border rounded-lg">
+                            <span className="px-3 py-2 text-gray-700 rounded-l-md">
+                              UGX
+                            </span>
+                            <Input
+                              {...field}
+                              type="number"
+                              onChange={(e) =>
+                                field.onChange(e.target.valueAsNumber || 0)
+                              }
+                              className="border-none focus-visible:ring-0 focus:ring-0 outline-none shadow-none"
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              <FormField
+                control={form.control}
+                name="accountNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Enter your number</FormLabel>
+                    <FormControl>
+                      <div className="flex items-center border rounded-lg">
+                        <span className="px-3 py-2 text-gray-700 rounded-l-md">
+                          +256
+                        </span>
+                        <Input
+                          {...field}
+                          placeholder="Phone Number"
+                          className="border-none focus-visible:ring-0 shadow-none"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="submit" className="w-full">
+                Proceed to Pay
+              </Button>
+            </form>
+          </Form>
+        </div>
+      </ScrollArea>
     </>
   );
 }

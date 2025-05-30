@@ -20,7 +20,6 @@ const FormSchema = z.object({
     message: "Field is required",
   }),
   walletBalance: z.number().min(0),
-  isApproved: z.boolean(),
   clientEmail: z.string().email({ message: "Invalid email address" }).min(1, {
     message: "Field is required",
   }),
@@ -50,7 +49,10 @@ export function OrganizationDetailsForm({
       clientPhoneNumber: client.clientPhoneNumber || "",
       clientEmail: client.clientEmail || "",
       walletBalance: client.walletBalance || 0,
-      isApproved: client.isApproved || false,
+      // Removed date_of_birth as it is not part of the FormSchema
+     
+    
+
       certificateOfIncorparation: client.certificateOfIncorparation || "",
       physicalAddress: client.physicalAddress || "",
     },
@@ -58,7 +60,11 @@ export function OrganizationDetailsForm({
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     console.log("Submitted Data:", data);
-    setClient(data);
+    setClient({
+      ...data,
+      date_of_birth: client.date_of_birth || "",
+      walletID: client.walletID || "", 
+    });
     handleClick();
   };
 

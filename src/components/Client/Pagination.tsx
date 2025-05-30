@@ -42,7 +42,7 @@ export function PaginationDemo({
           />
         </PaginationItem>
 
-        {[...Array(totalPages)].map((_, index) => {
+        {[...Array(Math.max(0, Number(totalPages) || 0))].map((_, index) => { 
           const page = index + 1;
           return (
             <PaginationItem key={page}>

@@ -7,73 +7,74 @@ import { Button } from "@/components/ui/button";
 import { Download, Filter } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 import { TransactionsTable } from "@/components/Client/Tables/TransactionsTable";
+import { GetOrganizationTransactions } from "@/lib/services/FectchTransactionsByOrganization";
 
-const transactions = [
-  {
-    transactionType: "Sent",
-    receipient: "Kalule Michael",
-    status: "Success",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
-  {
-    transactionType: "Sent",
-    receipient: "Kalule Michael",
-    status: "Success",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
-  {
-    transactionType: "Sent",
-    receipient: "Kalule Michael",
-    status: "Success",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
-  {
-    transactionType: "Sent",
-    receipient: "Kalule Michael",
-    status: "Success",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
-  {
-    transactionType: "Deposit",
-    receipient: "Kalule Michael",
-    status: "Success",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
+// const transactions = [
+//   {
+//     transactionType: "Sent",
+//     receipient: "Kalule Michael",
+//     status: "Success",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     amount: 1000000,
+//   },
+//   {
+//     transactionType: "Sent",
+//     receipient: "Kalule Michael",
+//     status: "Success",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     amount: 1000000,
+//   },
+//   {
+//     transactionType: "Sent",
+//     receipient: "Kalule Michael",
+//     status: "Success",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     amount: 1000000,
+//   },
+//   {
+//     transactionType: "Sent",
+//     receipient: "Kalule Michael",
+//     status: "Success",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     amount: 1000000,
+//   },
+//   {
+//     transactionType: "Deposit",
+//     receipient: "Kalule Michael",
+//     status: "Success",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     amount: 1000000,
+//   },
 
-  {
-    transactionType: "Deposit",
-    receipient: "Kalule Michael",
-    status: "Success",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
-  {
-    transactionType: "Deposit",
-    receipient: "Kalule Michael",
-    status: "Success",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
-  {
-    transactionType: "Deposit",
-    receipient: "Kalule Michael",
-    status: "Failed",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
-  {
-    transactionType: "Deposit",
-    receipient: "Kalule Michael",
-    status: "Failed",
-    createdAt: "30 Nov, 2024 11:25 AM",
-    amount: 1000000,
-  },
-];
+//   {
+//     transactionType: "Deposit",
+//     receipient: "Kalule Michael",
+//     status: "Success",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     amount: 1000000,
+//   },
+//   {
+//     transactionType: "Deposit",
+//     receipient: "Kalule Michael",
+//     status: "Success",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     amount: 1000000,
+//   },
+//   {
+//     transactionType: "Deposit",
+//     receipient: "Kalule Michael",
+//     status: "Failed",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     amount: 1000000,
+//   },
+//   {
+//     transactionType: "Deposit",
+//     receipient: "Kalule Michael",
+//     status: "Failed",
+//     createdAt: "30 Nov, 2024 11:25 AM",
+//     amount: 1000000,
+//   },
+// ];
 function Transactions() {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -81,12 +82,16 @@ function Transactions() {
     "all" | "deposit" | "success" | "sent" | "failed"
   >("all");
 
+  const transactions = GetOrganizationTransactions();
+
+  console.log(transactions)
+
   const transactionsPerPage = 8;
 
   const totalPages = Math.ceil(transactions.length / transactionsPerPage);
   const currenttransactions = transactions.slice(
     (currentPage - 1) * transactionsPerPage,
-    currentPage * transactionsPerPage,
+    currentPage * transactionsPerPage
   );
 
   const handlePageChange = (page: number) => {
@@ -96,16 +101,16 @@ function Transactions() {
   };
 
   const sent = transactions.filter(
-    (transaction) => transaction.transactionType === "Sent",
+    (transaction) => transaction.transactionType === "Disbursement Transaction"
   );
   const deposit = transactions.filter(
-    (transaction) => transaction.transactionType === "Deposit",
+    (transaction) => transaction.transactionType === "Collection Transaction"
   );
   const success = transactions.filter(
-    (transaction) => transaction.status === "Success",
+    (transaction) => transaction.status === "SUCCESSFUL"
   );
   const failed = transactions.filter(
-    (transaction) => transaction.status === "Failed",
+    (transaction) => transaction.status !== "SUCCESSFUL"
   );
 
   return (
@@ -149,7 +154,7 @@ function Transactions() {
                   onClick={() => setActiveTab("sent")}
                 >
                   Sent
-                  <span className="mx-1">({setCurrentPage.length})</span>
+                  <span className="mx-1">({sent.length})</span>
                 </h4>
 
                 <h4
