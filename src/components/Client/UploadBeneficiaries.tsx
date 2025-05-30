@@ -22,8 +22,14 @@ import { ErrorToast, SuccessToast } from "../ui/Toasts";
 
 export function UploadBeneficiaries() {
   const [DialogOpen, setIsDialogOpen] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
+    null
+  );
 
   const handleClose = () => {
+    setFileContent(null);
+
     setIsDialogOpen(false);
   };
   const [previewList, setPreviewList] = useState(false);
@@ -31,10 +37,6 @@ export function UploadBeneficiaries() {
   const token = getUserToken();
   const nuser = getAuthUser();
   const clientID = nuser.clientID;
-  const [file, setFile] = useState<File | null>(null);
-  const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
-    null,
-  );
 
   const handleTogglePreview = () => {
     setPreviewList(!previewList);
@@ -93,8 +95,8 @@ export function UploadBeneficiaries() {
           },
           {
             clientID: isNaN(Number(clientID)) ? 0 : Number(clientID),
-          },
-        ),
+          }
+        )
       );
 
       const payload = {
@@ -102,10 +104,6 @@ export function UploadBeneficiaries() {
         members: formattedMembers,
         clientID: isNaN(Number(clientID)) ? 0 : Number(clientID),
       };
-
-      console.log("Submitting payload:", payload);
-
-      console.log("Members:", formattedMembers);
 
       fetch(UploadList, {
         method: "POST",
@@ -118,6 +116,8 @@ export function UploadBeneficiaries() {
         .then((response) => {
           if (response.ok) {
             SuccessToast("List submitted successfully.");
+
+            handleClose();
           } else {
             ErrorToast("List already exists.");
           }
@@ -141,7 +141,7 @@ export function UploadBeneficiaries() {
       </DialogTrigger>
 
       <DialogContent
-        className={`w-[50vw] flex flex-col py-6 ${
+        className={`w-[60vw] flex flex-col py-6 ${
           !previewList && "justify-center items-center"
         }`}
       >

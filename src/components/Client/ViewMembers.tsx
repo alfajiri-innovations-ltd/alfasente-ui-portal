@@ -7,148 +7,37 @@ import { PaginationDemo } from "./Pagination";
 import { ApproveList } from "./ApproveList";
 import { RejectList } from "./RejectList";
 import { IList } from "@/lib/interfaces/interfaces";
+import { GetList } from "@/lib/services/GetListById";
+import { useGetMembers } from "@/lib/services/GetMembers";
+import { GetUser } from "@/lib/services/GetUser";
 
 interface IViewProps {
   CloseView: () => void;
   list?: IList;
+  listId: number;
 }
 
-const members = [
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-
-  {
-    name: "Nalweyiso Rashidah",
-    reason: "Payment for services",
-    amount: 1000000,
-    mobileMoneyNumber: "+256788210793",
-  },
-];
-function ViewMembers({ CloseView }: IViewProps) {
+function ViewMembers({ CloseView, listId }: IViewProps) {
   const [currentPage, setCurrentPage] = useState(1);
+
+ 
+  const list = GetList(listId);
+
+  console.log("--->", list);
+
+  const members = useGetMembers(listId);
+
+  console.log(members);
+
+  const user = GetUser();
+  console.log(user);
 
   const MembersPerPage = 8;
 
-  const totalPages = Math.ceil(members.length / MembersPerPage);
-  const currentMembers = members.slice(
+  const totalPages = Math.ceil(members?.length / MembersPerPage);
+  const currentMembers = members?.slice(
     (currentPage - 1) * MembersPerPage,
-    currentPage * MembersPerPage,
+    currentPage * MembersPerPage
   );
 
   const handlePageChange = (page: number) => {
@@ -156,6 +45,8 @@ function ViewMembers({ CloseView }: IViewProps) {
       setCurrentPage(page);
     }
   };
+
+  
   return (
     <div className="mx-5 my-3">
       <div
@@ -168,21 +59,23 @@ function ViewMembers({ CloseView }: IViewProps) {
 
       <div className="flex items-center justify-between my-2">
         <div className="flex items-center gap-2 m">
-          <span className="font-semibold text-xl">
+          <span className="font-semibold text-xl capitalize">
             {" "}
-            Kizza Enterprises Staff 2024 (100)
+            {list?.list?.name} ({members?.length})
           </span>
           <Badge
             variant={"outline"}
-            className={`p-1.5 rounded-full ${getStatusBadge("Pending")}`}
+            className={`p-1.5 rounded-full capitalize ${getStatusBadge(list?.list?.status)}`}
           >
-            Pending
+            {list?.list?.status}
           </Badge>
         </div>
-        <div className="flex items-center justify-self-end gap-3">
-          <RejectList />
-          <ApproveList />
-        </div>{" "}
+        {user?.status !== "maker" && (
+          <div className="flex items-center justify-self-end gap-3">
+            <RejectList listId={listId}/>
+            <ApproveList listId={listId} />
+          </div>
+        )}
       </div>
 
       <MembersTable members={currentMembers} />
@@ -190,7 +83,7 @@ function ViewMembers({ CloseView }: IViewProps) {
       <div className="flex justify-between  items-center my-1 ">
         <div className="">
           <span className="font-normal text-[15px]  ">
-            Showing {currentMembers.length} of {members.length} results
+            Showing {currentMembers?.length} of {members?.length} results
           </span>
         </div>
         <div className="">

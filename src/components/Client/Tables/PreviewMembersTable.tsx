@@ -28,6 +28,7 @@ export function PreviewMembersTable({ members }: IMembersTable) {
           <TableHead>Mobile Number</TableHead>
           <TableHead>Amount (UGX)</TableHead>
           <TableHead className="">Reason</TableHead>
+          <TableHead className="">Service Provider</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -49,6 +50,8 @@ export function PreviewMembersTable({ members }: IMembersTable) {
             <TableCell className="">{member.amount}</TableCell>
 
             <TableCell>{member.reason}</TableCell>
+            
+            <TableCell>{member.serviceProvider}</TableCell>
           </TableRow>
         ))}
       </TableBody>

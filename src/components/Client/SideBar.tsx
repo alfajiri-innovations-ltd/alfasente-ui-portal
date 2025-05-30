@@ -18,7 +18,7 @@ function SideBar() {
   const user = useUser();
 
   const client = GetClient();
-  console.log(client);
+
 
   const userRole = user?.role_name || "admin";
   const sidebarItems = [

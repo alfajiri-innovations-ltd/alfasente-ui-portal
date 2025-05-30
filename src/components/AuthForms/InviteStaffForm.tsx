@@ -23,9 +23,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CreateUser } from "@/lib/api-routes";
+import {  InviteUser } from "@/lib/api-routes";
 import { ErrorToast, SuccessToast } from "../ui/Toasts";
 import { useUser } from "@/hooks/UserContext";
+import { getUserToken } from "@/lib/cookies/UserMangementCookie";
 
 const FormSchema = z.object({
   firstName: z.string().min(2, {
@@ -46,8 +47,8 @@ interface IUserDetailsFormProps {
 export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const user = useUser();
+  const token = getUserToken();
 
-  console.log(user);
   const [submitting, setSubmitting] = useState(false);
   const togglePassword = () => {
     setPasswordVisible(!passwordVisible);
@@ -62,7 +63,7 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
       password: "",
       date_of_birth: "",
       role_name: "",
-      clientID: user?.clientId,
+      clientID: user?.clientID,
       isEmailVerified: true,
     },
   });
@@ -71,9 +72,11 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
     setSubmitting(true);
 
     try {
-      const userResponse = await fetch(CreateUser, {
+      const userResponse = await fetch(InviteUser, {
         method: "POST",
         headers: {
+          Authorization: `Bearer ${token}`,
+
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
@@ -237,7 +240,11 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
         />
 
         <div className="col-span-2 ">
-          <Button type="submit" className="w-full my-4 bg-[#8D35AA]">
+          <Button
+            type="submit"
+            className="w-full my-4 bg-[#8D35AA]"
+            disabled={submitting}
+          >
             {submitting ? "Submitting..." : " Invite Staff"}
           </Button>
         </div>

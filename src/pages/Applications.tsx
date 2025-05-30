@@ -78,7 +78,9 @@ import { GetClients } from "@/lib/services/FetchAllOrganizations";
 // ];
 function ApplicationsPage() {
   const [currentPage, setCurrentPage] = useState(1);
+
   const applications = GetClients();
+ 
   console.log(applications);
   const [activeTab, setActiveTab] = useState<
     "all" | "pending" | "rejected" | "approved"
@@ -89,7 +91,7 @@ function ApplicationsPage() {
   const totalPages = Math.ceil(applications.length / ApplicationsPerPage);
   const currentapplications = applications.slice(
     (currentPage - 1) * ApplicationsPerPage,
-    currentPage * ApplicationsPerPage,
+    currentPage * ApplicationsPerPage
   );
 
   const handlePageChange = (page: number) => {
@@ -99,13 +101,13 @@ function ApplicationsPage() {
   };
 
   const rejectedappplications = applications?.filter(
-    (application) => application.isApproved === "Rejected",
+    (application) => application.isApproved === "Rejected"
   );
   const pendingapplications = applications.filter(
-    (application) => application.isApproved === "Pending",
+    (application) => application.isApproved === "Pending"
   );
   const approvedapplications = applications.filter(
-    (application) => application.isApproved === "Approved",
+    (application) => application.isApproved === "Approved"
   );
   return (
     <div className="grid grid-cols-5 h-screen">

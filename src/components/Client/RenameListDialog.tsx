@@ -8,10 +8,18 @@ import {
 import { RenameListForm } from "./Forms/RenameListForm";
 import { Edit } from "lucide-react";
 import { IBeneficiariesTableProps } from "./Tables/BeneficiariesTables";
+import { useState } from "react";
 
 export function RenameList({ list }: IBeneficiariesTableProps) {
+
+   const [DialogOpen, setIsDialogOpen] = useState(false);
+     
+  
+     const handleClose=()=>{
+      setIsDialogOpen(false);
+     }
   return (
-    <Dialog>
+    <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <div className="flex items-center cursor-pointer gap-1 text-[#000000CC]">
           <Edit className="h-4 w-4" />
@@ -24,7 +32,7 @@ export function RenameList({ list }: IBeneficiariesTableProps) {
         <DialogHeader>
           <DialogTitle>Rename List</DialogTitle>
         </DialogHeader>
-        <RenameListForm list={list} />
+        {list && <RenameListForm list={list} handleClose={handleClose} />}
       </DialogContent>
     </Dialog>
   );

@@ -4,7 +4,7 @@ import SideBar from "@/components/Client/SideBar";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-import { Filter, Plus } from "lucide-react";
+import { Filter } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 
 import { OrganizationsTable } from "@/components/Admin/Tables/OrganisationsTable";
@@ -105,11 +105,13 @@ function Organisations() {
     "all" | "active" | "admin" | "inactive" | "employee"
   >("all");
   const organizations = GetClients();
+  const approvedOrganizations = organizations.filter(org => org?.isApproved === "Approved");
+
   console.log(organizations);
   const organizationsPerPage = 8;
 
-  const totalPages = Math.ceil(organizations.length / organizationsPerPage);
-  const currentorganizations = organizations.slice(
+  const totalPages = Math.ceil(approvedOrganizations.length / organizationsPerPage);
+  const currentorganizations = approvedOrganizations.slice(
     (currentPage - 1) * organizationsPerPage,
     currentPage * organizationsPerPage,
   );
@@ -120,8 +122,8 @@ function Organisations() {
     }
   };
 
-  const active = organizations.filter((org) => org.isApproved);
-  const inactive = organizations.filter((org) => !org.isApproved);
+  const active = approvedOrganizations.filter((org) => org.isApproved);
+  const inactive = approvedOrganizations.filter((org) => !org.isApproved);
 
   return (
     <div className="grid grid-cols-5 h-screen">
@@ -141,7 +143,7 @@ function Organisations() {
                   }  px-2 py-[2px]`}
                   onClick={() => setActiveTab("all")}
                 >
-                  All <span className="mx-1">({organizations.length})</span>
+                  All <span className="mx-1">({approvedOrganizations.length})</span>
                 </h4>
 
                 <h4
@@ -183,7 +185,7 @@ function Organisations() {
 
           <div className="my-5">
             {activeTab === "all" && (
-              <OrganizationsTable organizations={organizations} />
+              <OrganizationsTable organizations={approvedOrganizations} />
             )}
             {activeTab === "active" && (
               <OrganizationsTable organizations={active} />

@@ -8,14 +8,16 @@ export function GetClient() {
   const [Client, setClient] = useState<IClient>();
 
   const clientId = getAuthUser().clientID;
+ 
 
   useEffect(() => {
     const fetchclient = async () => {
       try {
-        const response = await fetch(FetchClient(clientId), {});
+        const response = await fetch(FetchClient(clientId));
 
         if (response.ok) {
           const data = await response.json();
+      
           setClient(data);
         } else {
         }

@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { getClient, setClient } from "@/lib/cookies/UserMangementCookie";
+import { getClient } from "@/lib/cookies/UserMangementCookie";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 

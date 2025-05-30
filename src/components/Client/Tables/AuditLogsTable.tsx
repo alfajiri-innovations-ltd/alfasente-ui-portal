@@ -9,16 +9,11 @@ import {
 } from "@/components/ui/table";
 import { ActionsPopover } from "../ActionsPopover";
 
-export interface IAuditLogs {
-  user_name: string;
-  role: string;
-  createdAt: string;
-  event: string;
-  organization: string;
-}
 
 import { HiMiniUsers } from "react-icons/hi2";
 import { getRole } from "./UsersTable";
+import { IAuditLogs } from "@/lib/interfaces/interfaces";
+import { getRoleLabel } from "@/lib/utils";
 
 export interface IAuditLogsTable {
   auditlogs?: IAuditLogs[];
@@ -39,7 +34,7 @@ export function AuditlogsTable({ auditlogs, role_name }: IAuditLogsTable) {
           )}
           <TableHead>Event</TableHead>
 
-          <TableHead className="">Date Added</TableHead>
+          <TableHead className="">Date and Time</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -53,12 +48,12 @@ export function AuditlogsTable({ auditlogs, role_name }: IAuditLogsTable) {
                 <HiMiniUsers />
               </span>
 
-              {auditlog.user_name}
+              {auditlog.created_by}
             </TableCell>
 
             <TableCell>
               {role_name === "admin" ? (
-                <span>{auditlog.organization}</span>
+                <span>{auditlog.organization.organization_name}</span>
               ) : (
                 <>
                   <Badge
@@ -68,14 +63,14 @@ export function AuditlogsTable({ auditlogs, role_name }: IAuditLogsTable) {
                     <div
                       className={`${getRole(auditlog.role)} h-2 w-2 rounded-full`}
                     ></div>
-                    {auditlog.role === "client_admin" ? "Admin" : "Employee"}
+                   {getRoleLabel(auditlog.role)}
                   </Badge>
                 </>
               )}{" "}
             </TableCell>
             <TableCell>{auditlog.event}</TableCell>
 
-            <TableCell>{auditlog.createdAt}</TableCell>
+            <TableCell>{auditlog.created_at}</TableCell>
             <TableCell>
               <ActionsPopover />{" "}
             </TableCell>

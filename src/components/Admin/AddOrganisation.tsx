@@ -8,9 +8,9 @@ import { OrganizationForm } from "./Forms/AddOrganizationForm";
 export function AddOrganisation() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleClose = () => {
-    setIsDialogOpen(false);
-  };
+  // const handleClose = () => {
+  //   setIsDialogOpen(false);
+  // };
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>

@@ -130,7 +130,7 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
                   <Input
                     type={passwordVisible ? "text" : "password"}
                     placeholder="Enter your password"
-                    className="h-12 border-none focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none  "
+                    className=" border-none focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none  "
                     {...field}
                   />
                   <p onClick={togglePassword}>

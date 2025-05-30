@@ -1,5 +1,5 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-
+import PageNotFound from "@/pages/PageNotFound";
 import React from "react";
 
 const BeneficiariesPage = React.lazy(() => import("@/pages/Beneficiaries"));
@@ -9,6 +9,9 @@ const Staff = React.lazy(() => import("@/pages/Staff"));
 const AuditLogs = React.lazy(() => import("@/pages/AuditLogs"));
 const LandingPage = React.lazy(() => import("@/pages/LandingPage"));
 const ApplicationsPage = React.lazy(() => import("@/pages/Applications"));
+
+const SettingsPage = React.lazy(() => import("@/pages/SettingsPage"));
+const AboutUs = React.lazy(() => import("@/pages/AboutUs"));
 
 import { Toaster } from "@/components/ui/sonner";
 import Organisations from "@/pages/OrganisationsPage";
@@ -30,6 +33,9 @@ function App() {
             <Route path="/audit-logs" element={<AuditLogs />} />
             <Route path="/applications" element={<ApplicationsPage />} />
             <Route path="/organisations" element={<Organisations />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>
       </UserProvider>

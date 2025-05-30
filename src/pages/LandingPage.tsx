@@ -9,10 +9,10 @@ import Trusted from "@/components/Commons/LandingPage/Trusted";
 
 function LandingPage() {
   return (
-    <div className=" min-h-screen ">
-      <Header />
+    <div className=" xs:w-[100vw]  overflow-x-hidden overflow-y-auto ">
 
-      <div className="px-[4vw] lg:px-0">
+      <div className="   ">
+      <Header />
         <Hero />
 
         <Features />
@@ -23,6 +23,9 @@ function LandingPage() {
 
         <Footer />
       </div>
+
+      
+     
     </div>
   );
 }
