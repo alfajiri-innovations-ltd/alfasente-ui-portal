@@ -1,5 +1,5 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-
+import PageNotFound from "@/pages/PageNotFound";
 import React from "react";
 
 const BeneficiariesPage = React.lazy(() => import("@/pages/Beneficiaries"));
@@ -44,6 +44,7 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/transactions" element={<AdminTransactions />} />
             <Route path="/admin/manuals" element={<ManualTransactions />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>
       </UserProvider>
