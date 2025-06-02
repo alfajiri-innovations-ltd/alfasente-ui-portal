@@ -159,7 +159,7 @@ export function PaaswordOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
 
         <Button
           type="submit"
-          className="w-full md:w-[417px] h-11 rounded-[8px]"
+          className="w-full  h-11 rounded-[8px]"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Verifying..." : "Verify"}

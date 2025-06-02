@@ -10,6 +10,14 @@ function SuccessScreen() {
         Our team is reviewing your application, which usually takes up to 48
         hours. You’ll be notified via email upon approval.
       </p>
+
+      <Button
+        className="flex items-center gap-1"
+        onClick={() => (window.location.href = "/")}
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to home
+      </Button>
     </div>
   );
 }

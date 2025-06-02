@@ -36,7 +36,7 @@ export function SignUp() {
         )}
 
         <div className="px-40">
-          <Progress value={(currentStep / 4) * 100} className="w-full  " />
+          <Progress value={(currentStep / 3) * 100} className="w-full  " />
 
           {currentStep === 1 && (
             <>
@@ -63,12 +63,6 @@ export function SignUp() {
           {currentStep === 3 && (
             <>
               <VerifyEmail handleClick={handleNextStep} />
-            </>
-          )}
-
-          {currentStep === 4 && (
-            <>
-              <SuccessScreen />
             </>
           )}
         </div>

@@ -26,11 +26,8 @@ const FormSchema = z.object({
   password: z.string().min(8, { message: "Field is Required" }),
 });
 
-interface IUserDetailsFormProps {
-  handleClick: () => void;
-  HandleLogin: () => void;
-}
-export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
+
+export function LoginForm() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -93,7 +90,7 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
       } else {
         switch (message) {
           case 401:
-            HandleLogin();
+            navigate("/wait-approval");
             break;
           case "User account unverified":
             toast({
@@ -126,7 +123,7 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full grid grid-cols-2  space-y-2"
+        className=" grid grid-cols-2  space-y-2"
       >
         <FormField
           control={form.control}
@@ -186,7 +183,9 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
 
         <span
           className="text-primary flex justify-end  col-span-2 cursor-pointer"
-          onClick={handleClick}
+          onClick={() => {
+            navigate("/forgot-password");
+          }}
         >
           Forgot password?
         </span>
