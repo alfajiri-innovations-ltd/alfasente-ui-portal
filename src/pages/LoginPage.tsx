@@ -1,6 +1,6 @@
 import { LoginForm } from "@/components/AuthForms/LoginForm";
 import { X } from "lucide-react";
-import { Router, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const navigate = useNavigate();

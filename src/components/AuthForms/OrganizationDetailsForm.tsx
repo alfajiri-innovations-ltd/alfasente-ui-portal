@@ -13,23 +13,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { getClient, setClient } from "@/lib/cookies/UserMangementCookie";
+import { useState } from "react";
+import { useClientContext } from "@/hooks/ClientContext";
 
 const FormSchema = z.object({
   clientName: z.string().min(2, {
     message: "Field is required",
   }),
-  walletBalance: z.number().min(0),
   clientEmail: z.string().email({ message: "Invalid email address" }).min(1, {
     message: "Field is required",
   }),
   physicalAddress: z.string().min(2, { message: "Field is required" }),
   clientPhoneNumber: z.string().min(2, { message: "Field is required" }),
   certificateOfIncorparation: z
-    .string()
-    .url({ message: "Invalid URL" })
-    .min(2, {
-      message: "Field is required",
+    .any()
+    .refine((file) => file?.type === "application/pdf", {
+      message: "Only PDF files are allowed",
     }),
 });
 
@@ -40,31 +39,33 @@ export interface IOrganizationDetailsFormProps {
 export function OrganizationDetailsForm({
   handleClick,
 }: IOrganizationDetailsFormProps) {
-  const client = getClient() || {};
+  const { clientData, setClientData } = useClientContext();
+
+  const [fileName, setFileName] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      clientName: client.clientName || "",
-      clientPhoneNumber: client.clientPhoneNumber || "",
-      clientEmail: client.clientEmail || "",
-      walletBalance: client.walletBalance || 0,
-      // Removed date_of_birth as it is not part of the FormSchema
-     
-    
+      clientName: clientData?.clientName || "",
+      clientPhoneNumber: clientData?.clientPhoneNumber || "",
+      clientEmail: clientData?.clientEmail || "",
 
-      certificateOfIncorparation: client.certificateOfIncorparation || "",
-      physicalAddress: client.physicalAddress || "",
+      certificateOfIncorparation:
+        clientData?.certificateOfIncorparation || null,
+      physicalAddress: clientData?.physicalAddress || "",
     },
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     console.log("Submitted Data:", data);
-    setClient({
-      ...data,
-      date_of_birth: client.date_of_birth || "",
-      walletID: client.walletID || "", 
+    setClientData({
+      clientName: data.clientName,
+      clientEmail: data.clientEmail,
+      physicalAddress: data.physicalAddress,
+      clientPhoneNumber: data.clientPhoneNumber,
+      certificateOfIncorparation: data.certificateOfIncorparation, // This is the File object
     });
+
     handleClick();
   };
 
@@ -146,23 +147,56 @@ export function OrganizationDetailsForm({
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="certificateOfIncorparation"
-          render={({ field }) => (
+          render={({ field: { onChange, ref } }) => (
             <FormItem>
-              <FormLabel>Certificate of Incorporation Link</FormLabel>
+              <FormLabel>Certificate of Incorporation</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="https://www.example.com"
-                  className="border-[#DCE1EC]"
-                  {...field}
-                />
+                <div>
+                  <input
+                    id="certificate-upload"
+                    type="file"
+                    accept=".pdf,.png,.jpg,.jpeg"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+
+                      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+
+                      if (file.size > maxSizeInBytes) {
+                        alert(
+                          "File size exceeds 5MB. Please choose a smaller file."
+                        );
+                        e.target.value = "";
+                        setFileName(null); // Reset the input
+                        return;
+                      }
+                      setFileName(file.name); // Save the name
+                      onChange(file);
+                    }}
+                    ref={ref}
+                  />
+
+                  <label
+                    htmlFor="certificate-upload"
+                    className="block cursor-pointer text-xs bg-[#EDF0F7] text-gray-700 border border-[#DCE1EC] rounded-md px-4 py-2 text-center hover:bg-[#e2e6f0] transition"
+                  >
+                    <span className="text-primary underline">Upload</span> file
+                    (.jpg, .png, .pdf)(max 5MB){" "}
+                    {fileName && (
+                      <span className="mt-2 font-bold text-sm text-gray-600">
+                        <span className="font-medium">{fileName}</span>
+                      </span>
+                    )}
+                  </label>
+                </div>
               </FormControl>
               <FormDescription>
-                Provide a link to the Certificate of Incorporation that can be
-                viewed online.
+                Upload a scanned PDF or image of the Certificate of
+                Incorporation.
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { SignUp } from "../Client/Signup";
 import { MobilePopOver } from "./LandingPage/MobileNav";
 import NavItems from "./NavItems";
 import { Button } from "../ui/button";

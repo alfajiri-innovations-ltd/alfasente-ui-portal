@@ -1,3 +1,4 @@
+import SuccessScreen from "@/components/Client/SuccessScreen";
 import Header from "@/components/Commons/Header";
 
 function WaitScreen() {

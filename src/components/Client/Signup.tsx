@@ -6,7 +6,6 @@ import { ArrowLeft } from "lucide-react";
 import { OrganizationDetailsForm } from "../AuthForms/OrganizationDetailsForm";
 import { UserDetailsForm } from "../AuthForms/UserDetailsForm";
 import VerifyEmail from "./VerifyEmail";
-import SuccessScreen from "./SuccessScreen";
 
 export function SignUp() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -62,7 +61,7 @@ export function SignUp() {
 
           {currentStep === 3 && (
             <>
-              <VerifyEmail handleClick={handleNextStep} />
+              <VerifyEmail  />
             </>
           )}
         </div>

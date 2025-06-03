@@ -1,10 +1,10 @@
-import { ForgotPasswordForm } from "@/components/AuthForms/ForgotPasswordForm";
-import { ResetPasswordForm } from "@/components/AuthForms/ResetPasswordForm";
-import ResetOtp from "@/components/Client/ResetPasswordOtp";
-import { X } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
+import { OrganizationDetailsForm } from "@/components/AuthForms/OrganizationDetailsForm";
+import { UserDetailsForm } from "@/components/AuthForms/UserDetailsForm";
+import VerifyEmail from "@/components/Client/VerifyEmail";
 
 function Register() {
   const navigate = useNavigate();
@@ -13,17 +13,19 @@ function Register() {
     setCurrentStep((prev) => Math.min(prev + 1, 4));
   };
 
-  const BackToLogin = () => {
-    navigate("/login");
+  const handlePreviousStep = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
   };
 
   return (
     <div className="flex flex-col h-screen">
       {currentStep > 1 && (
-        <ArrowLeft
-          className="h-4 w-4 cursor-pointer"
-          onClick={handlePreviousStep}
-        />
+        <div className="rounded-full  md:translate-y-16 translate-y-14 translate-x-10 w-min p-2 bg-[#EDF0F7]">
+          <ArrowLeft
+            className="h-6 w-6 cursor-pointer"
+            onClick={handlePreviousStep}
+          />
+        </div>
       )}
       <div className="rounded-full ml-auto -translate-x-10 translate-y-5 md:translate-y-10 w-min p-2 bg-[#EDF0F7]">
         <X
@@ -34,7 +36,7 @@ function Register() {
         />
       </div>
 
-      <div className="flex flex-col  mt-10 items-center md:justify-center  ">
+      <div className="flex flex-col  mt-4 items-center md:justify-center  ">
         <Progress
           value={(currentStep / 3) * 100}
           className="md:w-[40vw] w-[80vw] translate-y-8 "
@@ -42,8 +44,8 @@ function Register() {
 
         <div className="md:w-[40vw] w-[80vw]">
           {currentStep === 1 && (
-            <div className=" mt-16">
-              <h5 className="text-left my-2 font-semibold text-[22px]">
+            <div className=" mt-10">
+              <h5 className="text-left font-semibold text-[22px]">
                 Tell us about your organization
               </h5>
               <OrganizationDetailsForm handleClick={handleNextStep} />
@@ -55,7 +57,7 @@ function Register() {
           )}
 
           {currentStep === 2 && (
-            <div className=" mt-16">
+            <div className=" mt-10">
               <h5 className="text-left font-semibold text-[22px] my-2">
                 Setup your profile
               </h5>
@@ -64,8 +66,8 @@ function Register() {
           )}
 
           {currentStep === 3 && (
-            <div className=" mt-16">
-              <VerifyEmail  />
+            <div className=" mt-10">
+              <VerifyEmail />
             </div>
           )}
         </div>

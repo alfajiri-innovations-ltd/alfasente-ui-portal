@@ -28,11 +28,10 @@ const FormSchema = z.object({
   }),
 });
 interface IEmailOtpProps {
-  handleClick: () => void;
   resetTimer: boolean;
 }
 
-export function EmailOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
+export function EmailOtpForm({ resetTimer }: IEmailOtpProps) {
   const [value, setValue] = useState("");
   const [timeLeft, setTimeLeft] = useState(600);
   const [isSubmitting, setSubmitting] = useState(false);
@@ -161,7 +160,7 @@ export function EmailOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
 
         <Button
           type="submit"
-          className="w-full md:w-[417px] h-11 rounded-[8px]"
+          className="w-full h-11 rounded-[8px]"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Verifying..." : "Verify"}

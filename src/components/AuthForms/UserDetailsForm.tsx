@@ -14,11 +14,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import {  EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CheckboxDemo } from "../Client/TermsCheckBox";
 import { CreateClient, CreateUser } from "@/lib/api-routes";
 import { toast } from "@/hooks/use-toast";
+import { useClientContext } from "@/hooks/ClientContext";
 
 const FormSchema = z.object({
   firstName: z.string().min(2, {
@@ -39,6 +40,7 @@ interface IUserDetailsFormProps {
 export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const { clientData, setClientData } = useClientContext();
 
   const [submitting, setSubmitting] = useState(false);
   const togglePassword = () => {
@@ -75,18 +77,28 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
 
         localStorage.setItem("email", userData.user_email);
 
-        const clientObject = JSON.parse(localStorage.getItem("client") || "{}");
+        const clientObject = clientData;
 
-        const clientData = {
+        const clientDataToSend = {
           ...clientObject,
           userId: userId,
         };
+
+        console.log("clientData:", clientDataToSend);
+
+        const clientFormData = new FormData();
+        for (const [key, value] of Object.entries(clientDataToSend)) {
+          if (value instanceof File) {
+            clientFormData.append(key, value); // Send file as-is
+          } else {
+            clientFormData.append(key, String(value)); // Safe for strings/numbers
+          }
+        }
+
         const clientResponse = await fetch(CreateClient, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(clientData),
+
+          body: clientFormData,
         });
 
         if (clientResponse.ok) {
@@ -99,12 +111,22 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
           });
 
           setTimeout(() => {
-            localStorage.removeItem("client");
+            setClientData({
+              clientName: "",
+              clientEmail: "",
+              physicalAddress: "",
+              clientPhoneNumber: "",
+              certificateOfIncorparation: "",
+            });
             handleClick();
           }, 2000);
         } else {
           const clientError = await clientResponse.json();
-          console.error("Client creation failed:", clientError);
+          toast({
+            variant: "destructive",
+            title: "Failure",
+            description: `Client creation failed. ${clientError.message}`,
+          });
         }
       } else {
         const userError = await userResponse.json();

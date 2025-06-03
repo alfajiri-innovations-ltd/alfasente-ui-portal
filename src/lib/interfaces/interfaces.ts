@@ -1,13 +1,13 @@
 export interface IClient {
   clientName: string;
-  walletBalance: number;
+
   isApproved?: string;
   clientEmail: string;
   physicalAddress: string;
   clientPhoneNumber: string;
   clientID?: number;
-  date_of_birth: string;
-  walletID: {
+  // date_of_birth?: string;
+  walletID?: {
     walletID: number;
     airtelWalletBalance: string;
     mtnWalletBalance: string;
@@ -53,7 +53,7 @@ export interface IMembers {
   amount: number;
   mobileMoneyNumber: string;
   serviceProvider?: string;
-  clientID: number;
+  clientID?: number;
 }
 
 export interface IList {
@@ -75,7 +75,6 @@ export interface listsWithMembers {
   status: string;
   clientID: number;
 }
-
 
 export interface IDetails {
   accountNumber: string;

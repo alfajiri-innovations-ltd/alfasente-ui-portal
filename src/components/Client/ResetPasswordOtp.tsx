@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { PaaswordOtpForm } from "../AuthForms/PasswordResetOtpForm";
+import { toast } from "@/hooks/use-toast";
+import { ForgotPassword } from "@/lib/api-routes";
 
 interface IVerifyEmailProps {
   handleClick: () => void;
@@ -20,12 +22,12 @@ function ResetOtp({ handleClick }: IVerifyEmailProps) {
       });
 
       if (response.ok) {
-        localStorage.setItem("email", data.user_email);
+        localStorage.setItem("email", email ?? "");
 
         toast({
           variant: "success",
           title: "Successful",
-          description: `Otp sucessfully sent to ${data.user_email}`,
+          description: `Otp sucessfully sent to ${email}`,
         });
       } else {
         toast({

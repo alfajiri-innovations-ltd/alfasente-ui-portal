@@ -24,6 +24,8 @@ import PrivateRoutes from "./components/Commons/PrivateRoutes";
 import LoginPage from "./pages/LoginPage";
 import Register from "./pages/Register";
 import ForgotPasswordPage from "./pages/ForgotPassword";
+import WaitScreen from "./pages/WaitScreen";
+import { ClientProvider } from "./hooks/ClientContext";
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
@@ -32,6 +34,7 @@ function App() {
       <Toaster />
 
       <UserProvider>
+        <ClientProvider>
         <BrowserRouter>
           <Routes>
             <Route element={<PrivateRoutes />}>
@@ -61,6 +64,7 @@ function App() {
             <Route path="/register" element={<Register />} />
           </Routes>
         </BrowserRouter>
+        </ClientProvider>
       </UserProvider>
     </>
   );
