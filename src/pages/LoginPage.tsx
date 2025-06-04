@@ -19,7 +19,7 @@ function LoginPage() {
       <div className="flex flex-col md:mt-32 mt-10 items-center md:justify-center  ">
         <div className="md:w-[30vw] w-[80vw]">
           <h5 className="text-left my-2 font-semibold text-[22px]">
-            Welcome back! Log in here
+            Welcome back.Login here
           </h5>
           <LoginForm />
           <p className="flex justify-center my-2">
