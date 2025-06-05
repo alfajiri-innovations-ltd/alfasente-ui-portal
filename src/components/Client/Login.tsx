@@ -39,7 +39,7 @@ export function Login() {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="w-[50vw] min-h-[60vh]  ">
+      <DialogContent className="w-[40vw] min-h-[60vh]  ">
         <div className=" ">
           <img
             src="/images/logos/alfasente-logo.svg"
@@ -47,7 +47,7 @@ export function Login() {
             width={150}
           />
         </div>
-        <div className="px-20">
+        <div className="px-5">
           {currentStep > 1 && (
             <Progress value={(currentStep / 4) * 100} className="w-full  " />
           )}

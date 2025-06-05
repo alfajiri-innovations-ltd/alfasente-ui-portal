@@ -1,8 +1,17 @@
 import { Check } from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useUser } from "@/hooks/UserContext";
+import { useNavigate } from "react-router-dom";
 
-function SuccessFulTopUp() {
+interface SuccessFulTopUpProps {
+  ManualTopUpDetails: any;
+}
+
+function SuccessFulTopUp({ ManualTopUpDetails }: SuccessFulTopUpProps) {
+  const user = useUser();
+
+  const navigate=useNavigate()
   return (
     <div className="flex flex-col justify-center gap-2">
       <div className="bg-[#ECF8EF] w-16 h-16 rounded-full mx-auto flex justify-center items-center">
@@ -17,36 +26,45 @@ function SuccessFulTopUp() {
           Your request has been received. It will be reviewed and processed
           shortly.
         </span>
-        <span>27 Nov, 2024, at 11:25 AM</span>
+        <span>
+          {new Intl.DateTimeFormat("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+          }).format(new Date())}
+        </span>{" "}
       </div>
       <Separator className="dotted" />
 
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <span>Amount to top-up</span>
-          <span>UGX 5,000,300</span>
+          <span>UGX {ManualTopUpDetails.amount}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Request ID</span>
-          <span>#TXN098657</span>
-        </div>
+          <span>#TXN{String(ManualTopUpDetails.transactonId).slice(0, 5)}</span>
+          </div>
         <div className="flex items-center justify-between">
           <span>Airtel Money wallet</span>
-          <span>UGX 4,000,000</span>
+          <span>UGX {ManualTopUpDetails?.airtelAllocation || 0}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Mtn Money wallet</span>
-          <span>UGX 4,000,000</span>
+          <span>UGX {ManualTopUpDetails?.mtnAllocation || 0}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>User</span>
-          <span>George Kizza</span>
+          <span>{user?.firstName + " " + user?.lastName}</span>
         </div>
         <div className="flex justify- gap-4">
           <Button variant={"outline"} className="border grow">
             Close
           </Button>
-          <Button className="grow">View Transactions</Button>
+          <Button className="grow" onClick={()=>{navigate('/transactions')}}>View Transactions</Button>
         </div>{" "}
       </div>
     </div>

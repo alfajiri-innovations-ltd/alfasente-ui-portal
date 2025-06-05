@@ -10,6 +10,11 @@ import AuthorizeDeposit from "./AuthorizeDeposit";
 import SuccessFulDeposit from "./SuccessFulDeposit";
 import SuccessFulTopUp from "./SuccessFulTopup";
 
+interface FundWalletProps {
+  onClick?: () => void;
+}
+
+
 export function FundWallet() {
   const [DialogOpen, setIsDialogOpen] = useState(false);
   const [Details, setDetails] = useState({
@@ -19,6 +24,14 @@ export function FundWallet() {
       airtelAllocation: 0,
       mtnAllocation: 0,
       
+    });
+
+    const [ManualDetails, setManualDetails] = useState({
+      amount: "",
+      proofOfCredit: "",
+      airtelAllocation: 0,
+      mtnAllocation: 0,
+      transactionID: "",
     });
 
   const [activeTab, setActiveTab] = useState("Self Top-up");
@@ -107,11 +120,11 @@ export function FundWallet() {
           )}
 
           {activeTab === "Manual Top-up" && currentStep === 1 && (
-            <ManualWalletDetails handleNextStep={handleNextStep} />
+            <ManualWalletDetails handleNextStep={handleNextStep} setManualDetails={setManualDetails} />
           )}
 
           {activeTab === "Manual Top-up" && currentStep === 2 && (
-            <SuccessFulTopUp />
+            <SuccessFulTopUp ManualTopUpDetails={ManualDetails} />
           )}
         </div>
       </DialogContent>

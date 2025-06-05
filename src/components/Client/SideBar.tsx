@@ -19,14 +19,20 @@ function SideBar() {
 
   const client = GetClient();
 
+  const userRole = user?.role_name;
 
-  const userRole = user?.role_name || "admin";
   const sidebarItems = [
     {
       title: "Dashboard",
       icon: <LayoutDashboard />,
+      href: "/admin/dashboard",
+      roles: ["admin"],
+    },
+    {
+      title: "Dashboard",
+      icon: <LayoutDashboard />,
       href: "/dashboard",
-      roles: ["admin", "client_employee", "client_admin"],
+      roles: ["client_employee", "client_admin"],
     },
 
     {
@@ -45,7 +51,7 @@ function SideBar() {
       title: "Beneficiaries",
       icon: <CircleUserRound />,
       href: "/beneficiaries",
-      roles: ["admin", "client_employee", "client_admin"],
+      roles: ["client_employee", "client_admin"],
     },
     {
       title: "Staff",
@@ -56,8 +62,21 @@ function SideBar() {
     {
       title: "Transactions",
       icon: <FaMoneyBillTransfer className="w-6 h-6" />,
+      href: "/admin/transactions",
+      roles: ["admin"],
+    },
+    {
+      title: "Manual top-up",
+      icon: <FaMoneyBillTransfer className="w-6 h-6" />,
+      href: "/admin/manuals",
+      roles: ["admin"],
+    },
+
+    {
+      title: "Transactions",
+      icon: <FaMoneyBillTransfer className="w-6 h-6" />,
       href: "/transactions",
-      roles: ["admin", "client_employee", "client_admin"],
+      roles: ["client_employee", "client_admin"],
     },
     {
       title: "Teams",
@@ -78,8 +97,8 @@ function SideBar() {
       roles: ["admin", "client_employee", "client_admin"],
     },
   ];
-  const filteredItems = sidebarItems.filter((item) =>
-    item.roles.includes(userRole),
+  const filteredItems = sidebarItems.filter(
+    (item) => userRole && item.roles.includes(userRole)
   );
 
   return (
@@ -93,7 +112,7 @@ function SideBar() {
           />
         </div>
       </Link>
-      {user?.role_name !== "admin" && (
+      {user?.role_name === "client_admin" ? (
         <div className="flex border items-center px-2 py-1 rounded-[5px] gap-3">
           <img src="/images/icons/enterprise.svg" alt="Alfasente" width={25} />
           <div className="flex flex-col">
@@ -101,6 +120,8 @@ function SideBar() {
             <span className="text-[12px] font-normal">10 staff</span>
           </div>
         </div>
+      ) : (
+        ""
       )}
       <ul className="space-y-2 my-5">
         {filteredItems.map((item, index) => (

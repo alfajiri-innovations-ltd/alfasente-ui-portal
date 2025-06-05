@@ -12,13 +12,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { useUser } from "@/hooks/UserContext";
+import { ManualTopUp } from "@/lib/api-routes";
+import { getUserToken } from "@/lib/cookies/UserMangementCookie";
+import { toast } from "@/hooks/use-toast";
+import { ScrollArea } from "../ui/scroll-area";
 
 const FormSchema = z.object({
   amount: z
     .number()
     .min(1000, { message: "Amount must be at least 1,000" })
     .max(3000000, { message: "Amount cannot exceed 3,000,000" }),
-  proofOfPayment: z.instanceof(File),
+  proofOfCredit: z.instanceof(File),
 
   airtelAllocation: z
     .number()
@@ -31,23 +36,81 @@ const FormSchema = z.object({
 
 interface IManualWalletDetails {
   handleNextStep: () => void;
+  setManualDetails: (data: any) => void;
 }
-function ManualWalletDetails({ handleNextStep }: IManualWalletDetails) {
+function ManualWalletDetails({ handleNextStep ,setManualDetails}: IManualWalletDetails) {
   const [fileName, setFileName] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const user = useUser();
+  const token = getUserToken();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       amount: undefined,
-      proofOfPayment: undefined,
+      proofOfCredit: undefined,
       airtelAllocation: undefined,
       mtnAllocation: undefined,
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log("Submitted Data:", data);
-    handleNextStep();
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      setSubmitting(true);
+      const clientID = user?.clientID;
+      if (isNaN(clientID ?? NaN)) throw new Error("Invalid client ID");
+
+      // Create FormData object
+
+      const formData = new FormData();
+      formData.append("clientID", String(clientID));
+      formData.append("airtelAllocation", String(data.airtelAllocation));
+      formData.append("mtnAllocation", String(data.mtnAllocation));
+      formData.append("amount", String(data.amount));
+      formData.append("proofOfCredit", data.proofOfCredit);
+
+      const response = await fetch(ManualTopUp(), {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      const responseBody = await response.json();
+
+      if (!response.ok) {
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: `${responseBody.message}`,
+        });
+      } else {
+        toast({
+          variant: "success",
+          title: "Successful",
+          description: `${responseBody.message}`,
+        });
+
+       const transactonId= responseBody.result.transactionID;
+
+       const formEntries = Object.fromEntries(formData.entries());
+       const newData = { ...formEntries, transactonId };
+       setManualDetails(newData);
+
+        setTimeout(() => {
+          handleNextStep();
+        }, 2000);
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: `An error occurred: ${error}`,
+      });
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -56,6 +119,8 @@ function ManualWalletDetails({ handleNextStep }: IManualWalletDetails) {
         <h3 className="text-base font-medium my-3">
           Ensure you have completed the payment before submitting this request.
         </h3>
+
+        <ScrollArea className="h-[400px] w-full">
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -89,7 +154,7 @@ function ManualWalletDetails({ handleNextStep }: IManualWalletDetails) {
             {/* Proof of Payment (Image Upload) */}
             <FormField
               control={form.control}
-              name="proofOfPayment"
+              name="proofOfCredit"
               render={({ field: { onChange, value, ...rest } }) => (
                 <FormItem className="space-y-1 col-span-2">
                   <FormLabel>Proof of Payment</FormLabel>
@@ -199,11 +264,12 @@ function ManualWalletDetails({ handleNextStep }: IManualWalletDetails) {
               </div>
             </div>
 
-            <Button type="submit" className="w-full">
-              Submit Request
+            <Button type="submit" className="w-full" disabled={submitting}>
+              {submitting ? "Submitting..." : "Submit Request"}
             </Button>
           </form>
         </Form>
+        </ScrollArea>
       </div>
     </>
   );

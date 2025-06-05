@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { ResetPassword } from "@/lib/api-routes";
-import { SuccessToast } from "../ui/Toasts";
+import { toast } from "@/hooks/use-toast";
 
 interface IEmailOtpProps {
   handleClick: () => void;
@@ -73,16 +73,28 @@ export function ResetPasswordForm({ handleClick }: IEmailOtpProps) {
       const responseBody = await response.text();
 
       if (response.ok) {
-        SuccessToast("Password Reset Successful, ");
+        toast({
+          variant: "success",
+          title: "Successful",
+          description: "Password reset successfully",
+        });
 
         setTimeout(() => {
           handleClick();
         }, 3000);
       } else {
-        console.log(responseBody);
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: `An error occurred: ${responseBody}`,
+        });
       }
     } catch (error: any) {
-      console.log("An Error occurred, try again: " + error.toString());
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: ` An unexpected error occurred: ${error.message}`,
+      });
     } finally {
       setSubmitting(false);
     }

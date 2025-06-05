@@ -17,7 +17,8 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { setAuthUser, setUserToken } from "@/lib/cookies/UserMangementCookie";
 import { LogIn } from "@/lib/api-routes";
-import { ErrorToast, SuccessToast } from "../ui/Toasts";
+import { toast } from "@/hooks/use-toast";
+// import { toast } from "sonner"
 
 const FormSchema = z.object({
   user_email: z.string().min(2, { message: "Field is Required" }).email(),
@@ -58,37 +59,64 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
       });
 
       const responseBody = await response.text();
+
       let res;
       try {
         res = JSON.parse(responseBody);
       } catch (parseError) {
-        console.error("Error parsing response:", parseError);
-        ErrorToast("Unexpected server response.");
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: "An expected server respone.",
+        });
         return;
       }
 
       const message = res?.result?.code;
 
       if (response.status === 200) {
+        toast({
+          variant: "success",
+          title: "Successful",
+          description: "Login Successful , Redirecting...",
+        });
         setUserToken(res.token);
         setAuthUser(res.userData);
-        navigate("/dashboard");
-        SuccessToast("Login Successful, Redirecting You ...");
+
+        setTimeout(() => {
+          if (res.userData?.role_name === "admin") {
+            navigate("/admin/dashboard");
+          } else {
+            navigate("/dashboard");
+          }
+        }, 2000);
       } else {
         switch (message) {
           case 401:
             HandleLogin();
             break;
           case "User account unverified":
-            ErrorToast("User account unverified. Please verify your email.");
+            toast({
+              variant: "destructive",
+              title: "Failure",
+              description: "User account unverified. Please verify your email.",
+            });
+
             break;
           default:
-            ErrorToast("Invalid username or password");
+            toast({
+              variant: "destructive",
+              title: "Failure",
+              description: "Invalid name or password.",
+            });
         }
       }
     } catch (error: any) {
-      console.error("Login error:", error);
-      ErrorToast("An error occurred. Please try again later.");
+      // toast({
+      //   variant: "destructive",
+      //   title: "Failure",
+      //   description: "An error occurred. Please try again later.",
+      // });
     } finally {
       setSubmitting(false);
     }
@@ -109,6 +137,7 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
               <FormControl>
                 <Input
                   placeholder="johndoe@gmail"
+                  disabled={submitting}
                   className=" border-[#DCE1EC]"
                   {...field}
                 />
@@ -130,6 +159,7 @@ export function LoginForm({ handleClick, HandleLogin }: IUserDetailsFormProps) {
                   <Input
                     type={passwordVisible ? "text" : "password"}
                     placeholder="Enter your password"
+                    disabled={submitting}
                     className=" border-none focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none  "
                     {...field}
                   />

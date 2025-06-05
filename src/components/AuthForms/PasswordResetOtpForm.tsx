@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/input-otp";
 import { useEffect, useState } from "react";
 import { VerifyPasswordOtp } from "@/lib/api-routes";
-import { ErrorToast, SuccessToast } from "../ui/Toasts";
+import { toast } from "@/hooks/use-toast";
 
 const FormSchema = z.object({
   pin: z.number().min(6, {
@@ -89,17 +89,29 @@ export function PaaswordOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
       console.log(response);
 
       if (response.ok) {
-        SuccessToast("OTP has been successfully verified");
+        toast({
+          variant: "success",
+          title: "Successful",
+          description: "OTP verified successfully",
+        });
         setTimeout(() => {
           handleClick();
         }, 3000);
       } else {
-        ErrorToast("Invalid OTP");
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: "Invalid OTP",
+        });
         form.reset();
         setValue("");
       }
     } catch (error) {
-      console.log(error);
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: ` An unexpected error occurred.`,
+      });
     } finally {
       setSubmitting(false);
     }

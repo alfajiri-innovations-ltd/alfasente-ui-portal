@@ -1,88 +1,29 @@
-
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import { Download, Filter } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
-import { TransactionsTable } from "@/components/Client/Tables/TransactionsTable";
-import { GetOrganizationTransactions } from "@/lib/services/FectchTransactionsByOrganization";
 import Layout from "@/components/Commons/Layout";
+import { GetTransactions } from "@/lib/services/FetchAllTranscations";
+import { TransactionsTable } from "@/components/Admin/Tables/TransationsTable";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-// const transactions = [
-//   {
-//     transactionType: "Sent",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Sent",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Sent",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Sent",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Deposit",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-
-//   {
-//     transactionType: "Deposit",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Deposit",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Deposit",
-//     receipient: "Kalule Michael",
-//     status: "Failed",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Deposit",
-//     receipient: "Kalule Michael",
-//     status: "Failed",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-// ];
-function Transactions() {
+function AdminTransactions() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [activeTab, setActiveTab] = useState<
     "all" | "deposit" | "success" | "sent" | "failed"
   >("all");
 
-  const transactions = GetOrganizationTransactions();
+  const transactions = GetTransactions();
 
   console.log(transactions);
 
@@ -119,16 +60,18 @@ function Transactions() {
         <div className="flex justify-between items-center">
           <div className="flex  items-center p-1.5 justify-center">
             <div className="flex  md:gap-2  text-[15px] font-medium">
-              <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                  activeTab === "all"
-                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                    : "  border-[#F7F9FD]"
-                }  px-2 py-[2px]`}
-                onClick={() => setActiveTab("all")}
-              >
-                All <span className="mx-1">({transactions.length})</span>
-              </h4>
+              <Select>
+                <SelectTrigger className="min-w-[180px] w-[200px]">
+                  <SelectValue placeholder="All Organisations (20)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Organizations</SelectLabel>
+                    <SelectItem value="kcb">KCB Bank</SelectItem>
+                    <SelectItem value="equity">Equity Bank</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
 
               <h4
                 className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
@@ -231,4 +174,4 @@ function Transactions() {
   );
 }
 
-export default Transactions;
+export default AdminTransactions;
