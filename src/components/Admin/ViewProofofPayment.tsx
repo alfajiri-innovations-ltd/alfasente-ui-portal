@@ -10,9 +10,14 @@ export function ViewProof({ proof }: RejectApplicationProps) {
 
   console.log(proof);
 
-//   const handleClose = () => {
-//     setIsDialogOpen(false);
-//   };
+  const BASERUL = `${import.meta.env.VITE_BACKEND_API_URL}`;
+
+ const imageUrl = `${BASERUL}/${proof}`;
+ console.log("Image URL:", imageUrl);
+
+  //   const handleClose = () => {
+  //     setIsDialogOpen(false);
+  //   };
 
   return (
     <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
@@ -22,15 +27,15 @@ export function ViewProof({ proof }: RejectApplicationProps) {
         </span>
       </DialogTrigger>
 
-      <DialogContent className="w-[30vw]">
-        <div className="flex justify-center items-center h-full">
+      <DialogContent className="w-[40vw] h-[25vw] bg-slate-200 p-0 rounded-2xl overflow-hidden">
+        <div className="flex justify-center items-center h-full w-full">
           <img
-            src={proof}
+            src={`${BASERUL}/${proof}`}
             alt="Proof of Payment"
-            className="max-h-[400px] max-w-full object-cover"
+            className="h-full w-full  object-contain"
           />
         </div>
-        <div></div>
+       
       </DialogContent>
     </Dialog>
   );

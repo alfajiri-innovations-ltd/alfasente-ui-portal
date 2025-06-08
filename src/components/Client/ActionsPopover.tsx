@@ -11,6 +11,8 @@ import { listsWithMembers } from "@/lib/interfaces/interfaces";
 import { useLocation } from "react-router-dom";
 import { ViewApplication } from "../Admin/ReviewApplication";
 import { ViewTransactionDialog } from "./ViewTransaction";
+import { ViewRequest } from "../Admin/Review-Request";
+import { InitiateTopUp } from "../Admin/InitiateTopUp";
 
 interface ActionProps {
   list?: listsWithMembers;
@@ -65,14 +67,9 @@ export function ActionsPopover({
         {pathname === "/admin/manuals" && (
           <>
             {" "}
-            <div className="flex items-center gap-2 cursor-pointer text-[#000000CC]">
-              <EyeIcon className="h-4 w-4" />
-              <span>Review Request</span>
-            </div>
-            <div className="flex items-center gap-2 cursor-pointer text-[#000000CC]">
-              <Edit className="h-4 w-4" />
-              <span>Initiate top-up</span>
-            </div>
+            <ViewRequest transactionID={transactionID} />
+            <InitiateTopUp transactionID={transactionID} triggerMode />
+            
           </>
         )}
       </PopoverContent>
