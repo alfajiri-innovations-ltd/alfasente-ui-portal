@@ -6,7 +6,7 @@ import { MdMailOutline } from "react-icons/md";
 
 function Footer() {
   return (
-    <footer className="mt-20 lg:px-[6.25vw] ">
+    <footer className="mt-20 lg:px-[6.25vw] px-4 ">
       <Separator className="bg-[#D4DAE6]" />
       <div className="flex justify-between py-5">
         <div className="h-[31px] w-[154px] hidden xl:flex items-center justify-center overflow-hidden">

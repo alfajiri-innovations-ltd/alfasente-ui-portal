@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { EmailOtpForm } from "../AuthForms/EmailOtp";
 
-interface IVerifyEmailProps {
-  handleClick: () => void;
-}
-function VerifyEmail({ handleClick }: IVerifyEmailProps) {
+
+function VerifyEmail() {
   const email = localStorage.getItem("email");
 
   const [resetTimer] = useState(false);
@@ -18,7 +16,7 @@ function VerifyEmail({ handleClick }: IVerifyEmailProps) {
         Enter the verification code sent to
         <span className="font-semibold"> {email}</span>
       </span>
-      <EmailOtpForm resetTimer={resetTimer} handleClick={handleClick} />
+      <EmailOtpForm resetTimer={resetTimer}  />
 
       <div className="my-4 flex justify-center">
         <h4 className="text-inactive">

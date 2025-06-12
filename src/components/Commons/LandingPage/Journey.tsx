@@ -19,9 +19,9 @@ function Journey() {
   return (
     <section
       id="journey"
-      className="flex flex-col  justify-center items-center mt-14 lg:mt-[98px] lg:px-[6.25vw]"
+      className="flex flex-col  justify-center items-center mt-14 lg:mt-[98px] mx-4 xl:mx-0 lg:px-[6.25vw]"
     >
-      <h3 className="font-bold text-black/90 text-[42px]">How It Works</h3>
+      <h3 className="font-bold text-black/90 text-xl md:text-[42px]">How It Works</h3>
 
       <div className="grid lg:grid-cols-3 gap-5 my-5 ">
         {steps.map((step, index) => (

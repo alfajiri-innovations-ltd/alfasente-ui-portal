@@ -5,16 +5,12 @@ import { useNavigate } from "react-router-dom";
 function Hero() {
   const navigate = useNavigate();
   const HandleClick = () => {
-    navigate("/signup");
+    navigate("/login");
   };
   return (
     <div
-      className="flex justify-center flex-col relative items-center mt-10 lg:mt-10 bg-gradient-to-b from-white 30% via-[#E6C2F480] to-[#8D35AA92] "
+      className="flex justify-center flex-col  items-center mt-10 lg:mt-10 bg-gradient-to-b from-white 30% via-[#E6C2F480] to-[#8D35AA92] "
       id="home"
-      // style={{
-      //   background:
-      //     "linear-gradient(to top, #8D35AA99 15%, #8D35AA92 15%, #8D35AA8C 15% , #8D35AA80 15%, #8D35AA73 20%,#8D35AA70 18% , #8D35AA70 15%, #8D35AA6C 20%, #8D35AA66 18%, #8D35AA66 18%, #DABDE3CD 18%, #E9D8EFE2 18%, #E9D8EFE2 30%, #FFFFFF 20%)",
-      // }}
     >
       <h3 className="font-extrabold text-3xl text-[#000000E5] text-center leading-[46px] lg:text-[54px] lg:leading-[120%]">
         Simplify Payments To Many
@@ -23,7 +19,8 @@ function Hero() {
       </h3>
       <p className="text-[#666666] text-center text-[18px] leading-6 font-normal px-1  mt-4">
         Alfasente empowers businesses to process bulk payments,
-        <br className="hidden xl:flex"/> saving time, reducing errors, and growing business.
+        <br className="hidden xl:flex" /> saving time, reducing errors, and
+        growing business.
       </p>
 
       <div className="flex flex-col lg:flex-row my-3  items-center gap-4">
@@ -42,7 +39,7 @@ function Hero() {
           </span>
         </Button>
       </div>
-      <div className="w-[70vw]  xl:h-[60vh] overflow-clip xl:mt-8  ">
+      <div className="w-[70vw] relative  xl:h-[60vh] overflow-clip xl:mt-8  ">
         <img src="/images/heroimage.webp" alt="AdminDashboard" />
       </div>
     </div>

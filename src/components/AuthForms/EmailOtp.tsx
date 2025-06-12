@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,14 +28,14 @@ const FormSchema = z.object({
   }),
 });
 interface IEmailOtpProps {
-  handleClick: () => void;
   resetTimer: boolean;
 }
 
-export function EmailOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
+export function EmailOtpForm({ resetTimer }: IEmailOtpProps) {
   const [value, setValue] = useState("");
   const [timeLeft, setTimeLeft] = useState(600);
   const [isSubmitting, setSubmitting] = useState(false);
+  const navigate =useNavigate();
 
   const email = localStorage.getItem("email");
 
@@ -92,7 +93,7 @@ export function EmailOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
           description: "OTP verified successfully",
         });
         setTimeout(() => {
-          handleClick();
+          navigate("/wait-approval");
         }, 3000);
 
         localStorage.removeItem("email");
@@ -159,7 +160,7 @@ export function EmailOtpForm({ resetTimer, handleClick }: IEmailOtpProps) {
 
         <Button
           type="submit"
-          className="w-full md:w-[417px] h-11 rounded-[8px]"
+          className="w-full h-11 rounded-[8px]"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Verifying..." : "Verify"}

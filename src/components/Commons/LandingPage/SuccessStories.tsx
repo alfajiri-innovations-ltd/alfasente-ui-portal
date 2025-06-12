@@ -50,25 +50,25 @@ export default function SuccessStories() {
 
   return (
     <section
-      className="flex flex-col mt-14 lg:mt-[98px] lg:px-[6.25vw]"
+      className="flex flex-col mt-14 lg:mt-[98px] lg:px-[6.25vw] mx-4 xl:mx-0"
       id="testimonials"
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex flex-col">
-          <h3 className=" font-medium text-[42px] text-black/90">
+          <h3 className=" font-medium text-xl inline-block whitespace-normal break-words md:text-[42px] text-black/90">
             Customer experiences that speak volumes
           </h3>
         </div>
         <div className="flex justify-end items-center gap-3 py-4 ">
           <div
-            className={`prev rounded-full p-1 flex justify-center items-center h-10 w-10 border  ${
+            className={`prev rounded-full p-1 flex justify-center items-center w-6 h-6 md:h-10 md:w-10 border  ${
               currentIndex === 0 ? "bg-[white] border-[#C8CFDE] text-[#1B2029]" : "bg-[#E59339] border-none text-white"
             } `}
           >
             <ChevronLeft className="h-6 w-6 " />
           </div>
           <div
-            className={`next rounded-full p-1 w-10 h-10 border flex justify-center items-center  border-[#CDCED7] ${
+            className={`next rounded-full p-1 h-6 w-6 md:w-10 md:h-10 border flex justify-center items-center  border-[#CDCED7] ${
               currentIndex !== 0 ? "bg-[white] border-[#C8CFDE] text-[#1B2029]" : "bg-[#E59339] text-white border-none"
             }`}
           >

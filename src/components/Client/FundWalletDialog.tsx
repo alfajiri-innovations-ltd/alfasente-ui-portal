@@ -10,9 +10,9 @@ import AuthorizeDeposit from "./AuthorizeDeposit";
 import SuccessFulDeposit from "./SuccessFulDeposit";
 import SuccessFulTopUp from "./SuccessFulTopup";
 
-interface FundWalletProps {
-  onClick?: () => void;
-}
+// interface FundWalletProps {
+//   onClick?: () => void;
+// }
 
 
 export function FundWallet() {

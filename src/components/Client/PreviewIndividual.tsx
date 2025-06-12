@@ -12,7 +12,6 @@ interface PaymentOverViewProps {
 }
 function PaymentOverViewIndividual({
   beneficiary,
-  onClose,
 }: PaymentOverViewProps) {
   const client = GetClient();
 
@@ -45,7 +44,7 @@ function PaymentOverViewIndividual({
           <span className="text-red-500 text-xs cursor-pointer">
             {Charges?.errorMessage}
           </span>
-          <FundWallet onClick={onClose} />
+          <FundWallet  />
         </div>
       )}
 
