@@ -1,6 +1,6 @@
 import { LoginForm } from "@/components/AuthForms/LoginForm";
 import { X } from "lucide-react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -24,7 +24,12 @@ function LoginPage() {
           <LoginForm />
           <p className="flex justify-center my-2">
             <span>New here?</span>
-            <span className="underline"> Create Account</span>
+            <span
+              className="underline cursor-pointer"
+              onClick={() => navigate("/register")}
+            >
+              Create Account
+            </span>
           </p>
         </div>
       </div>

@@ -51,7 +51,14 @@ function Register() {
               <OrganizationDetailsForm handleClick={handleNextStep} />
               <p className="flex justify-center my-2">
                 <span>Already registered?</span>
-                <span className="underline">Login here</span>
+                <span
+                  className="underline cursor-pointer"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  Login here
+                </span>
               </p>
             </div>
           )}
