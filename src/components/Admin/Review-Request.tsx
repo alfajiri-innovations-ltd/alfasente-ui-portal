@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { FetchClient, GetUserById } from "@/lib/api-routes";
 
-import { EyeIcon, Pocket, Wallet } from "lucide-react";
+import { EyeIcon, Wallet } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
 import { GetTransaction } from "@/lib/services/GetTransactionById";
 import { Badge } from "../ui/badge";

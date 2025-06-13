@@ -3,7 +3,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Edit, EyeIcon, MoreHorizontal, UserCircle } from "lucide-react";
+import {  MoreHorizontal, UserCircle } from "lucide-react";
 import { RenameList } from "./RenameListDialog";
 
 import { DeleteList } from "./DeleteDialog";
