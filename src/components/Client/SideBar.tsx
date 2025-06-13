@@ -12,11 +12,12 @@ import { PiBuildingOfficeLight } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import { useUser } from "@/hooks/UserContext";
 import { GetClient } from "@/lib/services/GetClientById";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 function SideBar() {
   const currentPath = window.location.pathname;
   const user = useUser();
-
+  const isMobile = useIsMobile();
   const client = GetClient();
 
   const userRole = user?.role_name;
@@ -102,7 +103,7 @@ function SideBar() {
   );
 
   return (
-    <aside className=" h-full bg-gray-100 p-4">
+    <aside className={`${isMobile ? 'sm:w-2/4' : 'sm:w-1/4'} h-screen bg-gray-100 p-4`}>
       <Link to="/">
         <div>
           <img
@@ -126,17 +127,16 @@ function SideBar() {
       <ul className="space-y-2 my-5">
         {filteredItems.map((item, index) => (
           <li key={index}>
-            <a
-              href={item.href}
-              className={`flex items-center p-2 rounded ${
-                currentPath === item.href
-                  ? "bg-gray-300 text-black"
-                  : "text-[#5C6474] "
-              }`}
+            <Link
+              to={item.href}
+              className={`flex items-center p-2 rounded ${currentPath === item.href
+                ? "bg-gray-300 text-black"
+                : "text-[#5C6474] "
+                }`}
             >
               <span className="mr-3">{item.icon}</span>
               <span className="">{item.title}</span>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

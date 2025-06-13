@@ -12,20 +12,15 @@ function LandingPage() {
     <div className=" xs:w-[100vw]  overflow-x-hidden overflow-y-auto ">
 
       <div className="   ">
-      <Header />
+        <Header />
         <Hero />
-
         <Features />
         <Trusted />
         <SuccessStories />
         <Journey />
         <Question />
-
         <Footer />
       </div>
-
-      
-     
     </div>
   );
 }

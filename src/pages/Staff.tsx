@@ -114,36 +114,33 @@ function Staff() {
     <Layout title="Staff">
       <div className="flex flex-col mx-5 my-5">
         <div className="flex justify-between items-center">
-          <div className="flex  items-center p-1.5 justify-center">
-            <div className="flex  md:gap-2  text-[15px] font-medium">
+          <div className="flex flex-col sm:flex-row items-center p-1.5 justify-center">
+            <div className="flex sm:flex-row flex-col md:gap-2  text-[15px] font-medium">
               <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                  activeTab === "all"
-                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                    : "  border-[#F7F9FD]"
-                }  px-2 py-[2px]`}
+                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "all"
+                  ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                  : "  border-[#F7F9FD]"
+                  }  px-2 py-[2px]`}
                 onClick={() => setActiveTab("all")}
               >
                 All <span className="mx-1">({users.length})</span>
               </h4>
 
               <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                  activeTab === "makers"
-                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                    : "  border-[#F7F9FD]"
-                }  px-2 py-[2px]`}
+                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "makers"
+                  ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                  : "  border-[#F7F9FD]"
+                  }  px-2 py-[2px]`}
                 onClick={() => setActiveTab("makers")}
               >
                 Makers
                 <span className="mx-1">({active.length})</span>
               </h4>
               <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                  activeTab === "checkers"
-                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                    : "  border-[#F7F9FD]"
-                }  px-2 py-[2px]`}
+                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "checkers"
+                  ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                  : "  border-[#F7F9FD]"
+                  }  px-2 py-[2px]`}
                 onClick={() => setActiveTab("checkers")}
               >
                 Checkers
@@ -151,11 +148,10 @@ function Staff() {
               </h4>
 
               <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                  activeTab === "admin"
-                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                    : "  border-[#F7F9FD]"
-                }  px-2 py-[2px]`}
+                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "admin"
+                  ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                  : "  border-[#F7F9FD]"
+                  }  px-2 py-[2px]`}
                 onClick={() => setActiveTab("admin")}
               >
                 Admin
@@ -163,11 +159,10 @@ function Staff() {
               </h4>
 
               <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                  activeTab === "employee"
-                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                    : "  border-[#F7F9FD]"
-                }  px-2 py-[2px]`}
+                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "employee"
+                  ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                  : "  border-[#F7F9FD]"
+                  }  px-2 py-[2px]`}
                 onClick={() => setActiveTab("employee")}
               >
                 Employees
@@ -176,7 +171,7 @@ function Staff() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex sm:flex-row flex-col items-center gap-2">
             {" "}
             <Button variant={"outline"}>
               <span>

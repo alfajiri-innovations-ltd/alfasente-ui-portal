@@ -1,32 +1,37 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Progress } from "@/components/ui/progress";
-import { ArrowLeft } from "lucide-react";
-import { OrganizationDetailsForm } from "../AuthForms/OrganizationDetailsForm";
-import { UserDetailsForm } from "../AuthForms/UserDetailsForm";
-import VerifyEmail from "./VerifyEmail";
+import { useNavigate } from "react-router-dom";
+// import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+// import { Progress } from "@/components/ui/progress";
+// import { ArrowLeft } from "lucide-react";
+// import { OrganizationDetailsForm } from "../AuthForms/OrganizationDetailsForm";
+// import { UserDetailsForm } from "../AuthForms/UserDetailsForm";
+// import VerifyEmail from "./VerifyEmail";
 
 export function SignUp() {
-  const [currentStep, setCurrentStep] = useState(1);
+  const navigate = useNavigate();
+  // const [currentStep, setCurrentStep] = useState(1);
 
-  const handleNextStep = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, 4));
-  };
+  // const handleNextStep = () => {
+  //   setCurrentStep((prev) => Math.min(prev + 1, 4));
+  // };
 
-  const handlePreviousStep = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 1));
-  };
+  // const handlePreviousStep = () => {
+  //   setCurrentStep((prev) => Math.max(prev - 1, 1));
+  // };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button className="flex w-full bg-primary h-11 rounded-[40px] hover:bg-[#7E249A] text-sm shadow-none">
-          Create account
-        </Button>
-      </DialogTrigger>
+    <>
+      {/* // <Dialog>
+    //   <DialogTrigger asChild> */}
+      <Button onClick={() => {
+        navigate('/register')
+      }} className="flex w-full bg-primary h-11 rounded-[40px] hover:bg-[#7E249A] text-sm shadow-none">
+        Create account
+      </Button>
+      {/*  </DialogTrigger>*/}
 
-      <DialogContent className="w-[60vw] h-[98vh] ">
+      {/* <DialogContent className="w-[60vw] h-[98vh] ">
         {currentStep > 1 && (
           <ArrowLeft
             className="h-4 w-4 cursor-pointer"
@@ -65,7 +70,8 @@ export function SignUp() {
             </>
           )}
         </div>
-      </DialogContent>
-    </Dialog>
+      </DialogContent> */}
+      {/* </Dialog> */}
+    </>
   );
 }

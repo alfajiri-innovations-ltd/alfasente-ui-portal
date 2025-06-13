@@ -51,7 +51,7 @@ export function AddBeneficiaryForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full sm:space-y-2">
         <FormField
           control={form.control}
           name="beneficiaryName"

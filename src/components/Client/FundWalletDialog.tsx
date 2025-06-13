@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowLeft, Wallet } from "lucide-react";
 import FundWalletDetails from "./FundWalletDetails";
@@ -18,21 +18,21 @@ import SuccessFulTopUp from "./SuccessFulTopup";
 export function FundWallet() {
   const [DialogOpen, setIsDialogOpen] = useState(false);
   const [Details, setDetails] = useState({
-      amount: "",
-      accountNumber: "",
-      network: "",
-      airtelAllocation: 0,
-      mtnAllocation: 0,
-      
-    });
+    amount: "",
+    accountNumber: "",
+    network: "",
+    airtelAllocation: 0,
+    mtnAllocation: 0,
 
-    const [ManualDetails, setManualDetails] = useState({
-      amount: "",
-      proofOfCredit: "",
-      airtelAllocation: 0,
-      mtnAllocation: 0,
-      transactionID: "",
-    });
+  });
+
+  const [ManualDetails, setManualDetails] = useState({
+    amount: "",
+    proofOfCredit: "",
+    airtelAllocation: 0,
+    mtnAllocation: 0,
+    transactionID: "",
+  });
 
   const [activeTab, setActiveTab] = useState("Self Top-up");
   const [currentStep, setCurrentStep] = useState(1);
@@ -48,12 +48,13 @@ export function FundWallet() {
   return (
     <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <div className="flex px-2 h-10 gap-1 items-center cursor-pointer border  text-black text-[13px] rounded-[8px]">
-          <Wallet className="h-3 w-3" />
+        <div className="flex px-2 h-10 sm:gap-1 justify-center items-center cursor-pointer border text-black text-[13px] rounded-[8px]">
+          <Wallet className="h-3 w-5" />
           <span>Fund Wallet</span>
         </div>
       </DialogTrigger>
-      <DialogContent className="w-[40vw]">
+      {/* dialog content */}
+      <DialogContent className="sm:w-[40vw] sm:h-[50vw] h-full">
         <div className="flex items-center gap-10  -mt-2">
           <div
             className="-mt-2 bg-[#EDF0F7] rounded-full h-7 w-7 flex justify-center items-center"
@@ -74,7 +75,7 @@ export function FundWallet() {
 
         <div className=" my-0">
           {(activeTab === "Self Top-up" && currentStep <= 2) ||
-          (activeTab === "Manual Top-up" && currentStep === 1) ? (
+            (activeTab === "Manual Top-up" && currentStep === 1) ? (
             <h3 className="font-bold">Fund your Wallet</h3>
           ) : null}
 
@@ -85,9 +86,8 @@ export function FundWallet() {
                   {["Self Top-up", "Manual Top-up"].map((tab) => (
                     <div key={tab} className="relative">
                       <h4
-                        className={`cursor-pointer ${
-                          activeTab === tab ? " font-semibold" : ""
-                        }`}
+                        className={`cursor-pointer ${activeTab === tab ? " font-semibold" : ""
+                          }`}
                         onClick={() => setActiveTab(tab)}
                       >
                         {tab}
@@ -108,7 +108,7 @@ export function FundWallet() {
           )}
 
           {activeTab === "Self Top-up" && currentStep === 2 && (
-            <ConfirmPaymentDetails handleNextStep={handleNextStep} details={Details}  handlePreviousStep={handlePreviousStep} />
+            <ConfirmPaymentDetails handleNextStep={handleNextStep} details={Details} handlePreviousStep={handlePreviousStep} />
           )}
 
           {activeTab === "Self Top-up" && currentStep === 3 && (
