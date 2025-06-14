@@ -42,8 +42,10 @@ function Dashboard() {
   };
 
   useEffect(() => {
+
     if (User) {
       setUser(false);
+
     }
   }, [User]);
 

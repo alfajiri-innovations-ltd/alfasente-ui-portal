@@ -1,3 +1,4 @@
+"use client"
 import {
   ClipboardListIcon,
   SettingsIcon,
@@ -13,13 +14,20 @@ import { Link } from "react-router-dom";
 import { useUser } from "@/hooks/UserContext";
 import { GetClient } from "@/lib/services/GetClientById";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import React from "react";
 
 function SideBar() {
   const currentPath = window.location.pathname;
   const user = useUser();
   const isMobile = useIsMobile();
   const client = GetClient();
+  React.useEffect(() => {
 
+    console.log("user", user);
+    if (user) {
+      // window.location.reload();
+    }
+  }, [user])
   const userRole = user?.role_name;
 
   const sidebarItems = [
