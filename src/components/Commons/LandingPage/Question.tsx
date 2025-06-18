@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function Question() {
   const navigate = useNavigate();
   const HandleClick = () => {
-    navigate("/signup");
+    navigate("/register");
   };
   return (
     <div className="flex lg:mx-[6.25vw] mx-4  justify-center items-center bg-gradient-to-r from-[#923AAF] to-[#CB90E2] mt-14 lg:mt-[98px] md:gap-[120px] text-white rounded-[20px] md:py-[6px] py-4 md:px-5">
@@ -32,9 +32,9 @@ function Question() {
       </div>
 
       <div>
-      <div className="hidden md:flex w-[260px] h-[278px] object-cover ">
-      <img src="/images/questionimage.svg" alt="Manage Payment"  />
-      </div>
+        <div className="hidden md:flex w-[260px] h-[278px] object-cover ">
+          <img src="/images/questionimage.svg" alt="Manage Payment" />
+        </div>
 
       </div>
     </div>
