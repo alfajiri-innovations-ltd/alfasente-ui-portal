@@ -28,7 +28,7 @@ export function Toaster() {
         );
       })}
       <ToastViewport
-        className="fixed top-0 right-0 p-4 z-[100]"
+        className="fixed bottom-0 right-0 p-4 z-[100]"
         aria-label="site notifications"
       />
     </ToastProvider>

@@ -51,6 +51,15 @@ export const getTotalCost = (transaction: ITransaction) => {
   };
 
 
+  export function formatMoney(amount: number | string, currency: string = "UGX"): string {
+  const num = typeof amount === "string" ? parseFloat(amount) : amount;
+
+  if (isNaN(num)) return `${currency} 0`;
+
+  return `${currency} ${num.toLocaleString("en-UG")}`;
+}
+
+
 
 
 

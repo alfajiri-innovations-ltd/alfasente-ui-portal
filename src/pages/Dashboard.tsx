@@ -17,6 +17,7 @@ import { useUser } from "@/hooks/UserContext";
 import { GetClient } from "@/lib/services/GetClientById";
 import Layout from "@/components/Commons/Layout";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { formatMoney } from "@/lib/utils";
 
 function Dashboard() {
   const User = GetUser();
@@ -42,10 +43,8 @@ function Dashboard() {
   };
 
   useEffect(() => {
-
     if (User) {
       setUser(false);
-
     }
   }, [User]);
 
@@ -56,9 +55,8 @@ function Dashboard() {
       <div className="flex flex-col sm:mx-20 m-4">
         <div className="flex sm:flex-row flex-col justify-between">
           <div>
-
-            <span className="font-bold text-base">Welcome,
-
+            <span className="font-bold text-base">
+              Welcome,
               {!user ? (
                 <span className="mx-2 font-normal ">
                   {nuser?.firstName} {nuser?.lastName}
@@ -68,10 +66,11 @@ function Dashboard() {
               )}
             </span>
           </div>
-          {isMobile && (<>
-            <br />
-
-          </>)}
+          {isMobile && (
+            <>
+              <br />
+            </>
+          )}
           {userRole === "client_admin" && (
             <div className="flex flex-row justify-between sm:gap-2 ">
               <FundWallet />
@@ -80,10 +79,11 @@ function Dashboard() {
             </div>
           )}
         </div>
-        {isMobile && (<>
-          <br />
-
-        </>)}
+        {isMobile && (
+          <>
+            <br />
+          </>
+        )}
         {userRole === "client_admin" && (
           <div className="flex sm:flex-row justify-between flex-col gap-3">
             <div className="grow px-8 sm:py-12 py-8 rounded-[10px] sm:my-4 my-2 sm:space-y-4 bg-primary bg-contain bg-hero-pattern bg-right bg-no-repeat">
@@ -116,13 +116,13 @@ function Dashboard() {
                   </div>
                   <span className="text-white text-lg font-bold ">
                     {viewAirtelBalance
-                      ? `UGX ${Wallet?.airtelWalletBalance}`
+                      ? formatMoney(Wallet?.airtelWalletBalance ?? 0)
                       : "XXXXXX"}
                   </span>
                 </div>
               </div>
             </div>
-            {!isMobile && (<div></div>)}
+            {!isMobile && <div></div>}
             <div className="grow px-8 sm:py-12 py-8 rounded-[10px] sm:my-4 my-2 sm:space-y-4 bg-primary bg-contain bg-hero-pattern bg-right bg-no-repeat">
               <div className="flex items-center gap-3">
                 <div className="bg-yellow-400 rounded-full w-10 h-10 items-center flex justify-center">
@@ -151,7 +151,7 @@ function Dashboard() {
                   </div>
                   <span className="text-white text-lg font-bold ">
                     {viewMtnBalance
-                      ? `UGX ${Wallet?.mtnWalletBalance}`
+                      ? formatMoney(Wallet?.mtnWalletBalance ?? 0)
                       : "XXXXXX"}
                   </span>
                 </div>

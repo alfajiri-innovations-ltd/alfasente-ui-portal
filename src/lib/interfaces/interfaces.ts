@@ -10,9 +10,9 @@ export interface IClient {
   // date_of_birth?: string;
   walletID?: {
     walletID: number;
-    airtelWalletBalance: string;
-    mtnWalletBalance: string;
-    totalWalletBalance: string;
+    airtelWalletBalance: number;
+    mtnWalletBalance: number;
+    totalWalletBalance: number;
   };
 
   certificateOfIncorparation: string;

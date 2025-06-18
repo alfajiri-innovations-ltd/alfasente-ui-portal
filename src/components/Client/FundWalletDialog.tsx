@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowLeft, Wallet } from "lucide-react";
 import FundWalletDetails from "./FundWalletDetails";
