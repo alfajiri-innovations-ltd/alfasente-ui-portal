@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowLeft, Wallet } from "lucide-react";
 import FundWalletDetails from "./FundWalletDetails";
@@ -46,8 +47,8 @@ export function FundWallet() {
   return (
     <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <div className="flex px-2 h-10 gap-1 items-center cursor-pointer border  text-black text-[13px] rounded-[8px]">
-          <Wallet className="h-3 w-3" />
+        <div className="flex px-2 h-10 sm:gap-1 justify-center items-center cursor-pointer border text-black text-[13px] rounded-[8px]">
+          <Wallet className="h-3 w-5" />
           <span>Fund Wallet</span>
         </div>
       </DialogTrigger>
@@ -72,7 +73,7 @@ export function FundWallet() {
 
         <div className=" my-0">
           {(activeTab === "Self Top-up" && currentStep <= 2) ||
-          (activeTab === "Manual Top-up" && currentStep === 1) ? (
+            (activeTab === "Manual Top-up" && currentStep === 1) ? (
             <h3 className="font-bold">Fund your Wallet</h3>
           ) : null}
 
@@ -83,9 +84,8 @@ export function FundWallet() {
                   {["Self Top-up", "Manual Top-up"].map((tab) => (
                     <div key={tab} className="relative">
                       <h4
-                        className={`cursor-pointer ${
-                          activeTab === tab ? " font-semibold" : ""
-                        }`}
+                        className={`cursor-pointer ${activeTab === tab ? " font-semibold" : ""
+                          }`}
                         onClick={() => setActiveTab(tab)}
                       >
                         {tab}

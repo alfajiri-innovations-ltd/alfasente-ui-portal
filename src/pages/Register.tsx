@@ -1,6 +1,6 @@
 import { ArrowLeft, X } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 import { OrganizationDetailsForm } from "@/components/AuthForms/OrganizationDetailsForm";
 import { UserDetailsForm } from "@/components/AuthForms/UserDetailsForm";
@@ -51,14 +51,7 @@ function Register() {
               <OrganizationDetailsForm handleClick={handleNextStep} />
               <p className="flex justify-center my-2">
                 <span>Already registered?</span>
-                <span
-                  className="underline cursor-pointer"
-                  onClick={() => {
-                    navigate("/login");
-                  }}
-                >
-                  Login here
-                </span>
+                <Link to="/login" className="underline">Login here</Link>
               </p>
             </div>
           )}

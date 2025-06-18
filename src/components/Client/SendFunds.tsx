@@ -39,7 +39,7 @@ export function SendFunds() {
     setFundWalletDialog(false);
   };
 
-  
+
 
   // const [page, setPage] = useState(1);
 
@@ -111,7 +111,7 @@ export function SendFunds() {
         </DialogTrigger>
 
         <DialogContent
-          className={`w-[50vw] flex flex-col py-6 ${!previewList && "px-20"}`}
+          className={`sm:w-[60vw] w-screen sm:h-[40vw] h-full flex flex-col py-6 ${!previewList && "sm:px-20"}`}
         >
           <ArrowLeft
             className={`h-4 w-4 cursor-pointer ${!previewList && "hidden"}`}
@@ -126,9 +126,8 @@ export function SendFunds() {
                 {["Lists", "Individual"].map((tab) => (
                   <div key={tab} className="relative">
                     <h4
-                      className={`cursor-pointer ${
-                        activeTab === tab ? " font-semibold" : ""
-                      }`}
+                      className={`cursor-pointer ${activeTab === tab ? " font-semibold" : ""
+                        }`}
                       onClick={() => setActiveTab(tab)}
                     >
                       {tab}
@@ -153,10 +152,12 @@ export function SendFunds() {
           {activeTab === "Individual" ? (
             <>
               {currentStep === 1 && (
-                <AddBeneficiaryForm
-                  handleNext={handleNextStep}
-                  setBeneficiary={setBeneficiary}
-                />
+                <div className="overflow-y-scroll">
+                  <AddBeneficiaryForm
+                    handleNext={handleNextStep}
+                    setBeneficiary={setBeneficiary}
+                  />
+                </div>
               )}
 
               {currentStep === 2 && Beneficiary && (
@@ -167,17 +168,17 @@ export function SendFunds() {
               )}
             </>
           ) : currentStep === 1 ? (
-            <div>
-              <div className="flex bg-[#EDF0F7] items-center px-1 rounded-full lg:px-3 lg:rounded-[10px]">
-                <Search className="w-3 h-3 lg:h-4 lg:w-4" />
+            <div className="w-full">
+              <div className="flex bg-[#EDF0F7] items-center px-1 rounded-full sm:px-3 sm:rounded-[10px]">
+                <Search className="sm:w-4 sm:h-4 h-5 w-5" />
                 <Input
                   type="search"
                   placeholder="Search for list"
-                  className="hidden lg:flex w-[20vw] border-none outline-none bg-[#EDF0F7] focus:ring-0 focus-visible:ring-0 shadow-none placeholder:text-sm"
+                  className="hidden sm:flex sm:w-full border-none outline-none bg-[#EDF0F7] focus:ring-0 focus-visible:ring-0 shadow-none placeholder:text-sm"
                 />
               </div>
 
-              <div className="h-[200px] overflow-auto my-4 scrollbar-hidden">
+              <div className="sm:h-[200px] overflow-auto my-4 scrollbar-hidden">
                 {approvedLists.length > 0 ? (
                   approvedLists.map((item: listsWithMembers, index: number) => (
                     <div
@@ -212,7 +213,7 @@ export function SendFunds() {
                       <div className="flex  gap-1 text-[#5C6474]">
                         {item.members.length}
 
-                        <span>members</span>
+                        <span className="text-capitalize">members</span>
                       </div>
                     </div>
                   ))

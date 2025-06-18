@@ -46,10 +46,10 @@ function AdminDashboard() {
   ];
   return (
     <Layout title="Dashboard">
-      <div className="grid grid-cols-3 gap-5 mx-5 my-5">
+      <div className="grid lg:grid-cols-3  grid-cols-1 gap-5 mx-5 my-5">
         {AdminCards.map((card, index: number) => (
-          <div className="border  border-[#D4DAE6] rounded-[10px]" key={index}>
-            <div className="flex items-center justify-between p-4 ">
+          <div className="border shadow-sm border-[#eaeaec] rounded-[10px]" key={index}>
+            <div className="flex items-center justify-between p-8 ">
               <div className="flex flex-col">
                 <span className="text-[#5C6474] text-[17px]">{card.title}</span>
 
@@ -61,7 +61,7 @@ function AdminDashboard() {
             </div>
 
             <hr />
-            <div className="p-2 text-[#848EA2] text-xs">{card.description}</div>
+            <div className="px-6 py-4 text-[#848EA2] text-xs">{card.description}</div>
           </div>
         ))}
       </div>

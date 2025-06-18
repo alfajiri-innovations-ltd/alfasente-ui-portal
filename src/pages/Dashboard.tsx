@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { useUser } from "@/hooks/UserContext";
 import { GetClient } from "@/lib/services/GetClientById";
 import Layout from "@/components/Commons/Layout";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 function Dashboard() {
   const User = GetUser();
@@ -31,7 +32,7 @@ function Dashboard() {
   const [viewMtnBalance, setViewMtnBalance] = useState(false);
 
   const Lists: listsWithMembers[] = GetLists();
-  console.log(Lists);
+  // console.log(Lists);
   const HandleAirtelClick = () => {
     setViewAirtelBalance(!viewAirtelBalance);
   };
@@ -41,38 +42,51 @@ function Dashboard() {
   };
 
   useEffect(() => {
+
     if (User) {
       setUser(false);
+
     }
-  }, []);
+  }, [User]);
+
+  const isMobile = useIsMobile();
 
   return (
     <Layout title="Dashboard">
-      <div className="flex flex-col mx-28 my-5">
-        <div className="flex justify-between">
+      <div className="flex flex-col sm:mx-20 m-4">
+        <div className="flex sm:flex-row flex-col justify-between">
           <div>
-            {" "}
-            <h3 className="font-normal text-base">Welcome,</h3>
-            {!user ? (
-              <span className="font-normal text-[24px] flex gap-1.5 italic ">
-                {nuser?.firstName} {nuser?.lastName}
-              </span>
-            ) : (
-              <Skeleton className="h-4 w-[200px] bg-slate-500" />
-            )}
-          </div>
 
+            <span className="font-bold text-base">Welcome,
+
+              {!user ? (
+                <span className="mx-2 font-normal ">
+                  {nuser?.firstName} {nuser?.lastName}
+                </span>
+              ) : (
+                <Skeleton className="h-4 w-[200px] bg-slate-500" />
+              )}
+            </span>
+          </div>
+          {isMobile && (<>
+            <br />
+
+          </>)}
           {userRole === "client_admin" && (
-            <div className="flex gap-3  ">
+            <div className="flex flex-row justify-between sm:gap-2 ">
               <FundWallet />
+              {isMobile && <br />}
               <SendFunds />
             </div>
           )}
         </div>
+        {isMobile && (<>
+          <br />
 
+        </>)}
         {userRole === "client_admin" && (
-          <div className="flex gap-5">
-            <div className="grow px-8 py-12 rounded-[10px] my-4 space-y-4 bg-primary bg-contain bg-hero-pattern bg-right bg-no-repeat">
+          <div className="flex sm:flex-row justify-between flex-col gap-3">
+            <div className="grow px-8 sm:py-12 py-8 rounded-[10px] sm:my-4 my-2 sm:space-y-4 bg-primary bg-contain bg-hero-pattern bg-right bg-no-repeat">
               <div className="flex items-center gap-3">
                 <div className="bg-red-600 rounded-full w-10 h-10 items-center flex justify-center">
                   <img
@@ -108,8 +122,8 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-
-            <div className="grow px-8 py-12 rounded-[10px] my-4 space-y-4 bg-primary bg-contain bg-hero-pattern bg-right bg-no-repeat">
+            {!isMobile && (<div></div>)}
+            <div className="grow px-8 sm:py-12 py-8 rounded-[10px] sm:my-4 my-2 sm:space-y-4 bg-primary bg-contain bg-hero-pattern bg-right bg-no-repeat">
               <div className="flex items-center gap-3">
                 <div className="bg-yellow-400 rounded-full w-10 h-10 items-center flex justify-center">
                   <img
