@@ -30,7 +30,6 @@ import { isAuthenticated } from "./lib/cookies/UserMangementCookie";
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
-
   const auth = isAuthenticated();
   return (
     <>
@@ -40,38 +39,34 @@ function App() {
         <ClientProvider>
           <BrowserRouter>
             <Routes>
-              {
-                auth ? (<>
-                  {/* auth routes */}
-                  <Route element={<PrivateRoutes />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/beneficiaries" element={<BeneficiariesPage />} />
-                    <Route path="/transactions" element={<Transactions />} />
-                    <Route path="/staff" element={<Staff />} />
-                    <Route path="/audit-logs" element={<AuditLogs />} />
-                    <Route path="/applications" element={<ApplicationsPage />} />
-                    <Route path="/organisations" element={<Organisations />} />
-                    <Route path="/settings" element={<SettingsPage />} />
-                    {/* //Admin Routes */}
-                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route
-                      path="/admin/transactions"
-                      element={<AdminTransactions />}
-                    />
-                    <Route path="/admin/manuals" element={<ManualTransactions />} />
-                  </Route>
-                  {/* end of auth routes */}
-                </>) : (<>
+              {/* auth routes */}
+              <Route element={<PrivateRoutes />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/beneficiaries" element={<BeneficiariesPage />} />
+                <Route path="/transactions" element={<Transactions />} />
+                <Route path="/staff" element={<Staff />} />
+                <Route path="/audit-logs" element={<AuditLogs />} />
+                <Route path="/applications" element={<ApplicationsPage />} />
+                <Route path="/organisations" element={<Organisations />} />
+                <Route path="/settings" element={<SettingsPage />} />
+                {/* //Admin Routes */}
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route
+                  path="/admin/transactions"
+                  element={<AdminTransactions />}
+                />
+                <Route path="/admin/manuals" element={<ManualTransactions />} />
+              </Route>
+              {/* end of auth routes */}
 
-                  {/* non auth routes */}
-                  <Route path="/" element={<LandingPage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/wait-approval" element={<WaitScreen />} />
-                  <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/about" element={<AboutUs />} />
-                  {/* end of non auth routes */}</>)
-              }
+              {/* non auth routes */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/wait-approval" element={<WaitScreen />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/about" element={<AboutUs />} />
+              {/* end of non auth routes */}
 
               <Route path="*" element={<PageNotFound />} />
             </Routes>

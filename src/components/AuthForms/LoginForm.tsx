@@ -26,7 +26,6 @@ const FormSchema = z.object({
   password: z.string().min(8, { message: "Field is Required" }),
 });
 
-
 export function LoginForm() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -73,11 +72,13 @@ export function LoginForm() {
       const message = res?.result?.code;
 
       if (response.status === 200) {
-        toast({
-          variant: "success",
-          title: "Successful",
-          description: "Login Successful , Redirecting...",
-        });
+        setTimeout(() => {
+          toast({
+            variant: "success",
+            title: "Successful",
+            description: "Login Successful , Redirecting...",
+          });
+        }, 1000);
         setUserToken(res.token);
         setAuthUser(res.userData);
 
@@ -110,7 +111,7 @@ export function LoginForm() {
         }
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       // toast({
       //   variant: "destructive",
       //   title: "Failure",
