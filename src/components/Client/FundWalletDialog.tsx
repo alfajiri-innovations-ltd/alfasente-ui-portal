@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowLeft, Wallet } from "lucide-react";
 import FundWalletDetails from "./FundWalletDetails";
@@ -14,25 +14,23 @@ import SuccessFulTopUp from "./SuccessFulTopup";
 //   onClick?: () => void;
 // }
 
-
 export function FundWallet() {
   const [DialogOpen, setIsDialogOpen] = useState(false);
   const [Details, setDetails] = useState({
-      amount: "",
-      accountNumber: "",
-      network: "",
-      airtelAllocation: 0,
-      mtnAllocation: 0,
-      
-    });
+    amount: 0,
+    accountNumber: "",
+    network: "",
+    airtelAllocation: 0,
+    mtnAllocation: 0,
+  });
 
-    const [ManualDetails, setManualDetails] = useState({
-      amount: "",
-      proofOfCredit: "",
-      airtelAllocation: 0,
-      mtnAllocation: 0,
-      transactionID: "",
-    });
+  const [ManualDetails, setManualDetails] = useState({
+    amount: 0,
+    proofOfCredit: "",
+    airtelAllocation: 0,
+    mtnAllocation: 0,
+    transactionID: "",
+  });
 
   const [activeTab, setActiveTab] = useState("Self Top-up");
   const [currentStep, setCurrentStep] = useState(1);
@@ -53,7 +51,7 @@ export function FundWallet() {
           <span>Fund Wallet</span>
         </div>
       </DialogTrigger>
-      <DialogContent className="w-[40vw]">
+      <DialogContent className="w-[40vw] max-h-[90vh] overflow-y-auto scrollbar-hide">
         <div className="flex items-center gap-10  -mt-2">
           <div
             className="-mt-2 bg-[#EDF0F7] rounded-full h-7 w-7 flex justify-center items-center"
@@ -104,23 +102,43 @@ export function FundWallet() {
             )}
 
           {activeTab === "Self Top-up" && currentStep === 1 && (
-            <FundWalletDetails handleNextStep={handleNextStep} setFundDetails={setDetails} details={Details} />
+            <FundWalletDetails
+              handleNextStep={handleNextStep}
+              setFundDetails={setDetails}
+              details={Details}
+            />
           )}
 
           {activeTab === "Self Top-up" && currentStep === 2 && (
-            <ConfirmPaymentDetails handleNextStep={handleNextStep} details={Details}  handlePreviousStep={handlePreviousStep} />
+            <ConfirmPaymentDetails
+              handleNextStep={handleNextStep}
+              details={Details}
+              setFundDetails={setDetails}
+              handlePreviousStep={handlePreviousStep}
+            />
           )}
 
           {activeTab === "Self Top-up" && currentStep === 3 && (
-            <AuthorizeDeposit handleNextStep={handleNextStep} details={Details} />
+            <AuthorizeDeposit
+              handleNextStep={handleNextStep}
+              details={Details}
+            />
           )}
 
           {activeTab === "Self Top-up" && currentStep === 4 && (
-            <SuccessFulDeposit />
+            <SuccessFulDeposit
+              details={Details}
+              handleClose={() => {
+                setCurrentStep(1);
+              }}
+            />
           )}
 
           {activeTab === "Manual Top-up" && currentStep === 1 && (
-            <ManualWalletDetails handleNextStep={handleNextStep} setManualDetails={setManualDetails} />
+            <ManualWalletDetails
+              handleNextStep={handleNextStep}
+              setManualDetails={setManualDetails}
+            />
           )}
 
           {activeTab === "Manual Top-up" && currentStep === 2 && (

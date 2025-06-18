@@ -6,7 +6,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { Button } from "../ui/button";
 import { useState } from "react";
 import { RejectApplicationForm } from "./Forms/RejectApplicationForm";
 export interface RejectApplicationProps {
@@ -23,16 +22,7 @@ export function RejectAplication({ clientID ,onClose }: RejectApplicationProps) 
   return (
     <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button
-        onClick={() => { 
-          setIsDialogOpen(true);
-          onClose();
-        }}
-          variant={"outline"}
-          className=" bg-[#D93E39] text-white justify-self-end  "
-        >
-          Reject {" "}
-        </Button>
+        
       </DialogTrigger>
 
       <DialogContent className="w-[30vw]">

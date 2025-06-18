@@ -4,22 +4,24 @@ import { IDetails } from "@/lib/interfaces/interfaces";
 import { useEffect, useState } from "react";
 import { getAuthUser, getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { CollectMoney } from "@/lib/api-routes";
+import { useClientContext } from "@/hooks/ClientContext";
 
 interface IConfirmDetails {
   details: IDetails;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
-  // setFundDetails: React.Dispatch<React.SetStateAction<IDetails>>;
-
+  setFundDetails: React.Dispatch<React.SetStateAction<IDetails>>;
 }
 
 function ConfirmPaymentDetails({
   details,
   handleNextStep,
+  setFundDetails,
   handlePreviousStep,
-  
 }: IConfirmDetails) {
-  const serviceFee = import.meta.env.VITE_SERVICE_FEE;
+  const client = useClientContext();
+
+  const serviceFee = client.clientData?.alfasenteCharge || 2000; // Default service fee if not set in client data
   const totalFee = Number(details.amount) + Number(serviceFee);
 
   const allocationSum = details.mtnAllocation + details.airtelAllocation;
@@ -43,7 +45,6 @@ function ConfirmPaymentDetails({
 
     const data = { ...details, clientID };
 
-    console.log("Data to be sent:", data);
     try {
       const response = await fetch(CollectMoney(), {
         method: "POST",
@@ -54,13 +55,17 @@ function ConfirmPaymentDetails({
         body: JSON.stringify(data),
       });
 
-      console.log(response)
-
       if (!response.ok) {
         throw new Error("Network response was not ok");
       } else {
         const result = await response.json();
         console.log("Payment confirmation result:", result);
+
+        setFundDetails({
+          ...details,
+          totalFee,
+          transaction_id: result.transaction_id,
+        });
         setTimeout(() => {
           handleNextStep();
         }, 1000);
@@ -78,10 +83,14 @@ function ConfirmPaymentDetails({
   return (
     <>
       <div className="flex flex-col gap-3">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between mt-3 items-center">
           <span className="font-semibold text-lg">Deposit details</span>
           <span
-            className="flex items-center gap-1 text-secondary cursor-pointer"
+            aria-disabled={submitting}
+            tabIndex={submitting ? -1 : 0}
+            className={`flex items-center gap-1 text-secondary cursor-pointer ${
+              submitting ? "opacity-50 pointer-events-none" : ""
+            }`}
             onClick={handlePreviousStep}
           >
             <Edit className="h-4 w-4" />
@@ -103,7 +112,7 @@ function ConfirmPaymentDetails({
 
         <div className="flex items-center justify-between">
           <span>Amount</span>
-          <span>UGX {details?.amount}</span>
+          <span>UGX {details?.amount.toLocaleString()}</span>
         </div>
 
         <div className="flex items-center justify-between">

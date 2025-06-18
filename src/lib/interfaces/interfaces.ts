@@ -6,6 +6,7 @@ export interface IClient {
   physicalAddress: string;
   clientPhoneNumber: string;
   clientID?: number;
+  alfasenteCharge?: number;
   // date_of_birth?: string;
   walletID?: {
     walletID: number;
@@ -78,11 +79,12 @@ export interface listsWithMembers {
 
 export interface IDetails {
   accountNumber: string;
-  amount: string;
+  amount: number;
   network: string;
   mtnAllocation: number;
   airtelAllocation: number;
   totalFee?: number;
+  transaction_id?:string;
 }
 
 export interface IAuditLogs {

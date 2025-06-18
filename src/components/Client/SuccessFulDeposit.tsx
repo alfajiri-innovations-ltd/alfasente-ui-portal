@@ -1,8 +1,15 @@
 import { Check } from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "@/components/ui/separator";
+import { IDetails } from "@/lib/interfaces/interfaces";
+import { useNavigate } from "react-router-dom";
 
-function SuccessFulDeposit() {
+interface ISuccessFulDeposit {
+  details: IDetails;
+  handleClose: () => void;
+}
+function SuccessFulDeposit({ details ,handleClose}: ISuccessFulDeposit) {
+  const navigate=useNavigate();
   return (
     <div className="flex flex-col justify-center gap-2">
       <div className="bg-[#ECF8EF] w-16 h-16 rounded-full mx-auto flex justify-center items-center">
@@ -12,7 +19,7 @@ function SuccessFulDeposit() {
       </div>
 
       <div className="flex flex-col justify-center items-center">
-        <span>+UGX 2,000,000</span>
+        <span>+UGX {details.amount}</span>
         <span>Deposit Successful</span>
         <span>27 Nov, 2024, at 11:25 AM</span>
       </div>
@@ -29,17 +36,17 @@ function SuccessFulDeposit() {
         </div>
         <div className="flex items-center justify-between">
           <span>Mobile number</span>
-          <span>+256788210793</span>
+          <span>+256{details.accountNumber}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Funder</span>
           <span>George Kizza</span>
         </div>
         <div className="flex justify- gap-4">
-          <Button variant={"outline"} className="border grow">
+          <Button variant={"outline"} className="border grow" onClick={handleClose}>
             Close
           </Button>
-          <Button className="grow">View Transactions</Button>
+          <Button className="grow" onClick={()=>{navigate('/transactions')}}>View Transactions</Button>
         </div>{" "}
       </div>
     </div>

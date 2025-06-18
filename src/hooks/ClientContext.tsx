@@ -1,4 +1,3 @@
-// context/ClientContext.tsx
 import { IClient } from "@/lib/interfaces/interfaces";
 import { createContext, useContext, useState, ReactNode } from "react";
 

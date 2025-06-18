@@ -21,32 +21,68 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-
 import { ScrollArea } from "../ui/scroll-area";
 import { IDetails } from "@/lib/interfaces/interfaces";
 
-const FormSchema = z.object({
-  amount: z
-    .number()
-    .min(1000, { message: "Amount must be at least 1,000" })
-    .max(3000000, { message: "Amount cannot exceed 3,000,000" }),
+const FormSchema = z
+  .object({
+    amount: z
+      .number()
+      .min(1000, { message: "Amount must be at least 1,000" })
+      .max(3000000, { message: "Amount cannot exceed 3,000,000" }),
 
-  accountNumber: z.string().min(9, { message: "Enter a valid number" }),
-  network: z.string().min(1, { message: "Please select a network" }),
-  airtelAllocation: z
-    .number()
-    .min(1000, { message: "Amount must be at least 1,000" }),
+    accountNumber: z
+      .string()
+      .min(9, { message: "Enter a valid number" })
+      .regex(/^\d{9}$/, { message: "Must be a 9-digit number" }),
 
-  mtnAllocation: z
-    .number()
-    .min(1000, { message: "Amount must be at least 1,000" }),
-});
+    network: z.string().min(1, { message: "Please select a network" }),
+    airtelAllocation: z
+      .number()
+      .min(1000, { message: "Amount must be at least 1,000" }),
+
+    mtnAllocation: z
+      .number()
+      .min(1000, { message: "Amount must be at least 1,000" }),
+  })
+  .superRefine((data, ctx) => {
+     const { network, accountNumber } = data;
+
+  const normalized = accountNumber.trim();
+
+  if (normalized.length < 2) return;
+
+  const prefix2 = normalized.slice(0, 2);
+
+    const isAirtel = ["70", "75","74"].includes(prefix2);
+    const isMTN = ["77", "78", "76"].includes(prefix2);
+
+    if (network === "airtel" && !isAirtel) {
+      ctx.addIssue({
+        path: ["accountNumber"],
+        code: z.ZodIssueCode.custom,
+        message: "The phone number entered is not an Airtel number",
+      });
+    }
+
+    if (network === "mtn" && !isMTN) {
+      ctx.addIssue({
+        path: ["accountNumber"],
+        code: z.ZodIssueCode.custom,
+        message: "The phone number entered is not an MTN number",
+      });
+    }
+  });
 interface IFundWalletDetails {
   handleNextStep: () => void;
-  details:IDetails;
+  details: IDetails;
   setFundDetails: React.Dispatch<React.SetStateAction<IDetails>>;
 }
-function FundWalletDetails({ handleNextStep,setFundDetails,details }: IFundWalletDetails) {
+function FundWalletDetails({
+  handleNextStep,
+  setFundDetails,
+  details,
+}: IFundWalletDetails) {
   // const [Details, setDetails] = useState({
   //   amount: "",
   //   accountNumber: "",
@@ -59,10 +95,10 @@ function FundWalletDetails({ handleNextStep,setFundDetails,details }: IFundWalle
     resolver: zodResolver(FormSchema),
     defaultValues: {
       amount: details.amount ? Number(details.amount) : undefined,
-      accountNumber:details.accountNumber ||"" ,
+      accountNumber: details.accountNumber || "",
       network: details.network || "",
-      airtelAllocation:details.airtelAllocation || undefined,
-      mtnAllocation:details.mtnAllocation || undefined,
+      airtelAllocation: details.airtelAllocation || undefined,
+      mtnAllocation: details.mtnAllocation || undefined,
     },
   });
 
@@ -71,7 +107,7 @@ function FundWalletDetails({ handleNextStep,setFundDetails,details }: IFundWalle
 
     const formattedData = {
       ...data,
-      amount: data.amount.toString(),
+      amount: data.amount,
     };
 
     setFundDetails(formattedData);
@@ -91,8 +127,8 @@ function FundWalletDetails({ handleNextStep,setFundDetails,details }: IFundWalle
               value={form.watch("network")}
               onValueChange={(value) => form.setValue("network", value)}
             >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Network " className="p-2" />
+              <SelectTrigger className="w-full h-10 focus:ring-0 focus-visible:ring-0 border border-input   shadow:none rounded-lg">
+                <SelectValue placeholder="Select Network " className="p-2 " />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="mtn">
@@ -154,6 +190,7 @@ function FundWalletDetails({ handleNextStep,setFundDetails,details }: IFundWalle
                           {...field}
                           placeholder="Amount"
                           type="number"
+                          disabled={form.formState.isSubmitting}
                           onChange={(e) => {
                             const value = e.target.valueAsNumber || 0;
                             field.onChange(value);
@@ -184,6 +221,7 @@ function FundWalletDetails({ handleNextStep,setFundDetails,details }: IFundWalle
                             <Input
                               {...field}
                               type="number"
+                              disabled={form.formState.isSubmitting}
                               onChange={(e) =>
                                 field.onChange(e.target.valueAsNumber || 0)
                               }
@@ -210,6 +248,7 @@ function FundWalletDetails({ handleNextStep,setFundDetails,details }: IFundWalle
                             <Input
                               {...field}
                               type="number"
+                              disabled={form.formState.isSubmitting}
                               onChange={(e) =>
                                 field.onChange(e.target.valueAsNumber || 0)
                               }
@@ -237,6 +276,8 @@ function FundWalletDetails({ handleNextStep,setFundDetails,details }: IFundWalle
                         </span>
                         <Input
                           {...field}
+                          disabled={form.formState.isSubmitting}
+                          type="tel"
                           placeholder="Phone Number"
                           className="border-none focus-visible:ring-0 shadow-none"
                         />
