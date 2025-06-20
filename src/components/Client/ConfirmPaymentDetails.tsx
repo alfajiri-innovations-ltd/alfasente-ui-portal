@@ -64,7 +64,7 @@ function ConfirmPaymentDetails({
         setFundDetails({
           ...details,
           totalFee,
-          transaction_id: result.transaction_id,
+          transaction_id: result.result.transaction_id || result.result.transactionId,
         });
         setTimeout(() => {
           handleNextStep();

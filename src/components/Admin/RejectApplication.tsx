@@ -10,9 +10,9 @@ import { useState } from "react";
 import { RejectApplicationForm } from "./Forms/RejectApplicationForm";
 export interface RejectApplicationProps {
     clientID: number;
-    onClose: () => void;
+    // onClose: () => void;
 }
-export function RejectAplication({ clientID ,onClose }: RejectApplicationProps) {
+export function RejectAplication({ clientID  }: RejectApplicationProps) {
   const [DialogOpen, setIsDialogOpen] = useState(false);
 
   const handleClose = () => {

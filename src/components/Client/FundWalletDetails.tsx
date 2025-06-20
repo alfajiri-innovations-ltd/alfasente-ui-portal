@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 
 import { ScrollArea } from "../ui/scroll-area";
 import { IDetails } from "@/lib/interfaces/interfaces";
+import { useEffect, useState } from "react";
 
 const FormSchema = z
   .object({
@@ -46,15 +47,15 @@ const FormSchema = z
       .min(1000, { message: "Amount must be at least 1,000" }),
   })
   .superRefine((data, ctx) => {
-     const { network, accountNumber } = data;
+    const { network, accountNumber } = data;
 
-  const normalized = accountNumber.trim();
+    const normalized = accountNumber.trim();
 
-  if (normalized.length < 2) return;
+    if (normalized.length < 2) return;
 
-  const prefix2 = normalized.slice(0, 2);
+    const prefix2 = normalized.slice(0, 2);
 
-    const isAirtel = ["70", "75","74"].includes(prefix2);
+    const isAirtel = ["70", "75", "74"].includes(prefix2);
     const isMTN = ["77", "78", "76"].includes(prefix2);
 
     if (network === "airtel" && !isAirtel) {
@@ -83,13 +84,10 @@ function FundWalletDetails({
   setFundDetails,
   details,
 }: IFundWalletDetails) {
-  // const [Details, setDetails] = useState({
-  //   amount: "",
-  //   accountNumber: "",
-  //   network: "",
-  //   airtelAllocation: 0,
-  //   mtnAllocation: 0,
-  // });
+  const [isFormReady, setIsFormReady] = useState(true);
+
+  const [balanceMsg, setBalanceMsg] = useState("");
+  const [editing, setEditing] = useState<"airtel" | "mtn" | null>(null);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -103,7 +101,6 @@ function FundWalletDetails({
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
 
     const formattedData = {
       ...data,
@@ -113,7 +110,41 @@ function FundWalletDetails({
     setFundDetails(formattedData);
     handleNextStep();
   }
+  const amount = form.watch("amount");
+  const airtel = form.watch("airtelAllocation");
+  const mtn = form.watch("mtnAllocation");
 
+  useEffect(() => {
+    if (!amount || amount <= 0) return;
+    if (editing === "airtel") {
+      const newMtn = amount - (airtel || 0);
+      form.setValue("mtnAllocation", newMtn > 0 ? newMtn : 0, {
+        shouldValidate: true,
+      });
+    }
+
+    if (editing === "mtn") {
+      const newAirtel = amount - (mtn || 0);
+      form.setValue("airtelAllocation", newAirtel > 0 ? newAirtel : 0, {
+        shouldValidate: true,
+      });
+    }
+
+    const total =
+      (form.watch("airtelAllocation") || 0) +
+      (form.watch("mtnAllocation") || 0);
+
+     if (total < amount) {
+    setBalanceMsg(`You still have UGX ${amount - total} unallocated`);
+    setIsFormReady(false);
+  } else if (total > amount) {
+    setBalanceMsg(`Allocation exceeds amount by UGX ${total - amount}`);
+    setIsFormReady(false);
+  } else {
+    setBalanceMsg("");
+    setIsFormReady(true);
+  }
+  }, [airtel, mtn, amount, editing]);
   return (
     <>
       <ScrollArea className="h-[500px]">
@@ -222,9 +253,10 @@ function FundWalletDetails({
                               {...field}
                               type="number"
                               disabled={form.formState.isSubmitting}
-                              onChange={(e) =>
-                                field.onChange(e.target.valueAsNumber || 0)
-                              }
+                              onChange={(e) => {
+                                setEditing("airtel");
+                                field.onChange(e.target.valueAsNumber || 0);
+                              }}
                               className="border-none focus-visible:ring-0 focus:ring-0 outline-none shadow-none"
                             />
                           </div>
@@ -249,9 +281,10 @@ function FundWalletDetails({
                               {...field}
                               type="number"
                               disabled={form.formState.isSubmitting}
-                              onChange={(e) =>
-                                field.onChange(e.target.valueAsNumber || 0)
-                              }
+                              onChange={(e) => {
+                                setEditing("mtn");
+                                field.onChange(e.target.valueAsNumber || 0);
+                              }}
                               className="border-none focus-visible:ring-0 focus:ring-0 outline-none shadow-none"
                             />
                           </div>
@@ -262,6 +295,14 @@ function FundWalletDetails({
                   />
                 </div>
               </div>
+
+              {balanceMsg && (
+                <p
+                  className={`text-sm ${balanceMsg.includes("exceeds") ? "text-red-500" : "text-yellow-600"}`}
+                >
+                  {balanceMsg}
+                </p>
+              )}
 
               <FormField
                 control={form.control}
@@ -288,7 +329,11 @@ function FundWalletDetails({
                 )}
               />
 
-              <Button type="submit" className="w-full">
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={!isFormReady || form.formState.isSubmitting}
+              >
                 Proceed to Pay
               </Button>
             </form>

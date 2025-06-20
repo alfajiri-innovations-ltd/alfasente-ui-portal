@@ -7,12 +7,13 @@ interface IAuthorizeDeposit {
 }
 
 function AuthorizeDeposit({ handleNextStep, details }: IAuthorizeDeposit) {
+  console.log(details);
   const [failed, setFailed] = useState(false);
   const [pollTrigger, setPollTrigger] = useState(0);
 
   const transactionID = details.transaction_id;
 
-  const { Transaction, loading, error } = GetTransaction(transactionID ?? "");
+  const { Transaction } = GetTransaction(transactionID ?? "");
 
   useEffect(() => {
     if (!transactionID) return;
@@ -25,7 +26,7 @@ function AuthorizeDeposit({ handleNextStep, details }: IAuthorizeDeposit) {
   }, [transactionID]);
 
   useEffect(() => {
-    if (Transaction?.status === "TS") {
+    if (Transaction?.status === "TS" || Transaction?.status === "SUCCESSFUL") {
       handleNextStep();
     } else if (
       Transaction?.status === "FL" ||
@@ -35,10 +36,12 @@ function AuthorizeDeposit({ handleNextStep, details }: IAuthorizeDeposit) {
     }
   }, [Transaction]);
 
+  console.log(pollTrigger, "Poll Trigger");
+
   return (
     <>
       <div className="space-y-3">
-        <h3 className="font-semibold text-2xl">Authorize Deposit</h3>
+        <h3 className="font-semibold text-2xl my-4">Authorize Deposit</h3>
         <p className="font-normal text-sm">
           {`A payment prompt has been sent to +256${details.accountNumber}. Enter your PIN to
             authorize deposit of UGX ${details.totalFee?.toLocaleString()}.`}

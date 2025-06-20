@@ -41,9 +41,9 @@ export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
     setShowApprove(false);
   };
 
-  const handleRejectClose = () => {
-    setShowReject(false);
-  };
+  // const handleRejectClose = () => {
+  //   setShowReject(false);
+  // };
 
   useEffect(() => {
     const fetchClientWithUser = async () => {
@@ -74,9 +74,11 @@ export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
     fetchClientWithUser();
   }, [clientID]);
 
-  const handleClose = () => {
-    setIsDialogOpen(false);
-  };
+  // const handleClose = () => {
+  //   setIsDialogOpen(false);
+  // };
+
+  const baseUrl = import.meta.env.VITE_BACKEND_API_URL;
 
   return (
     <>
@@ -152,14 +154,20 @@ export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
                     <span>Physical Address</span>
                     <span>{client?.physicalAddress}</span>
                   </div>
-                  <div className="flex justify-between">
+                  <div className="grid grid-cols-2 gap-2">
                     <span className="text-[#5C6474] text-sm font-normal">
                       Certificate of Incorporation
                     </span>
-                    <span className="text-[#000000E5] text-[15px] flex  font-medium break-words">
+                    <span className="grow text-[15px] flex  font-medium break-words">
                       <a
-                        href={client?.certificateOfIncorparation}
-                        className="break-all text-blue-500 underline"
+                        className="text-blue-400 underline"
+                        href={
+                          client?.certificateOfIncorparation
+                            ? `${baseUrl}/${client.certificateOfIncorparation}`
+                            : "#"
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
                         {client?.certificateOfIncorparation}
                       </a>
@@ -224,7 +232,11 @@ export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
       )}
 
       {showReject && clientID !== undefined && clientID !== null && (
-        <RejectAplication clientID={clientID} onClose={handleRejectClose} />
+        <RejectAplication
+          clientID={clientID}
+
+          // onClose={handleRejectClose}
+        />
       )}
     </>
   );

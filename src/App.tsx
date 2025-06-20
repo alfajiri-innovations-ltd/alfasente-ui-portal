@@ -26,11 +26,9 @@ import Register from "./pages/Register";
 import ForgotPasswordPage from "./pages/ForgotPassword";
 import WaitScreen from "./pages/WaitScreen";
 import { ClientProvider } from "./hooks/ClientContext";
-import { isAuthenticated } from "./lib/cookies/UserMangementCookie";
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
-  const auth = isAuthenticated();
   return (
     <>
       <Toaster />

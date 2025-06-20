@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useUser } from "@/hooks/UserContext";
 import { useNavigate } from "react-router-dom";
+import { formatMoney } from "@/lib/utils";
 
 interface SuccessFulTopUpProps {
   ManualTopUpDetails: any;
@@ -11,7 +12,7 @@ interface SuccessFulTopUpProps {
 function SuccessFulTopUp({ ManualTopUpDetails }: SuccessFulTopUpProps) {
   const user = useUser();
 
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col justify-center gap-2">
       <div className="bg-[#ECF8EF] w-16 h-16 rounded-full mx-auto flex justify-center items-center">
@@ -42,19 +43,19 @@ function SuccessFulTopUp({ ManualTopUpDetails }: SuccessFulTopUpProps) {
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <span>Amount to top-up</span>
-          <span>UGX {ManualTopUpDetails.amount}</span>
+          <span>{formatMoney(ManualTopUpDetails.amount)}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Request ID</span>
-          <span>#TXN{String(ManualTopUpDetails.transactonId).slice(0, 5)}</span>
-          </div>
+          <span>#{String(ManualTopUpDetails.transactonId).slice(0, 10)}</span>
+        </div>
         <div className="flex items-center justify-between">
           <span>Airtel Money wallet</span>
-          <span>UGX {ManualTopUpDetails?.airtelAllocation || 0}</span>
+          <span>{formatMoney(ManualTopUpDetails?.airtelAllocation) || 0}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Mtn Money wallet</span>
-          <span>UGX {ManualTopUpDetails?.mtnAllocation || 0}</span>
+          <span>{formatMoney(ManualTopUpDetails?.mtnAllocation) || 0}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>User</span>
@@ -64,7 +65,14 @@ function SuccessFulTopUp({ ManualTopUpDetails }: SuccessFulTopUpProps) {
           <Button variant={"outline"} className="border grow">
             Close
           </Button>
-          <Button className="grow" onClick={()=>{navigate('/transactions')}}>View Transactions</Button>
+          <Button
+            className="grow"
+            onClick={() => {
+              navigate("/transactions");
+            }}
+          >
+            View Transactions
+          </Button>
         </div>{" "}
       </div>
     </div>

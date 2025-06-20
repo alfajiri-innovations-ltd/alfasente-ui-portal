@@ -49,6 +49,7 @@ export interface IUser {
   clientID?: number;
 }
 export interface IMembers {
+  beneficiaryId?: number;
   beneficiaryName: string;
   reason: string;
   amount: number;

@@ -11,6 +11,7 @@ import { HiMiniUsers } from "react-icons/hi2";
 import { EditBeneficiary } from "../EditBeneficiary";
 import { DeleteBeneficiary } from "../DeleteBeneficiary";
 import { useLocation } from "react-router-dom";
+import { formatMoney } from "@/lib/utils";
 
 export interface IMembers {
   beneficiaryName: string;
@@ -61,7 +62,7 @@ export function MembersTable({ members }: IMembersTable) {
             </TableCell>
             <TableCell>{member.mobileMoneyNumber}</TableCell>
 
-            <TableCell className="">{member.amount}</TableCell>
+            <TableCell className="">{formatMoney(member.amount)}</TableCell>
 
             <TableCell>{member.reason}</TableCell>
            {pathname!=='/dashboard' &&  <TableCell>
