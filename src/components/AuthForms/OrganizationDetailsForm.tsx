@@ -185,7 +185,7 @@ export function OrganizationDetailsForm({
                     className="block cursor-pointer text-xs bg-[#EDF0F7] text-gray-700 border border-[#DCE1EC] rounded-md px-4 py-2 text-center hover:bg-[#e2e6f0] transition"
                   >
                     <span className="text-primary underline">Upload</span> file
-                    (.jpg, .png, .pdf)(max 5MB){" "}
+                    (.pdf)(max 5MB)
                     {fileName && (
                       <span className="mt-2 font-bold text-sm text-gray-600">
                         <span className="font-medium">{fileName}</span>

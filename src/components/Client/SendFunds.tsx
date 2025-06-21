@@ -27,6 +27,8 @@ export function SendFunds() {
   const [checkedListId, setCheckedListId] = useState<number | null>(null);
   const [DialogOpen, setFundWalletDialog] = useState(false);
 
+  const [errorMessage,showErrorMessage] = useState(false);
+
   // Ensure IMembers is imported or defined correctly
   const [Beneficiary, setBeneficiary] = useState<IMembers | null>(null);
 
@@ -152,7 +154,7 @@ export function SendFunds() {
           {activeTab === "Individual" ? (
             <>
               {currentStep === 1 && (
-                <div className="overflow-y-scroll">
+                <div className="overflow-y-scroll scrollbar-hidden ">
                   <AddBeneficiaryForm
                     handleNext={handleNextStep}
                     setBeneficiary={setBeneficiary}
@@ -178,7 +180,7 @@ export function SendFunds() {
                 />
               </div>
 
-              <div className="sm:h-[200px] overflow-auto my-4 scrollbar-hidden">
+              <div className="sm:h-[200px] overflow-auto my-4 scrollbar-hide ">
                 {approvedLists.length > 0 ? (
                   approvedLists.map((item: listsWithMembers, index: number) => (
                     <div
@@ -227,7 +229,7 @@ export function SendFunds() {
               </div>
             </div>
           ) : checkedList ? (
-            <PaymentOverView list={checkedList} />
+            <PaymentOverView list={checkedList} showErrorMessage={showErrorMessage}/>
           ) : (
             <p>No list selected</p>
           )}
@@ -249,6 +251,7 @@ export function SendFunds() {
                   type="submit"
                   className="bg-[#8D35AA] w-full"
                   onClick={HandleClick}
+                  disabled={!checkedListId || errorMessage}
                 >
                   Send
                 </Button>
