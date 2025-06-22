@@ -3,9 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { FetchClient, GetUserById } from "@/lib/api-routes";
 
-import { EyeIcon } from "lucide-react";
+import { Eye, EyeIcon, UserIcon } from "lucide-react";
 import { RejectAplication } from "./RejectApplication";
 import { ApproveApplication } from "./ApproveApplication";
+import { FaUserLarge } from "react-icons/fa6";
+import { PiBuildingOfficeLight } from "react-icons/pi";
+import { formatDate } from "@/lib/Utilities/FormatDate";
+import { Badge } from "../ui/badge";
+import { getStatusBadge } from "../Client/Tables/BeneficiariesTables";
 async function fetchApplication(clientID: number) {
   const response = await fetch(FetchClient(clientID), {});
   if (!response.ok) {
@@ -100,7 +105,7 @@ export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
           </div>
         </DialogTrigger>
 
-        <DialogContent className="md:w-[500px] w-[90vw] lg:left-[80%] rounded-[10px] h-[90vh]">
+        <DialogContent className="md:w-[500px] w-[90vw] lg:left-[80%] rounded-[10px] h-[90vh] overflow-y-auto scrollbar-hide">
           {loading ? (
             <p className="text-[13px] font-normal text-[#66666]">Loading...</p>
           ) : error ? (
@@ -109,58 +114,88 @@ export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
             </p>
           ) : (
             <div className="flex flex-col gap-3 ">
-              <span>Application Details</span>
+              <span className="font-semibold text-[18px]">
+                Application Details
+              </span>
 
               <div>
-                <span>User (Applicant) information</span>
+                <div className="flex items-center gap-2">
+                  <FaUserLarge className="h-4 w-4 text-[#5C6474]" />
+                  <span className="font-medium text-base">
+                    User (Applicant) information
+                  </span>
+                </div>
 
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-2">
                   <div className="flex justify-between">
-                    <span>First Name</span>
+                    <span className="text-[#7A8397] font-medium text-base">
+                      First Name
+                    </span>
                     <span>{client?.user.firstName}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Last Name</span>
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Last Name
+                    </span>
                     <span>{client?.user.lastName}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Personal Email</span>
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Personal Email
+                    </span>
                     <span>{client?.user.user_email}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Date Of Birth</span>
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Date Of Birth
+                    </span>
                     <span>{client?.user.date_of_birth}</span>
                   </div>
                 </div>
               </div>
 
-              <div>
-                <span>Organisation information</span>
+              <div className="border-b border-[#EDF0F7] h-[2px]"></div>
 
-                <div className="flex flex-col">
+              <div>
+                <div className="flex items-center gap-2">
+                  <PiBuildingOfficeLight className="h-4 w-4 text-[#5C6474]" />
+                  <span className="font-medium text-base">
+                    Organisation information
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-2">
                   <div className="flex justify-between">
-                    <span>Organisation </span>
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Organisation{" "}
+                    </span>
                     <span>{client?.clientName}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Email</span>
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Email
+                    </span>
                     <span>{client?.clientEmail}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Phone </span>
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Phone{" "}
+                    </span>
                     <span>{client?.clientPhoneNumber}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Physical Address</span>
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Physical Address
+                    </span>
                     <span>{client?.physicalAddress}</span>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <span className="text-[#5C6474] text-sm font-normal">
+                  <div className="grid grid-cols-2 gap-2 ">
+                    <span className="text-[#7A8397] font-medium text-base">
                       Certificate of Incorporation
                     </span>
-                    <span className="grow text-[15px] flex  font-medium break-words">
+                    <span className="flex grow text-[15px] font-medium text-wrap break-words overflow-hidden">
                       <a
-                        className="text-blue-400 underline"
+                        className="text-blue-400 truncate  underline"
                         href={
                           client?.certificateOfIncorparation
                             ? `${baseUrl}/${client.certificateOfIncorparation}`
@@ -168,27 +203,62 @@ export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
                         }
                         target="_blank"
                         rel="noopener noreferrer"
+                        title={`${baseUrl}/${client?.certificateOfIncorparation}`}
                       >
-                        {client?.certificateOfIncorparation}
+                        {baseUrl} /{client?.certificateOfIncorparation}
                       </a>
                     </span>
                   </div>
                 </div>
 
-                <div>
-                  <h3>Review Details</h3>
-                  <div className="flex justify-between">
-                    <span>Date submitted</span>
-                    <span>{client?.clientEmail}</span>
+                <div className="border-b border-[#EDF0F7] h-[2px] mt-2"></div>
+
+                <div className="flex flex-col gap-2 ">
+                  <div className="flex items-center gap-2 mt-2">
+                    <Eye className="h-4 w-4 text-[#5C6474]" />
+                    <span className="font-medium text-base">
+                      Review Details
+                    </span>
                   </div>
 
                   <div className="flex justify-between">
-                    <span>Date Reviewed</span>
-                    <span>{client?.dateRejected || client?.dateApproved}</span>
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Date submitted
+                    </span>
+                    <span>
+                      {" "}
+                      {client?.created_at
+                        ? formatDate(client.created_at.toISOString())
+                        : ""}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Date Reviewed
+                    </span>
+                    <span>
+                      {client?.dateRejected
+                        ? formatDate(
+                            new Date(client.dateRejected).toISOString()
+                          )
+                        : client?.dateApproved
+                          ? formatDate(
+                              new Date(client.dateApproved).toISOString()
+                            )
+                          : "N/A"}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Status</span>
-                    <span>{client?.isApproved}</span>
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Status
+                    </span>
+                    <Badge
+                      variant={"outline"}
+                      className={`border ${getStatusBadge(client?.isApproved)} capitalize rounded-full py-1 px-2 gap-1 text-[14px] flex items-center w-min`}
+                    >
+                      {client?.isApproved}
+                    </Badge>{" "}
                   </div>
                 </div>
               </div>
@@ -205,6 +275,7 @@ export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
                 <Button
                   onClick={() => {
                     setShowReject(true);
+                    setIsDialogOpen(false);
                   }}
                   variant={"outline"}
                   className=" bg-[#D93E39] text-white justify-self-end  "
@@ -216,8 +287,9 @@ export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
                 <Button
                   onClick={() => {
                     setShowApprove(true);
+                    setIsDialogOpen(false);
                   }}
-                  className="  text-white"
+                  className="bg-primary text-white"
                 >
                   Approve
                 </Button>
@@ -227,13 +299,21 @@ export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
         </DialogContent>
       </Dialog>
 
-      {showApprove && clientID !== undefined && clientID !== null && (
-        <ApproveApplication clientID={clientID} onClose={handleApproveClose} />
+      {clientID && showApprove && (
+        <ApproveApplication
+          clientID={clientID}
+          onClose={() => {
+            setShowApprove(false);
+          }}
+        />
       )}
 
       {showReject && clientID !== undefined && clientID !== null && (
         <RejectAplication
           clientID={clientID}
+          onClose={() => {
+            setShowReject(false);
+          }}
 
           // onClose={handleRejectClose}
         />

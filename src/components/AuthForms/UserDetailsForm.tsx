@@ -293,7 +293,7 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
           />
         </div>
         <div className="col-span-2 ">
-          <Button type="submit" className="w-full my-4 bg-[#C8CFDE]">
+          <Button type="submit" className="w-full my-4 bg-primary" disabled={!termsAccepted || submitting}>
             {submitting ? "Registering..." : " Register"}
           </Button>
         </div>

@@ -7,6 +7,9 @@ export interface IClient {
   clientPhoneNumber: string;
   clientID?: number;
   alfasenteCharge?: number;
+   created_at?:Date;
+  dateRejected?: Date;
+  dateApproved?: Date;
   // date_of_birth?: string;
   walletID?: {
     walletID: number;

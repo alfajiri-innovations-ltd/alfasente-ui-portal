@@ -49,9 +49,7 @@ function ManualTransactions() {
     }
   };
 
-//   const all = FilteredTransactons.filter(
-//     (transaction) => transaction.transactionType === "Disbursement Transaction"
-//   );
+
   const pending = FilteredTransactons.filter(
     (transaction) => transaction.status === "pending"
   );
@@ -61,7 +59,7 @@ function ManualTransactions() {
 
   return (
     <Layout title="Manual Top-up">
-      <div className="flex flex-col mx-5 my-5">
+      <div className="flex flex-col mx-5 my-2">
         <div className="relative">
           <div className="flex gap-10 text-[15px] py-2">
             {["Requests", "Approvals"].map((tab) => (
@@ -141,7 +139,7 @@ function ManualTransactions() {
           </div>
         </div>
 
-        <div className="my-5">
+        <div className="">
           {activeTab === "all" && (
             <TransactionsTable transactions={currenttransactions} />
           )}
@@ -153,7 +151,7 @@ function ManualTransactions() {
           )}
         </div>
 
-        <div className="flex justify-between  items-center ">
+        <div className="flex justify-between  items-center my-5 ">
           <div className="">
             <span className="font-normal text-[15px]  ">
               Showing {currenttransactions.length} of{" "}

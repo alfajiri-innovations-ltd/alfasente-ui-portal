@@ -10,9 +10,9 @@ import { useState } from "react";
 import { RejectApplicationForm } from "./Forms/RejectApplicationForm";
 export interface RejectApplicationProps {
     clientID: number;
-    // onClose: () => void;
+    onClose: () => void;
 }
-export function RejectAplication({ clientID  }: RejectApplicationProps) {
+export function RejectAplication({ clientID ,onClose }: RejectApplicationProps) {
   const [DialogOpen, setIsDialogOpen] = useState(false);
 
   const handleClose = () => {
@@ -20,10 +20,10 @@ export function RejectAplication({ clientID  }: RejectApplicationProps) {
   };
 
   return (
-    <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-        
-      </DialogTrigger>
+     <Dialog open={true} onOpenChange={(isOpen) => {
+          if (!isOpen) onClose();
+        }}>
+   
 
       <DialogContent className="w-[30vw]">
         <DialogHeader>

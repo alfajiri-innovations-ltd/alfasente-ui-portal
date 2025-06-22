@@ -7,7 +7,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import { GetTransaction } from "@/lib/services/GetTransactionById";
 import { Badge } from "../ui/badge";
 import { getStatusBadge } from "../Client/Tables/TransactionsTable";
-import { truncateUUID } from "@/lib/utils";
+import { formatMoney, truncateUUID } from "@/lib/utils";
 import { InitiateTopUp } from "./InitiateTopUp";
 
 interface ViewApplicationDetails {
@@ -56,8 +56,8 @@ export function ViewRequest({
           </div>
         </DialogTrigger>
 
-        <DialogContent className="md:w-[500px] w-[90vw] lg:left-[80%] rounded-[10px] h-[90vh]">
-          <ScrollArea className="h-[80vh]">
+        <DialogContent className="md:w-[500px] w-[90vw] lg:left-[80%] rounded-[10px] overflow-y-auto scrollbar-hide h-[90vh]">
+         
             {loading ? (
               <p className="text-[13px] font-normal text-[#66666]">
                 Loading...
@@ -94,7 +94,7 @@ export function ViewRequest({
                     </div>
                     <div className="flex justify-between">
                       <span className="text-[#7A8397]">Amount</span>
-                      <span>UGX {Transaction?.mainAmount}</span>
+                      <span>{formatMoney(Transaction?.mainAmount ?? 0)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-[#7A8397]">Date Submitted</span>
@@ -116,11 +116,11 @@ export function ViewRequest({
                       <span className="text-[#7A8397]">
                         Airtel Money balance{" "}
                       </span>
-                      <span>UGX {Transaction?.airtelWalletBalance}</span>
+                      <span>{formatMoney(Transaction?.airtelWalletBalance ?? 0)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-[#7A8397]">MTN MoMo balance</span>
-                      <span>UGX {Transaction?.mtnWalletBalance}</span>
+                      <span>{formatMoney(Transaction?.mtnWalletBalance ?? 0)}</span>
                     </div>
                   </div>
 
@@ -169,7 +169,6 @@ export function ViewRequest({
                 <Button onClick={HandleClick}>Initiate top-up</Button>
               </div>
             </div>
-          </ScrollArea>
         </DialogContent>
       </Dialog>
 
