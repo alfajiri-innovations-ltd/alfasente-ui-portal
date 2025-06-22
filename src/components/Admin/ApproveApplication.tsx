@@ -3,6 +3,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { useState } from "react";
@@ -15,7 +16,10 @@ interface ApproveApplicationProps {
   onClose: () => void;
 }
 
-export function ApproveApplication({ clientID }: ApproveApplicationProps) {
+export function ApproveApplication({
+  clientID,
+  onClose,
+}: ApproveApplicationProps) {
   const [submitting, setSubmitting] = useState(false);
   const [DialogOpen, setIsDialogOpen] = useState(false);
 
@@ -40,6 +44,7 @@ export function ApproveApplication({ clientID }: ApproveApplicationProps) {
       });
 
       const responsedata = await response.json();
+      handleClose();
 
       if (response.ok) {
         toast({
@@ -47,8 +52,6 @@ export function ApproveApplication({ clientID }: ApproveApplicationProps) {
           title: "Successful",
           description: "Application approved successfully!",
         });
-
-        handleClose();
       } else {
         toast({
           variant: "destructive",
@@ -67,9 +70,12 @@ export function ApproveApplication({ clientID }: ApproveApplicationProps) {
     }
   };
   return (
-    <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
-     
-
+    <Dialog
+      open={true}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose(); // allow closing by clicking outside
+      }}
+    >
       <DialogContent className="w-[33vw]">
         <DialogHeader>
           <DialogTitle>Approve Application</DialogTitle>
