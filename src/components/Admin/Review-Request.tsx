@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 import { EyeIcon, Wallet } from "lucide-react";
-import { ScrollArea } from "../ui/scroll-area";
 import { GetTransaction } from "@/lib/services/GetTransactionById";
 import { Badge } from "../ui/badge";
 import { getStatusBadge } from "../Client/Tables/TransactionsTable";

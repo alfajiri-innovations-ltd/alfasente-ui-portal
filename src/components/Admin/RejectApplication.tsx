@@ -3,7 +3,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import { useState } from "react";
@@ -13,7 +12,7 @@ export interface RejectApplicationProps {
     onClose: () => void;
 }
 export function RejectAplication({ clientID ,onClose }: RejectApplicationProps) {
-  const [DialogOpen, setIsDialogOpen] = useState(false);
+  const [, setIsDialogOpen] = useState(false);
 
   const handleClose = () => {
     setIsDialogOpen(false);

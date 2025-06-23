@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { FetchClient, GetUserById } from "@/lib/api-routes";
 
-import { Eye, EyeIcon, UserIcon } from "lucide-react";
+import { Eye, EyeIcon } from "lucide-react";
 import { RejectAplication } from "./RejectApplication";
 import { ApproveApplication } from "./ApproveApplication";
 import { FaUserLarge } from "react-icons/fa6";
@@ -42,9 +42,9 @@ export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
 
   const [showReject, setShowReject] = useState(false);
 
-  const handleApproveClose = () => {
-    setShowApprove(false);
-  };
+  // const handleApproveClose = () => {
+  //   setShowApprove(false);
+  // };
 
   // const handleRejectClose = () => {
   //   setShowReject(false);

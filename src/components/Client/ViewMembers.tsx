@@ -9,7 +9,6 @@ import { RejectList } from "./RejectList";
 import { IList } from "@/lib/interfaces/interfaces";
 import { GetList } from "@/lib/services/GetListById";
 import { useGetMembers } from "@/lib/services/GetMembers";
-import { GetUser } from "@/lib/services/GetUser";
 
 interface IViewProps {
   CloseView: () => void;
@@ -27,10 +26,9 @@ function ViewMembers({ CloseView, listId }: IViewProps) {
 
   const members = useGetMembers(listId);
 
-  console.log(members);
+  
 
-  const user = GetUser();
-  console.log(user);
+ 
 
   const MembersPerPage = 8;
 
@@ -70,7 +68,7 @@ function ViewMembers({ CloseView, listId }: IViewProps) {
             {list?.list?.status}
           </Badge>
         </div>
-        {user?.status !== "maker" && (
+        {list?.list?.status !== "Approved" && (
           <div className="flex items-center justify-self-end gap-3">
             <RejectList listId={listId}/>
             <ApproveList listId={listId} />

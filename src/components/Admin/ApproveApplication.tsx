@@ -3,7 +3,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { useState } from "react";
@@ -21,7 +20,7 @@ export function ApproveApplication({
   onClose,
 }: ApproveApplicationProps) {
   const [submitting, setSubmitting] = useState(false);
-  const [DialogOpen, setIsDialogOpen] = useState(false);
+  const [, setIsDialogOpen] = useState(false);
 
   const handleClose = () => {
     setIsDialogOpen(false);

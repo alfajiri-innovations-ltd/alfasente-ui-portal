@@ -32,7 +32,7 @@ function Dashboard() {
   const [viewAirtelBalance, setViewAirtelBalance] = useState(false);
   const [viewMtnBalance, setViewMtnBalance] = useState(false);
 
-  const Lists: listsWithMembers[] = GetLists();
+  const Lists: listsWithMembers[] = GetLists().slice(0, 5);
   // console.log(Lists);
   const HandleAirtelClick = () => {
     setViewAirtelBalance(!viewAirtelBalance);
