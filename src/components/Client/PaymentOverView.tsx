@@ -59,7 +59,7 @@ function PaymentOverView({ list ,showErrorMessage}: PaymentOverViewProps) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 pt-3">
         <div className="flex justify-between items-center">
           <span>Beneficiary List</span>
           <span className="text-[#000000CC] font-bold capitalize">

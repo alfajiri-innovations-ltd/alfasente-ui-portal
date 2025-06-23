@@ -47,7 +47,7 @@ function BeneficiariesPage() {
 
   const rejectedLists = Lists?.filter((list) => list.status === "Rejected");
   const pendingLists = Lists.filter((list) => list.status === "pending");
-  const approvedLists = Lists.filter((list) => list.status === "approved");
+  const approvedLists = Lists.filter((list) => list.status === "Approved");
 
   return (
     <Layout title="Beneficiaries">

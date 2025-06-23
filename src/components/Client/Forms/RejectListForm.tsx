@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { RejectList } from "@/lib/api-routes";
 import { getUserToken } from "@/lib/cookies/UserMangementCookie";
-import { ErrorToast, SuccessToast } from "@/components/ui/Toasts";
+import { toast } from "@/hooks/use-toast";
 
 const FormSchema = z.object({
   reviewMessage: z.string().min(2, {
@@ -30,7 +30,7 @@ export interface RejectListFormProps {
   handleClose: () => void;
 }
 
-export function RejectListForm({ listId ,handleClose}: RejectListFormProps) {
+export function RejectListForm({ listId, handleClose }: RejectListFormProps) {
   console.log(listId);
 
   const [submitting, setSubmitting] = useState(false);
@@ -64,20 +64,29 @@ export function RejectListForm({ listId ,handleClose}: RejectListFormProps) {
         }),
       });
 
-      console.log(response);
-      console.log(data.reviewMessage);
-
       const responsedata = await response.json();
 
       if (response.ok) {
-        SuccessToast("List rejected successfully!");
+        toast({
+          variant: "success",
+          title: "Success",
+          description: "List rejected successfully!",
+        });
 
         handleClose();
       } else {
-        throw new Error(responsedata || "Failed to reject the list.");
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: responsedata?.message || "Failed to reject the list.",
+        });
       }
     } catch (error: any) {
-      ErrorToast(error.message || "An error occurred.");
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "An error occurred.",
+      });
     } finally {
       setSubmitting(false);
     }

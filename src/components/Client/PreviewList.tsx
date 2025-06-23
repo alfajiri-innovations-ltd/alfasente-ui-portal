@@ -3,13 +3,35 @@ import * as XLSX from "xlsx";
 import { PaginationDemo } from "./Pagination";
 import { PreviewMembersTable } from "./Tables/PreviewMembersTable";
 import { IMembers } from "@/lib/interfaces/interfaces";
+import {  useFetchListName } from "@/lib/services/GetListName";
+import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
 
 interface PreviewListProps {
   fileContent?: any;
+  setIsTaken: (isTaken: boolean) => void;
 }
 
-function PreviewList({ fileContent }: PreviewListProps) {
+function PreviewList({ fileContent, setIsTaken }: PreviewListProps) {
   const [sheetName, setSheetName] = useState<string>("");
+
+  const clientId = getAuthUser()?.clientID;
+
+  console.log("Client ID:", clientId);
+
+  const listName = sheetName;
+  console.log("Sheet Name:", listName);
+
+const CheckListName = useFetchListName(
+  sheetName && clientId ? { listName: sheetName, clientId } : null
+);
+
+  useEffect(() => {
+    if (CheckListName) {
+      setIsTaken(CheckListName?.isTaken);
+    }
+  }, [CheckListName]);
+
+  console.log("Check List Name:", CheckListName);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [members, setMembers] = useState<IMembers[]>([]);
@@ -18,7 +40,7 @@ function PreviewList({ fileContent }: PreviewListProps) {
   const totalPages = Math.ceil(members.length / MembersPerPage);
   const currentMembers = members.slice(
     (currentPage - 1) * MembersPerPage,
-    currentPage * MembersPerPage,
+    currentPage * MembersPerPage
   );
 
   useEffect(() => {
@@ -45,7 +67,7 @@ function PreviewList({ fileContent }: PreviewListProps) {
           headers.reduce((acc: any, header: string, index: number) => {
             acc[header] = row[index] || null;
             return acc;
-          }, {}),
+          }, {})
         );
 
         console.log(parsedMembers);

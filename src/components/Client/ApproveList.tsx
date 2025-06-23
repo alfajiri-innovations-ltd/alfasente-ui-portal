@@ -6,11 +6,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import { ErrorToast, SuccessToast } from "../ui/Toasts";
 import { useState } from "react";
 import { getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { ApproveListEndPoint } from "@/lib/api-routes";
 import { RejectListProps } from "./RejectList";
+import { toast } from "@/hooks/use-toast";
 
 export function ApproveList({ listId }: RejectListProps) {
   const [submitting, setSubmitting] = useState(false);
@@ -36,20 +36,31 @@ export function ApproveList({ listId }: RejectListProps) {
         }),
       });
 
-      console.log(response);
-   
-
       const responsedata = await response.json();
 
       if (response.ok) {
-        SuccessToast("List approved successfully!");
+        setTimeout(() => {
+          toast({
+            variant: "success",
+            title: "Successful",
+            description: "List approved successfully!",
+          });
+        }, 1000);
 
         handleClose();
       } else {
-        throw new Error(responsedata || "Failed to approve the list.");
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: `${responsedata?.message || "Failed to approve the list."}`,
+        });
       }
     } catch (error: any) {
-      ErrorToast(error.message || "An error occurred.");
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: `An error occurred: ${error.message || "Failed to approve the list."}`,
+      });
     } finally {
       setSubmitting(false);
     }
@@ -69,7 +80,11 @@ export function ApproveList({ listId }: RejectListProps) {
           visible to all users in your organization
         </p>
         <div className="flex items-center justify-self-end gap-3">
-          <Button variant={"outline"} className=" justify-self-end  " onClick={handleClose}>
+          <Button
+            variant={"outline"}
+            className=" justify-self-end  "
+            onClick={handleClose}
+          >
             Cancel
           </Button>
 

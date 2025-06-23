@@ -18,6 +18,10 @@ import { GetLists } from "@/lib/services/FetchClientLists";
 import PaymentOverView from "./PaymentOverView";
 import { AddBeneficiaryForm } from "./Forms/AddBeneficiaryForm";
 import PaymentOverViewIndividual from "./PreviewIndividual";
+import { GetClient } from "@/lib/services/GetClientById";
+import { getAuthUser, getUserToken } from "@/lib/cookies/UserMangementCookie";
+import { SendMoney } from "@/lib/api-routes";
+import { toast } from "@/hooks/use-toast";
 
 export function SendFunds() {
   const [previewList, setPreviewList] = useState(false);
@@ -26,8 +30,12 @@ export function SendFunds() {
   const [isChecked] = useState(false);
   const [checkedListId, setCheckedListId] = useState<number | null>(null);
   const [DialogOpen, setFundWalletDialog] = useState(false);
+  const client = GetClient();
+  const token = getUserToken();
 
-  const [errorMessage,showErrorMessage] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const clientId = client?.clientID;
+  const [errorMessage, showErrorMessage] = useState(false);
 
   // Ensure IMembers is imported or defined correctly
   const [Beneficiary, setBeneficiary] = useState<IMembers | null>(null);
@@ -36,12 +44,9 @@ export function SendFunds() {
 
   const [activeTab, setActiveTab] = useState("Lists");
 
-
   const onClose = () => {
     setFundWalletDialog(false);
   };
-
-
 
   // const [page, setPage] = useState(1);
 
@@ -102,6 +107,60 @@ export function SendFunds() {
     setCheckedList(isAlreadyChecked ? null : list);
   };
 
+  const handleSubmit = async () => {
+    const authUser = getAuthUser();
+    const payer = authUser?.username;
+    try {
+      if (!checkedList || checkedList.members.length === 0) {
+        console.warn("No members selected.");
+        return;
+      }
+
+      const payload = {
+        clientID: clientId,
+
+        payer: payer,
+        members: checkedList.members.map((member) => ({
+          ...member,
+
+          payer: payer,
+        })),
+      };
+
+      const response = await fetch(SendMoney(), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        toast({
+          variant: "success",
+          title: "Successful",
+          description: "Funds sent successfully!",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: result?.message || "Failed to send funds.",
+        });
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: `An error occurred: ${error instanceof Error ? error.message : "Failed to send funds."}`,
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
   return (
     <>
       <Dialog open={DialogOpen} onOpenChange={setFundWalletDialog}>
@@ -128,8 +187,9 @@ export function SendFunds() {
                 {["Lists", "Individual"].map((tab) => (
                   <div key={tab} className="relative">
                     <h4
-                      className={`cursor-pointer ${activeTab === tab ? " font-semibold" : ""
-                        }`}
+                      className={`cursor-pointer ${
+                        activeTab === tab ? " font-semibold" : ""
+                      }`}
                       onClick={() => setActiveTab(tab)}
                     >
                       {tab}
@@ -229,7 +289,10 @@ export function SendFunds() {
               </div>
             </div>
           ) : checkedList ? (
-            <PaymentOverView list={checkedList} showErrorMessage={showErrorMessage}/>
+            <PaymentOverView
+              list={checkedList}
+              showErrorMessage={showErrorMessage}
+            />
           ) : (
             <p>No list selected</p>
           )}
@@ -250,10 +313,10 @@ export function SendFunds() {
                 <Button
                   type="submit"
                   className="bg-[#8D35AA] w-full"
-                  onClick={HandleClick}
-                  disabled={!checkedListId || errorMessage}
+                  onClick={handleSubmit}
+                  disabled={!checkedListId || errorMessage || submitting}
                 >
-                  Send
+                  {submitting ? "Submitting..." : "Send "}
                 </Button>
               ))}
           </DialogFooter>

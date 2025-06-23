@@ -6,7 +6,7 @@ import { GetClient } from "@/lib/services/GetClientById";
 import { Button } from "../ui/button";
 import { FundWallet } from "./FundWalletDialog";
 import { formatMoney } from "@/lib/utils";
-import { getUserToken } from "@/lib/cookies/UserMangementCookie";
+import { getAuthUser, getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { useState } from "react";
 import { SendMoney } from "@/lib/api-routes";
 
@@ -26,7 +26,7 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
 
   const onSubmit = async () => {
     setSubmitting(true);
-    const payer = client?.clientName || "Unknown Payer";
+    const payer = getAuthUser()?.username || "Unknown Payer";
 
     const payload = {
       member: {

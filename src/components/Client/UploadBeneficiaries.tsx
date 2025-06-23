@@ -18,7 +18,7 @@ import PreviewList from "./PreviewList";
 import { ArrowLeft } from "lucide-react";
 import { UploadList } from "@/lib/api-routes";
 import { getUserToken, getAuthUser } from "@/lib/cookies/UserMangementCookie";
-import { ErrorToast, SuccessToast } from "../ui/Toasts";
+import { toast } from "@/hooks/use-toast";
 
 export function UploadBeneficiaries() {
   const [DialogOpen, setIsDialogOpen] = useState(false);
@@ -26,6 +26,9 @@ export function UploadBeneficiaries() {
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
     null
   );
+
+  const [isTaken, setIsTaken] = useState<boolean>(false);
+
 
   const handleClose = () => {
     setFileContent(null);
@@ -55,7 +58,12 @@ export function UploadBeneficiaries() {
         }
       };
     } else {
-      ErrorToast("Please upload a valid Excel file.");
+      toast({
+        variant: "destructive",
+        title: "Invalid File Type",
+        description: "Please upload a valid Excel file (.xls, .xlsx).",
+      })
+      
     }
   };
 
@@ -67,7 +75,11 @@ export function UploadBeneficiaries() {
   const handleSubmit = () => {
     setIsSubmitting(true);
     if (!fileContent) {
-      ErrorToast("No file content");
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "No file content to upload.",
+      });
       return;
     }
 
@@ -115,20 +127,34 @@ export function UploadBeneficiaries() {
       })
         .then((response) => {
           if (response.ok) {
-            SuccessToast("List submitted successfully.");
+            toast({
+              variant: "success",
+              title: "Successful",
+              description: "List submitted successfully.",
+            });
 
             handleClose();
           } else {
-            ErrorToast("List already exists.");
+            toast({
+              variant: "destructive",
+              title: "Failure",
+              description: "Failed to upload the list.",
+            });
           }
         })
         .catch((error) => {
-          console.error("Error submitting list:", error);
-          ErrorToast("An error occurred while submitting the list.");
+          toast({
+            variant: "destructive",
+            title: "Failure",
+            description: `An error occurred: ${error.message || "Failed to upload the list."}`,
+          });
         });
     } catch (error) {
-      console.error("Error processing file:", error);
-      ErrorToast("Failed to process the uploaded file.");
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: "Failed to upload the list.",
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -212,7 +238,7 @@ export function UploadBeneficiaries() {
             )}
           </>
         ) : (
-          <PreviewList fileContent={fileContent} />
+          <PreviewList fileContent={fileContent} setIsTaken={setIsTaken} />
         )}
         <DialogFooter
           className={`${
@@ -240,7 +266,7 @@ export function UploadBeneficiaries() {
               type="submit"
               className="bg-[#8D35AA]"
               onClick={handleSubmit}
-              disabled={submit}
+              disabled={submit || isTaken}
             >
               {submit ? "Submitting..." : "Submit for Approval"}
             </Button>
