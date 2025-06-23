@@ -38,8 +38,7 @@ function Footer() {
           <span> &copy; </span>
           <span>{new Date().getFullYear()}.</span>{" "}
           <span>
-            All rights reserved. Alfasente is licensed and regulated by the
-            Uganda Revenue Authority.
+            All rights reserved.
           </span>
         </div>
 

@@ -1,7 +1,7 @@
 import { Edit } from "lucide-react";
 import { Button } from "../ui/button";
 import { IDetails } from "@/lib/interfaces/interfaces";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { getAuthUser, getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { CollectMoney } from "@/lib/api-routes";
 import { useClientContext } from "@/hooks/ClientContext";
@@ -21,24 +21,17 @@ function ConfirmPaymentDetails({
 }: IConfirmDetails) {
   const client = useClientContext();
 
-  const serviceFee = client.clientData?.alfasenteCharge || 2000; // Default service fee if not set in client data
+  const Charge=import.meta.env.VITE_SERVICE_FEE
+
+  const serviceFee = client.clientData?.alfasenteCharge || Charge; 
   const totalFee = Number(details.amount) + Number(serviceFee);
 
-  const allocationSum = details.mtnAllocation + details.airtelAllocation;
-  const isAllocationExceeded = allocationSum > Number(details.amount);
 
   const [warning, setWarning] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const token = getUserToken();
   const clientID = getAuthUser().clientID;
 
-  useEffect(() => {
-    if (isAllocationExceeded) {
-      setWarning("⚠️ The total allocations exceed the amount to fund!");
-    } else {
-      setWarning("");
-    }
-  }, [isAllocationExceeded]);
 
   const submit = async () => {
     setSubmitting(true);
@@ -115,15 +108,15 @@ function ConfirmPaymentDetails({
           <span>UGX {details?.amount.toLocaleString()}</span>
         </div>
 
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <span>MTN Allocation</span>
           <span>UGX {details?.mtnAllocation.toLocaleString()}</span>
-        </div>
+        </div> */}
 
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <span>Airtel Allocation</span>
           <span>UGX {details?.airtelAllocation.toLocaleString()}</span>
-        </div>
+        </div> */}
 
         <div className="flex items-center justify-between">
           <span>Service Fee</span>
@@ -140,7 +133,7 @@ function ConfirmPaymentDetails({
         <Button
           onClick={submit}
           className="py-2"
-          disabled={isAllocationExceeded || submitting}
+          disabled={submitting}
         >
           {submitting ? "Submitting..." : "  Confirm Payment"}{" "}
         </Button>

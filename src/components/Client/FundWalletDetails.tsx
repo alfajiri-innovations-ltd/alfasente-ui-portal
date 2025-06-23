@@ -38,13 +38,6 @@ const FormSchema = z
       .regex(/^\d{9}$/, { message: "Must be a 9-digit number" }),
 
     network: z.string().min(1, { message: "Please select a network" }),
-    airtelAllocation: z
-      .number()
-      .min(1000, { message: "Amount must be at least 1,000" }),
-
-    mtnAllocation: z
-      .number()
-      .min(1000, { message: "Amount must be at least 1,000" }),
   })
   .superRefine((data, ctx) => {
     const { network, accountNumber } = data;
@@ -86,22 +79,16 @@ function FundWalletDetails({
 }: IFundWalletDetails) {
   const [isFormReady, setIsFormReady] = useState(true);
 
-  const [balanceMsg, setBalanceMsg] = useState("");
-  const [editing, setEditing] = useState<"airtel" | "mtn" | null>(null);
-
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       amount: details.amount ? Number(details.amount) : undefined,
       accountNumber: details.accountNumber || "",
       network: details.network || "",
-      airtelAllocation: details.airtelAllocation || undefined,
-      mtnAllocation: details.mtnAllocation || undefined,
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-
     const formattedData = {
       ...data,
       amount: data.amount,
@@ -110,44 +97,10 @@ function FundWalletDetails({
     setFundDetails(formattedData);
     handleNextStep();
   }
-  const amount = form.watch("amount");
-  const airtel = form.watch("airtelAllocation");
-  const mtn = form.watch("mtnAllocation");
 
-  useEffect(() => {
-    if (!amount || amount <= 0) return;
-    if (editing === "airtel") {
-      const newMtn = amount - (airtel || 0);
-      form.setValue("mtnAllocation", newMtn > 0 ? newMtn : 0, {
-        shouldValidate: true,
-      });
-    }
-
-    if (editing === "mtn") {
-      const newAirtel = amount - (mtn || 0);
-      form.setValue("airtelAllocation", newAirtel > 0 ? newAirtel : 0, {
-        shouldValidate: true,
-      });
-    }
-
-    const total =
-      (form.watch("airtelAllocation") || 0) +
-      (form.watch("mtnAllocation") || 0);
-
-     if (total < amount) {
-    setBalanceMsg(`You still have UGX ${amount - total} unallocated`);
-    setIsFormReady(false);
-  } else if (total > amount) {
-    setBalanceMsg(`Allocation exceeds amount by UGX ${total - amount}`);
-    setIsFormReady(false);
-  } else {
-    setBalanceMsg("");
-    setIsFormReady(true);
-  }
-  }, [airtel, mtn, amount, editing]);
   return (
     <>
-      <ScrollArea className="h-[500px]">
+      
         <div className="space-y-4">
           <h3 className="text-base font-medium my-3">
             Select Mobile Money Provider
@@ -235,75 +188,6 @@ function FundWalletDetails({
                 )}
               />
 
-              <div>
-                <h3>Wallet Allocation</h3>
-                <div className="flex justify-between gap-4 my-3">
-                  <FormField
-                    control={form.control}
-                    name="airtelAllocation"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Airtel Money Wallet</FormLabel>
-                        <FormControl>
-                          <div className="flex items-center border rounded-lg">
-                            <span className="px-3 py-2 text-gray-700 rounded-l-md">
-                              UGX
-                            </span>
-                            <Input
-                              {...field}
-                              type="number"
-                              disabled={form.formState.isSubmitting}
-                              onChange={(e) => {
-                                setEditing("airtel");
-                                field.onChange(e.target.valueAsNumber || 0);
-                              }}
-                              className="border-none focus-visible:ring-0 focus:ring-0 outline-none shadow-none"
-                            />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="mtnAllocation"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>MTN Money Wallet</FormLabel>
-                        <FormControl>
-                          <div className="flex items-center border rounded-lg">
-                            <span className="px-3 py-2 text-gray-700 rounded-l-md">
-                              UGX
-                            </span>
-                            <Input
-                              {...field}
-                              type="number"
-                              disabled={form.formState.isSubmitting}
-                              onChange={(e) => {
-                                setEditing("mtn");
-                                field.onChange(e.target.valueAsNumber || 0);
-                              }}
-                              className="border-none focus-visible:ring-0 focus:ring-0 outline-none shadow-none"
-                            />
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-
-              {balanceMsg && (
-                <p
-                  className={`text-sm ${balanceMsg.includes("exceeds") ? "text-red-500" : "text-yellow-600"}`}
-                >
-                  {balanceMsg}
-                </p>
-              )}
-
               <FormField
                 control={form.control}
                 name="accountNumber"
@@ -339,7 +223,7 @@ function FundWalletDetails({
             </form>
           </Form>
         </div>
-      </ScrollArea>
+   
     </>
   );
 }
