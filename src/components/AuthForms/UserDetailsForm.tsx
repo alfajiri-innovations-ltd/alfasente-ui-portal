@@ -162,7 +162,7 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
                 <FormLabel>First Name</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Lubwama"
+                    placeholder="Your name..."
                     className=" border-[#DCE1EC]"
                     {...field}
                   />
@@ -181,7 +181,7 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
                 <FormLabel>Last Name</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Mildred"
+                    placeholder="Your last name..."
                     className=" border-[#DCE1EC]"
                     {...field}
                   />
@@ -227,6 +227,7 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
                 <Input
                   type="date"
                   placeholder="shadcn"
+                  max={new Date(Date.now() - 18 * 365.25 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
                   className=" border-[#DCE1EC]"
                   {...field}
                 />

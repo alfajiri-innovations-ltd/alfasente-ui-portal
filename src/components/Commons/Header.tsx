@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { MobilePopOver } from "./LandingPage/MobileNav";
 import NavItems from "./NavItems";
 import { Button } from "../ui/button";
+import { getUserToken } from "@/lib/cookies/UserMangementCookie";
 
 function Header() {
   const navigate = useNavigate();
@@ -24,6 +25,9 @@ function Header() {
         {" "}
         <NavItems />
       </div>
+      {/* {
+        getUserToken()
+      } */}
       <div className="flex gap-3 items-center">
         <Button
           variant={"outline"}

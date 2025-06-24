@@ -16,13 +16,13 @@ function Question() {
           Bulk Payments?{" "}
         </h5>
 
-        <h6 className="font-normal text-[17px] md:mt-5 md:mb-6">
+        <h6 className="font-normal text-[17px] px-6 md:px-0 text-center py-4 sm:py-0 md:mt-5 md:mb-6">
           Experience fast, secure payments today.{" "}
         </h6>
 
         <Button
           onClick={HandleClick}
-          className="text-white mx-20 md:mx-0 rounded-[40px] text-[15px] shadow-none h-[46px] p-5 bg-[#E59339]"
+          className="text-white mx-20 md:mx-0 sm:my-0 my-3 rounded-[40px] text-[15px] shadow-none h-[46px] p-5 bg-[#E59339]"
         >
           Manage payments{" "}
           <span>
