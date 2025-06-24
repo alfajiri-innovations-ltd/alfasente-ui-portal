@@ -21,9 +21,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { ScrollArea } from "../ui/scroll-area";
 import { IDetails } from "@/lib/interfaces/interfaces";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
 const FormSchema = z
   .object({
@@ -77,7 +76,7 @@ function FundWalletDetails({
   setFundDetails,
   details,
 }: IFundWalletDetails) {
-  const [isFormReady, setIsFormReady] = useState(true);
+  const [isFormReady] = useState(true);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
