@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ArrowLeft, Wallet, X } from "lucide-react";
+import { ArrowLeft,  X } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import FundWalletDetails from "@/components/Client/FundWalletDetails";
 import ConfirmPaymentDetails from "@/components/Client/ConfirmPaymentDetails";
@@ -10,9 +9,7 @@ import ManualWalletDetails from "@/components/Client/Manual-WalletDetails";
 import SuccessFulTopUp from "@/components/Client/SuccessFulTopup";
 import { useNavigate } from "react-router-dom";
 
-// interface FundWalletProps {
-//   onClick?: () => void;
-// }
+
 
 export function FundWallet() {
   const [Details, setDetails] = useState({

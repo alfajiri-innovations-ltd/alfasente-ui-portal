@@ -27,7 +27,7 @@ function ConfirmPaymentDetails({
   const totalFee = Number(details.amount) + Number(serviceFee);
 
 
-  const [warning, setWarning] = useState("");
+  const [warning] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const token = getUserToken();
   const clientID = getAuthUser().clientID;

@@ -4,11 +4,12 @@ import { useCalculateCharge } from "@/lib/services/CalculateCharge";
 
 import { GetClient } from "@/lib/services/GetClientById";
 import { Button } from "../ui/button";
-import { FundWallet } from "./FundWalletDialog";
 import { formatMoney } from "@/lib/utils";
 import { getAuthUser, getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { useState } from "react";
 import { SendMoney } from "@/lib/api-routes";
+import { Wallet2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface PaymentOverViewProps {
   beneficiary: IMembers;
@@ -20,6 +21,8 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
 
   const [submitting, setSubmitting] = useState(false);
   const clientId = client?.clientID;
+
+  const navigate = useNavigate();
   const Charges = useCalculateCharge({ beneficiary, clientId: clientId || 0 });
 
   const Wallet = client?.walletID;
@@ -40,8 +43,6 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
       clientID: clientId,
       payer,
     };
-
-    console.log("SendMoney Payload:", payload);
 
     try {
       const response = await fetch(SendMoney(), {
@@ -93,7 +94,15 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
           <span className="text-red-500 text-xs cursor-pointer">
             {Charges?.errorMessage}
           </span>
-          <FundWallet />
+          <div
+            onClick={() => {
+              navigate("/funwallet");
+            }}
+            className="flex px-2 h-10 cursor-pointer gap-1 items-center bg-primary text-white text-[15px] rounded-[8px]"
+          >
+            <Wallet2 className="h-4 w-4" />
+            <span>Fund Wallet</span>
+          </div>
         </div>
       )}
 

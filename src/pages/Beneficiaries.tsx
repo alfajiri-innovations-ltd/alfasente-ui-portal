@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 
 import { Filter } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
-import ViewMembers from "@/components/Client/ViewMembers";
 import { UploadBeneficiaries } from "@/components/Client/UploadBeneficiaries";
 import { GetLists } from "@/lib/services/FetchClientLists";
 import { listsWithMembers } from "@/lib/interfaces/interfaces";
@@ -12,7 +11,7 @@ import Layout from "@/components/Commons/Layout";
 
 function BeneficiariesPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedListId, setSelectedListId] = useState<number | null>(null);
+  const [, setSelectedListId] = useState<number | null>(null);
 
   const Lists: listsWithMembers[] = GetLists();
 

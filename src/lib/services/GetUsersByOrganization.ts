@@ -25,7 +25,7 @@ export function GetUsers() {
         if (response.ok) {
           const data = await response.json();
           setUsers(data);
-          console.log(data);
+         
         } else {
         }
       } catch (error) {}

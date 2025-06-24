@@ -13,7 +13,6 @@ const ApplicationsPage = React.lazy(() => import("@/pages/Applications"));
 const SettingsPage = React.lazy(() => import("@/pages/SettingsPage"));
 const AboutUs = React.lazy(() => import("@/pages/AboutUs"));
 
-
 import Organisations from "@/pages/OrganisationsPage";
 import { UserProvider } from "./hooks/UserContext";
 
@@ -26,6 +25,7 @@ import WaitScreen from "./pages/WaitScreen";
 import { ClientProvider } from "./hooks/ClientContext";
 import MemebersPage from "./pages/Members";
 import { FundWallet } from "./pages/FundWallet";
+import { SendFunds } from "./pages/SendFunds";
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
@@ -52,10 +52,10 @@ function App() {
                   path="/view-members/:listId"
                   element={<MemebersPage />}
                 />
-       
+
                 <Route path="/fundwallet" element={<FundWallet />} />
-               
-            
+
+                <Route path="/send-funds" element={<SendFunds />} />
               </Route>
               {/* end of auth routes */}
 

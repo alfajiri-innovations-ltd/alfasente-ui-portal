@@ -8,14 +8,13 @@ import {
 } from "lucide-react";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
-import { SlEnvolope } from "react-icons/sl";
-import { PiBuildingOfficeLight } from "react-icons/pi";
+import { GrSend } from "react-icons/gr";
+
 
 import { Link } from "react-router-dom";
 import { useUser } from "@/hooks/UserContext";
 import { GetClient } from "@/lib/services/GetClientById";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import React from "react";
 import { GetUsers } from "@/lib/services/GetUsersByOrganization";
 
 function SideBar() {
@@ -42,7 +41,7 @@ function SideBar() {
 
     {
       title: "Send Funds",
-      icon: <FaMoneyBillTransfer className="w-6 h-6" />,
+      icon: <GrSend className="w-6 h-6" />,
       href: "/send-funds",
       roles: ["client_employee", "client_admin"],
     },
