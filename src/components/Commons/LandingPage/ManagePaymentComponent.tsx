@@ -6,9 +6,9 @@ const BulkPaymentsComponent: React.FC = () => {
     return (
         <div className="max-w-xl mx-auto sm:mt-10 p-8">
             {/* Main Heading */}
-            <h1 className="text-xl sm:text-3xl font-bold text-gray-900 mb-2 leading-tight">
+            <h3 className="text-xl md:text-[42px] font-bold text-gray-900 mb-2 leading-tight">
                 Managing bulk payments shouldn't be this hard
-            </h1>
+            </h3>
 
             {/* Pain Points */}
             <div className="space-y-0 mb-12">
