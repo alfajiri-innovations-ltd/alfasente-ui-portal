@@ -10,78 +10,12 @@ import { InviteStaff } from "@/components/Client/InviteStaffDialog";
 import { GetUsers } from "@/lib/services/GetUsersByOrganization";
 import Layout from "@/components/Commons/Layout";
 
-// const users = [
-//   {
-//     user_name: "George Kizza",
-//     email: "georgekizza@gmail.com",
-//     status: "Active",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     role: "client_admin",
-//   },
 
-//   {
-//     user_name: "George Kizza",
-//     email: "georgekizza@gmail.com",
-//     status: "Active",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     role: "client_admin",
-//   },
-//   {
-//     user_name: "George Kizza",
-//     email: "georgekizza@gmail.com",
-//     status: "Active",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     role: "client_admin",
-//   },
-//   {
-//     user_name: "George Kizza",
-//     email: "georgekizza@gmail.com",
-//     status: "Active",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     role: "client_employee",
-//   },
-//   {
-//     user_name: "George Kizza",
-//     email: "georgekizza@gmail.com",
-//     status: "Active",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     role: "client_admin",
-//   },
-
-//   {
-//     user_name: "George Kizza",
-//     email: "georgekizza@gmail.com",
-//     status: "Inactive",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     role: "client_employee",
-//   },
-//   {
-//     user_name: "George Kizza",
-//     email: "georgekizza@gmail.com",
-//     status: "Active",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     role: "client_admin",
-//   },
-//   {
-//     user_name: "George Kizza",
-//     email: "georgekizza@gmail.com",
-//     status: "Inactive",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     role: "client_admin",
-//   },
-//   {
-//     user_name: "George Kizza",
-//     email: "georgekizza@gmail.com",
-//     status: "Active",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     role: "client_employee",
-//   },
-// ];
 function Staff() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const users = GetUsers();
-  console.log(users);
+ 
 
   const [activeTab, setActiveTab] = useState<
     "all" | "makers" | "admin" | "checkers" | "employee"

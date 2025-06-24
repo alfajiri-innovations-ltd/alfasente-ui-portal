@@ -1,28 +1,28 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ArrowLeft, Wallet } from "lucide-react";
-import FundWalletDetails from "./FundWalletDetails";
+import { ArrowLeft, Wallet, X } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-
-import ManualWalletDetails from "./Manual-WalletDetails";
-import ConfirmPaymentDetails from "./ConfirmPaymentDetails";
-import AuthorizeDeposit from "./AuthorizeDeposit";
-import SuccessFulDeposit from "./SuccessFulDeposit";
-import SuccessFulTopUp from "./SuccessFulTopup";
+import FundWalletDetails from "@/components/Client/FundWalletDetails";
+import ConfirmPaymentDetails from "@/components/Client/ConfirmPaymentDetails";
+import AuthorizeDeposit from "@/components/Client/AuthorizeDeposit";
+import SuccessFulDeposit from "@/components/Client/SuccessFulDeposit";
+import ManualWalletDetails from "@/components/Client/Manual-WalletDetails";
+import SuccessFulTopUp from "@/components/Client/SuccessFulTopup";
+import { useNavigate } from "react-router-dom";
 
 // interface FundWalletProps {
 //   onClick?: () => void;
 // }
 
 export function FundWallet() {
-  const [DialogOpen, setIsDialogOpen] = useState(false);
   const [Details, setDetails] = useState({
     amount: 0,
     accountNumber: "",
     network: "",
-    airtelAllocation: 0,
-    mtnAllocation: 0,
+    
   });
+
+  const navigate = useNavigate();
 
   const [ManualDetails, setManualDetails] = useState({
     amount: 0,
@@ -44,35 +44,40 @@ export function FundWallet() {
   };
 
   return (
-    <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-        <div className="flex px-2 h-10 sm:gap-1 justify-center items-center cursor-pointer border text-black text-[13px] rounded-[8px]">
-          <Wallet className="h-3 w-5" />
-          <span>Fund Wallet</span>
-        </div>
-      </DialogTrigger>
-      <DialogContent className="w-[40vw] max-h-[90vh] overflow-y-auto scrollbar-hide">
-        <div className="flex items-center gap-10  -mt-2">
-          <div
-            className="-mt-2 bg-[#EDF0F7] rounded-full h-7 w-7 flex justify-center items-center"
-            onClick={handlePreviousStep}
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </div>
+    <div className="flex flex-col  h-screen scrollbar-hide">
+      <div className="rounded-full  md:translate-y-8 translate-y-14 translate-x-10 w-min p-2 bg-[#EDF0F7]">
+        <ArrowLeft
+          className="h-6 w-6 cursor-pointer"
+          onClick={() => {
+            window.history.back();
+          }}
+        />
+      </div>
+
+      <div className="rounded-full ml-auto -translate-x-10 translate-y-5 md:-translate-y-3 w-min p-2 bg-[#EDF0F7]">
+        <X
+          className=" right-2 cursor-pointer text-gray-500 hover:text-gray-700"
+          onClick={() => {
+            navigate("/dashboard");
+          }}
+        />
+      </div>
+      <div className="flex flex-col  items-center ">
+        <div className="flex items-center gap-10 md:-mt-5  ">
           {currentStep !== 3 &&
             !(activeTab === "Manual Top-up" && currentStep === 2) && (
               <Progress
                 value={
                   activeTab === "Manual Top-up" ? 100 : (currentStep / 3) * 100
                 }
-                className="w-[70%]"
+                className="w-[40vw] my-4"
               />
             )}
         </div>
 
-        <div className=" my-0">
+          <div className="md:w-[40vw] w-[80vw]">
           {(activeTab === "Self Top-up" && currentStep <= 2) ||
-            (activeTab === "Manual Top-up" && currentStep === 1) ? (
+          (activeTab === "Manual Top-up" && currentStep === 1) ? (
             <h3 className="font-bold">Fund your Wallet</h3>
           ) : null}
 
@@ -83,8 +88,9 @@ export function FundWallet() {
                   {["Self Top-up", "Manual Top-up"].map((tab) => (
                     <div key={tab} className="relative">
                       <h4
-                        className={`cursor-pointer ${activeTab === tab ? " font-semibold" : ""
-                          }`}
+                        className={`cursor-pointer ${
+                          activeTab === tab ? " font-semibold" : ""
+                        }`}
                         onClick={() => setActiveTab(tab)}
                       >
                         {tab}
@@ -144,7 +150,7 @@ export function FundWallet() {
             <SuccessFulTopUp ManualTopUpDetails={ManualDetails} />
           )}
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 }

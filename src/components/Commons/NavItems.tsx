@@ -8,18 +8,18 @@ function NavItems() {
       <li
         className={`cursor-pointer text-[#000000CC] ${pathname === "/about" && "text-texthighlight font-semibold"} active:text-primary   `}
       >
-        <Link to="/howitworks" className="cursor-pointer">
+        <a href="#journey" className="cursor-pointer">
           How It Works
-        </Link>
+        </a>
       </li>
 
-      <li
+      {/* <li
         className={`cursor-pointer text-[#000000CC] ${pathname === "/resources" && "text-texthighlight font-semibold"} active:text-primary   `}
       >
         <Link to="/resources" className="cursor-pointer">
           Resources
         </Link>
-      </li>
+      </li> */}
       <li
         className={`cursor-pointer text-[#000000CC] ${pathname === "/about" && "text-texthighlight font-semibold"} active:text-primary   `}
       >
@@ -27,8 +27,6 @@ function NavItems() {
           About Us
         </Link>
       </li>
-
-     
     </nav>
   );
 }

@@ -60,6 +60,23 @@ export const getTotalCost = (transaction: ITransaction) => {
 }
 
 
+export const formatNumberWithCommas = (value: number | string | undefined | null): string => {
+  if (value === undefined || value === null || value === "") return "";
+
+  const raw = typeof value === "number" ? value.toString() : value.replace(/\D/g, "");
+  const parsed = parseInt(raw, 10);
+
+  return isNaN(parsed) ? "" : parsed.toLocaleString("en-US");
+};
+
+
+
+export const parseFormattedNumber = (formatted: string): number => {
+  const cleaned = formatted?.replace(/,/g, "");
+  return parseInt(cleaned || "0", 10);
+};
+
+
 
 
 

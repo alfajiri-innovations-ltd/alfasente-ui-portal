@@ -8,7 +8,7 @@ import { RenameList } from "./RenameListDialog";
 
 import { DeleteList } from "./DeleteDialog";
 import { listsWithMembers } from "@/lib/interfaces/interfaces";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ViewApplication } from "../Admin/ReviewApplication";
 import { ViewTransactionDialog } from "./ViewTransaction";
 import { ViewRequest } from "../Admin/Review-Request";
@@ -26,14 +26,15 @@ interface ActionProps {
 export function ActionsPopover({
   list,
   clientID,
-  HandleClick,
   transactionID,
 }: ActionProps) {
   const location = useLocation();
   const { pathname } = location;
+
+  const navigate = useNavigate();
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild onClick={(e) => e.stopPropagation()}>
         <MoreHorizontal className="w-4 h-4 relative" />
       </PopoverTrigger>
       <PopoverContent className="w-[15vw] text-[15px] absolute right-1 space-y-2">
@@ -47,7 +48,7 @@ export function ActionsPopover({
               className="flex items-center gap-1 cursor-pointer text-[#000000CC]"
               onClick={() => {
                 if (list?.id) {
-                  HandleClick?.(list.id);
+                  navigate(`/view-members/${list.id}`);
                 }
               }}
             >

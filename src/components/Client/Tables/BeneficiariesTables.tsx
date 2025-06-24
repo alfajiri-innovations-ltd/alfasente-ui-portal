@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ActionsPopover } from "../ActionsPopover";
 
 import { HiMiniUsers } from "react-icons/hi2";
@@ -18,7 +18,7 @@ import { formatDate } from "@/lib/Utilities/FormatDate";
 export interface IBeneficiariesTableProps {
   lists?: listsWithMembers[];
   list?: listsWithMembers;
-  HandleClick?: (list:listsWithMembers) => void;
+  HandleClick?: (list: listsWithMembers) => void;
 }
 export function getStatusBadge(status: IList["status"] | undefined) {
   switch (status) {
@@ -42,6 +42,8 @@ export function BeneficiariesTable({
   const location = useLocation();
   const { pathname } = location;
 
+  const navigate = useNavigate();
+
   return (
     <Table>
       <TableHeader>
@@ -55,7 +57,13 @@ export function BeneficiariesTable({
       </TableHeader>
       <TableBody>
         {lists?.map((list, index) => (
-          <TableRow key={index}>
+          <TableRow
+          className="cursor-pointer hover:bg-[#F5F6F9] transition-all duration-200"
+            key={index}
+            onClick={() => {
+              navigate(`/view-members/${list.id}`);
+            }}
+          >
             <TableCell className="font-medium flex items-center gap-1.5 ">
               <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
                 <HiMiniUsers
@@ -80,8 +88,10 @@ export function BeneficiariesTable({
             <TableCell className="">{list.createdBy}</TableCell>
             <TableCell>{formatDate(list.createdAt)}</TableCell>
             <TableCell>
-            <ActionsPopover list={list} HandleClick={()=>HandleClick?.(list)} />
-
+              <ActionsPopover
+                list={list}
+                HandleClick={() => HandleClick?.(list)}
+              />
             </TableCell>
           </TableRow>
         ))}

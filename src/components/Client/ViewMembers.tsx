@@ -6,25 +6,22 @@ import { useState } from "react";
 import { PaginationDemo } from "./Pagination";
 import { ApproveList } from "./ApproveList";
 import { RejectList } from "./RejectList";
-import { IList } from "@/lib/interfaces/interfaces";
 import { GetList } from "@/lib/services/GetListById";
 import { useGetMembers } from "@/lib/services/GetMembers";
+import { useParams } from "react-router-dom";
 
-interface IViewProps {
-  CloseView: () => void;
-  list?: IList;
-  listId: number;
-}
+// interface IViewProps {
+//   CloseView: () => void;
+//   listId: number;
+// }
 
-function ViewMembers({ CloseView, listId }: IViewProps) {
+function ViewMembers() {
+   const { listId } = useParams(); 
+  const parsedListId = parseInt(listId || "", 10); 
   const [currentPage, setCurrentPage] = useState(1);
 
- 
-  const list = GetList(listId);
-
-  console.log("--->", list);
-
-  const members = useGetMembers(listId);
+  const list = GetList(parsedListId);
+  const members = useGetMembers(parsedListId);
 
   
 
@@ -49,7 +46,9 @@ function ViewMembers({ CloseView, listId }: IViewProps) {
     <div className="mx-5 my-3">
       <div
         className="text-primary cursor-pointer flex items-center gap-2"
-        onClick={CloseView}
+        onClick={() => {
+          window.history.back();
+        }}
       >
         <ArrowLeft className="h-4 w-4" />
         <span className="font-semibold text-base">Back to all lists</span>
@@ -70,8 +69,8 @@ function ViewMembers({ CloseView, listId }: IViewProps) {
         </div>
         {list?.list?.status !== "Approved" && (
           <div className="flex items-center justify-self-end gap-3">
-            <RejectList listId={listId}/>
-            <ApproveList listId={listId} />
+            <RejectList listId={parsedListId}/>
+            <ApproveList listId={parsedListId} />
           </div>
         )}
       </div>
