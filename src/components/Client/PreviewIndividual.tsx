@@ -96,9 +96,9 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
           </span>
           <div
             onClick={() => {
-              navigate("/funwallet");
+              navigate("/fundwallet");
             }}
-            className="flex px-2 h-10 cursor-pointer gap-1 items-center bg-primary text-white text-[15px] rounded-[8px]"
+            className="flex px-2 h-10 cursor-pointer gap-1 w-32 my-2 items-center bg-primary text-white text-[15px] rounded-[8px]"
           >
             <Wallet2 className="h-4 w-4" />
             <span>Fund Wallet</span>

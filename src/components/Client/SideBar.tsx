@@ -87,7 +87,7 @@ function SideBar() {
 
   return (
     <aside
-      className={`${isMobile ? "sm:w-2/4" : "sm:w-1/4"} h-screen bg-gray-100 p-4`}
+      className={`${isMobile ? "sm:w-2/4" : "sm:w-1/4"} h-screen bg-[#F7F9FD] border border-[#DCE1EC] p-4`}
     >
       <Link to="/">
         <div>
@@ -118,7 +118,7 @@ function SideBar() {
               to={item.href}
               className={`flex items-center p-2 rounded ${
                 currentPath === item.href
-                  ? "bg-gray-300 text-black"
+                  ? "bg-[#E4E8F1] text-black"
                   : "text-[#5C6474] "
               }`}
             >
