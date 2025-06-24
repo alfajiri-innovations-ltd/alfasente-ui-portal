@@ -12,19 +12,19 @@ import { useCalculateCharge } from "@/lib/services/CalculateCharge";
 import { GetClient } from "@/lib/services/GetClientById";
 import { formatMoney } from "@/lib/utils";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Wallet2 } from "lucide-react";
 
 interface PaymentOverViewProps {
   list: any;
-  showErrorMessage:React.Dispatch<React.SetStateAction<boolean>>;
+  showErrorMessage: React.Dispatch<React.SetStateAction<boolean>>;
   // onClose?: () => void;
 }
-function PaymentOverView({ list ,showErrorMessage}: PaymentOverViewProps) {
+function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
   const client = GetClient();
+  const navigate = useNavigate();
 
   const Wallet = client?.walletID;
-  
-  
-  
 
   const ClientID = list.clientID.clientID;
 
@@ -34,13 +34,11 @@ function PaymentOverView({ list ,showErrorMessage}: PaymentOverViewProps) {
   });
 
   useEffect(() => {
-
-    if( Charges?.errorMessage) {
+    if (Charges?.errorMessage) {
       showErrorMessage(true);
     }
-  })
+  });
 
-  
   return (
     <div className="space-y-1 md:h-[350px] overflow-y-auto scrollbar-hide">
       <div className="flex items-center justify-between gap-3">
@@ -58,6 +56,18 @@ function PaymentOverView({ list ,showErrorMessage}: PaymentOverViewProps) {
           <span> {formatMoney(Wallet?.mtnWalletBalance ?? 0)}</span>
         </div>
       </div>
+
+      {Charges?.errorMessage && (
+        <div
+          onClick={() => {
+            navigate("/fundwallet");
+          }}
+          className="flex px-2 h-10 cursor-pointer gap-1 w-32  items-center bg-primary text-white text-[15px] rounded-[8px]"
+        >
+          <Wallet2 className="h-4 w-4" />
+          <span>Fund Wallet</span>
+        </div>
+      )}
 
       <div className="flex flex-col gap-3 pt-3">
         <div className="flex justify-between items-center">
@@ -103,33 +113,29 @@ function PaymentOverView({ list ,showErrorMessage}: PaymentOverViewProps) {
           </span>
         </div>
 
-         {Charges?.errorMessage && (
-          <div className="text-red-600 text-sm">
-            {Charges.errorMessage}
-      </div>
+        {Charges?.errorMessage && (
+          <div className="text-red-600 text-sm">{Charges.errorMessage}</div>
         )}
 
-       
-
-      <div>
-        <Accordion type="single" collapsible>
-          <AccordionItem value="item-1">
-            <AccordionTrigger>
-              <div>
-                <span className="capitalize">{list.name}</span>
-                <span>({list.members.length} members)</span>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <ScrollArea className="h-[200px] scrollbar-hidden">
-                <MembersTable members={list.members} />
-              </ScrollArea>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+        <div>
+          <Accordion type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>
+                <div>
+                  <span className="capitalize">{list.name}</span>
+                  <span>({list.members.length} members)</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <ScrollArea className="h-[200px] scrollbar-hidden">
+                  <MembersTable members={list.members} />
+                </ScrollArea>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
       </div>
     </div>
-      </div>
   );
 }
 

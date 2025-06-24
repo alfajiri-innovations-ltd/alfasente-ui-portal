@@ -170,12 +170,12 @@ function Dashboard() {
               {
                 icon: "/images/icons/sendfunds.svg",
                 label: "Send Funds",
-                url: "/send-funds",
+                url: "send-funds",
               },
               {
                 icon: "/images/icons/benefeciaries.svg",
                 label: "Manage Beneficiaries",
-                url: "/beneficiaries",
+                url: "beneficiaries",
               },
             ].map((item, index) => (
               <div
@@ -193,7 +193,7 @@ function Dashboard() {
               </div>
             ))}
 
-            <div className="col-span-1 sm:col-span-2 lg:col-span-3 border flex flex-col items-center justify-center text-center py-6 border-[#EDF0F7] bg-white rounded-md">
+            <div  onClick={()=>{navigate('/transactions')}} className=" cursor-pointer col-span-1 sm:col-span-2 lg:col-span-3 border flex flex-col items-center justify-center text-center py-6 border-[#EDF0F7] bg-white rounded-md">
               <img
                 src="/images/icons/transaction.svg"
                 alt="Transactions"
