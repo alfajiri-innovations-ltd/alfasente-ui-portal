@@ -1,6 +1,5 @@
 import React from 'react';
 import { X, Check } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const BulkPaymentsComponent: React.FC = () => {
     return (
@@ -57,7 +56,7 @@ const BulkPaymentsComponent: React.FC = () => {
             </div>
 
             {/* Optional CTA section */}
-            <div className="mt-8 text-center">
+            {/* <div className="mt-8 text-center">
                 <Link to={"/register"} className="bg-green-600 hover:bg-green-700 text-white font-normal px-5 py-4 my-4 rounded-xl transition-colors duration-200 text-md">
                     Get Started with Alfasente
                 </Link>
@@ -67,7 +66,7 @@ const BulkPaymentsComponent: React.FC = () => {
                 <p className="text-gray-500 text-sm mt-1">
                     Join thousands of businesses streamlining their payments
                 </p>
-            </div>
+            </div> */}
         </div >
     );
 };
