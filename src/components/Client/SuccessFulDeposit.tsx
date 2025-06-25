@@ -9,9 +9,8 @@ import { formatMoney } from "@/lib/utils";
 
 interface ISuccessFulDeposit {
   details: IDetails;
-  handleClose: () => void;
 }
-function SuccessFulDeposit({ details, handleClose }: ISuccessFulDeposit) {
+function SuccessFulDeposit({ details }: ISuccessFulDeposit) {
   const navigate = useNavigate();
 
   const transactionID = details.transaction_id;
@@ -21,7 +20,6 @@ function SuccessFulDeposit({ details, handleClose }: ISuccessFulDeposit) {
   const client = GetClient();
   const Wallet = client?.walletID;
 
-  console.log(Transaction);
   return (
     <div className="flex flex-col justify-center gap-2">
       <div className="bg-[#ECF8EF] w-16 h-16 rounded-full mx-auto flex justify-center items-center">

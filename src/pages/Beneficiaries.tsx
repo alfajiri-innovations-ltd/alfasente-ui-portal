@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 
 import { Filter } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
-import { UploadBeneficiaries } from "@/components/Client/UploadBeneficiaries";
 import { useClientListsWithMembers } from "@/lib/services/FetchClientLists";
 import { listsWithMembers } from "@/lib/interfaces/interfaces";
 import Layout from "@/components/Commons/Layout";

@@ -37,7 +37,7 @@ export function UploadBeneficiaries() {
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
     null
   );
-  const { data, mutate } = useClientListsWithMembers();
+  const {  mutate } = useClientListsWithMembers();
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<number>();

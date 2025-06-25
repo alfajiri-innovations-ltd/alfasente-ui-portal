@@ -131,9 +131,7 @@ export function FundWallet() {
           {activeTab === "Self Top-up" && currentStep === 4 && (
             <SuccessFulDeposit
               details={Details}
-              handleClose={() => {
-                setCurrentStep(1);
-              }}
+             
             />
           )}
 
