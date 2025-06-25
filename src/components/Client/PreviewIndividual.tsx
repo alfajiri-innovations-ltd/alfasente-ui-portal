@@ -10,6 +10,7 @@ import { useState } from "react";
 import { SendMoney } from "@/lib/api-routes";
 import { Wallet2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
 
 interface PaymentOverViewProps {
   beneficiary: IMembers;
@@ -60,11 +61,16 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
         throw new Error(result.message || "Failed to send money");
       }
 
-      console.log("SendMoney Result:", result);
+      toast({
+        variant: "success",
+        description: "Money sent Successfully",
+      });
       alert("Money sent successfully!");
     } catch (error) {
-      console.error("Error during money sending:", error);
-      alert("Failed to send money. Please try again.");
+      toast({
+        variant: "destructive",
+        description: "Failed to send money",
+      });
     } finally {
       setSubmitting(false);
     }

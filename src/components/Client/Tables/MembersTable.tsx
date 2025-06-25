@@ -48,7 +48,7 @@ export function MembersTable({ members }: IMembersTable) {
       </TableHeader>
       <TableBody>
         {members?.map((member, index) => (
-          <TableRow key={index} className="h-[50px]">
+          <TableRow key={index} className="h-[50px] odd:bg-[#F7F9FD] border-b-0  even:bg-[#FBFDFF]">
             <TableCell className="font-medium flex items-center gap-1">
               <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
                 <HiMiniUsers

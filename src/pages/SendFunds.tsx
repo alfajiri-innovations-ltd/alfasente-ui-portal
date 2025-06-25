@@ -6,7 +6,7 @@ import { ArrowLeft, Check, Search, X } from "lucide-react";
 import { HiMiniUsers } from "react-icons/hi2";
 
 import { IMembers, listsWithMembers } from "@/lib/interfaces/interfaces";
-import { GetLists } from "@/lib/services/FetchClientLists";
+import {  useClientListsWithMembers } from "@/lib/services/FetchClientLists";
 
 import { GetClient } from "@/lib/services/GetClientById";
 import { getAuthUser, getUserToken } from "@/lib/cookies/UserMangementCookie";
@@ -57,9 +57,12 @@ export function SendFunds() {
   //   setCurrentStep((prev) => Math.max(prev - 1, 1));
   // };
   // const itemsPerPage = 3;
-  const allLists = GetLists();
+  // const allLists = GetLists();
 
-  const approvedLists = allLists.filter((list) => list.status === "Approved");
+    const { data: allLists } = useClientListsWithMembers();
+  
+
+  const approvedLists = allLists?.filter((list) => list.status === "Approved");
 
   const fetchData = async () => {
     if (isLoading) return;
@@ -67,7 +70,7 @@ export function SendFunds() {
 
     try {
       console.log(items);
-      setItems(approvedLists);
+      setItems(approvedLists || []);
     } catch (error) {
       console.error("Error fetching lists:", error);
     } finally {
@@ -248,8 +251,8 @@ export function SendFunds() {
               </div>
 
               <div className="sm:h-[200px] overflow-auto my-4 scrollbar-hide ">
-                {approvedLists.length > 0 ? (
-                  approvedLists.map((item: listsWithMembers, index: number) => (
+                {(approvedLists?.length ?? 0) > 0 ? (
+                  approvedLists?.map((item: listsWithMembers, index: number) => (
                     <div
                       key={index}
                       className="flex px-3  gap-64 relative items-center border rounded-md my-2 "
