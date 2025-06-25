@@ -81,10 +81,10 @@ export function LoginForm() {
         }, 1000);
         setUserToken(res.token);
         setAuthUser(res.userData);
-
+        console.log(res.userData);
         setTimeout(() => {
           if (res.userData?.role_name === "admin") {
-            window.location.replace("/admin/dashboard");
+            window.location.replace("/dashboard");
           } else {
             window.location.replace("/dashboard");
           }

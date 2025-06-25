@@ -1,14 +1,13 @@
 import React from 'react';
 import { X, Check } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const BulkPaymentsComponent: React.FC = () => {
     return (
         <div className="max-w-xl mx-auto sm:mt-10 p-8">
             {/* Main Heading */}
-            <h1 className="text-xl sm:text-3xl font-bold text-gray-900 mb-2 leading-tight">
+            <h3 className="text-xl md:text-[42px] font-bold text-gray-900 mb-2 leading-tight">
                 Managing bulk payments shouldn't be this hard
-            </h1>
+            </h3>
 
             {/* Pain Points */}
             <div className="space-y-0 mb-12">
@@ -57,7 +56,7 @@ const BulkPaymentsComponent: React.FC = () => {
             </div>
 
             {/* Optional CTA section */}
-            <div className="mt-8 text-center">
+            {/* <div className="mt-8 text-center">
                 <Link to={"/register"} className="bg-green-600 hover:bg-green-700 text-white font-normal px-5 py-4 my-4 rounded-xl transition-colors duration-200 text-md">
                     Get Started with Alfasente
                 </Link>
@@ -67,7 +66,7 @@ const BulkPaymentsComponent: React.FC = () => {
                 <p className="text-gray-500 text-sm mt-1">
                     Join thousands of businesses streamlining their payments
                 </p>
-            </div>
+            </div> */}
         </div >
     );
 };
