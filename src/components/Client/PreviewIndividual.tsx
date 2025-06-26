@@ -58,14 +58,16 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || "Failed to send money");
+      toast({
+        variant: "destructive",
+        description: `${result.message}`,
+      });
       }
 
       toast({
         variant: "success",
         description: "Money sent Successfully",
       });
-      alert("Money sent successfully!");
     } catch (error) {
       toast({
         variant: "destructive",
