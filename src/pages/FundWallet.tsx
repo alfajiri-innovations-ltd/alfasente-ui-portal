@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft,  X } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import FundWalletDetails from "@/components/Client/FundWalletDetails";
 import ConfirmPaymentDetails from "@/components/Client/ConfirmPaymentDetails";
@@ -9,14 +9,11 @@ import ManualWalletDetails from "@/components/Client/Manual-WalletDetails";
 import SuccessFulTopUp from "@/components/Client/SuccessFulTopup";
 import { useNavigate } from "react-router-dom";
 
-
-
 export function FundWallet() {
   const [Details, setDetails] = useState({
     amount: 0,
     accountNumber: "",
     network: "",
-    
   });
 
   const navigate = useNavigate();
@@ -46,7 +43,11 @@ export function FundWallet() {
         <ArrowLeft
           className="h-6 w-6 cursor-pointer"
           onClick={() => {
-            window.history.back();
+            if (currentStep >= 2) {
+              handlePreviousStep();
+            } else {
+              navigate("/dashboard");
+            }
           }}
         />
       </div>
@@ -72,7 +73,7 @@ export function FundWallet() {
             )}
         </div>
 
-          <div className="md:w-[40vw] w-[80vw]">
+        <div className="md:w-[40vw] w-[80vw]">
           {(activeTab === "Self Top-up" && currentStep <= 2) ||
           (activeTab === "Manual Top-up" && currentStep === 1) ? (
             <h3 className="font-bold">Fund your Wallet</h3>
@@ -130,9 +131,7 @@ export function FundWallet() {
           {activeTab === "Self Top-up" && currentStep === 4 && (
             <SuccessFulDeposit
               details={Details}
-              handleClose={() => {
-                setCurrentStep(1);
-              }}
+             
             />
           )}
 

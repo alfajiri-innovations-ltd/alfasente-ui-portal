@@ -26,6 +26,7 @@ import { ClientProvider } from "./hooks/ClientContext";
 import MemebersPage from "./pages/Members";
 import { FundWallet } from "./pages/FundWallet";
 import { SendFunds } from "./pages/SendFunds";
+import { UploadBeneficiaries } from "./components/Client/UploadBeneficiaries";
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
@@ -48,12 +49,9 @@ function App() {
                 <Route path="/organisations" element={<Organisations />} />
                 <Route path="/settings" element={<SettingsPage />} />
 
-                <Route
-                  path="/view-members/:listId"
-                  element={<MemebersPage />}
-                />
-
                 <Route path="/fundwallet" element={<FundWallet />} />
+
+                <Route path='/uploadlist' element={<UploadBeneficiaries/>}/>
 
                 <Route path="/send-funds" element={<SendFunds />} />
               </Route>
@@ -64,6 +62,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/wait-approval" element={<WaitScreen />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/view-members/:listId" element={<MemebersPage />} />
               <Route path="/register" element={<Register />} />
               <Route path="/about" element={<AboutUs />} />
               {/* end of non auth routes */}

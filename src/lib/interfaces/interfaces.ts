@@ -68,6 +68,7 @@ export interface IList {
   clientID: number;
   createdBy: string;
   status: string;
+  assignedTo?:number;
   members?: string;
 }
 
@@ -116,6 +117,7 @@ export interface ITransaction {
   mtnWalletBalance?: number;
   beneficiaryName?: string;
   OrganisationName?: string;
+  payer?:string;
 
   transactionType: string;
   alfasenteCharge?: number;

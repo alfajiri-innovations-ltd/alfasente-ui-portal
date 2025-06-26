@@ -9,23 +9,18 @@ import { RejectList } from "./RejectList";
 import { GetList } from "@/lib/services/GetListById";
 import { useGetMembers } from "@/lib/services/GetMembers";
 import { useParams } from "react-router-dom";
-
-// interface IViewProps {
-//   CloseView: () => void;
-//   listId: number;
-// }
+import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
 
 function ViewMembers() {
-   const { listId } = useParams(); 
-  const parsedListId = parseInt(listId || "", 10); 
+  const { listId } = useParams();
+  const parsedListId = parseInt(listId || "", 10);
   const [currentPage, setCurrentPage] = useState(1);
 
   const list = GetList(parsedListId);
   const members = useGetMembers(parsedListId);
 
-  
-
- 
+  const user = getAuthUser();
+  const loggedInUserId = user?.userId;
 
   const MembersPerPage = 8;
 
@@ -41,7 +36,6 @@ function ViewMembers() {
     }
   };
 
-  
   return (
     <div className="mx-5 my-3">
       <div
@@ -68,10 +62,18 @@ function ViewMembers() {
           </Badge>
         </div>
         {list?.list?.status !== "Approved" && (
-          <div className="flex items-center justify-self-end gap-3">
-            <RejectList listId={parsedListId}/>
-            <ApproveList listId={parsedListId} />
-          </div>
+          <>
+            {loggedInUserId === list?.list?.assignedTo ? (
+              <div className="flex items-center justify-self-end gap-3">
+                <RejectList listId={parsedListId} />
+                <ApproveList listId={parsedListId} />
+              </div>
+            ) : (
+              <div className="text-red-600 font-medium text-sm">
+                You are not authorized to take action on this list.
+              </div>
+            )}
+          </>
         )}
       </div>
 

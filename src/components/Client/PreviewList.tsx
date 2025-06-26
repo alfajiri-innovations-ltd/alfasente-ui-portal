@@ -3,35 +3,29 @@ import * as XLSX from "xlsx";
 import { PaginationDemo } from "./Pagination";
 import { PreviewMembersTable } from "./Tables/PreviewMembersTable";
 import { IMembers } from "@/lib/interfaces/interfaces";
-import {  useFetchListName } from "@/lib/services/GetListName";
+import { useFetchListName } from "@/lib/services/GetListName";
 import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
 
 interface PreviewListProps {
   fileContent?: any;
   setIsTaken: (isTaken: boolean) => void;
+  Asignee: string;
 }
 
-function PreviewList({ fileContent, setIsTaken }: PreviewListProps) {
+function PreviewList({ fileContent, setIsTaken, Asignee }: PreviewListProps) {
   const [sheetName, setSheetName] = useState<string>("");
 
   const clientId = getAuthUser()?.clientID;
 
-  console.log("Client ID:", clientId);
-
-  const listName = sheetName;
-  console.log("Sheet Name:", listName);
-
-const CheckListName = useFetchListName(
-  sheetName && clientId ? { listName: sheetName, clientId } : null
-);
+  const CheckListName = useFetchListName(
+    sheetName && clientId ? { listName: sheetName, clientId } : null
+  );
 
   useEffect(() => {
     if (CheckListName) {
       setIsTaken(CheckListName?.isTaken);
     }
   }, [CheckListName]);
-
-  console.log("Check List Name:", CheckListName);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [members, setMembers] = useState<IMembers[]>([]);
@@ -86,16 +80,21 @@ const CheckListName = useFetchListName(
   };
 
   return (
-    <div className="my-3">
-      <div className="flex items-center justify-between my-2">
-        <div className="flex items-center gap-2">
+    <div className="-mt-16  w-[60vw]">
+      <div className="flex items-center  justify-between my-2">
+        <div className="flex items-center justify-between w-full">
           <span className="font-semibold text-xl uppercase">{sheetName}</span>
+
+          <div className="flex items-center gap-2">
+            <span>Assigned To:</span>
+            <span>{Asignee}</span>
+          </div>
         </div>
       </div>
 
       <PreviewMembersTable members={currentMembers} />
 
-      <div className="flex justify-between items-center my-1">
+      <div className="flex justify-between items-center my-3">
         <div>
           <span className="font-normal text-[15px]">
             Showing {currentMembers.length} of {members.length} results

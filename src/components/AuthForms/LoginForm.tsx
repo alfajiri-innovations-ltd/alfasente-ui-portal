@@ -81,7 +81,6 @@ export function LoginForm() {
         }, 1000);
         setUserToken(res.token);
         setAuthUser(res.userData);
-        console.log(res.userData);
         setTimeout(() => {
           if (res.userData?.role_name === "admin") {
             window.location.replace("/dashboard");
@@ -111,12 +110,11 @@ export function LoginForm() {
         }
       }
     } catch (error) {
-      console.log(error);
-      // toast({
-      //   variant: "destructive",
-      //   title: "Failure",
-      //   description: "An error occurred. Please try again later.",
-      // });
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: "An error occurred. Please try again later.",
+      });
     } finally {
       setSubmitting(false);
     }
