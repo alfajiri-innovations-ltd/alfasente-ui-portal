@@ -27,16 +27,12 @@ import MemebersPage from "./pages/Members";
 import { FundWallet } from "./pages/FundWallet";
 import { SendFunds } from "./pages/SendFunds";
 import { UploadBeneficiaries } from "./components/Client/UploadBeneficiaries";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
-// import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
     <>
       <Toaster />
-      <QueryClientProvider client={queryClient}>
         <UserProvider>
           <ClientProvider>
             <BrowserRouter>
@@ -84,7 +80,6 @@ function App() {
             </BrowserRouter>
           </ClientProvider>
         </UserProvider>
-      </QueryClientProvider>
     </>
   );
 }
