@@ -15,10 +15,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RenameList } from "@/lib/api-routes";
-import { ErrorToast, SuccessToast } from "@/components/ui/Toasts";
 import { useState } from "react";
 import { getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { listsWithMembers } from "@/lib/interfaces/interfaces";
+import { toast } from "@/hooks/use-toast";
 
 const FormSchema = z.object({
   name: z.string().min(2, {
@@ -30,7 +30,7 @@ interface RenameListProps {
   list: listsWithMembers;
   handleClose: () => void;
 }
-export function RenameListForm({ list,handleClose }: RenameListProps) {
+export function RenameListForm({ list, handleClose }: RenameListProps) {
   const [submitting, setSubmitting] = useState(false);
   const token = getUserToken();
 
@@ -61,15 +61,22 @@ export function RenameListForm({ list,handleClose }: RenameListProps) {
 
       const responseBody = await response.json();
 
-      console.log(responseBody);
-
       if (response.status === 200) {
-        SuccessToast(responseBody.message);
+        toast({
+          variant: "success",
+          title: "Success",
+          description: `${responseBody.message}`,
+        });
+
         handleClose();
       } else {
       }
     } catch (error: any) {
-      ErrorToast("An error occurred. Please try again later.");
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: `An error occured`,
+      });
     } finally {
       setSubmitting(false);
     }

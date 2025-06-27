@@ -11,7 +11,6 @@ export function GetList(listId:number) {
   useEffect(() => {
     const fetchListWithMembers = async () => {
 
-      console.log("================================")
       try {
        
         const listResponse = await fetch(`${GetListbyId(listId)}`, {

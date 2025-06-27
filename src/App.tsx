@@ -27,51 +27,64 @@ import MemebersPage from "./pages/Members";
 import { FundWallet } from "./pages/FundWallet";
 import { SendFunds } from "./pages/SendFunds";
 import { UploadBeneficiaries } from "./components/Client/UploadBeneficiaries";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 // import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
     <>
       <Toaster />
+      <QueryClientProvider client={queryClient}>
+        <UserProvider>
+          <ClientProvider>
+            <BrowserRouter>
+              <Routes>
+                {/* auth routes */}
+                <Route element={<PrivateRoutes />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route
+                    path="/beneficiaries"
+                    element={<BeneficiariesPage />}
+                  />
+                  <Route path="/transactions" element={<Transactions />} />
+                  <Route path="/staff" element={<Staff />} />
+                  <Route path="/audit-logs" element={<AuditLogs />} />
+                  <Route path="/applications" element={<ApplicationsPage />} />
+                  <Route path="/organisations" element={<Organisations />} />
+                  <Route path="/settings" element={<SettingsPage />} />
 
-      <UserProvider>
-        <ClientProvider>
-          <BrowserRouter>
-            <Routes>
-              {/* auth routes */}
-              <Route element={<PrivateRoutes />}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/beneficiaries" element={<BeneficiariesPage />} />
-                <Route path="/transactions" element={<Transactions />} />
-                <Route path="/staff" element={<Staff />} />
-                <Route path="/audit-logs" element={<AuditLogs />} />
-                <Route path="/applications" element={<ApplicationsPage />} />
-                <Route path="/organisations" element={<Organisations />} />
-                <Route path="/settings" element={<SettingsPage />} />
+                  <Route path="/fundwallet" element={<FundWallet />} />
 
-                <Route path="/fundwallet" element={<FundWallet />} />
+                  <Route path="/uploadlist" element={<UploadBeneficiaries />} />
 
-                <Route path='/uploadlist' element={<UploadBeneficiaries/>}/>
+                  <Route path="/send-funds" element={<SendFunds />} />
+                </Route>
+                {/* end of auth routes */}
 
-                <Route path="/send-funds" element={<SendFunds />} />
-              </Route>
-              {/* end of auth routes */}
+                {/* non auth routes */}
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/wait-approval" element={<WaitScreen />} />
+                <Route
+                  path="/forgot-password"
+                  element={<ForgotPasswordPage />}
+                />
+                <Route
+                  path="/view-members/:listId"
+                  element={<MemebersPage />}
+                />
+                <Route path="/register" element={<Register />} />
+                <Route path="/about" element={<AboutUs />} />
+                {/* end of non auth routes */}
 
-              {/* non auth routes */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/wait-approval" element={<WaitScreen />} />
-              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/view-members/:listId" element={<MemebersPage />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/about" element={<AboutUs />} />
-              {/* end of non auth routes */}
-
-              <Route path="*" element={<PageNotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </ClientProvider>
-      </UserProvider>
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </ClientProvider>
+        </UserProvider>
+      </QueryClientProvider>
     </>
   );
 }
