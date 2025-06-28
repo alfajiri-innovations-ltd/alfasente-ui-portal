@@ -58,16 +58,20 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
       const result = await response.json();
 
       if (!response.ok) {
-      toast({
-        variant: "destructive",
-        description: `${result.message}`,
-      });
+        toast({
+          variant: "destructive",
+          description: `${result.message}`,
+        });
       }
 
       toast({
         variant: "success",
         description: "Money sent Successfully",
       });
+
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
     } catch (error) {
       toast({
         variant: "destructive",

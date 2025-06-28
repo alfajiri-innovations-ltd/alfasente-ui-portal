@@ -51,7 +51,6 @@ export function SendFunds() {
     setLoggedInUser(authUser);
   }, []);
 
-
   // const [page, setPage] = useState(1);
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -114,6 +113,7 @@ export function SendFunds() {
   };
 
   const handleSubmit = async () => {
+    setSubmitting(true);
     const payer = loggedInUser?.firstName;
     try {
       if (!checkedList || checkedList.members.length === 0) {
@@ -129,8 +129,6 @@ export function SendFunds() {
           ...member,
         })),
       };
-
-      console.log("--->", payload);
 
       const response = await fetch(SendMoney(), {
         method: "POST",
@@ -149,6 +147,10 @@ export function SendFunds() {
           title: "Successful",
           description: "Funds sent successfully!",
         });
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
       } else {
         toast({
           variant: "destructive",
