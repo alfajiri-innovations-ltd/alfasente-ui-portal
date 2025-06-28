@@ -77,15 +77,15 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
           </span>
         </div>
         <div className="flex justify-between items-center">
-          <span>MTN Amount</span>
+          <span>Total Mtn Payout</span>
           <span className="text-[#000000CC] font-bold">
-            {formatMoney(Wallet?.mtnWalletBalance ?? 0)}
+            {formatMoney(Charges?.mtnRawTotal ?? 0)}
           </span>
         </div>
         <div className="flex justify-between  items-center">
-          <span>Airtel Amount</span>
+          <span>Total Airtel Payout</span>
           <span className="text-[#000000CC] font-bold">
-            {formatMoney(Wallet?.airtelWalletBalance ?? 0)}
+            {formatMoney(Charges?.airtelRawTotal ?? 0)}
           </span>
         </div>
         <div className="flex justify-between  items-center">
@@ -98,6 +98,18 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
           <span>Mtn charges</span>
           <span className="text-[#000000CC] font-bold">
             {formatMoney(Charges?.mtnCharges ?? 0)}
+          </span>
+        </div>
+        <div className="flex justify-between  items-center">
+          <span>Total Mtn Amount</span>
+          <span className="text-[#000000CC] font-bold">
+            {formatMoney(Charges?.mtnTotal ?? 0)}
+          </span>
+        </div>
+        <div className="flex justify-between  items-center">
+          <span>Total Airtel Amount</span>
+          <span className="text-[#000000CC] font-bold">
+            {formatMoney(Charges?.airtelTotal ?? 0)}
           </span>
         </div>
         <div className="flex justify-between  items-center">

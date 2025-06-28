@@ -5,14 +5,16 @@ import { PreviewMembersTable } from "./Tables/PreviewMembersTable";
 import { IMembers } from "@/lib/interfaces/interfaces";
 import { useFetchListName } from "@/lib/services/GetListName";
 import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
+import { toast } from "@/hooks/use-toast";
 
 interface PreviewListProps {
   fileContent?: any;
   setIsTaken: (isTaken: boolean) => void;
   Asignee: string;
+  isTaken:boolean;
 }
 
-function PreviewList({ fileContent, setIsTaken, Asignee }: PreviewListProps) {
+function PreviewList({ fileContent, setIsTaken, Asignee,isTaken }: PreviewListProps) {
   const [sheetName, setSheetName] = useState<string>("");
 
   const clientId = getAuthUser()?.clientID;
@@ -42,7 +44,6 @@ function PreviewList({ fileContent, setIsTaken, Asignee }: PreviewListProps) {
       try {
         const workbook = XLSX.read(fileContent, { type: "buffer" });
 
-        console.log(workbook);
 
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
@@ -55,7 +56,6 @@ function PreviewList({ fileContent, setIsTaken, Asignee }: PreviewListProps) {
         });
 
         const [headers, ...rows] = jsonData;
-        console.log("Parsed Data:", jsonData);
 
         const parsedMembers = rows.map((row: any[]) =>
           headers.reduce((acc: any, header: string, index: number) => {
@@ -64,7 +64,6 @@ function PreviewList({ fileContent, setIsTaken, Asignee }: PreviewListProps) {
           }, {})
         );
 
-        console.log(parsedMembers);
 
         setMembers(parsedMembers);
       } catch (error) {
@@ -78,6 +77,16 @@ function PreviewList({ fileContent, setIsTaken, Asignee }: PreviewListProps) {
       setCurrentPage(page);
     }
   };
+
+
+   useEffect(() => {
+    if (isTaken) {
+      toast({
+        variant: "destructive",
+        description: "List name already exists",
+      });
+    }
+  }, [isTaken]);
 
   return (
     <div className="-mt-16  w-[60vw]">

@@ -189,7 +189,7 @@ export function SendFunds() {
           />
         </div>
         <div
-          className={`sm:w-[60vw] w-screen sm:h-[40vw]   mx-auto h-full flex flex-col py-6 ${!previewList && "sm:px-20"}`}
+          className={`sm:w-[60vw] w-screen sm:h-[40vw]   -mt-10 mx-auto h-full flex flex-col py-6 ${!previewList && "sm:px-20"}`}
         >
           {/* <ArrowLeft
             className={`h-4 w-4 cursor-pointer ${!previewList && "hidden"}`}
