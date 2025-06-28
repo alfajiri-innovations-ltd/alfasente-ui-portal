@@ -19,10 +19,7 @@ import { toast } from "@/hooks/use-toast";
 import { ScrollArea } from "../ui/scroll-area";
 
 const FormSchema = z.object({
-  amount: z
-    .number()
-    .min(1000, { message: "Amount must be at least 1,000" })
-    .max(3000000, { message: "Amount cannot exceed 3,000,000" }),
+  amount: z.number().min(1000, { message: "Amount must be at least 1,000" }),
   proofOfCredit: z.instanceof(File),
 
   airtelAllocation: z.number(),

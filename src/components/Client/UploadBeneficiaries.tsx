@@ -37,7 +37,7 @@ export function UploadBeneficiaries() {
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
     null
   );
-  const {  mutate } = useClientListsWithMembers();
+  const { mutate } = useClientListsWithMembers();
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<number>();
@@ -56,7 +56,6 @@ export function UploadBeneficiaries() {
   const loggedInUser = getAuthUser();
 
   const users = GetUsers();
-
 
   const filteredUsers = users.filter((user) => {
     if (loggedInUser.role_name === "client_admin") {
@@ -327,6 +326,7 @@ export function UploadBeneficiaries() {
                         <CommandGroup>
                           {filteredUsers.map((user) => (
                             <CommandItem
+                              className="flex justify-between items-center"
                               key={user.userId}
                               value={`${user.firstName} ${user.lastName}`}
                               onSelect={(currentValue) => {
@@ -344,15 +344,20 @@ export function UploadBeneficiaries() {
                                 setOpen(false);
                               }}
                             >
-                              <CheckIcon
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  value === user.userId
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                              {user.firstName} {user.lastName}
+                              <div className="flex items-center">
+                                <CheckIcon
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    value === user.userId
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {user.firstName} {user.lastName}
+                              </div>
+                              <span className="text-gray-500 text-sm">
+                                {user.user_email}
+                              </span>
                             </CommandItem>
                           ))}
                         </CommandGroup>
