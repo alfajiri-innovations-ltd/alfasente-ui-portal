@@ -202,6 +202,8 @@ export function UploadBeneficiaries() {
     }
   };
 
+ 
+
   return (
     <div>
       <div
@@ -372,6 +374,7 @@ export function UploadBeneficiaries() {
               fileContent={fileContent}
               Asignee={selectedUserName}
               setIsTaken={setIsTaken}
+              isTaken={isTaken}
             />
           )}
           <div
