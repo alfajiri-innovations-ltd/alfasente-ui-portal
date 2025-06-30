@@ -1,10 +1,11 @@
 import { Edit } from "lucide-react";
 import { Button } from "../ui/button";
 import { IDetails } from "@/lib/interfaces/interfaces";
-import {  useState } from "react";
+import { useState } from "react";
 import { getAuthUser, getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { CollectMoney } from "@/lib/api-routes";
 import { useClientContext } from "@/hooks/ClientContext";
+import { toast } from "@/hooks/use-toast";
 
 interface IConfirmDetails {
   details: IDetails;
@@ -21,17 +22,15 @@ function ConfirmPaymentDetails({
 }: IConfirmDetails) {
   const client = useClientContext();
 
-  const Charge=import.meta.env.VITE_SERVICE_FEE
+  const Charge = import.meta.env.VITE_SERVICE_FEE;
 
-  const serviceFee = client.clientData?.alfasenteCharge || Charge; 
+  const serviceFee = client.clientData?.alfasenteCharge || Charge;
   const totalFee = Number(details.amount) + Number(serviceFee);
-
 
   const [warning] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const token = getUserToken();
   const clientID = getAuthUser().clientID;
-
 
   const submit = async () => {
     setSubmitting(true);
@@ -52,26 +51,27 @@ function ConfirmPaymentDetails({
         throw new Error("Network response was not ok");
       } else {
         const result = await response.json();
-        console.log("Payment confirmation result:", result);
 
         setFundDetails({
-          ...details,
+          ...details, 
           totalFee,
-          transaction_id: result.result.transaction_id || result.result.transactionId,
+          transaction_id:
+            result.result.response.data.transaction.id || result.result.response.data.transaction.id,
         });
         setTimeout(() => {
           handleNextStep();
         }, 1000);
       }
     } catch (error) {
-      console.error("Error confirming payment:", error);
-      alert("There was an error confirming the payment. Please try again.");
+      toast({
+        variant: "destructive",
+        description: `${error}`,
+      });
     } finally {
       setSubmitting(false);
     }
     console.log("Form submitted:", data);
   };
-  // setFundDetails({ ...details, totalFee });
 
   return (
     <>
@@ -108,16 +108,6 @@ function ConfirmPaymentDetails({
           <span>UGX {details?.amount.toLocaleString()}</span>
         </div>
 
-        {/* <div className="flex items-center justify-between">
-          <span>MTN Allocation</span>
-          <span>UGX {details?.mtnAllocation.toLocaleString()}</span>
-        </div> */}
-
-        {/* <div className="flex items-center justify-between">
-          <span>Airtel Allocation</span>
-          <span>UGX {details?.airtelAllocation.toLocaleString()}</span>
-        </div> */}
-
         <div className="flex items-center justify-between">
           <span>Service Fee</span>
           <span>UGX {serviceFee.toLocaleString()}</span>
@@ -130,11 +120,7 @@ function ConfirmPaymentDetails({
 
         {warning && <div className="text-red-600 text-sm">{warning}</div>}
 
-        <Button
-          onClick={submit}
-          className="py-2"
-          disabled={submitting}
-        >
+        <Button onClick={submit} className="py-2" disabled={submitting}>
           {submitting ? "Submitting..." : "  Confirm Payment"}{" "}
         </Button>
       </div>
