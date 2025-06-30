@@ -4,21 +4,83 @@ import { useCalculateCharge } from "@/lib/services/CalculateCharge";
 
 import { GetClient } from "@/lib/services/GetClientById";
 import { Button } from "../ui/button";
-import { FundWallet } from "./FundWalletDialog";
+import { formatMoney } from "@/lib/utils";
+import { getAuthUser, getUserToken } from "@/lib/cookies/UserMangementCookie";
+import { useState } from "react";
+import { SendMoney } from "@/lib/api-routes";
+import { Wallet2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
 
 interface PaymentOverViewProps {
   beneficiary: IMembers;
   onClose?: () => void;
 }
-function PaymentOverViewIndividual({
-  beneficiary,
-}: PaymentOverViewProps) {
+function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
   const client = GetClient();
+  const token = getUserToken();
 
+  const [submitting, setSubmitting] = useState(false);
   const clientId = client?.clientID;
+
+  const navigate = useNavigate();
   const Charges = useCalculateCharge({ beneficiary, clientId: clientId || 0 });
 
   const Wallet = client?.walletID;
+
+  const onSubmit = async () => {
+    setSubmitting(true);
+    const payer = getAuthUser()?.username || "Unknown Payer";
+
+    const payload = {
+      member: {
+        beneficiaryName: beneficiary.beneficiaryName,
+        mobileMoneyNumber: beneficiary.mobileMoneyNumber,
+        amount: beneficiary.amount.toString(),
+        reason: beneficiary.reason,
+        serviceProvider: Charges?.airtelCharges > 0 ? "Airtel" : "MTN",
+      },
+
+      clientID: clientId,
+      payer,
+    };
+
+    try {
+      const response = await fetch(SendMoney(), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        toast({
+          variant: "destructive",
+          description: `${result.message}`,
+        });
+      }
+
+      toast({
+        variant: "success",
+        description: "Money sent Successfully",
+      });
+
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        description: "Failed to send money",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="">
@@ -28,14 +90,14 @@ function PaymentOverViewIndividual({
             <div className="bg-red-600 rounded-full w-8 h-8 items-center object-cover overflow-hidden flex justify-center">
               <img src="/images/logos/Airtel.svg" alt="Airtel" />
             </div>
-            <span>UGX {Wallet?.airtelWalletBalance}</span>
+            <span>{formatMoney(Wallet?.airtelWalletBalance ?? 0)}</span>
           </div>
         ) : (
           <div className="border flex items-center justify-between bg-[#FBFDFF] border-[#848EA2] grow p-2 rounded-md">
             <div className="bg-yellow-400 rounded-full w-8 h-8 items-center overflow-hidden object-cover flex justify-center">
               <img src="/images/logos/MTN.svg" alt="MTN" />
             </div>
-            <span>UGX {Wallet?.mtnWalletBalance}</span>
+            <span>{formatMoney(Wallet?.mtnWalletBalance ?? 0)}</span>
           </div>
         )}
       </div>
@@ -44,7 +106,15 @@ function PaymentOverViewIndividual({
           <span className="text-red-500 text-xs cursor-pointer">
             {Charges?.errorMessage}
           </span>
-          <FundWallet  />
+          <div
+            onClick={() => {
+              navigate("/fundwallet");
+            }}
+            className="flex px-2 h-10 cursor-pointer gap-1 w-32 my-2 items-center bg-primary text-white text-[15px] rounded-[8px]"
+          >
+            <Wallet2 className="h-4 w-4" />
+            <span>Fund Wallet</span>
+          </div>
         </div>
       )}
 
@@ -64,7 +134,7 @@ function PaymentOverViewIndividual({
         <div className="flex justify-between  items-center">
           <span>Amount</span>
           <span className="text-[#000000CC] font-bold">
-            UGX {beneficiary?.amount}
+            {formatMoney(beneficiary?.amount ?? 0)}
           </span>
         </div>
 
@@ -87,17 +157,26 @@ function PaymentOverViewIndividual({
         <div className="flex justify-between  items-center">
           <span>Service fee</span>
           <span className="text-[#000000CC] font-bold">
-            UGX {Charges?.alfasenteCharge}
+            {formatMoney(Charges?.alfasenteCharge ?? 0)}
           </span>
         </div>
         <div className="flex justify-between  items-center">
           <span>Total cost</span>
           <span className="text-[#000000CC] font-bold">
-            UGX {Charges?.overallTotal}
+            {formatMoney(Charges?.overallTotal ?? 0)}
           </span>
         </div>
       </div>
-      <Button className="w-full mt-5">Send</Button>
+      <Button
+        className="w-full mt-5"
+        type="submit"
+        onClick={() => {
+          onSubmit();
+        }}
+        disabled={submitting || !beneficiary?.amount || Charges?.errorMessage}
+      >
+        {submitting ? "Sending..." : "Send Money"}
+      </Button>
     </div>
   );
 }

@@ -6,31 +6,23 @@ import { useState } from "react";
 import { PaginationDemo } from "./Pagination";
 import { ApproveList } from "./ApproveList";
 import { RejectList } from "./RejectList";
-import { IList } from "@/lib/interfaces/interfaces";
 import { GetList } from "@/lib/services/GetListById";
 import { useGetMembers } from "@/lib/services/GetMembers";
-import { GetUser } from "@/lib/services/GetUser";
+import { useParams } from "react-router-dom";
+import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
 
-interface IViewProps {
-  CloseView: () => void;
-  list?: IList;
-  listId: number;
-}
-
-function ViewMembers({ CloseView, listId }: IViewProps) {
+function ViewMembers() {
+  const { listId } = useParams();
+  const parsedListId = parseInt(listId || "", 10);
   const [currentPage, setCurrentPage] = useState(1);
 
- 
-  const list = GetList(listId);
+  const list = GetList(parsedListId);
+  const members = useGetMembers(parsedListId);
 
-  console.log("--->", list);
+  const user = getAuthUser();
+  const loggedInUserId = user?.userId;
 
-  const members = useGetMembers(listId);
-
-  console.log(members);
-
-  const user = GetUser();
-  console.log(user);
+  console.log(loggedInUserId)
 
   const MembersPerPage = 8;
 
@@ -45,13 +37,14 @@ function ViewMembers({ CloseView, listId }: IViewProps) {
       setCurrentPage(page);
     }
   };
-
-  
+console.log("---->",list)
   return (
     <div className="mx-5 my-3">
       <div
         className="text-primary cursor-pointer flex items-center gap-2"
-        onClick={CloseView}
+        onClick={() => {
+          window.history.back();
+        }}
       >
         <ArrowLeft className="h-4 w-4" />
         <span className="font-semibold text-base">Back to all lists</span>
@@ -70,11 +63,19 @@ function ViewMembers({ CloseView, listId }: IViewProps) {
             {list?.list?.status}
           </Badge>
         </div>
-        {user?.status !== "maker" && (
-          <div className="flex items-center justify-self-end gap-3">
-            <RejectList listId={listId}/>
-            <ApproveList listId={listId} />
-          </div>
+        {list?.list?.status !== "Approved" && (
+          <>
+            {loggedInUserId === list?.list?.assignedTo ? (
+              <div className="flex items-center justify-self-end gap-3">
+                <RejectList listId={parsedListId} />
+                <ApproveList listId={parsedListId} />
+              </div>
+            ) : (
+              <div className="text-red-600 font-medium text-sm">
+                You are not authorized to take action on this list.
+              </div>
+            )}
+          </>
         )}
       </div>
 

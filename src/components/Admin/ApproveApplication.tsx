@@ -3,13 +3,12 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import { ErrorToast, SuccessToast } from "../ui/Toasts";
 import { useState } from "react";
 import { getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { ApproveClient } from "@/lib/api-routes";
+import { toast } from "@/hooks/use-toast";
 
 interface ApproveApplicationProps {
   clientID: number;
@@ -21,7 +20,7 @@ export function ApproveApplication({
   onClose,
 }: ApproveApplicationProps) {
   const [submitting, setSubmitting] = useState(false);
-  const [DialogOpen, setIsDialogOpen] = useState(false);
+  const [, setIsDialogOpen] = useState(false);
 
   const handleClose = () => {
     setIsDialogOpen(false);
@@ -44,34 +43,38 @@ export function ApproveApplication({
       });
 
       const responsedata = await response.json();
+      handleClose();
 
       if (response.ok) {
-        SuccessToast("Application approved successfully!");
-
-        handleClose();
+        toast({
+          variant: "success",
+          title: "Successful",
+          description: "Application approved successfully!",
+        });
       } else {
-        throw new Error(responsedata || "Failed to approve the Application.");
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: `${responsedata || "Failed to approve the Application"}`,
+        });
       }
     } catch (error: any) {
-      ErrorToast(error.message || "An error occurred.");
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: `${error.message || "An error occured"}`,
+      });
     } finally {
       setSubmitting(false);
     }
   };
   return (
-    <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
-      <DialogTrigger asChild>
-        <Button
-          onClick={() => {
-            setIsDialogOpen(true);
-            onClose();
-          }}
-          className="  text-white"
-        >
-          Approve
-        </Button>
-      </DialogTrigger>
-
+    <Dialog
+      open={true}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose(); // allow closing by clicking outside
+      }}
+    >
       <DialogContent className="w-[33vw]">
         <DialogHeader>
           <DialogTitle>Approve Application</DialogTitle>

@@ -10,16 +10,21 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCalculateCharge } from "@/lib/services/CalculateCharge";
 
 import { GetClient } from "@/lib/services/GetClientById";
+import { formatMoney } from "@/lib/utils";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Wallet2 } from "lucide-react";
 
 interface PaymentOverViewProps {
   list: any;
+  showErrorMessage: React.Dispatch<React.SetStateAction<boolean>>;
+  // onClose?: () => void;
 }
-function PaymentOverView({ list }: PaymentOverViewProps) {
+function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
   const client = GetClient();
+  const navigate = useNavigate();
 
   const Wallet = client?.walletID;
-
-  console.log(list);
 
   const ClientID = list.clientID.clientID;
 
@@ -28,70 +33,101 @@ function PaymentOverView({ list }: PaymentOverViewProps) {
     clientId: ClientID,
   });
 
-console.log(Charges)
+  useEffect(() => {
+    if (Charges?.errorMessage) {
+      showErrorMessage(true);
+    }
+  });
+
   return (
-    <ScrollArea className="md:h-[350px] scrollbar-hidden">
-      <div className="space-y-1">
-        <div className="flex items-center justify-between gap-3">
-          <div className="border flex items-center justify-between grow bg-[#FBFDFF] border-[#848EA2] p-2 rounded-md">
-            <div className="bg-red-600 rounded-full w-8 h-8 items-center object-cover overflow-hidden flex justify-center">
-              <img src="/images/logos/Airtel.svg" alt="Airtel" />
-            </div>
-            <span>UGX {Wallet?.airtelWalletBalance}</span>
+    <div className="space-y-1 md:h-[350px] overflow-y-auto scrollbar-hide">
+      <div className="flex items-center justify-between gap-3">
+        <div className="border flex items-center justify-between grow bg-[#FBFDFF] border-[#848EA2] p-2 rounded-md">
+          <div className="bg-red-600 rounded-full w-8 h-8 items-center object-cover overflow-hidden flex justify-center">
+            <img src="/images/logos/Airtel.svg" alt="Airtel" />
           </div>
-
-          <div className="border flex items-center justify-between bg-[#FBFDFF] border-[#848EA2] grow p-2 rounded-md">
-            <div className="bg-yellow-400 rounded-full w-8 h-8 items-center overflow-hidden object-cover flex justify-center">
-              <img src="/images/logos/MTN.svg" alt="MTN" />
-            </div>
-            <span>UGX {Wallet?.mtnWalletBalance}</span>
-          </div>
+          <span>{formatMoney(Wallet?.airtelWalletBalance ?? 0)}</span>
         </div>
 
-        <div className="flex flex-col gap-3">
-          <div className="flex justify-between items-center">
-            <span>Beneficiary List</span>
-            <span className="text-[#000000CC] font-bold capitalize">
-              {list?.name}
-            </span>
+        <div className="border flex items-center justify-between bg-[#FBFDFF] border-[#848EA2] grow p-2 rounded-md">
+          <div className="bg-yellow-400 rounded-full w-8 h-8 items-center overflow-hidden object-cover flex justify-center">
+            <img src="/images/logos/MTN.svg" alt="MTN" />
           </div>
-          <div className="flex justify-between items-center">
-            <span>MTN Amount</span>
-            <span className="text-[#000000CC] font-bold">
-              UGX {Wallet?.mtnWalletBalance}
-            </span>
-          </div>
-          <div className="flex justify-between  items-center">
-            <span>Airtel Amount</span>
-            <span className="text-[#000000CC] font-bold">
-              UGX {Wallet?.airtelWalletBalance}
-            </span>
-          </div>
-          <div className="flex justify-between  items-center">
-            <span>Airtel charges</span>
-            <span className="text-[#000000CC] font-bold">
-              UGX {Charges?.airtelCharges}
-            </span>
-          </div>
-          <div className="flex justify-between  items-center">
-            <span>Mtn charges</span>
-            <span className="text-[#000000CC] font-bold">
-              UGX {Charges?.mtnCharges}
-            </span>
-          </div>
-          <div className="flex justify-between  items-center">
-            <span>Service fee</span>
-            <span className="text-[#000000CC] font-bold">
-              UGX {Charges?.alfasenteCharge}
-            </span>
-          </div>
-          <div className="flex justify-between  items-center">
-            <span>Total cost</span>
-            <span className="text-[#000000CC] font-bold">
-              UGX {Charges?.overallTotal}
-            </span>
-          </div>
+          <span> {formatMoney(Wallet?.mtnWalletBalance ?? 0)}</span>
         </div>
+      </div>
+
+      {Charges?.errorMessage && (
+        <div
+          onClick={() => {
+            navigate("/fundwallet");
+          }}
+          className="flex px-2 h-10 cursor-pointer gap-1 w-32  items-center bg-primary text-white text-[15px] rounded-[8px]"
+        >
+          <Wallet2 className="h-4 w-4" />
+          <span>Fund Wallet</span>
+        </div>
+      )}
+
+      <div className="flex flex-col gap-3 pt-3">
+        <div className="flex justify-between items-center">
+          <span>Beneficiary List</span>
+          <span className="text-[#000000CC] font-bold capitalize">
+            {list?.name}
+          </span>
+        </div>
+        <div className="flex justify-between items-center">
+          <span>Total Mtn Payout</span>
+          <span className="text-[#000000CC] font-bold">
+            {formatMoney(Charges?.mtnRawTotal ?? 0)}
+          </span>
+        </div>
+        <div className="flex justify-between  items-center">
+          <span>Total Airtel Payout</span>
+          <span className="text-[#000000CC] font-bold">
+            {formatMoney(Charges?.airtelRawTotal ?? 0)}
+          </span>
+        </div>
+        <div className="flex justify-between  items-center">
+          <span>Airtel charges</span>
+          <span className="text-[#000000CC] font-bold">
+            {formatMoney(Charges?.airtelCharges ?? 0)}
+          </span>
+        </div>
+        <div className="flex justify-between  items-center">
+          <span>Mtn charges</span>
+          <span className="text-[#000000CC] font-bold">
+            {formatMoney(Charges?.mtnCharges ?? 0)}
+          </span>
+        </div>
+        <div className="flex justify-between  items-center">
+          <span>Total Mtn Amount</span>
+          <span className="text-[#000000CC] font-bold">
+            {formatMoney(Charges?.mtnTotal ?? 0)}
+          </span>
+        </div>
+        <div className="flex justify-between  items-center">
+          <span>Total Airtel Amount</span>
+          <span className="text-[#000000CC] font-bold">
+            {formatMoney(Charges?.airtelTotal ?? 0)}
+          </span>
+        </div>
+        <div className="flex justify-between  items-center">
+          <span>Service fee</span>
+          <span className="text-[#000000CC] font-bold">
+            {formatMoney(Charges?.alfasenteCharge ?? 0)}
+          </span>
+        </div>
+        <div className="flex justify-between  items-center">
+          <span>Total cost</span>
+          <span className="text-[#000000CC] font-bold">
+            {formatMoney(Charges?.overallTotal ?? 0)}
+          </span>
+        </div>
+
+        {Charges?.errorMessage && (
+          <div className="text-red-600 text-sm">{Charges.errorMessage}</div>
+        )}
 
         <div>
           <Accordion type="single" collapsible>
@@ -111,7 +147,7 @@ console.log(Charges)
           </Accordion>
         </div>
       </div>
-    </ScrollArea>
+    </div>
   );
 }
 

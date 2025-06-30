@@ -3,14 +3,16 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Edit, EyeIcon, MoreHorizontal, UserCircle } from "lucide-react";
+import {  MoreHorizontal, UserCircle } from "lucide-react";
 import { RenameList } from "./RenameListDialog";
 
 import { DeleteList } from "./DeleteDialog";
 import { listsWithMembers } from "@/lib/interfaces/interfaces";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ViewApplication } from "../Admin/ReviewApplication";
 import { ViewTransactionDialog } from "./ViewTransaction";
+import { ViewRequest } from "../Admin/Review-Request";
+import { InitiateTopUp } from "../Admin/InitiateTopUp";
 
 interface ActionProps {
   list?: listsWithMembers;
@@ -24,14 +26,15 @@ interface ActionProps {
 export function ActionsPopover({
   list,
   clientID,
-  HandleClick,
   transactionID,
 }: ActionProps) {
   const location = useLocation();
   const { pathname } = location;
+
+  const navigate = useNavigate();
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild onClick={(e) => e.stopPropagation()}>
         <MoreHorizontal className="w-4 h-4 relative" />
       </PopoverTrigger>
       <PopoverContent className="w-[15vw] text-[15px] absolute right-1 space-y-2">
@@ -45,7 +48,7 @@ export function ActionsPopover({
               className="flex items-center gap-1 cursor-pointer text-[#000000CC]"
               onClick={() => {
                 if (list?.id) {
-                  HandleClick?.(list.id);
+                  navigate(`/view-members/${list.id}`);
                 }
               }}
             >
@@ -65,14 +68,9 @@ export function ActionsPopover({
         {pathname === "/admin/manuals" && (
           <>
             {" "}
-            <div className="flex items-center gap-2 cursor-pointer text-[#000000CC]">
-              <EyeIcon className="h-4 w-4" />
-              <span>Review Request</span>
-            </div>
-            <div className="flex items-center gap-2 cursor-pointer text-[#000000CC]">
-              <Edit className="h-4 w-4" />
-              <span>Initiate top-up</span>
-            </div>
+            <ViewRequest transactionID={transactionID} />
+            <InitiateTopUp transactionID={transactionID} triggerMode />
+            
           </>
         )}
       </PopoverContent>

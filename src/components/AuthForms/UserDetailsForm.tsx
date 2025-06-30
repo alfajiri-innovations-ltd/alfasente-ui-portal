@@ -28,10 +28,39 @@ const FormSchema = z.object({
   role_name: z.string(),
   isEmailVerified: z.boolean(),
   user_email: z.string().min(2, { message: "Field is Required" }).email(),
-  date_of_birth: z.string().min(2, { message: "Field is Required" }),
+  date_of_birth: z
+    .string()
+    .min(2, { message: "Field is Required" })
+    .refine(
+      (value) => {
+        const dob = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - dob.getFullYear();
+        const m = today.getMonth() - dob.getMonth();
+        const isOldEnough =
+          age > 18 ||
+          (age === 18 && m >= 0 && today.getDate() >= dob.getDate());
+        return isOldEnough;
+      },
+      {
+        message: "You must be at least 18 years old",
+      }
+    ),
   lastName: z.string().min(2, { message: "Field is Required" }),
 
-  password: z.string().min(8, { message: "Field is Required" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" })
+    .regex(/[a-z]/, {
+      message: "Password must include at least one lowercase letter",
+    })
+    .regex(/[A-Z]/, {
+      message: "Password must include at least one uppercase letter",
+    })
+    .regex(/[0-9]/, { message: "Password must include at least one number" })
+    .regex(/[^a-zA-Z0-9]/, {
+      message: "Password must include at least one special character",
+    }),
 });
 
 interface IUserDetailsFormProps {
@@ -84,14 +113,13 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
           userId: userId,
         };
 
-        console.log("clientData:", clientDataToSend);
 
         const clientFormData = new FormData();
         for (const [key, value] of Object.entries(clientDataToSend)) {
           if (value instanceof File) {
-            clientFormData.append(key, value); // Send file as-is
+            clientFormData.append(key, value); 
           } else {
-            clientFormData.append(key, String(value)); // Safe for strings/numbers
+            clientFormData.append(key, String(value)); 
           }
         }
 
@@ -162,7 +190,7 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
                 <FormLabel>First Name</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Lubwama"
+                    placeholder="Your name..."
                     className=" border-[#DCE1EC]"
                     {...field}
                   />
@@ -181,7 +209,7 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
                 <FormLabel>Last Name</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Mildred"
+                    placeholder="Your last name..."
                     className=" border-[#DCE1EC]"
                     {...field}
                   />
@@ -227,6 +255,11 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
                 <Input
                   type="date"
                   placeholder="shadcn"
+                  max={
+                    new Date(Date.now() - 18 * 365.25 * 24 * 60 * 60 * 1000)
+                      .toISOString()
+                      .split("T")[0]
+                  }
                   className=" border-[#DCE1EC]"
                   {...field}
                 />
@@ -266,8 +299,9 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
                 </div>
               </FormControl>
               <FormDescription>
-                Must be at least 8 characters long, include a mix of letters,
-                numbers, and symbols.
+                Password must be at least 8 characters long, and include at
+                least one lowercase letter, one uppercase letter, one number,
+                and one special character.
               </FormDescription>
 
               <FormMessage />
@@ -293,7 +327,11 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
           />
         </div>
         <div className="col-span-2 ">
-          <Button type="submit" className="w-full my-4 bg-[#C8CFDE]">
+          <Button
+            type="submit"
+            className="w-full my-4 bg-primary"
+            disabled={!termsAccepted || submitting}
+          >
             {submitting ? "Registering..." : " Register"}
           </Button>
         </div>

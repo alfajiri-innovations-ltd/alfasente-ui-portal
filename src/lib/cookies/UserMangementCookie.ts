@@ -24,7 +24,7 @@ const setUserToken = (accessToken: string) => {
   localStorage.setItem("alfasente_user_tkn", accessToken);
 };
 
-const setAuthUser = (userData: any) => {
+const setAuthUser = (userData: unknown) => {
   localStorage.setItem("alfasente_user", JSON.stringify(userData));
 };
 
@@ -67,13 +67,14 @@ const isAuthTokenExpired = (expirationTime: number) => {
   return expirationTime < currentTime;
 };
 
-const decodeToken = (token: any) => {
+const decodeToken = (token: string) => {
   return jwtDecode(token);
 };
 
 const isAuthenticated = () => {
   if (typeof window !== "undefined") {
     const token = localStorage.getItem("alfasente_user_tkn") ?? null;
+    console.log("Token:", token);
     if (token) {
       const decodedToken = decodeToken(token);
       if (decodedToken.exp !== undefined) {

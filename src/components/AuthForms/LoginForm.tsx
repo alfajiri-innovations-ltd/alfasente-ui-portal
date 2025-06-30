@@ -18,14 +18,13 @@ import { useNavigate } from "react-router-dom";
 import { setAuthUser, setUserToken } from "@/lib/cookies/UserMangementCookie";
 import { LogIn } from "@/lib/api-routes";
 import { toast } from "@/hooks/use-toast";
-// import { toast } from "sonner"
+
 
 const FormSchema = z.object({
   user_email: z.string().min(2, { message: "Field is Required" }).email(),
 
   password: z.string().min(8, { message: "Field is Required" }),
 });
-
 
 export function LoginForm() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -60,7 +59,8 @@ export function LoginForm() {
       let res;
       try {
         res = JSON.parse(responseBody);
-      } catch (parseError) {
+      } catch (error) {
+        console.log(error);
         toast({
           variant: "destructive",
           title: "Failure",
@@ -72,19 +72,20 @@ export function LoginForm() {
       const message = res?.result?.code;
 
       if (response.status === 200) {
-        toast({
-          variant: "success",
-          title: "Successful",
-          description: "Login Successful , Redirecting...",
-        });
+        setTimeout(() => {
+          toast({
+            variant: "success",
+            title: "Successful",
+            description: "Login Successful , Redirecting...",
+          });
+        }, 1000);
         setUserToken(res.token);
         setAuthUser(res.userData);
-
         setTimeout(() => {
           if (res.userData?.role_name === "admin") {
-            navigate("/admin/dashboard");
+            window.location.replace("/dashboard");
           } else {
-            navigate("/dashboard");
+            window.location.replace("/dashboard");
           }
         }, 2000);
       } else {
@@ -108,97 +109,99 @@ export function LoginForm() {
             });
         }
       }
-    } catch (error: any) {
-      // toast({
-      //   variant: "destructive",
-      //   title: "Failure",
-      //   description: "An error occurred. Please try again later.",
-      // });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: "An error occurred. Please try again later.",
+      });
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className=" grid grid-cols-2  space-y-2"
-      >
-        <FormField
-          control={form.control}
-          name="user_email"
-          render={({ field }) => (
-            <FormItem className="col-span-2">
-              <FormLabel>Personal Email</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="johndoe@gmail"
-                  disabled={submitting}
-                  className=" border-[#DCE1EC]"
-                  {...field}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem className="  space-y-1 col-span-2">
-              <FormLabel className="font-medium text-sm ">Password</FormLabel>
-              <FormControl>
-                <div className="flex border border-input h-10 justify-between items-center pr-4 rounded-md overflow-hidden">
+    <>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className=" grid grid-cols-2  space-y-2"
+        >
+          <FormField
+            control={form.control}
+            name="user_email"
+            render={({ field }) => (
+              <FormItem className="col-span-2">
+                <FormLabel>Personal Email</FormLabel>
+                <FormControl>
                   <Input
-                    type={passwordVisible ? "text" : "password"}
-                    placeholder="Enter your password"
+                    placeholder="johndoe@gmail"
                     disabled={submitting}
-                    className=" border-none focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none  "
+                    className=" border-[#DCE1EC]"
                     {...field}
                   />
-                  <p onClick={togglePassword}>
-                    {passwordVisible ? (
-                      <EyeIcon
-                        className="w-[14px]"
-                        color="rgba(88, 89, 98, 1)"
-                      />
-                    ) : (
-                      <EyeOffIcon
-                        className="w-[14px]"
-                        color="rgba(88, 89, 98, 1)"
-                      />
-                    )}
-                  </p>
-                </div>
-              </FormControl>
+                </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <span
-          className="text-primary flex justify-end  col-span-2 cursor-pointer"
-          onClick={() => {
-            navigate("/forgot-password");
-          }}
-        >
-          Forgot password?
-        </span>
-        <div className="col-span-2">
-          <Button
-            type="submit"
-            className="w-full my-2 bg-[#8D35AA]"
-            disabled={submitting}
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="  space-y-1 col-span-2">
+                <FormLabel className="font-medium text-sm ">Password</FormLabel>
+                <FormControl>
+                  <div className="flex border border-input h-10 justify-between items-center pr-4 rounded-md overflow-hidden">
+                    <Input
+                      type={passwordVisible ? "text" : "password"}
+                      placeholder="Enter your password"
+                      disabled={submitting}
+                      className=" border-none focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none  "
+                      {...field}
+                    />
+                    <p onClick={togglePassword}>
+                      {passwordVisible ? (
+                        <EyeIcon
+                          className="w-[14px]"
+                          color="rgba(88, 89, 98, 1)"
+                        />
+                      ) : (
+                        <EyeOffIcon
+                          className="w-[14px]"
+                          color="rgba(88, 89, 98, 1)"
+                        />
+                      )}
+                    </p>
+                  </div>
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <span
+            className="text-primary flex justify-end  col-span-2 cursor-pointer"
+            onClick={() => {
+              navigate("/forgot-password");
+            }}
           >
-            {submitting ? "Submitting..." : " Login"}
-          </Button>
-        </div>
-      </form>
-    </Form>
+            Forgot password?
+          </span>
+          <div className="col-span-2">
+            <Button
+              type="submit"
+              className="w-full my-2 bg-[#8D35AA]"
+              disabled={submitting}
+            >
+              {submitting ? "Submitting..." : " Login"}
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </>
   );
 }

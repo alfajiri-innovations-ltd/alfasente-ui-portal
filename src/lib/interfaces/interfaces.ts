@@ -6,12 +6,16 @@ export interface IClient {
   physicalAddress: string;
   clientPhoneNumber: string;
   clientID?: number;
+  alfasenteCharge?: number;
+   created_at?:Date;
+  dateRejected?: Date;
+  dateApproved?: Date;
   // date_of_birth?: string;
   walletID?: {
     walletID: number;
-    airtelWalletBalance: string;
-    mtnWalletBalance: string;
-    totalWalletBalance: string;
+    airtelWalletBalance: number;
+    mtnWalletBalance: number;
+    totalWalletBalance: number;
   };
 
   certificateOfIncorparation: string;
@@ -48,6 +52,7 @@ export interface IUser {
   clientID?: number;
 }
 export interface IMembers {
+  beneficiaryId?: number;
   beneficiaryName: string;
   reason: string;
   amount: number;
@@ -63,6 +68,7 @@ export interface IList {
   clientID: number;
   createdBy: string;
   status: string;
+  assignedTo?:number;
   members?: string;
 }
 
@@ -78,11 +84,11 @@ export interface listsWithMembers {
 
 export interface IDetails {
   accountNumber: string;
-  amount: string;
+  amount: number;
   network: string;
-  mtnAllocation: number;
-  airtelAllocation: number;
+ 
   totalFee?: number;
+  transaction_id?:string;
 }
 
 export interface IAuditLogs {
@@ -111,6 +117,7 @@ export interface ITransaction {
   mtnWalletBalance?: number;
   beneficiaryName?: string;
   OrganisationName?: string;
+  payer?:string;
 
   transactionType: string;
   alfasenteCharge?: number;

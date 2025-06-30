@@ -13,12 +13,9 @@ const ApplicationsPage = React.lazy(() => import("@/pages/Applications"));
 const SettingsPage = React.lazy(() => import("@/pages/SettingsPage"));
 const AboutUs = React.lazy(() => import("@/pages/AboutUs"));
 
-const AdminDashboard = React.lazy(() => import("@/pages/Admin/DashboardPage"));
-
 import Organisations from "@/pages/OrganisationsPage";
 import { UserProvider } from "./hooks/UserContext";
-import AdminTransactions from "./pages/Admin/TransactionsPage";
-import ManualTransactions from "./pages/Admin/ManualsPage";
+
 import { Toaster } from "./components/ui/toaster";
 import PrivateRoutes from "./components/Commons/PrivateRoutes";
 import LoginPage from "./pages/LoginPage";
@@ -26,46 +23,63 @@ import Register from "./pages/Register";
 import ForgotPasswordPage from "./pages/ForgotPassword";
 import WaitScreen from "./pages/WaitScreen";
 import { ClientProvider } from "./hooks/ClientContext";
-// import { Toaster } from "./components/ui/sonner";
+import MemebersPage from "./pages/Members";
+import { FundWallet } from "./pages/FundWallet";
+import { SendFunds } from "./pages/SendFunds";
+import { UploadBeneficiaries } from "./components/Client/UploadBeneficiaries";
+
 
 function App() {
   return (
     <>
       <Toaster />
+        <UserProvider>
+          <ClientProvider>
+            <BrowserRouter>
+              <Routes>
+                {/* auth routes */}
+                <Route element={<PrivateRoutes />}>
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route
+                    path="/beneficiaries"
+                    element={<BeneficiariesPage />}
+                  />
+                  <Route path="/transactions" element={<Transactions />} />
+                  <Route path="/staff" element={<Staff />} />
+                  <Route path="/audit-logs" element={<AuditLogs />} />
+                  <Route path="/applications" element={<ApplicationsPage />} />
+                  <Route path="/organisations" element={<Organisations />} />
+                  <Route path="/settings" element={<SettingsPage />} />
 
-      <UserProvider>
-        <ClientProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route element={<PrivateRoutes />}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/beneficiaries" element={<BeneficiariesPage />} />
-                <Route path="/transactions" element={<Transactions />} />
-                <Route path="/staff" element={<Staff />} />
-                <Route path="/audit-logs" element={<AuditLogs />} />
-                <Route path="/applications" element={<ApplicationsPage />} />
-                <Route path="/organisations" element={<Organisations />} />
-                <Route path="/settings" element={<SettingsPage />} />
-                //Admin Routes
-                <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                  <Route path="/fundwallet" element={<FundWallet />} />
+
+                  <Route path="/uploadlist" element={<UploadBeneficiaries />} />
+
+                  <Route path="/send-funds" element={<SendFunds />} />
+                </Route>
+                {/* end of auth routes */}
+
+                {/* non auth routes */}
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/wait-approval" element={<WaitScreen />} />
                 <Route
-                  path="/admin/transactions"
-                  element={<AdminTransactions />}
+                  path="/forgot-password"
+                  element={<ForgotPasswordPage />}
                 />
-                <Route path="/admin/manuals" element={<ManualTransactions />} />
-              </Route>
+                <Route
+                  path="/view-members/:listId"
+                  element={<MemebersPage />}
+                />
+                <Route path="/register" element={<Register />} />
+                <Route path="/about" element={<AboutUs />} />
+                {/* end of non auth routes */}
 
-              <Route path="/" element={<LandingPage />} />
-              <Route path="*" element={<PageNotFound />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/wait-approval" element={<WaitScreen />} />
-              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/about" element={<AboutUs />} />
-            </Routes>
-          </BrowserRouter>
-        </ClientProvider>
-      </UserProvider>
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </ClientProvider>
+        </UserProvider>
     </>
   );
 }

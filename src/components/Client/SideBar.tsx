@@ -1,52 +1,54 @@
+"use client";
 import {
   ClipboardListIcon,
   SettingsIcon,
   LayoutDashboard,
   CircleUserRound,
+  Wallet,
 } from "lucide-react";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
-import { SlEnvolope } from "react-icons/sl";
-import { PiBuildingOfficeLight } from "react-icons/pi";
+import { GrSend } from "react-icons/gr";
+
 
 import { Link } from "react-router-dom";
 import { useUser } from "@/hooks/UserContext";
 import { GetClient } from "@/lib/services/GetClientById";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { GetUsers } from "@/lib/services/GetUsersByOrganization";
 
 function SideBar() {
   const currentPath = window.location.pathname;
   const user = useUser();
 
+  const users = GetUsers();
+  const isMobile = useIsMobile();
   const client = GetClient();
 
-  const userRole = user?.role_name;
-
   const sidebarItems = [
-    {
-      title: "Dashboard",
-      icon: <LayoutDashboard />,
-      href: "/admin/dashboard",
-      roles: ["admin"],
-    },
     {
       title: "Dashboard",
       icon: <LayoutDashboard />,
       href: "/dashboard",
       roles: ["client_employee", "client_admin"],
     },
+    {
+      title: "Fund Wallet",
+      icon: <Wallet className="w-6 h-6" />,
+      href: "/fundwallet",
+      roles: ["client_employee", "client_admin"],
+    },
 
     {
-      title: "Applications",
-      icon: <SlEnvolope className="w-6 h-6" />,
-      href: "/applications",
-      roles: ["admin"],
+      title: "Send Funds",
+      icon: <GrSend className="w-6 h-6" />,
+      href: "/send-funds",
+      roles: ["client_employee", "client_admin"],
     },
-    {
-      title: "Organisations",
-      icon: <PiBuildingOfficeLight className="w-6 h-6" />,
-      href: "/organisations",
-      roles: ["admin"],
-    },
+    
+   
+    
+   
     {
       title: "Beneficiaries",
       icon: <CircleUserRound />,
@@ -59,18 +61,8 @@ function SideBar() {
       href: "/staff",
       roles: ["client_employee", "client_admin"],
     },
-    {
-      title: "Transactions",
-      icon: <FaMoneyBillTransfer className="w-6 h-6" />,
-      href: "/admin/transactions",
-      roles: ["admin"],
-    },
-    {
-      title: "Manual top-up",
-      icon: <FaMoneyBillTransfer className="w-6 h-6" />,
-      href: "/admin/manuals",
-      roles: ["admin"],
-    },
+   
+    
 
     {
       title: "Transactions",
@@ -78,12 +70,7 @@ function SideBar() {
       href: "/transactions",
       roles: ["client_employee", "client_admin"],
     },
-    {
-      title: "Teams",
-      icon: <PiUsersThreeFill className="w-6 h-6" />,
-      href: "/teams",
-      roles: ["admin"],
-    },
+    
     {
       title: "Audit Logs",
       icon: <ClipboardListIcon />,
@@ -97,12 +84,11 @@ function SideBar() {
       roles: ["admin", "client_employee", "client_admin"],
     },
   ];
-  const filteredItems = sidebarItems.filter(
-    (item) => userRole && item.roles.includes(userRole)
-  );
 
   return (
-    <aside className=" h-full bg-gray-100 p-4">
+    <aside
+      className={`${isMobile ? "sm:w-2/4" : "sm:w-1/4"} h-screen bg-[#F7F9FD] border border-[#DCE1EC] p-4`}
+    >
       <Link to="/">
         <div>
           <img
@@ -117,26 +103,28 @@ function SideBar() {
           <img src="/images/icons/enterprise.svg" alt="Alfasente" width={25} />
           <div className="flex flex-col">
             <span className="font-bold text-base">{client?.clientName}</span>
-            <span className="text-[12px] font-normal">10 staff</span>
+            <span className="text-[12px] font-normal">
+              {users.length} staff
+            </span>
           </div>
         </div>
       ) : (
         ""
       )}
       <ul className="space-y-2 my-5">
-        {filteredItems.map((item, index) => (
+        {sidebarItems.map((item, index) => (
           <li key={index}>
-            <a
-              href={item.href}
+            <Link
+              to={item.href}
               className={`flex items-center p-2 rounded ${
                 currentPath === item.href
-                  ? "bg-gray-300 text-black"
+                  ? "bg-[#E4E8F1] text-black"
                   : "text-[#5C6474] "
               }`}
             >
               <span className="mr-3">{item.icon}</span>
               <span className="">{item.title}</span>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

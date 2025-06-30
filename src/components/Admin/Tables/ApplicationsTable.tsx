@@ -18,7 +18,6 @@ export interface ApplicationsTable {
   applications?: IClient[];
   application?: IClient;
 }
-const day = new Date();
 
 export function ApplicationsTable({ applications }: ApplicationsTable) {
   return (
@@ -58,7 +57,11 @@ export function ApplicationsTable({ applications }: ApplicationsTable) {
               </Badge>{" "}
             </TableCell>
 
-            <TableCell>{formatDate(day.toISOString())}</TableCell>
+            <TableCell>
+              {application?.created_at
+                ? formatDate(application.created_at.toISOString())
+                : ""}
+            </TableCell>
             <TableCell>
               <ActionsPopover clientID={application.clientID} />{" "}
             </TableCell>

@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { RejectClient } from "@/lib/api-routes";
 import { getUserToken } from "@/lib/cookies/UserMangementCookie";
-import { ErrorToast, SuccessToast } from "@/components/ui/Toasts";
+import { toast } from "@/hooks/use-toast";
 
 const FormSchema = z.object({
   reviewMessage: z.string().min(2, {
@@ -34,8 +34,6 @@ export function RejectApplicationForm({
   clientID,
   handleClose,
 }: RejectApplicationFormProps) {
-  
-
   const [submitting, setSubmitting] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -49,11 +47,6 @@ export function RejectApplicationForm({
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setSubmitting(true);
 
-    const requestBody = {
-      clientID,
-      reviewMessage: data.reviewMessage,
-    };
-    console.log("Request Body: ", requestBody);
     try {
       const response = await fetch(RejectClient(), {
         method: "PUT",
@@ -70,14 +63,26 @@ export function RejectApplicationForm({
       const responsedata = await response.json();
 
       if (response.ok) {
-        SuccessToast("Application rejected successfully!");
+        toast({
+          variant: "success",
+          title: "Successful",
+          description: "Application rejected successfully!",
+        });
 
         handleClose();
       } else {
-        throw new Error(responsedata || "Failed to reject the Application.");
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: `${responsedata || "Failed to reject the Application"}`,
+        });
       }
     } catch (error: any) {
-      ErrorToast(error.message || "An error occurred.");
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: `${error.message || "An error occurred"}`,
+      });
     } finally {
       setSubmitting(false);
     }

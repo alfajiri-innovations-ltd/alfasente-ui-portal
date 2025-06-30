@@ -2,7 +2,8 @@ import { GetClient } from "@/lib/services/GetClientById";
 
 function OrganizationSettings() {
   const client = GetClient();
-  console.log(client);
+
+  const baseUrl = import.meta.env.VITE_BACKEND_API_URL;
   return (
     <div className="rounded-md border border-[#D4DAE6] flex flex-col gap-2 py-4 px-5">
       <h3 className="font-medium text-[18px]">Organization details</h3>
@@ -30,10 +31,10 @@ function OrganizationSettings() {
           </span>
           <span className="text-[#000000E5] text-[15px] flex flex-wrap font-medium break-words">
             <a
-              href={client?.certificateOfIncorparation}
+              href={`${baseUrl}/${client?.certificateOfIncorparation}`}
               className="break-all text-blue-500 underline"
             >
-              {client?.certificateOfIncorparation}
+              {baseUrl} /{client?.certificateOfIncorparation}
             </a>
           </span>
         </div>

@@ -25,7 +25,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         userId: user.userId || "",
         user_email: user.user_email || "",
         role_name: user.role_name || "user",
-        date_of_birth:user.date_of_birth || "",
+        date_of_birth: user.date_of_birth || "",
 
 
       });
