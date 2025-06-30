@@ -9,72 +9,7 @@ import { TransactionsTable } from "@/components/Client/Tables/TransactionsTable"
 import { GetOrganizationTransactions } from "@/lib/services/FectchTransactionsByOrganization";
 import Layout from "@/components/Commons/Layout";
 
-// const transactions = [
-//   {
-//     transactionType: "Sent",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Sent",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Sent",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Sent",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Deposit",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
 
-//   {
-//     transactionType: "Deposit",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Deposit",
-//     receipient: "Kalule Michael",
-//     status: "Success",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Deposit",
-//     receipient: "Kalule Michael",
-//     status: "Failed",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-//   {
-//     transactionType: "Deposit",
-//     receipient: "Kalule Michael",
-//     status: "Failed",
-//     createdAt: "30 Nov, 2024 11:25 AM",
-//     amount: 1000000,
-//   },
-// ];
 function Transactions() {
   const [currentPage, setCurrentPage] = useState(1);
 

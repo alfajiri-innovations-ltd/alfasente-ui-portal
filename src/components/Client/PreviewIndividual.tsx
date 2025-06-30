@@ -26,6 +26,8 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
   const navigate = useNavigate();
   const Charges = useCalculateCharge({ beneficiary, clientId: clientId || 0 });
 
+  console.log(Charges)
+
   const Wallet = client?.walletID;
 
   const onSubmit = async () => {
