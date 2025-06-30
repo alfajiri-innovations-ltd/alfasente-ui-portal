@@ -77,7 +77,7 @@ export function TransactionsTable({ transactions }: ITransactionsTableProps) {
             <TableCell>
               {transaction.beneficiaryName ||
                 transaction.beneficiaryMobileNumber ||
-                transaction.sourceOfFunds}
+                "Wallet"}
             </TableCell>
             <TableCell>
               {format(transaction.recordDate, "yyyy-MM-dd HH:mm")}
