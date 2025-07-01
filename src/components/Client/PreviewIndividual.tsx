@@ -1,4 +1,4 @@
-import { IMembers } from "@/lib/interfaces/interfaces";
+import { IMembers, IUser } from "@/lib/interfaces/interfaces";
 
 import { useCalculateCharge } from "@/lib/services/CalculateCharge";
 
@@ -6,7 +6,7 @@ import { GetClient } from "@/lib/services/GetClientById";
 import { Button } from "../ui/button";
 import { formatMoney } from "@/lib/utils";
 import { getAuthUser, getUserToken } from "@/lib/cookies/UserMangementCookie";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SendMoney } from "@/lib/api-routes";
 import { Wallet2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ interface PaymentOverViewProps {
 function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
   const client = GetClient();
   const token = getUserToken();
+  const [loggedInUser, setLoggedInUser] = useState<IUser>();
 
   const [submitting, setSubmitting] = useState(false);
   const clientId = client?.clientID;
@@ -26,18 +27,21 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
   const navigate = useNavigate();
   const Charges = useCalculateCharge({ beneficiary, clientId: clientId || 0 });
 
-  console.log(Charges)
+  useEffect(() => {
+    const authUser = getAuthUser();
+    setLoggedInUser(authUser);
+  }, []);
 
   const Wallet = client?.walletID;
 
   const onSubmit = async () => {
     setSubmitting(true);
-    const payer = getAuthUser()?.username || "Unknown Payer";
+    const payer = loggedInUser?.firstName;
 
     const payload = {
       member: {
         beneficiaryName: beneficiary.beneficiaryName,
-        mobileMoneyNumber: beneficiary.mobileMoneyNumber,
+        mobileMoneyNumber: beneficiary.mobileMoneyNumber.slice(0),
         amount: beneficiary.amount.toString(),
         reason: beneficiary.reason,
         serviceProvider: Charges?.airtelCharges > 0 ? "Airtel" : "MTN",

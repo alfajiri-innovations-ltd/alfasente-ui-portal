@@ -33,7 +33,6 @@ export function SendFunds() {
   const clientId = client?.clientID;
   const [errorMessage, showErrorMessage] = useState(false);
 
-  // Ensure IMembers is imported or defined correctly
   const [Beneficiary, setBeneficiary] = useState<IMembers | null>(null);
 
   const [checkedList, setCheckedList] = useState<listsWithMembers | null>(null);

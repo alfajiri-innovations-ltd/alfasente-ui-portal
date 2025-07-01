@@ -29,6 +29,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
+    "http-server": "^14.1.1",
     "input-otp": "^1.4.1",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.468.0",

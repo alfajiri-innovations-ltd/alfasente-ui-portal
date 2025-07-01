@@ -11,10 +11,15 @@ interface PreviewListProps {
   fileContent?: any;
   setIsTaken: (isTaken: boolean) => void;
   Asignee: string;
-  isTaken:boolean;
+  isTaken: boolean;
 }
 
-function PreviewList({ fileContent, setIsTaken, Asignee,isTaken }: PreviewListProps) {
+function PreviewList({
+  fileContent,
+  setIsTaken,
+  Asignee,
+  isTaken,
+}: PreviewListProps) {
   const [sheetName, setSheetName] = useState<string>("");
 
   const clientId = getAuthUser()?.clientID;
@@ -44,7 +49,6 @@ function PreviewList({ fileContent, setIsTaken, Asignee,isTaken }: PreviewListPr
       try {
         const workbook = XLSX.read(fileContent, { type: "buffer" });
 
-
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
 
@@ -57,13 +61,16 @@ function PreviewList({ fileContent, setIsTaken, Asignee,isTaken }: PreviewListPr
 
         const [headers, ...rows] = jsonData;
 
-        const parsedMembers = rows.map((row: any[]) =>
+        const validRows = rows.filter((row: any[]) =>
+          row.some((cell) => cell !== null && cell !== "")
+        );
+
+        const parsedMembers = validRows.map((row: any[]) =>
           headers.reduce((acc: any, header: string, index: number) => {
             acc[header] = row[index] || null;
             return acc;
           }, {})
         );
-
 
         setMembers(parsedMembers);
       } catch (error) {
@@ -78,15 +85,14 @@ function PreviewList({ fileContent, setIsTaken, Asignee,isTaken }: PreviewListPr
     }
   };
 
-
-   useEffect(() => {
+  useEffect(() => {
     if (isTaken) {
       toast({
         variant: "destructive",
         description: "List name already exists",
       });
     }
-  }, [isTaken]);
+  }, []);
 
   return (
     <div className="-mt-16  w-[60vw]">

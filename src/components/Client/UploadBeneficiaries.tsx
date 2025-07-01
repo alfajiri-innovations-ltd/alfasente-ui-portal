@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
@@ -202,7 +202,14 @@ export function UploadBeneficiaries() {
     }
   };
 
- 
+  useEffect(() => {
+    if (isTaken) {
+      toast({
+        variant: "destructive",
+        description: "List Name already exists",
+      });
+    }
+  }, []);
 
   return (
     <div>
