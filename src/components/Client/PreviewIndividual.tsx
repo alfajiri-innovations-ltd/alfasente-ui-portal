@@ -36,12 +36,12 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
 
   const onSubmit = async () => {
     setSubmitting(true);
-    const payer = loggedInUser?.firstName;
+    const payer = `${loggedInUser?.firstName} ${loggedInUser?.lastName}`;
 
     const payload = {
       member: {
         beneficiaryName: beneficiary.beneficiaryName,
-        mobileMoneyNumber: beneficiary.mobileMoneyNumber.slice(0),
+        mobileMoneyNumber: beneficiary.mobileMoneyNumber.slice(1),
         amount: beneficiary.amount.toString(),
         reason: beneficiary.reason,
         serviceProvider: Charges?.airtelCharges > 0 ? "Airtel" : "MTN",
