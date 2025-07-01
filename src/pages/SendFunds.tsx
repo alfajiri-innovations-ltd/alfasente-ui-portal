@@ -113,7 +113,7 @@ export function SendFunds() {
 
   const handleSubmit = async () => {
     setSubmitting(true);
-    const payer = loggedInUser?.firstName;
+    const payer = `${loggedInUser?.firstName} ${loggedInUser?.lastName}`;
     try {
       if (!checkedList || checkedList.members.length === 0) {
         console.warn("No members selected.");
@@ -122,12 +122,21 @@ export function SendFunds() {
 
       const payload = {
         clientID: clientId,
+        payer,
+        members: checkedList.members.map((member) => {
+          let cleanNumber = member.mobileMoneyNumber;
 
-        payer: payer,
-        members: checkedList.members.map((member) => ({
-          ...member,
-        })),
+          if (typeof cleanNumber === "string" && cleanNumber.startsWith("0")) {
+            cleanNumber = cleanNumber.slice(1);
+          }
+
+          return {
+            ...member,
+            mobileMoneyNumber: cleanNumber,
+          };
+        }),
       };
+
 
       const response = await fetch(SendMoney(), {
         method: "POST",
