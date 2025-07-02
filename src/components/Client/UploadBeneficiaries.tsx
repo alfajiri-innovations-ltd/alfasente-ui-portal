@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
@@ -118,7 +118,13 @@ export function UploadBeneficiaries() {
         defval: null,
       }) as any;
 
-      const formattedMembers = rows.map((row: any[]) =>
+      const validRows = rows.filter((row: any[]) =>
+          row.some((cell) => cell !== null && cell !== "")
+        );
+
+        
+
+      const formattedMembers = validRows.map((row: any[]) =>
         headers.reduce(
           (acc: any, header: string, index: number) => {
             let value = row[index] || null;
@@ -202,7 +208,14 @@ export function UploadBeneficiaries() {
     }
   };
 
- 
+  useEffect(() => {
+    if (isTaken) {
+      toast({
+        variant: "destructive",
+        description: "List Name already exists",
+      });
+    }
+  }, []);
 
   return (
     <div>
