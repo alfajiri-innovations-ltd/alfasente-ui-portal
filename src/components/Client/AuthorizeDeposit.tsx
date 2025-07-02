@@ -8,7 +8,7 @@ interface IAuthorizeDeposit {
 
 function AuthorizeDeposit({ handleNextStep, details }: IAuthorizeDeposit) {
   const [failed, setFailed] = useState(false);
-  const [pollTrigger, setPollTrigger] = useState(0);
+  const [, setPollTrigger] = useState(0);
   const [timedOut, setTimedOut] = useState(false);
   const [attemptId, setAttemptId] = useState(0);
 
@@ -85,6 +85,18 @@ function AuthorizeDeposit({ handleNextStep, details }: IAuthorizeDeposit) {
 
         <div className="flex justify-center ">
           <img src="/images/logos/authorize.svg" alt="Authorize" />
+        </div>
+
+        <div className="flex items-center justify-between mt-4">
+          <span className="font-medium">Transaction Status:</span>
+
+          <span className="text-sm text-muted-foreground">
+            {Transaction?.status === "TS" && "Processing..."}
+            {Transaction?.status === "SUCCESSFUL" && "Successful "}
+            {Transaction?.status === "FAILED" && "Failed "}
+            {Transaction?.status === "FL" && "Failed "}
+            {!Transaction?.status && "Checking..."}
+          </span>
         </div>
       </div>
     </>
