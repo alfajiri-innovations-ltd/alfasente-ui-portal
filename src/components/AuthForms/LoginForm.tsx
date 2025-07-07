@@ -137,7 +137,7 @@ export function LoginForm() {
                 <FormLabel>Personal Email</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="johndoe@gmail"
+                    placeholder="example@gmail"
                     disabled={submitting}
                     className=" border-[#DCE1EC]"
                     {...field}
