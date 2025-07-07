@@ -87,3 +87,9 @@ export const ManualTopUp = () =>
 
 export const CheckListName = (listName: string, clientId: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/checkListName/${listName}/${clientId}`;
+
+export const UpdateBeneficiary = (beneficiaryId: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/mnobeneficiary/${beneficiaryId}`;
+
+export const DeleteBeneficiaryRoute = (beneficiaryId: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/mnobeneficiary/${beneficiaryId}`;

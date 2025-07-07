@@ -4,16 +4,20 @@ import { Button } from "@/components/ui/button";
 
 import { Filter } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
-import { UploadBeneficiaries } from "@/components/Client/UploadBeneficiaries";
-import { GetLists } from "@/lib/services/FetchClientLists";
+import { useClientListsWithMembers } from "@/lib/services/FetchClientLists";
 import { listsWithMembers } from "@/lib/interfaces/interfaces";
 import Layout from "@/components/Commons/Layout";
+import { useNavigate } from "react-router-dom";
 
 function BeneficiariesPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [, setSelectedListId] = useState<number | null>(null);
 
-  const Lists: listsWithMembers[] = GetLists();
+  const navigate = useNavigate();
+
+  // const Lists: listsWithMembers[] = GetLists();
+
+  const { data: Lists, isLoading, error } = useClientListsWithMembers();
 
   const [ViewBeneficiarylist, setViewBeneficiarylist] = useState(false);
 
@@ -30,8 +34,8 @@ function BeneficiariesPage() {
 
   const ListsPerPage = 8;
 
-  const totalPages = Math.ceil(Lists!.length / ListsPerPage);
-  const currentLists = Lists!.slice(
+  const totalPages = Math.ceil((Lists?.length ?? 0) / ListsPerPage);
+  const currentLists = Lists?.slice(
     (currentPage - 1) * ListsPerPage,
     currentPage * ListsPerPage
   );
@@ -43,16 +47,37 @@ function BeneficiariesPage() {
   };
 
   const rejectedLists = Lists?.filter((list) => list.status === "Rejected");
-  const pendingLists = Lists.filter((list) => list.status === "pending");
-  const approvedLists = Lists.filter((list) => list.status === "Approved");
+  const pendingLists = Lists?.filter((list) => list.status === "pending");
+  const approvedLists = Lists?.filter((list) => list.status === "Approved");
+
+  if (isLoading)
+    return (
+      <Layout title="Beneficiaries">
+        <div className="flex justify-center items-center">Loading...</div>
+      </Layout>
+    );
+  if (error)
+    return (
+      <Layout title="Beneficiaries">
+        <div className="flex justify-center items-center">
+          Error fetching lists
+        </div>
+      </Layout>
+    );
 
   return (
     <Layout title="Beneficiaries">
       <>
-        {Lists.length === 0 ? (
+        {Lists?.length === 0 ? (
           <div className="flex flex-col m-2 ">
             <div className="flex justify-end mx-4">
-              <UploadBeneficiaries />
+              <Button
+                onClick={() => {
+                  navigate("/uploadlist");
+                }}
+              >
+                Upload List
+              </Button>
             </div>
             <h3 className="font-bold text-center text-xl">
               No Lists Found Upload
@@ -71,7 +96,7 @@ function BeneficiariesPage() {
                     }  px-2 py-[2px]`}
                     onClick={() => setActiveTab("all")}
                   >
-                    All <span className="mx-1">({Lists.length})</span>
+                    All <span className="mx-1">({Lists?.length})</span>
                   </h4>
 
                   <h4
@@ -83,7 +108,7 @@ function BeneficiariesPage() {
                     onClick={() => setActiveTab("pending")}
                   >
                     Pending
-                    <span className="mx-1">({pendingLists.length})</span>
+                    <span className="mx-1">({pendingLists?.length})</span>
                   </h4>
                   <h4
                     className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
@@ -94,7 +119,7 @@ function BeneficiariesPage() {
                     onClick={() => setActiveTab("approved")}
                   >
                     Approved
-                    <span className="mx-1">({approvedLists.length})</span>
+                    <span className="mx-1">({approvedLists?.length})</span>
                   </h4>
 
                   <h4
@@ -106,13 +131,19 @@ function BeneficiariesPage() {
                     onClick={() => setActiveTab("rejected")}
                   >
                     Rejected
-                    <span className="mx-1">({rejectedLists.length})</span>
+                    <span className="mx-1">({rejectedLists?.length})</span>
                   </h4>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
-                <UploadBeneficiaries />{" "}
+              <Button
+                onClick={() => {
+                  navigate("/uploadlist");
+                }}
+              >
+                Upload List
+              </Button>
                 <Button variant={"outline"}>
                   <span>
                     <Filter />
@@ -152,7 +183,7 @@ function BeneficiariesPage() {
             <div className="flex justify-between  items-center ">
               <div className="">
                 <span className="font-normal text-[15px]  ">
-                  Showing {currentLists.length} of {Lists.length} results
+                  Showing {currentLists?.length} of {Lists?.length} results
                 </span>
               </div>
               <div className="">

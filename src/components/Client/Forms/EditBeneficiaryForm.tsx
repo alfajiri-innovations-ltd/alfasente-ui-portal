@@ -14,30 +14,83 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { IMembersTable } from "../Tables/MembersTable";
+import { useState } from "react";
+import { UpdateBeneficiary } from "@/lib/api-routes";
+import { toast } from "@/hooks/use-toast";
+import { IMembers } from "@/lib/interfaces/interfaces";
 
 const FormSchema = z.object({
-  name: z.string().min(2, {
+  beneficiaryName: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
+  amount: z.coerce
+    .number()
+    .min(1000, { message: "Must be a number greater than 1000" }),
   mobileMoneyNumber: z.string().min(2, { message: "Field is Required" }),
-  amount: z.number().min(2, { message: "Field is Required" }),
   reason: z.string().min(2, { message: "Field is Required" }),
 });
 
-export function EditBeneficiaryForm({ member }: IMembersTable) {
+interface EditProps {
+  handleClose: () => void;
+  member: IMembers;
+}
+
+export function EditBeneficiaryForm({ member, handleClose }: EditProps) {
+  const [submitting, setIsSubmitting] = useState(false);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: member?.beneficiaryName,
+      beneficiaryName: member?.beneficiaryName,
       mobileMoneyNumber: member?.mobileMoneyNumber,
       reason: member?.reason,
       amount: member?.amount,
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      setIsSubmitting(true);
+
+      if (!member || typeof member.beneficiaryId !== "number") {
+        throw new Error("Beneficiary information is missing or invalid.");
+      }
+
+      console.log("sending data", data);
+
+      const response = await fetch(UpdateBeneficiary(member.beneficiaryId), {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: `An error occurred: ${errorData.message}`,
+        });
+      }
+
+      toast({
+        variant: "success",
+        title: "Successful",
+        description: "Beneficiary updated successfully",
+      });
+
+      handleClose();
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: `An error occurred: ${error.message}`,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -45,7 +98,7 @@ export function EditBeneficiaryForm({ member }: IMembersTable) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
         <FormField
           control={form.control}
-          name="name"
+          name="beneficiaryName"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Name</FormLabel>
@@ -87,9 +140,10 @@ export function EditBeneficiaryForm({ member }: IMembersTable) {
               <FormLabel>Amount (UGX)</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="shadcn"
+                  type="number"
                   className="bg-[#F7F9FD] border-[#DCE1EC]"
                   {...field}
+                  onChange={(e) => field.onChange(e.target.valueAsNumber)}
                 />
               </FormControl>
 
@@ -116,12 +170,17 @@ export function EditBeneficiaryForm({ member }: IMembersTable) {
           )}
         />
         <div className="flex items-center justify-end gap-3">
-          <Button type="submit" variant={"outline"} className="">
+          <Button
+            type="submit"
+            variant={"outline"}
+            className=""
+            onClick={handleClose}
+          >
             Cancel
           </Button>
 
-          <Button type="submit" className="">
-            Save Changes
+          <Button type="submit" className="" disabled={submitting}>
+            {submitting ? "Submitting" : "Save Changes"}
           </Button>
         </div>
       </form>

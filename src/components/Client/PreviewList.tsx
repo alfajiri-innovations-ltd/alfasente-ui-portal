@@ -3,35 +3,36 @@ import * as XLSX from "xlsx";
 import { PaginationDemo } from "./Pagination";
 import { PreviewMembersTable } from "./Tables/PreviewMembersTable";
 import { IMembers } from "@/lib/interfaces/interfaces";
-import {  useFetchListName } from "@/lib/services/GetListName";
+import { useFetchListName } from "@/lib/services/GetListName";
 import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
+import { toast } from "@/hooks/use-toast";
 
 interface PreviewListProps {
   fileContent?: any;
   setIsTaken: (isTaken: boolean) => void;
+  Asignee: string;
+  isTaken: boolean;
 }
 
-function PreviewList({ fileContent, setIsTaken }: PreviewListProps) {
+function PreviewList({
+  fileContent,
+  setIsTaken,
+  Asignee,
+  isTaken,
+}: PreviewListProps) {
   const [sheetName, setSheetName] = useState<string>("");
 
   const clientId = getAuthUser()?.clientID;
 
-  console.log("Client ID:", clientId);
-
-  const listName = sheetName;
-  console.log("Sheet Name:", listName);
-
-const CheckListName = useFetchListName(
-  sheetName && clientId ? { listName: sheetName, clientId } : null
-);
+  const CheckListName = useFetchListName(
+    sheetName && clientId ? { listName: sheetName, clientId } : null
+  );
 
   useEffect(() => {
     if (CheckListName) {
       setIsTaken(CheckListName?.isTaken);
     }
   }, [CheckListName]);
-
-  console.log("Check List Name:", CheckListName);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [members, setMembers] = useState<IMembers[]>([]);
@@ -48,8 +49,6 @@ const CheckListName = useFetchListName(
       try {
         const workbook = XLSX.read(fileContent, { type: "buffer" });
 
-        console.log(workbook);
-
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
 
@@ -61,16 +60,17 @@ const CheckListName = useFetchListName(
         });
 
         const [headers, ...rows] = jsonData;
-        console.log("Parsed Data:", jsonData);
 
-        const parsedMembers = rows.map((row: any[]) =>
+        const validRows = rows.filter((row: any[]) =>
+          row.some((cell) => cell !== null && cell !== "")
+        );
+
+        const parsedMembers = validRows.map((row: any[]) =>
           headers.reduce((acc: any, header: string, index: number) => {
             acc[header] = row[index] || null;
             return acc;
           }, {})
         );
-
-        console.log(parsedMembers);
 
         setMembers(parsedMembers);
       } catch (error) {
@@ -85,17 +85,31 @@ const CheckListName = useFetchListName(
     }
   };
 
+  useEffect(() => {
+    if (isTaken) {
+      toast({
+        variant: "destructive",
+        description: "List name already exists",
+      });
+    }
+  }, []);
+
   return (
-    <div className="my-3">
-      <div className="flex items-center justify-between my-2">
-        <div className="flex items-center gap-2">
+    <div className="-mt-16  w-[60vw]">
+      <div className="flex items-center  justify-between my-2">
+        <div className="flex items-center justify-between w-full">
           <span className="font-semibold text-xl uppercase">{sheetName}</span>
+
+          <div className="flex items-center gap-2">
+            <span>Assigned To:</span>
+            <span>{Asignee}</span>
+          </div>
         </div>
       </div>
 
       <PreviewMembersTable members={currentMembers} />
 
-      <div className="flex justify-between items-center my-1">
+      <div className="flex justify-between items-center my-3">
         <div>
           <span className="font-normal text-[15px]">
             Showing {currentMembers.length} of {members.length} results

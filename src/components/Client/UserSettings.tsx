@@ -8,7 +8,7 @@ import { useUser } from "@/hooks/UserContext";
 
 function UserSettings() {
   const user = useUser();
-  console.log(user);
+  
 
   return (
     <div className="flex flex-col gap-2">
@@ -20,7 +20,7 @@ function UserSettings() {
             <img src="/images/user.png" alt="User Profile" />
           </div>
 
-          <Button>Upload Photo</Button>
+          <Button disabled>Upload Photo</Button>
         </div>
 
         <div className="flex justify-between space-y-3">

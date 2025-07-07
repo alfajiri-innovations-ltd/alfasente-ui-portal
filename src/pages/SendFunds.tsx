@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { ArrowLeft, Check, Search, X } from "lucide-react";
 import { HiMiniUsers } from "react-icons/hi2";
 
-import { IMembers, listsWithMembers } from "@/lib/interfaces/interfaces";
-import { GetLists } from "@/lib/services/FetchClientLists";
+import { IMembers, IUser, listsWithMembers } from "@/lib/interfaces/interfaces";
+import { useClientListsWithMembers } from "@/lib/services/FetchClientLists";
 
 import { GetClient } from "@/lib/services/GetClientById";
 import { getAuthUser, getUserToken } from "@/lib/cookies/UserMangementCookie";
@@ -23,6 +23,7 @@ export function SendFunds() {
   const [items, setItems] = useState<listsWithMembers[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState<IUser>();
   const [checkedListId, setCheckedListId] = useState<number | null>(null);
   const [, setFundWalletDialog] = useState(false);
   const client = GetClient();
@@ -32,7 +33,6 @@ export function SendFunds() {
   const clientId = client?.clientID;
   const [errorMessage, showErrorMessage] = useState(false);
 
-  // Ensure IMembers is imported or defined correctly
   const [Beneficiary, setBeneficiary] = useState<IMembers | null>(null);
 
   const [checkedList, setCheckedList] = useState<listsWithMembers | null>(null);
@@ -44,6 +44,11 @@ export function SendFunds() {
   };
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const authUser = getAuthUser();
+    setLoggedInUser(authUser);
+  }, []);
 
   // const [page, setPage] = useState(1);
 
@@ -57,9 +62,11 @@ export function SendFunds() {
   //   setCurrentStep((prev) => Math.max(prev - 1, 1));
   // };
   // const itemsPerPage = 3;
-  const allLists = GetLists();
+  // const allLists = GetLists();
 
-  const approvedLists = allLists.filter((list) => list.status === "Approved");
+  const { data: allLists } = useClientListsWithMembers();
+
+  const approvedLists = allLists?.filter((list) => list.status === "Approved");
 
   const fetchData = async () => {
     if (isLoading) return;
@@ -67,7 +74,7 @@ export function SendFunds() {
 
     try {
       console.log(items);
-      setItems(approvedLists);
+      setItems(approvedLists || []);
     } catch (error) {
       console.error("Error fetching lists:", error);
     } finally {
@@ -93,9 +100,9 @@ export function SendFunds() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isLoading]);
 
-//   const HandleClick = () => {
-//     setPreviewList(!previewList);
-//   };
+  //   const HandleClick = () => {
+  //     setPreviewList(!previewList);
+  //   };
 
   const HandleCheck = (list: listsWithMembers) => {
     const isAlreadyChecked = checkedListId === list.id;
@@ -105,8 +112,8 @@ export function SendFunds() {
   };
 
   const handleSubmit = async () => {
-    const authUser = getAuthUser();
-    const payer = authUser?.username;
+    setSubmitting(true);
+    const payer = `${loggedInUser?.firstName} ${loggedInUser?.lastName}`;
     try {
       if (!checkedList || checkedList.members.length === 0) {
         console.warn("No members selected.");
@@ -115,14 +122,21 @@ export function SendFunds() {
 
       const payload = {
         clientID: clientId,
+        payer,
+        members: checkedList.members.map((member) => {
+          let cleanNumber = member.mobileMoneyNumber;
 
-        payer: payer,
-        members: checkedList.members.map((member) => ({
-          ...member,
+          if (typeof cleanNumber === "string" && cleanNumber.startsWith("0")) {
+            cleanNumber = cleanNumber.slice(1);
+          }
 
-          payer: payer,
-        })),
+          return {
+            ...member,
+            mobileMoneyNumber: cleanNumber,
+          };
+        }),
       };
+
 
       const response = await fetch(SendMoney(), {
         method: "POST",
@@ -141,6 +155,10 @@ export function SendFunds() {
           title: "Successful",
           description: "Funds sent successfully!",
         });
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
       } else {
         toast({
           variant: "destructive",
@@ -179,14 +197,14 @@ export function SendFunds() {
           />
         </div>
         <div
-          className={`sm:w-[60vw] w-screen sm:h-[40vw]   mx-auto h-full flex flex-col py-6 ${!previewList && "sm:px-20"}`}
+          className={`sm:w-[60vw] w-screen sm:h-[40vw]   -mt-10 mx-auto h-full flex flex-col py-6 ${!previewList && "sm:px-20"}`}
         >
           {/* <ArrowLeft
             className={`h-4 w-4 cursor-pointer ${!previewList && "hidden"}`}
             onClick={HandleClick}
           /> */}
 
-          <div className="" >
+          <div className="">
             <h3>Send Funds</h3>
 
             <div className="relative">
@@ -248,44 +266,46 @@ export function SendFunds() {
               </div>
 
               <div className="sm:h-[200px] overflow-auto my-4 scrollbar-hide ">
-                {approvedLists.length > 0 ? (
-                  approvedLists.map((item: listsWithMembers, index: number) => (
-                    <div
-                      key={index}
-                      className="flex px-3  gap-64 relative items-center border rounded-md my-2 "
-                    >
+                {(approvedLists?.length ?? 0) > 0 ? (
+                  approvedLists?.map(
+                    (item: listsWithMembers, index: number) => (
                       <div
-                        className={`rounded-full p-[2px] h-4 w-4 flex items-center justify-center border absolute right-2 top-2 border-[#C8CFDE] ${checkedListId === item.id && "bg-black"}
-`}
-                        onClick={() => {
-                          HandleCheck(item);
-                        }}
+                        key={index}
+                        className="flex px-3  gap-64 relative items-center border rounded-md my-2 "
                       >
-                        {checkedListId === item.id && (
-                          <Check size={15} className="text-white" />
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2 my-3">
-                        <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
-                          <HiMiniUsers
-                            style={{
-                              fill: getRandomColor(),
-                            }}
-                          />
-                        </span>
-                        <span
-                          className={`capitalize ${isChecked ? "font-medium" : "font-normal"}`}
+                        <div
+                          className={`rounded-full p-[2px] h-4 w-4 flex items-center justify-center border absolute right-2 top-2 border-[#C8CFDE] ${checkedListId === item.id && "bg-black"}
+`}
+                          onClick={() => {
+                            HandleCheck(item);
+                          }}
                         >
-                          {item.name}
-                        </span>
-                      </div>
-                      <div className="flex  gap-1 text-[#5C6474]">
-                        {item.members.length}
+                          {checkedListId === item.id && (
+                            <Check size={15} className="text-white" />
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 my-3">
+                          <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
+                            <HiMiniUsers
+                              style={{
+                                fill: getRandomColor(),
+                              }}
+                            />
+                          </span>
+                          <span
+                            className={`capitalize ${isChecked ? "font-medium" : "font-normal"}`}
+                          >
+                            {item.name}
+                          </span>
+                        </div>
+                        <div className="flex  gap-1 text-[#5C6474]">
+                          {item.members.length}
 
-                        <span className="text-capitalize">members</span>
+                          <span className="text-capitalize">members</span>
+                        </div>
                       </div>
-                    </div>
-                  ))
+                    )
+                  )
                 ) : (
                   <p className="text-center text-gray-500">
                     No approved lists yet
