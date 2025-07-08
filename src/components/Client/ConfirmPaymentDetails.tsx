@@ -53,14 +53,13 @@ function ConfirmPaymentDetails({
         const result = await response.json();
 
         setFundDetails({
-          ...details, 
+          ...details,
           totalFee,
           transaction_id:
-            result.result.response.data.transaction.id || result.result.response.data.transaction.id,
+            result.result.response.data.transaction.id ||
+            result.result.response.data.transaction.id,
         });
-        setTimeout(() => {
-          handleNextStep();
-        }, 1000);
+        handleNextStep();
       }
     } catch (error) {
       toast({
@@ -70,7 +69,6 @@ function ConfirmPaymentDetails({
     } finally {
       setSubmitting(false);
     }
-    console.log("Form submitted:", data);
   };
 
   return (
