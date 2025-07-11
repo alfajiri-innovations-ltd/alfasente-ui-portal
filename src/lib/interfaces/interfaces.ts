@@ -7,7 +7,7 @@ export interface IClient {
   clientPhoneNumber: string;
   clientID?: number;
   alfasenteCharge?: number;
-   created_at?:Date;
+  created_at?: Date;
   dateRejected?: Date;
   dateApproved?: Date;
   // date_of_birth?: string;
@@ -68,7 +68,7 @@ export interface IList {
   clientID: number;
   createdBy: string;
   status: string;
-  assignedTo?:number;
+  assignedTo?: number;
   members?: string;
 }
 
@@ -86,9 +86,9 @@ export interface IDetails {
   accountNumber: string;
   amount: number;
   network: string;
- 
+
   totalFee?: number;
-  transaction_id?:string;
+  transaction_id?: string;
 }
 
 export interface IAuditLogs {
@@ -117,7 +117,7 @@ export interface ITransaction {
   mtnWalletBalance?: number;
   beneficiaryName?: string;
   OrganisationName?: string;
-  payer?:string;
+  payer?: string;
 
   transactionType: string;
   alfasenteCharge?: number;
@@ -134,3 +134,18 @@ export interface IWallet {
   mtnWalletBalance: string;
   totalWalletBalance: string;
 }
+
+
+export type User = {
+  clientID: number;
+  createdAt: string; // ISO date string
+  date_of_birth: string; // ISO date string (YYYY-MM-DD)
+  firstName: string;
+  isEmailVerified: boolean;
+  lastName: string;
+  password: string;
+  role_name: string;
+  status: string;
+  userId: number;
+  user_email: string;
+};

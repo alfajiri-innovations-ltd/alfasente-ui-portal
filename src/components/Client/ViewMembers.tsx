@@ -37,7 +37,7 @@ function ViewMembers() {
       setCurrentPage(page);
     }
   };
-console.log("---->",list)
+  // console.log("---->",list)
   return (
     <div className="mx-5 my-3">
       <div

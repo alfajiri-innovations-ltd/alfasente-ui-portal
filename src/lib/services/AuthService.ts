@@ -17,7 +17,7 @@ export const authService = {
 
             // Decode and parse the payload
             const payload = JSON.parse(atob(tokenParts[1]));
-            console.log('Decoded JWT payload:', payload);
+            // console.log('Decoded JWT payload:', payload);
             // Check if exp claim exists
             if (!payload.exp) {
                 return false;
@@ -26,7 +26,7 @@ export const authService = {
             // Compare expiration time with current time
             const currentTime = Math.floor(Date.now() / 1000);
             const check = payload.exp > currentTime;
-            console.log('Token is valid:', check);
+            // console.log('Token is valid:', check);
             return check;
 
         } catch (error) {

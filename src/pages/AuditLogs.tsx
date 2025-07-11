@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-import { Download, Filter } from "lucide-react";
+import { Download, Filter, Loader2 } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 import { AuditlogsTable } from "@/components/Client/Tables/AuditLogsTable";
 
@@ -12,25 +12,18 @@ import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
 import Layout from "@/components/Commons/Layout";
 
 function AuditLogs() {
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
 
 
-  const ClientLogs = useGetOrganizationLogs();
+  const { totalPages, admin, employee, setCurrentPage, currentPage, system, auditLogsLoading, currentAuditLogs, clientLogs } = useGetOrganizationLogs();
 
-  console.log("ClientLogs", ClientLogs);
+  console.log("ClientLogs", clientLogs);
 
   const [activeTab, setActiveTab] = useState<
     "all" | "admin" | "employee" | "system"
   >("all");
-  const role_name = getAuthUser().role_name;
+  const role_name = getAuthUser()?.role_name;
 
-  const AuditLogsPerPage = 8;
-
-  const totalPages = Math.ceil(ClientLogs?.length / AuditLogsPerPage);
-  const currentauditlogs = ClientLogs?.slice(
-    (currentPage - 1) * AuditLogsPerPage,
-    currentPage * AuditLogsPerPage
-  );
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -38,13 +31,6 @@ function AuditLogs() {
     }
   };
 
-  const admin = ClientLogs?.filter(
-    (auditlog) => auditlog.role === "client_admin"
-  );
-  const employee = ClientLogs?.filter(
-    (auditlog) => auditlog.role === "client_employee"
-  );
-  const system = ClientLogs?.filter((auditlog) => auditlog.role === "System");
 
   return (
     <Layout title="Audit Logs">
@@ -54,22 +40,20 @@ function AuditLogs() {
             <div className="flex  items-center p-1.5 justify-center">
               <div className="flex  md:gap-2  text-[15px] font-medium">
                 <h4
-                  className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                    activeTab === "all"
-                      ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                      : "  border-[#F7F9FD]"
-                  }  px-2 py-[2px]`}
+                  className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "all"
+                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                    : "  border-[#F7F9FD]"
+                    }  px-2 py-[2px]`}
                   onClick={() => setActiveTab("all")}
                 >
-                  All <span className="mx-1">({ClientLogs?.length})</span>
+                  All <span className="mx-1">({clientLogs.length})</span>
                 </h4>
 
                 <h4
-                  className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                    activeTab === "admin"
-                      ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                      : "  border-[#F7F9FD]"
-                  }  px-2 py-[2px]`}
+                  className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "admin"
+                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                    : "  border-[#F7F9FD]"
+                    }  px-2 py-[2px]`}
                   onClick={() => setActiveTab("admin")}
                 >
                   Admin
@@ -77,11 +61,10 @@ function AuditLogs() {
                 </h4>
 
                 <h4
-                  className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                    activeTab === "employee"
-                      ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                      : "  border-[#F7F9FD]"
-                  }  px-2 py-[2px]`}
+                  className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "employee"
+                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                    : "  border-[#F7F9FD]"
+                    }  px-2 py-[2px]`}
                   onClick={() => setActiveTab("employee")}
                 >
                   Employees
@@ -89,11 +72,10 @@ function AuditLogs() {
                 </h4>
 
                 <h4
-                  className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                    activeTab === "system"
-                      ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                      : "  border-[#F7F9FD]"
-                  }  px-2 py-[2px]`}
+                  className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "system"
+                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                    : "  border-[#F7F9FD]"
+                    }  px-2 py-[2px]`}
                   onClick={() => setActiveTab("system")}
                 >
                   System
@@ -118,25 +100,31 @@ function AuditLogs() {
           </div>
         </div>
 
-        <div className="my-5">
-          {activeTab === "all" && (
-            <AuditlogsTable
-              auditlogs={currentauditlogs}
-              role_name={role_name}
-            />
-          )}
+        {auditLogsLoading ? (
+          <div className="flex justify-center items-center h-[50vh] w-full">
+            <Loader2 />
+          </div>
+        ) : (
+          <div className="my-5">
+            {activeTab === "all" && (
+              <AuditlogsTable
+                auditlogs={currentAuditLogs}
+                role_name={role_name}
+              />
+            )}
 
-          {activeTab === "admin" && <AuditlogsTable auditlogs={admin} />}
+            {activeTab === "admin" && <AuditlogsTable auditlogs={admin} />}
 
-          {activeTab === "employee" && <AuditlogsTable auditlogs={employee} />}
+            {activeTab === "employee" && <AuditlogsTable auditlogs={employee} />}
 
-          {activeTab === "system" && <AuditlogsTable auditlogs={system} />}
-        </div>
+            {activeTab === "system" && <AuditlogsTable auditlogs={system} />}
+          </div>
+        )}
 
         <div className="flex justify-between  items-center ">
           <div className="">
             <span className="font-normal text-[15px]  ">
-              Showing {currentauditlogs?.length} of {ClientLogs?.length} results
+              Showing {currentAuditLogs.length} of {clientLogs.length} results
             </span>
           </div>
           <div className="">
