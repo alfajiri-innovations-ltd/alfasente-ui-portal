@@ -3,31 +3,20 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-import { Filter } from "lucide-react";
+import { Filter, Loader2 } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 import { UsersTable } from "@/components/Client/Tables/UsersTable";
 import { InviteStaff } from "@/components/Client/InviteStaffDialog";
-import { GetUsers } from "@/lib/services/GetUsersByOrganization";
 import Layout from "@/components/Commons/Layout";
+import useStaff from "@/hooks/useStaff";
 
 
 function Staff() {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const users = GetUsers();
- 
+  const { staffData, totalPages, setCurrentPage, staffLoading, currentPage, currentUsers, active, inactive, admin, employee } = useStaff();
 
   const [activeTab, setActiveTab] = useState<
     "all" | "makers" | "admin" | "checkers" | "employee"
   >("all");
-
-  const UsersPerPage = 8;
-
-  const totalPages = Math.ceil(users.length / UsersPerPage);
-  const currentusers = users.slice(
-    (currentPage - 1) * UsersPerPage,
-    currentPage * UsersPerPage
-  );
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -35,14 +24,6 @@ function Staff() {
     }
   };
 
-  const active = users.filter((user) => user.status === "maker");
-  const inactive = users.filter((user) => user.status === "checker");
-  const admin = users.filter(
-    (user) => user.role_name.roleName === "client_admin"
-  );
-  const employee = users.filter(
-    (user) => user.role_name.roleName === "client_employee"
-  );
 
   return (
     <Layout title="Staff">
@@ -57,7 +38,7 @@ function Staff() {
                   }  px-2 py-[2px]`}
                 onClick={() => setActiveTab("all")}
               >
-                All <span className="mx-1">({users.length})</span>
+                All <span className="mx-1">({staffData.length})</span>
               </h4>
 
               <h4
@@ -117,19 +98,23 @@ function Staff() {
           </div>
         </div>
 
-        <div className="my-5">
-          {activeTab === "all" && <UsersTable users={currentusers} />}
+        {staffLoading ? (<>
+          <div className="flex flex-col items-center justify-center">
+            <Loader2 />
+          </div>
+        </>) : (<div className="my-5">
+          {activeTab === "all" && <UsersTable users={currentUsers} />}
           {activeTab === "makers" && <UsersTable users={active} />}
           {activeTab === "checkers" && <UsersTable users={inactive} />}
           {activeTab === "admin" && <UsersTable users={admin} />}
 
           {activeTab === "employee" && <UsersTable users={employee} />}
         </div>
-
+        )}
         <div className="flex justify-between  items-center ">
           <div className="">
             <span className="font-normal text-[15px]  ">
-              Showing {currentusers.length} of {users.length} results
+              Showing {currentUsers.length} of {staffData.length} results
             </span>
           </div>
           <div className="">

@@ -30,15 +30,16 @@ import { getUserToken, getAuthUser } from "@/lib/cookies/UserMangementCookie";
 import { toast } from "@/hooks/use-toast";
 import { useClientListsWithMembers } from "@/lib/services/FetchClientLists";
 import { useNavigate } from "react-router-dom";
-import { GetUsers } from "@/lib/services/GetUsersByOrganization";
-
+import useStaff from "@/hooks/useStaff";
+// interface RowType extends Array<string | number | null> { }
+// interface HeadersType extends Array<string> { }
 export function UploadBeneficiaries() {
   const [file, setFile] = useState<File | null>(null);
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
     null
   );
   const { mutate } = useClientListsWithMembers();
-
+  const { staffData } = useStaff();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<number>();
   const [selectedUserName, setSelectedUserName] = useState<string>("");
@@ -52,17 +53,17 @@ export function UploadBeneficiaries() {
   const [submit, setIsSubmitting] = useState(false);
   const token = getUserToken();
   const nuser = getAuthUser();
-  const clientID = nuser.clientID;
+  const clientID = nuser?.clientID;
   const loggedInUser = getAuthUser();
 
-  const users = GetUsers();
+  const users = staffData;
 
   const filteredUsers = users.filter((user) => {
-    if (loggedInUser.role_name === "client_admin") {
+    if (loggedInUser?.role_name === "client_admin") {
       return true;
     }
 
-    return user.userId !== loggedInUser.userId;
+    return user.userId !== loggedInUser?.userId;
   });
 
   const handleTogglePreview = () => {
@@ -116,17 +117,19 @@ export function UploadBeneficiaries() {
       const [headers, ...rows] = XLSX.utils.sheet_to_json(sheet, {
         header: 1,
         defval: null,
-      }) as any;
+      });
 
-      const validRows = rows.filter((row: any[]) =>
-          row.some((cell) => cell !== null && cell !== "")
-        );
 
-        
 
-      const formattedMembers = validRows.map((row: any[]) =>
+      const validRows: unknown[] = (rows).filter((row) =>
+        row.some((cell) => cell !== null && cell !== "")
+      );
+
+
+
+      const formattedMembers = validRows.map((row) =>
         headers.reduce(
-          (acc: any, header: string, index: number) => {
+          (acc, header: string, index: number) => {
             let value = row[index] || null;
 
             if (header === "mobileMoneyNumber" && value !== null) {
@@ -155,7 +158,7 @@ export function UploadBeneficiaries() {
         members: payload.members,
         clientID: payload.clientID,
         createdAt: new Date().toISOString(),
-        createdBy: nuser.name,
+        createdBy: nuser?.name || "",
         assignedUserId: value,
 
         status: "Pending",
@@ -203,6 +206,7 @@ export function UploadBeneficiaries() {
         title: "Failure",
         description: "Failed to upload the list.",
       });
+      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -238,9 +242,8 @@ export function UploadBeneficiaries() {
 
       <div className="mt-[10vh]  flex items-center  flex-col">
         <div
-          className={` flex flex-col  py-6 ${
-            !previewList && "justify-center items-center"
-          }`}
+          className={` flex flex-col  py-6 ${!previewList && "justify-center items-center"
+            }`}
         >
           {!previewList ? (
             <>
@@ -320,10 +323,10 @@ export function UploadBeneficiaries() {
                     >
                       {value
                         ? filteredUsers.find((user) => user.userId === value)
-                            ?.firstName +
-                          " " +
-                          filteredUsers.find((user) => user.userId === value)
-                            ?.lastName
+                          ?.firstName +
+                        " " +
+                        filteredUsers.find((user) => user.userId === value)
+                          ?.lastName
                         : "Select Staff..."}
 
                       <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -391,9 +394,8 @@ export function UploadBeneficiaries() {
             />
           )}
           <div
-            className={`${
-              previewList ? "w-full px-20" : "w-full"
-            }  flex justify-between items-center my-5`}
+            className={`${previewList ? "w-full px-20" : "w-full"
+              }  flex justify-between items-center my-5`}
           >
             <Button
               type="submit"

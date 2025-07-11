@@ -15,13 +15,14 @@ import { Link } from "react-router-dom";
 import { useUser } from "@/hooks/UserContext";
 import { GetClient } from "@/lib/services/GetClientById";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { GetUsers } from "@/lib/services/GetUsersByOrganization";
+import useStaff from "@/hooks/useStaff";
+// import { GetUsers } from "@/lib/services/GetUsersByOrganization";
 
 function SideBar() {
   const currentPath = window.location.pathname;
   const user = useUser();
-
-  const users = GetUsers();
+  const { staffData } = useStaff();
+  const users = staffData;
   const isMobile = useIsMobile();
   const client = GetClient();
 
@@ -45,10 +46,10 @@ function SideBar() {
       href: "/send-funds",
       roles: ["client_employee", "client_admin"],
     },
-    
-   
-    
-   
+
+
+
+
     {
       title: "Beneficiaries",
       icon: <CircleUserRound />,
@@ -61,8 +62,8 @@ function SideBar() {
       href: "/staff",
       roles: ["client_employee", "client_admin"],
     },
-   
-    
+
+
 
     {
       title: "Transactions",
@@ -70,7 +71,7 @@ function SideBar() {
       href: "/transactions",
       roles: ["client_employee", "client_admin"],
     },
-    
+
     {
       title: "Audit Logs",
       icon: <ClipboardListIcon />,
@@ -116,11 +117,10 @@ function SideBar() {
           <li key={index}>
             <Link
               to={item.href}
-              className={`flex items-center p-2 rounded ${
-                currentPath === item.href
-                  ? "bg-[#E4E8F1] text-black"
-                  : "text-[#5C6474] "
-              }`}
+              className={`flex items-center p-2 rounded ${currentPath === item.href
+                ? "bg-[#E4E8F1] text-black"
+                : "text-[#5C6474] "
+                }`}
             >
               <span className="mr-3">{item.icon}</span>
               <span className="">{item.title}</span>

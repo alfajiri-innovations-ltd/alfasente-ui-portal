@@ -1,7 +1,7 @@
 
 
 import useSWR from "swr";
-import {  IMembers, listsWithMembers } from "../interfaces/interfaces";
+import { IMembers, listsWithMembers } from "../interfaces/interfaces";
 import { getAuthUser, getUserToken } from "../cookies/UserMangementCookie";
 import { FetchClientLists, GetMembersByListId } from "../api-routes";
 
@@ -14,8 +14,8 @@ const fetcherWithAuth = (url: string) =>
   });
 
 export function useClientListsWithMembers() {
-  const clientId = getAuthUser().clientID;
-  const { data: lists, error, isLoading,mutate } = useSWR<listsWithMembers[]>(
+  const clientId = getAuthUser()?.clientID;
+  const { data: lists, error, isLoading, mutate } = useSWR<listsWithMembers[]>(
     clientId ? FetchClientLists(clientId) : null,
     fetcherWithAuth
   );
@@ -48,7 +48,7 @@ export function useClientListsWithMembers() {
       return all;
     },
     {
-      revalidateOnFocus: false, // Optional: prevents refetching when tab is focused
+      revalidateOnFocus: true, // Optional: prevents refetching when tab is focused
     }
   );
 
