@@ -3,7 +3,6 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
-
 export default defineConfig({
   plugins: [
     react(),
@@ -20,18 +19,18 @@ export default defineConfig({
         start_url: "/",
         icons: [
           {
-            src: "/logos/android-chrome-192x192.png",
+            src: "/icons/android-chrome-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "/logos/android-chrome-512x512.png",
+            src: "/icons/android-chrome-512x512.png",
 
             sizes: "512x512",
             type: "image/png",
           },
           {
-            src: "/logos/advanced-chrome-512x512.png",
+            src: "/icons/android-chrome-512x512.png",
 
             sizes: "512x512",
             type: "image/png",
