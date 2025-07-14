@@ -15,20 +15,19 @@ import { Edit } from "lucide-react";
 interface ApproveApplicationProps {
   transactionID?: string;
   onClose?: () => void;
-  open?: boolean; 
-  triggerMode?: boolean; 
+  open?: boolean;
+  triggerMode?: boolean;
 }
 
-
 export function InitiateTopUp({
-transactionID,
+  transactionID,
   onClose,
   open,
   triggerMode = false,
 }: ApproveApplicationProps) {
   const [submitting, setSubmitting] = useState(false);
   const [internalOpen, setInternalOpen] = useState(false);
-  const isOpen = triggerMode ? internalOpen : open ?? false;
+  const isOpen = triggerMode ? internalOpen : (open ?? false);
 
   const handleClose = () => {
     if (triggerMode) {

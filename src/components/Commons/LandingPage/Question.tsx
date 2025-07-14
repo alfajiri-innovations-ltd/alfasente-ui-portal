@@ -35,7 +35,6 @@ function Question() {
         <div className="hidden md:flex w-[260px] h-[278px] object-cover ">
           <img src="/images/questionimage.svg" alt="Manage Payment" />
         </div>
-
       </div>
     </div>
   );

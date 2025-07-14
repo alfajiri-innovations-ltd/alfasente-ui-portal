@@ -21,37 +21,42 @@ export const getRoleLabel = (role: string) => {
 export function truncateUUID(uuid: string, length: number = 10): string {
   if (!uuid) {
     console.error("truncateUUID received an undefined or null value.");
-    return ""; 
-}
-return uuid.slice(0, length);
+    return "";
+  }
+  return uuid.slice(0, length);
 }
 
 export const formatDateTime = (dateStringOrDate: string | Date) => {
-  const dateObj = typeof dateStringOrDate === "string" ? new Date(dateStringOrDate) : dateStringOrDate;
-  
+  const dateObj =
+    typeof dateStringOrDate === "string"
+      ? new Date(dateStringOrDate)
+      : dateStringOrDate;
+
   if (isNaN(dateObj.getTime())) {
     return { date: "Invalid Date", time: "" };
   }
 
-  const date = dateObj.toISOString().split("T")[0]; 
-  const time = dateObj.toTimeString().split(" ")[0].slice(0, 5); 
+  const date = dateObj.toISOString().split("T")[0];
+  const time = dateObj.toTimeString().split(" ")[0].slice(0, 5);
 
   return { date, time };
 };
 
-
 export const getTotalCost = (transaction: ITransaction) => {
-    const mainAmount = parseFloat(transaction?.mainAmount || "0");
-    const alfasenteCharge = (transaction?.alfasenteCharge);
-    const mtnCharge = (transaction?.mtnCharge);
-    const airtelCharge = (transaction?.airtelCharge);
-  
-    const telecomCharge = (mtnCharge ?? 0) > 0 ? mtnCharge ?? 0 : airtelCharge ?? 0;
-    return mainAmount + (alfasenteCharge ?? 0) + telecomCharge;
-  };
+  const mainAmount = parseFloat(transaction?.mainAmount || "0");
+  const alfasenteCharge = transaction?.alfasenteCharge;
+  const mtnCharge = transaction?.mtnCharge;
+  const airtelCharge = transaction?.airtelCharge;
 
+  const telecomCharge =
+    (mtnCharge ?? 0) > 0 ? (mtnCharge ?? 0) : (airtelCharge ?? 0);
+  return mainAmount + (alfasenteCharge ?? 0) + telecomCharge;
+};
 
-  export function formatMoney(amount: number | string, currency: string = "UGX"): string {
+export function formatMoney(
+  amount: number | string,
+  currency: string = "UGX",
+): string {
   const num = typeof amount === "string" ? parseFloat(amount) : amount;
 
   if (isNaN(num)) return `${currency} 0`;
@@ -59,24 +64,19 @@ export const getTotalCost = (transaction: ITransaction) => {
   return `${currency} ${num.toLocaleString("en-UG")}`;
 }
 
-
-export const formatNumberWithCommas = (value: number | string | undefined | null): string => {
+export const formatNumberWithCommas = (
+  value: number | string | undefined | null,
+): string => {
   if (value === undefined || value === null || value === "") return "";
 
-  const raw = typeof value === "number" ? value.toString() : value.replace(/\D/g, "");
+  const raw =
+    typeof value === "number" ? value.toString() : value.replace(/\D/g, "");
   const parsed = parseInt(raw, 10);
 
   return isNaN(parsed) ? "" : parsed.toLocaleString("en-US");
 };
 
-
-
 export const parseFormattedNumber = (formatted: string): number => {
   const cleaned = formatted?.replace(/,/g, "");
   return parseInt(cleaned || "0", 10);
 };
-
-
-
-
-

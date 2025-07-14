@@ -3,7 +3,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {  MoreHorizontal, UserCircle } from "lucide-react";
+import { MoreHorizontal, UserCircle } from "lucide-react";
 import { RenameList } from "./RenameListDialog";
 
 import { DeleteList } from "./DeleteDialog";
@@ -23,11 +23,7 @@ interface ActionProps {
   HandleClick?: (listId: number) => void;
 }
 
-export function ActionsPopover({
-  list,
-  clientID,
-  transactionID,
-}: ActionProps) {
+export function ActionsPopover({ list, clientID, transactionID }: ActionProps) {
   const location = useLocation();
   const { pathname } = location;
 
@@ -70,7 +66,6 @@ export function ActionsPopover({
             {" "}
             <ViewRequest transactionID={transactionID} />
             <InitiateTopUp transactionID={transactionID} triggerMode />
-            
           </>
         )}
       </PopoverContent>

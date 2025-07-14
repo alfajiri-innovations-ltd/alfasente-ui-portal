@@ -51,7 +51,10 @@ export function AddBeneficiaryForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full sm:space-y-2">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full sm:space-y-2"
+      >
         <FormField
           control={form.control}
           name="beneficiaryName"
@@ -92,7 +95,6 @@ export function AddBeneficiaryForm({
                   className="bg-[#F7F9FD] border-[#DCE1EC]"
                   {...field}
                   onChange={(e) => field.onChange(e.target.valueAsNumber)}
-
                 />
               </FormControl>
 

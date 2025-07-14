@@ -2,11 +2,12 @@ import { ITransaction } from "../interfaces/interfaces";
 import { getAuthUser, getUserToken } from "../cookies/UserMangementCookie";
 import { GetaTransactionsByOrganization } from "../api-routes";
 
-
 export const organizationService = {
   token: getUserToken(),
   clientId: getAuthUser()?.clientID ?? 0,
-  transactionUrlData: GetaTransactionsByOrganization(getAuthUser()?.clientID ?? 0),
+  transactionUrlData: GetaTransactionsByOrganization(
+    getAuthUser()?.clientID ?? 0,
+  ),
   organizationData: async function (): Promise<ITransaction[]> {
     console.log(this.clientId);
     const response = await fetch(this.transactionUrlData, {
@@ -14,7 +15,7 @@ export const organizationService = {
       headers: {
         Authorization: `Bearer ${this.token}`,
       },
-      redirect: 'follow'
+      redirect: "follow",
     });
 
     if (response.ok === false) {
@@ -24,8 +25,8 @@ export const organizationService = {
       console.log(data);
       return data.transactions;
     }
-  }
-}
+  },
+};
 // GetOrganizationTransactions() {
 // const [Transactions, setTransactions] = useState<ITransaction[]>([]);
 // const [loadingTrasactions, setLoadingTransactions] = useState(false);

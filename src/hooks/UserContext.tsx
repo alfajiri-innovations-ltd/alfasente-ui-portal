@@ -22,16 +22,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
         lastName: user.lastName || "",
         clientID: user.clientID,
         status: user.status || "",
-        userId: user.userId || "",
+        userId: user.userId,
         user_email: user.user_email || "",
         role_name: user.role_name || "user",
         date_of_birth: user.date_of_birth || "",
-
-
       });
     }
   }, []);
-
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }

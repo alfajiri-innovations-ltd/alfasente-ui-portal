@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -91,7 +89,7 @@ function ApplicationsPage() {
   const totalPages = Math.ceil(applications.length / ApplicationsPerPage);
   const currentapplications = applications.slice(
     (currentPage - 1) * ApplicationsPerPage,
-    currentPage * ApplicationsPerPage
+    currentPage * ApplicationsPerPage,
   );
 
   const handlePageChange = (page: number) => {
@@ -101,13 +99,13 @@ function ApplicationsPage() {
   };
 
   const rejectedappplications = applications?.filter(
-    (application) => application.isApproved === "Rejected"
+    (application) => application.isApproved === "Rejected",
   );
   const pendingapplications = applications.filter(
-    (application) => application.isApproved === "Pending"
+    (application) => application.isApproved === "Pending",
   );
   const approvedapplications = applications.filter(
-    (application) => application.isApproved === "Approved"
+    (application) => application.isApproved === "Approved",
   );
   return (
     <Layout title="Applications">

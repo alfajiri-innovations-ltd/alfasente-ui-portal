@@ -9,10 +9,13 @@ interface ICalculateCharge {
   beneficiary?: any;
 }
 
-export function useCalculateCharge({ listId, clientId, beneficiary }: ICalculateCharge) {
+export function useCalculateCharge({
+  listId,
+  clientId,
+  beneficiary,
+}: ICalculateCharge) {
   const [charges, setCharges] = useState<any>(null);
   const token = getUserToken();
-
 
   useEffect(() => {
     const calculateCharge = async () => {

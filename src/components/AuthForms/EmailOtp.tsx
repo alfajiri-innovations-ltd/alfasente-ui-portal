@@ -35,7 +35,7 @@ export function EmailOtpForm({ resetTimer }: IEmailOtpProps) {
   const [value, setValue] = useState("");
   const [timeLeft, setTimeLeft] = useState(600);
   const [isSubmitting, setSubmitting] = useState(false);
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
   const email = localStorage.getItem("email");
 

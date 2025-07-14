@@ -100,7 +100,11 @@ export function TransactionsTable({ transactions }: ITransactionsTableProps) {
             <TableCell>UGX {transaction.mainAmount}</TableCell>
             {pathname === "/admin/manuals" && (
               <TableCell>
-                {transaction.proofOfCredit ? <ViewProof proof={transaction.proofOfCredit} /> : "No Proof"}
+                {transaction.proofOfCredit ? (
+                  <ViewProof proof={transaction.proofOfCredit} />
+                ) : (
+                  "No Proof"
+                )}
               </TableCell>
             )}
             <TableCell>

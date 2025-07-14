@@ -25,12 +25,11 @@ export function ViewTransactionDialog({
   transactionID,
 }: ViewTransactionDialogProp) {
   const { Transaction, loading, error } = GetTransaction(transactionID || "");
-   const [DialogOpen, setIsDialogOpen] = useState(false);
-   
+  const [DialogOpen, setIsDialogOpen] = useState(false);
 
-   const handleClose=()=>{
+  const handleClose = () => {
     setIsDialogOpen(false);
-   }
+  };
 
   return (
     <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
@@ -197,7 +196,7 @@ export function ViewTransactionDialog({
                   Total Cost
                 </span>
                 <span className="font-medium tetx-base text-black/80">
-                {Transaction ? getTotalCost(Transaction) : "N/A"}
+                  {Transaction ? getTotalCost(Transaction) : "N/A"}
                 </span>
               </div>
             </div>

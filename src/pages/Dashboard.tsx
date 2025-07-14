@@ -181,7 +181,6 @@ function Dashboard() {
               <div
                 key={index}
                 onClick={() => HandleClick(`/${item.url}`)}
-
                 className="border cursor-pointer flex flex-col items-center justify-center text-center py-6 border-[#EDF0F7] bg-white rounded-md"
               >
                 <img
@@ -193,7 +192,12 @@ function Dashboard() {
               </div>
             ))}
 
-            <div  onClick={()=>{navigate('/transactions')}} className=" cursor-pointer col-span-1 sm:col-span-2 lg:col-span-3 border flex flex-col items-center justify-center text-center py-6 border-[#EDF0F7] bg-white rounded-md">
+            <div
+              onClick={() => {
+                navigate("/transactions");
+              }}
+              className=" cursor-pointer col-span-1 sm:col-span-2 lg:col-span-3 border flex flex-col items-center justify-center text-center py-6 border-[#EDF0F7] bg-white rounded-md"
+            >
               <img
                 src="/images/icons/transaction.svg"
                 alt="Transactions"

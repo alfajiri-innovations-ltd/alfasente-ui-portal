@@ -8,7 +8,6 @@ import { useUser } from "@/hooks/UserContext";
 
 function UserSettings() {
   const user = useUser();
-  
 
   return (
     <div className="flex flex-col gap-2">

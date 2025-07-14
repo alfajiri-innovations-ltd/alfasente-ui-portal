@@ -36,7 +36,7 @@ import useStaff from "@/hooks/useStaff";
 export function UploadBeneficiaries() {
   const [file, setFile] = useState<File | null>(null);
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
-    null
+    null,
   );
   const { mutate } = useClientListsWithMembers();
   const { staffData } = useStaff();
@@ -114,36 +114,39 @@ export function UploadBeneficiaries() {
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
 
-      const [headers, ...rows] = XLSX.utils.sheet_to_json(sheet, {
+      const sheetData = XLSX.utils.sheet_to_json(sheet, {
         header: 1,
         defval: null,
-      });
+      }) as Array<Array<string | number | null>>;
 
+      const [headersRaw, ...rows] = sheetData;
+      const headers: string[] = Array.isArray(headersRaw)
+        ? headersRaw.map((h) => String(h))
+        : [];
 
-
-      const validRows: unknown[] = (rows).filter((row) =>
-        row.some((cell) => cell !== null && cell !== "")
+      const validRows: unknown[] = rows.filter(
+        (row) =>
+          Array.isArray(row) &&
+          row.some((cell) => cell !== null && cell !== ""),
       );
 
-
-
-      const formattedMembers = validRows.map((row) =>
-        headers.reduce(
-          (acc, header: string, index: number) => {
-            let value = row[index] || null;
-
-            if (header === "mobileMoneyNumber" && value !== null) {
-              value = String(value).padStart(10, "0");
-            }
-
-            acc[header] = value;
-            return acc;
-          },
-          {
-            clientID: isNaN(Number(clientID)) ? 0 : Number(clientID),
+      const formattedMembers = validRows.map((row) => {
+        const member: any = {};
+        headers.forEach((header, index) => {
+          let value = (row as Array<string | number | null>)[index] || null;
+          if (header === "mobileMoneyNumber" && value !== null) {
+            value = String(value).padStart(10, "0");
           }
-        )
-      );
+          member[header] = value;
+        });
+        return {
+          beneficiaryName: member.beneficiaryName ?? "",
+          reason: member.reason ?? "",
+          amount: member.amount ?? "",
+          mobileMoneyNumber: member.mobileMoneyNumber ?? "",
+          serviceProvider: member.serviceProvider ?? "",
+        };
+      });
 
       const payload = {
         name: `${sheetName}`,
@@ -151,19 +154,18 @@ export function UploadBeneficiaries() {
         assignedTo: value,
         clientID: isNaN(Number(clientID)) ? 0 : Number(clientID),
       };
-
       const optimisticList = {
         id: Date.now(),
         name: payload.name,
-        members: payload.members,
+        members: formattedMembers, // Use formattedMembers which matches IMembers[]
         clientID: payload.clientID,
         createdAt: new Date().toISOString(),
-        createdBy: nuser?.name || "",
+        createdBy: `${nuser?.firstName ?? ""} ${nuser?.lastName ?? ""}`.trim(),
         assignedUserId: value,
-
         status: "Pending",
       };
 
+      mutate((prev) => [optimisticList, ...(prev || [])], false);
       mutate((prev) => [optimisticList, ...(prev || [])], false);
 
       fetch(UploadList, {
@@ -242,8 +244,9 @@ export function UploadBeneficiaries() {
 
       <div className="mt-[10vh]  flex items-center  flex-col">
         <div
-          className={` flex flex-col  py-6 ${!previewList && "justify-center items-center"
-            }`}
+          className={` flex flex-col  py-6 ${
+            !previewList && "justify-center items-center"
+          }`}
         >
           {!previewList ? (
             <>
@@ -323,10 +326,10 @@ export function UploadBeneficiaries() {
                     >
                       {value
                         ? filteredUsers.find((user) => user.userId === value)
-                          ?.firstName +
-                        " " +
-                        filteredUsers.find((user) => user.userId === value)
-                          ?.lastName
+                            ?.firstName +
+                          " " +
+                          filteredUsers.find((user) => user.userId === value)
+                            ?.lastName
                         : "Select Staff..."}
 
                       <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -351,12 +354,12 @@ export function UploadBeneficiaries() {
                                 const selected = filteredUsers.find(
                                   (u) =>
                                     `${u.firstName} ${u.lastName}` ===
-                                    currentValue
+                                    currentValue,
                                 );
                                 if (selected) {
                                   setValue(selected.userId);
                                   setSelectedUserName(
-                                    `${selected.firstName} ${selected.lastName}`
+                                    `${selected.firstName} ${selected.lastName}`,
                                   );
                                 }
                                 setOpen(false);
@@ -368,7 +371,7 @@ export function UploadBeneficiaries() {
                                     "mr-2 h-4 w-4",
                                     value === user.userId
                                       ? "opacity-100"
-                                      : "opacity-0"
+                                      : "opacity-0",
                                   )}
                                 />
                                 {user.firstName} {user.lastName}
@@ -394,8 +397,9 @@ export function UploadBeneficiaries() {
             />
           )}
           <div
-            className={`${previewList ? "w-full px-20" : "w-full"
-              }  flex justify-between items-center my-5`}
+            className={`${
+              previewList ? "w-full px-20" : "w-full"
+            }  flex justify-between items-center my-5`}
           >
             <Button
               type="submit"

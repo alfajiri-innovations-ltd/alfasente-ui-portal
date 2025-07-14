@@ -51,12 +51,16 @@ export function PaginationDemo({
       startPage = Math.max(1, totalPages - maxVisiblePages + 1);
     }
 
-    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+    return Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i,
+    );
   };
 
   const visiblePages = getVisiblePages();
   const showStartEllipsis = visiblePages[0] > 2;
-  const showEndEllipsis = visiblePages[visiblePages.length - 1] < totalPages - 1;
+  const showEndEllipsis =
+    visiblePages[visiblePages.length - 1] < totalPages - 1;
 
   return (
     <Pagination>
@@ -65,7 +69,9 @@ export function PaginationDemo({
           <PaginationPrevious
             onClick={currentPage === 1 ? undefined : handlePrevious}
             className={
-              currentPage === 1 ? "cursor-not-allowed text-gray-400" : "cursor-pointer"
+              currentPage === 1
+                ? "cursor-not-allowed text-gray-400"
+                : "cursor-pointer"
             }
           />
         </PaginationItem>

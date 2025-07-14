@@ -1,8 +1,5 @@
-
 function FundWalletPage() {
-  return (
-    <div>FundWalletPage</div>
-  )
+  return <div>FundWalletPage</div>;
 }
 
-export default FundWalletPage
+export default FundWalletPage;

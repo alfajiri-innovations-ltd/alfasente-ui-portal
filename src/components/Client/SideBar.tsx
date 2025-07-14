@@ -10,7 +10,6 @@ import { PiUsersThreeFill } from "react-icons/pi";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { GrSend } from "react-icons/gr";
 
-
 import { Link } from "react-router-dom";
 import { useUser } from "@/hooks/UserContext";
 import { GetClient } from "@/lib/services/GetClientById";
@@ -47,9 +46,6 @@ function SideBar() {
       roles: ["client_employee", "client_admin"],
     },
 
-
-
-
     {
       title: "Beneficiaries",
       icon: <CircleUserRound />,
@@ -62,8 +58,6 @@ function SideBar() {
       href: "/staff",
       roles: ["client_employee", "client_admin"],
     },
-
-
 
     {
       title: "Transactions",
@@ -117,10 +111,11 @@ function SideBar() {
           <li key={index}>
             <Link
               to={item.href}
-              className={`flex items-center p-2 rounded ${currentPath === item.href
-                ? "bg-[#E4E8F1] text-black"
-                : "text-[#5C6474] "
-                }`}
+              className={`flex items-center p-2 rounded ${
+                currentPath === item.href
+                  ? "bg-[#E4E8F1] text-black"
+                  : "text-[#5C6474] "
+              }`}
             >
               <span className="mr-3">{item.icon}</span>
               <span className="">{item.title}</span>

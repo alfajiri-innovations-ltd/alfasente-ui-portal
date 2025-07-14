@@ -30,7 +30,7 @@ function ConfirmPaymentDetails({
   const [warning] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const token = getUserToken();
-  const clientID = getAuthUser().clientID;
+  const clientID = getAuthUser()?.clientID ?? "";
 
   const submit = async () => {
     setSubmitting(true);

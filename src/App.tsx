@@ -28,7 +28,6 @@ import { FundWallet } from "./pages/FundWallet";
 import { SendFunds } from "./pages/SendFunds";
 import { UploadBeneficiaries } from "./components/Client/UploadBeneficiaries";
 
-
 function App() {
   return (
     <>
@@ -40,10 +39,7 @@ function App() {
               {/* auth routes */}
               <Route element={<PrivateRoutes />}>
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route
-                  path="/beneficiaries"
-                  element={<BeneficiariesPage />}
-                />
+                <Route path="/beneficiaries" element={<BeneficiariesPage />} />
                 <Route path="/transactions" element={<Transactions />} />
                 <Route path="/staff" element={<Staff />} />
                 <Route path="/audit-logs" element={<AuditLogs />} />
@@ -63,14 +59,8 @@ function App() {
               <Route path="/" element={<LandingPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/wait-approval" element={<WaitScreen />} />
-              <Route
-                path="/forgot-password"
-                element={<ForgotPasswordPage />}
-              />
-              <Route
-                path="/view-members/:listId"
-                element={<MemebersPage />}
-              />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/view-members/:listId" element={<MemebersPage />} />
               <Route path="/register" element={<Register />} />
               <Route path="/about" element={<AboutUs />} />
               {/* end of non auth routes */}
