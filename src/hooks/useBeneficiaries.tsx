@@ -1,5 +1,3 @@
 export default function useBeneficiaries() {
-    return {
-
-    };
+  return {};
 }

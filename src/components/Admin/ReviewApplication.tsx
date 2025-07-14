@@ -240,11 +240,11 @@ export function ViewApplication({ clientID, onClose }: ViewApplicationDetails) {
                     <span>
                       {client?.dateRejected
                         ? formatDate(
-                            new Date(client.dateRejected).toISOString()
+                            new Date(client.dateRejected).toISOString(),
                           )
                         : client?.dateApproved
                           ? formatDate(
-                              new Date(client.dateApproved).toISOString()
+                              new Date(client.dateApproved).toISOString(),
                             )
                           : "N/A"}
                     </span>

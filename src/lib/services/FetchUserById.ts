@@ -14,7 +14,6 @@ export function FetchUserById(userId: number) {
         if (response.ok) {
           const data = await response.json();
           setUser(data);
-    
         } else {
         }
       } catch (error) {}

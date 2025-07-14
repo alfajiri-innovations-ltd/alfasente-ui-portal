@@ -21,18 +21,20 @@ export const auditService = {
     }
   },
   fetchOrganizationAuditLogs: async function (): Promise<IAuditLogs[]> {
-    const response = await fetch(GetAuditLogsByOrganization(this.clientID ?? 0), {
-      headers: {
-        Authorization: `Bearer ${this.token}`,
+    const response = await fetch(
+      GetAuditLogsByOrganization(this.clientID ?? 0),
+      {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
       },
-    });
+    );
     if (response.ok === false) {
       throw new Error("Network response was not ok");
     }
 
     const data = await response.json();
     console.log(data);
-    return (data.AuditLogs);
-
+    return data.AuditLogs;
   },
-}
+};

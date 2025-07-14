@@ -10,9 +10,9 @@ function SuccessScreen() {
       <h4 className="font-semibold text-[23px]">Application under review</h4>
 
       <p>
-        Our team is reviewing your application, which usually
-       takes  <br className="hidden md:flex"/>  up to 48
-        hours. You’ll be notified via email upon approval.
+        Our team is reviewing your application, which usually takes{" "}
+        <br className="hidden md:flex" /> up to 48 hours. You’ll be notified via
+        email upon approval.
       </p>
 
       <Button

@@ -71,7 +71,7 @@ export function MembersTable({ members }: IMembersTable) {
                 <div className="flex items-center gap-3">
                   <EditBeneficiary member={member} />
                   {member.beneficiaryId !== undefined && (
-                    <DeleteBeneficiary beneficiaryId={member.beneficiaryId}   />
+                    <DeleteBeneficiary beneficiaryId={member.beneficiaryId} />
                   )}
                 </div>
               </TableCell>

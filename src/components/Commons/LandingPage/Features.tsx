@@ -13,7 +13,12 @@ function Features() {
       </div>
       {/* section 2 */}
       <div className="w-full h-full mx-5">
-        <img src="/images/time.png" width={600} height={700} alt="Timeless Transactions" />
+        <img
+          src="/images/time.png"
+          width={600}
+          height={700}
+          alt="Timeless Transactions"
+        />
       </div>
     </section>
   );

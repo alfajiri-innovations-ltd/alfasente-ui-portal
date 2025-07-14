@@ -135,7 +135,6 @@ export interface IWallet {
   totalWalletBalance: string;
 }
 
-
 export type User = {
   clientID: number;
   createdAt: string; // ISO date string

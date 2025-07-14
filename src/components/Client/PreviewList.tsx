@@ -25,7 +25,7 @@ function PreviewList({
   const clientId = getAuthUser()?.clientID;
 
   const CheckListName = useFetchListName(
-    sheetName && clientId ? { listName: sheetName, clientId } : null
+    sheetName && clientId ? { listName: sheetName, clientId } : null,
   );
 
   useEffect(() => {
@@ -41,7 +41,7 @@ function PreviewList({
   const totalPages = Math.ceil(members.length / MembersPerPage);
   const currentMembers = members.slice(
     (currentPage - 1) * MembersPerPage,
-    currentPage * MembersPerPage
+    currentPage * MembersPerPage,
   );
 
   useEffect(() => {
@@ -62,14 +62,14 @@ function PreviewList({
         const [headers, ...rows] = jsonData;
 
         const validRows = rows.filter((row: any[]) =>
-          row.some((cell) => cell !== null && cell !== "")
+          row.some((cell) => cell !== null && cell !== ""),
         );
 
         const parsedMembers = validRows.map((row: any[]) =>
           headers.reduce((acc: any, header: string, index: number) => {
             acc[header] = row[index] || null;
             return acc;
-          }, {})
+          }, {}),
         );
 
         setMembers(parsedMembers);

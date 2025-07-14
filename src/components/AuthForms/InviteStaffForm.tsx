@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {  InviteUser } from "@/lib/api-routes";
+import { InviteUser } from "@/lib/api-routes";
 import { useUser } from "@/hooks/UserContext";
 import { getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { toast } from "@/hooks/use-toast";
@@ -93,11 +93,11 @@ export function InviteStaffForm({ onClose }: IUserDetailsFormProps) {
         }, 1000);
       }
     } catch (error) {
-       toast({
-          variant: "destructive",
-          title: "Failure",
-          description: "Unexpected server reponse",
-        });
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: "Unexpected server reponse",
+      });
     } finally {
       setSubmitting(false);
     }

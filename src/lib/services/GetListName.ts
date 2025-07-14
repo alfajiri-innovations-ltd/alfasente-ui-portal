@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import {  getUserToken } from "../cookies/UserMangementCookie";
+import { getUserToken } from "../cookies/UserMangementCookie";
 import { CheckListName } from "../api-routes";
 
 interface ListName {
@@ -13,7 +13,7 @@ interface Data {
 }
 export function useFetchListName(input: ListName | null) {
   const token = getUserToken();
-const [data, setData] = useState<Data>({ isTaken: true });
+  const [data, setData] = useState<Data>({ isTaken: true });
 
   useEffect(() => {
     if (!input) return;
@@ -30,7 +30,7 @@ const [data, setData] = useState<Data>({ isTaken: true });
         if (response.ok) {
           const data = await response.json();
 
-          console.log("----->",data);
+          console.log("----->", data);
 
           setData(data);
         } else {

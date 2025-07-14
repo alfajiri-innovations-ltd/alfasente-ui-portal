@@ -51,7 +51,9 @@ function Register() {
               <OrganizationDetailsForm handleClick={handleNextStep} />
               <p className="flex justify-center my-2">
                 <span>Already registered?</span>
-                <Link to="/login" className="underline">Login here</Link>
+                <Link to="/login" className="underline">
+                  Login here
+                </Link>
               </p>
             </div>
           )}

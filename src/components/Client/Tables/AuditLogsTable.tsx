@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table";
 import { ActionsPopover } from "../ActionsPopover";
 
-
 import { HiMiniUsers } from "react-icons/hi2";
 import { getRole } from "./UsersTable";
 import { IAuditLogs } from "@/lib/interfaces/interfaces";
@@ -63,7 +62,7 @@ export function AuditlogsTable({ auditlogs, role_name }: IAuditLogsTable) {
                     <div
                       className={`${getRole(auditlog.role)} h-2 w-2 rounded-full`}
                     ></div>
-                   {getRoleLabel(auditlog.role)}
+                    {getRoleLabel(auditlog.role)}
                   </Badge>
                 </>
               )}{" "}

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import {  ITransaction } from "../interfaces/interfaces";
-import {  getUserToken } from "../cookies/UserMangementCookie";
-import {  GetAllTransactions } from "../api-routes";
+import { ITransaction } from "../interfaces/interfaces";
+import { getUserToken } from "../cookies/UserMangementCookie";
+import { GetAllTransactions } from "../api-routes";
 
 export function GetTransactions() {
   const [Transactions, setTransactions] = useState<ITransaction[]>([]);

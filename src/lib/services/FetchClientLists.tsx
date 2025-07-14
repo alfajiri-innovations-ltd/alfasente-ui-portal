@@ -1,5 +1,3 @@
-
-
 import useSWR from "swr";
 import { IMembers, listsWithMembers } from "../interfaces/interfaces";
 import { getAuthUser, getUserToken } from "../cookies/UserMangementCookie";
@@ -15,12 +13,21 @@ const fetcherWithAuth = (url: string) =>
 
 export function useClientListsWithMembers() {
   const clientId = getAuthUser()?.clientID;
-  const { data: lists, error, isLoading, mutate } = useSWR<listsWithMembers[]>(
+  const {
+    data: lists,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR<listsWithMembers[]>(
     clientId ? FetchClientLists(clientId) : null,
-    fetcherWithAuth
+    fetcherWithAuth,
   );
 
-  const { data: listsWithMembers, error: memberError, isLoading: loadingMembers } = useSWR<listsWithMembers[]>(
+  const {
+    data: listsWithMembers,
+    error: memberError,
+    isLoading: loadingMembers,
+  } = useSWR<listsWithMembers[]>(
     lists ? `members-for-client-${clientId}` : null,
     async () => {
       if (!lists) return [];
@@ -42,14 +49,14 @@ export function useClientListsWithMembers() {
             console.error(err);
             return { ...list, members: [] };
           }
-        })
+        }),
       );
 
       return all;
     },
     {
       revalidateOnFocus: true, // Optional: prevents refetching when tab is focused
-    }
+    },
   );
 
   return {

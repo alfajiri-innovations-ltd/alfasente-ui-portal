@@ -75,8 +75,6 @@ export function LoginForm({ HandleNextStep, setEmail }: LoginFormProps) {
       const message = res?.result?.code;
 
       if (response.status === 200) {
-      
-      
         setEmail(data.user_email);
         setTimeout(() => {
           HandleNextStep();

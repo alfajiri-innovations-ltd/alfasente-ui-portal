@@ -16,24 +16,22 @@ export function GetTransaction(transactionID: string) {
     const fetchtransaction = async () => {
       try {
         setLoading(true);
-        const response = await fetch(GetTransactionById(transactionID),{
-            headers: {
-                Authorization: `Bearer ${token}`,
-              }
+        const response = await fetch(GetTransactionById(transactionID), {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         if (response.ok) {
           const data = await response.json();
-          console.log("---->",data);
+          console.log("---->", data);
 
           setTransaction(data.transactions);
         } else {
         }
       } catch (error) {
         setError("An error occurred");
-      }
-
-      finally{
+      } finally {
         setLoading(false);
       }
     };

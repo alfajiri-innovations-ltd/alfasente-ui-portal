@@ -3,16 +3,14 @@ import { IList, IMembers } from "../interfaces/interfaces";
 import { GetListbyId, GetMembersByListId } from "../api-routes";
 import { getUserToken } from "../cookies/UserMangementCookie";
 
-export function GetList(listId:number) {
+export function GetList(listId: number) {
   const [list, setList] = useState<IList | null>(null);
   const [members, setMembers] = useState<IMembers[] | null>([]);
   const token = getUserToken();
 
   useEffect(() => {
     const fetchListWithMembers = async () => {
-
       try {
-       
         const listResponse = await fetch(`${GetListbyId(listId)}`, {
           headers: {
             "Content-Type": "application/json",
@@ -24,11 +22,10 @@ export function GetList(listId:number) {
           throw new Error("Failed to fetch list");
         }
 
-        console.log(listResponse)
+        console.log(listResponse);
 
         const listData = await listResponse.json();
 
-        
         const membersResponse = await fetch(`${GetMembersByListId(listId)}`, {
           headers: {
             "Content-Type": "application/json",
@@ -36,7 +33,7 @@ export function GetList(listId:number) {
           },
         });
 
-        console.log(membersResponse)
+        console.log(membersResponse);
 
         if (!membersResponse.ok) {
           throw new Error("Failed to fetch members");
@@ -44,7 +41,6 @@ export function GetList(listId:number) {
 
         const membersData = await membersResponse.json();
 
-       
         setList({ ...listData, members: membersData });
         setMembers(membersData);
       } catch (error) {
@@ -53,7 +49,7 @@ export function GetList(listId:number) {
     };
 
     fetchListWithMembers();
-  }, [listId, token]); 
+  }, [listId, token]);
 
   return { list, members };
 }

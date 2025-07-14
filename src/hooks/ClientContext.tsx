@@ -1,8 +1,6 @@
 import { IClient } from "@/lib/interfaces/interfaces";
 import { createContext, useContext, useState, ReactNode } from "react";
 
-
-
 interface ClientContextType {
   clientData: IClient | null;
   setClientData: (data: IClient) => void;
@@ -22,6 +20,7 @@ export const ClientProvider = ({ children }: { children: ReactNode }) => {
 
 export const useClientContext = () => {
   const context = useContext(ClientContext);
-  if (!context) throw new Error("useClientContext must be used within ClientProvider");
+  if (!context)
+    throw new Error("useClientContext must be used within ClientProvider");
   return context;
 };

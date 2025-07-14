@@ -129,10 +129,7 @@ export function FundWallet() {
           )}
 
           {activeTab === "Self Top-up" && currentStep === 4 && (
-            <SuccessFulDeposit
-              details={Details}
-             
-            />
+            <SuccessFulDeposit details={Details} />
           )}
 
           {activeTab === "Manual Top-up" && currentStep === 1 && (
