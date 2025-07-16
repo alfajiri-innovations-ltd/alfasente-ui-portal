@@ -10,12 +10,20 @@ import {
 } from "@/components/ui/dialog";
 
 import { GetTransaction } from "@/lib/services/GetTransactionById";
-import { truncateUUID, formatDateTime, getTotalCost } from "@/lib/utils.ts";
+import {
+  truncateUUID,
+  formatDateTime,
+  getTotalCost,
+  formatMoney,
+} from "@/lib/utils.ts";
 
 import { Download, EyeIcon } from "lucide-react";
 import { useState } from "react";
 
 import { MdOutlineArrowDownward, MdOutlineArrowUpward } from "react-icons/md";
+import { ScrollArea } from "../ui/scroll-area";
+import { Badge } from "../ui/badge";
+import { getStatusBadge } from "./Tables/TransactionsTable";
 
 interface ViewTransactionDialogProp {
   transactionID?: string;
@@ -30,6 +38,8 @@ export function ViewTransactionDialog({
   const handleClose = () => {
     setIsDialogOpen(false);
   };
+
+  console.log(Transaction);
 
   return (
     <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
@@ -47,171 +57,180 @@ export function ViewTransactionDialog({
         <DialogHeader className="">
           <DialogTitle>Transation Details</DialogTitle>
         </DialogHeader>
+        <div className="h-[400px] overflow-y-auto scrollbar-hide">
+          {loading ? (
+            <p className="text-[13px] font-normal text-[#66666]">Loading...</p>
+          ) : error ? (
+            <p className="text-[13px] font-normal text-red-500">
+              Error: {error}
+            </p>
+          ) : (
+            <div className="flex flex-col    ">
+              <div className="flex items-center justify-between border -top-2 mb-2 border-[#C8CFDE] p-2 rounded-[10px]">
+                <div className="flex items-center gap-2">
+                  <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
+                    {Transaction?.transactionType ===
+                    "Disbursement Transaction" ? (
+                      <MdOutlineArrowUpward
+                        style={{
+                          fill: "#7F1F26",
+                        }}
+                      />
+                    ) : (
+                      <MdOutlineArrowDownward
+                        style={{
+                          fill: "#3DA755",
+                        }}
+                      />
+                    )}
+                  </span>
 
-        {loading ? (
-          <p className="text-[13px] font-normal text-[#66666]">Loading...</p>
-        ) : error ? (
-          <p className="text-[13px] font-normal text-red-500">Error: {error}</p>
-        ) : (
-          <div className="flex flex-col    ">
-            <div className="flex items-center justify-between border -top-2 mb-2 border-[#C8CFDE] p-2 rounded-[10px]">
-              <div className="flex items-center gap-2">
-                <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
-                  {Transaction?.transactionType ===
-                  "Disbursement Transaction" ? (
-                    <MdOutlineArrowUpward
-                      style={{
-                        fill: "#7F1F26",
-                      }}
-                    />
-                  ) : (
-                    <MdOutlineArrowDownward
-                      style={{
-                        fill: "#3DA755",
-                      }}
-                    />
-                  )}
-                </span>
+                  <span>
+                    {Transaction?.transactionType === "Disbursement Transaction"
+                      ? `Sent to ${Transaction?.beneficiaryName || Transaction?.beneficiaryMobileNumber}`
+                      : "Deposited to Alfasente"}
+                  </span>
+                </div>
 
                 <span>
                   {Transaction?.transactionType === "Disbursement Transaction"
-                    ? `Sent to ${Transaction?.beneficiaryName || Transaction?.beneficiaryMobileNumber}`
-                    : "Deposited to AlfaSente"}
+                    ? `- ${formatMoney(Transaction?.mainAmount ?? 0)}`
+                    : `${formatMoney(Transaction?.mainAmount ?? 0)}`}
                 </span>
               </div>
 
-              <span>
-                {Transaction?.transactionType === "Disbursement Transaction"
-                  ? `-UGX ${Transaction?.mainAmount}`
-                  : `${Transaction?.mainAmount || ""}`}
-              </span>
+              <div className="flex flex-col space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-[#7A8397] font-medium text-base">
+                    Transaction ID
+                  </span>
+                  <span className="font-medium tetx-base text-black/80">
+                    #{truncateUUID(Transaction?.transactionID || "")}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#7A8397] font-medium text-base">
+                    Status
+                  </span>
+                  <Badge
+                    className={`border rounded-full py-1 px-1.5 text-[14px] ${getStatusBadge(Transaction?.status ?? "")}`}
+                  >
+                    {Transaction?.status}{" "}
+                  </Badge>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#7A8397] font-medium text-base">
+                    Transaction date
+                  </span>
+                  <span className="font-medium text-base text-black/80">
+                    {Transaction?.recordDate
+                      ? `${formatDateTime(new Date(Transaction.recordDate)).date} ${formatDateTime(new Date(Transaction.recordDate)).time}`
+                      : "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#7A8397] font-medium text-base">
+                    Completed On
+                  </span>
+                  <span className="font-medium text-base text-black/80">
+                    {Transaction?.liquidationDate
+                      ? `${formatDateTime(new Date(Transaction.liquidationDate)).date} ${formatDateTime(new Date(Transaction.liquidationDate)).time}`
+                      : "N/A"}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#7A8397] font-medium text-base">
+                    Recipient
+                  </span>
+                  <span className="font-medium tetx-base text-black/80">
+                    {Transaction?.beneficiaryName || "Alfasente Wallet"}
+                  </span>
+                </div>
+                {Transaction?.transactionType ===
+                  "Disbursement Transaction" && (
+                  <div className="flex justify-between">
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Beneficiary List
+                    </span>
+                    <span className="font-medium tetx-base text-black/80">
+                      #TXN098657
+                    </span>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <span className="text-[#7A8397] font-medium text-base">
+                    Moblie Number
+                  </span>
+                  <span className="font-medium tetx-base text-black/80">
+                    {Transaction?.beneficiaryMobileNumber}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#7A8397] font-medium text-base">
+                    Payer
+                  </span>
+                  <span className="font-medium tetx-base text-black/80">
+                    {Transaction?.payer}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#7A8397] font-medium text-base">
+                    Reason
+                  </span>
+                  <span className="font-medium tetx-base text-black/80">
+                    {Transaction?.narration}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#7A8397] font-medium text-base">
+                    Amount
+                  </span>
+                  <span className="font-medium tetx-base text-black/80">
+                    {formatMoney(Transaction?.mainAmount ?? 0)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#7A8397] font-medium text-base">
+                    {Transaction?.mtnCharge ? "Mtn Charges" : "Airtel Charges"}
+                  </span>
+                  <span className="font-medium tetx-base text-black/80">
+                    {Transaction?.mtnCharge
+                      ? `${formatMoney(Transaction?.mtnCharge ?? 0)}`
+                      : `${formatMoney(Transaction?.airtelCharge ?? 0)}`}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#7A8397] font-medium text-base">
+                    ServiceFee
+                  </span>
+                  <span className="font-medium tetx-base text-black/80">
+                    {formatMoney(Transaction?.alfasenteCharge ?? 0)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-[#7A8397] font-medium text-base">
+                    Total Cost
+                  </span>
+                  <span className="font-medium tetx-base text-black/80">
+                    {Transaction
+                      ? formatMoney(getTotalCost(Transaction))
+                      : "N/A"}
+                  </span>
+                </div>
+              </div>
             </div>
+          )}
+          <DialogFooter className="flex justify-between items-center gap-3 mt-6">
+            <Button type="submit" variant={"outline"} onClick={handleClose}>
+              Close
+            </Button>
 
-            <div className="flex flex-col space-y-2">
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  Transaction ID
-                </span>
-                <span className="font-medium tetx-base text-black/80">
-                  #{truncateUUID(Transaction?.transactionID || "")}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  Status
-                </span>
-                <span className="font-medium tetx-base text-black/80">
-                  {Transaction?.status}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  Transaction date
-                </span>
-                <span className="font-medium text-base text-black/80">
-                  {Transaction?.recordDate
-                    ? `${formatDateTime(new Date(Transaction.recordDate)).date} ${formatDateTime(new Date(Transaction.recordDate)).time}`
-                    : "N/A"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  Completed On
-                </span>
-                <span className="font-medium text-base text-black/80">
-                  {Transaction?.liquidationDate
-                    ? `${formatDateTime(new Date(Transaction.liquidationDate)).date} ${formatDateTime(new Date(Transaction.liquidationDate)).time}`
-                    : "N/A"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  Recipient
-                </span>
-                <span className="font-medium tetx-base text-black/80">
-                  {Transaction?.beneficiaryName ||
-                    Transaction?.beneficiaryMobileNumber}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  Beneficiary List
-                </span>
-                <span className="font-medium tetx-base text-black/80">
-                  #TXN098657
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  Moblie Number
-                </span>
-                <span className="font-medium tetx-base text-black/80">
-                  {Transaction?.beneficiaryMobileNumber}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  Payer
-                </span>
-                <span className="font-medium tetx-base text-black/80">
-                  #TXN098657
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  Reason
-                </span>
-                <span className="font-medium tetx-base text-black/80">
-                  {Transaction?.narration}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  Amount
-                </span>
-                <span className="font-medium tetx-base text-black/80">
-                  {Transaction?.mainAmount}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  {Transaction?.mtnCharge ? "Mtn Charges" : "Airtel Charges"}
-                </span>
-                <span className="font-medium tetx-base text-black/80">
-                  {Transaction?.mtnCharge
-                    ? `${Transaction?.mtnCharge}`
-                    : `${Transaction?.airtelCharge}`}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  ServiceFee
-                </span>
-                <span className="font-medium tetx-base text-black/80">
-                  {Transaction?.alfasenteCharge}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-[#7A8397] font-medium text-base">
-                  Total Cost
-                </span>
-                <span className="font-medium tetx-base text-black/80">
-                  {Transaction ? getTotalCost(Transaction) : "N/A"}
-                </span>
-              </div>
-            </div>
-          </div>
-        )}
-        <DialogFooter className="flex justify-self-end items-center gap-3">
-          <Button type="submit" variant={"outline"} onClick={handleClose}>
-            Close
-          </Button>
-
-          <Button type="submit" className="items-center gap-1">
-            <Download />
-            Export
-          </Button>
-        </DialogFooter>
+            <Button type="submit" className="items-center gap-1">
+              <Download />
+              Export
+            </Button>
+          </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );
