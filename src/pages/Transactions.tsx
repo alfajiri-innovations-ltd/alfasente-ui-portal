@@ -26,7 +26,7 @@ function Transactions() {
     organizationLoading,
   } = useTransactions();
 
-  const bulkTransactions: any[] = [];
+  const bulkTransactions = transactions;
 
   const handlePageChange = (page: number) => {
     if (totalPages && page >= 1 && page <= totalPages) {
@@ -128,14 +128,21 @@ function Transactions() {
           </div>
 
           <div className="flex items-center p-1.5">
-            <div className="flex md:gap-2 text-[15px] font-medium">
-              {[
-                { key: "all", label: "All", data: dataPool.all },
-                { key: "deposit", label: "Deposited", data: dataPool.deposit },
-                { key: "sent", label: "Sent", data: dataPool.sent },
-                // { key: "success", label: "Success", data: dataPool.success },
-                // { key: "failed", label: "Failed", data: dataPool.failed },
-              ].map(({ key, label, data }) => (
+            <div className={`flex md:gap-2 text-[15px] font-medium  `}>
+              {(activeState === "bulk"
+                ? [{ key: "all", label: "All", data: dataPool.all }]
+                : [
+                    { key: "all", label: "All", data: dataPool.all },
+                    {
+                      key: "deposit",
+                      label: "Deposited",
+                      data: dataPool.deposit,
+                    },
+                    { key: "sent", label: "Sent", data: dataPool.sent },
+                    // { key: "success", label: "Success", data: dataPool.success },
+                    // { key: "failed", label: "Failed", data: dataPool.failed },
+                  ]
+              ).map(({ key, label, data }) => (
                 <h4
                   key={key}
                   className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px] px-2 py-[2px] ${
@@ -159,7 +166,10 @@ function Transactions() {
           </div>
         ) : (
           <div className="my-5">
-            <TransactionsTable transactions={paginatedData} />
+            <TransactionsTable
+              transactions={paginatedData}
+              activeState={activeState}
+            />
           </div>
         )}
 

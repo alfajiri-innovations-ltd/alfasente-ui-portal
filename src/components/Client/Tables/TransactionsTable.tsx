@@ -14,6 +14,11 @@ import { ActionsPopover } from "../ActionsPopover";
 import { MdOutlineArrowDownward, MdOutlineArrowUpward } from "react-icons/md";
 import { ITransaction } from "@/lib/interfaces/interfaces";
 
+interface TransactionsTableProps {
+  transactions?: ITransaction[];
+  activeState?: "all" | "bulk";
+}
+
 export interface ITransactionsTableProps {
   transactions?: ITransaction[];
   transaction?: ITransaction;
@@ -30,12 +35,17 @@ export function getStatusBadge(status: ITransaction["status"]) {
       return "bg-red-100 text-red-500";
   }
 }
-export function TransactionsTable({ transactions }: ITransactionsTableProps) {
+export function TransactionsTable({
+  transactions,
+  activeState,
+}: TransactionsTableProps) {
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="">Transaction Type</TableHead>
+          <TableHead className="">
+            {activeState === "bulk" ? "Bulk details" : "Transaction Type"}
+          </TableHead>
           <TableHead>Amount (UGX)</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Recipient</TableHead>
@@ -45,7 +55,8 @@ export function TransactionsTable({ transactions }: ITransactionsTableProps) {
       <TableBody>
         {transactions?.map((transaction, index) => (
           <TableRow key={index}>
-            <TableCell className="font-medium flex items-center gap-1">
+         {activeState !== "bulk" ? (
+             <TableCell className="font-medium flex items-center gap-1">
               <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
                 {transaction.transactionType === "Disbursement Transaction" ? (
                   <MdOutlineArrowUpward
@@ -65,7 +76,13 @@ export function TransactionsTable({ transactions }: ITransactionsTableProps) {
               {transaction.transactionType === "Disbursement Transaction"
                 ? "Sent"
                 : "Deposited"}
-            </TableCell>{" "}
+            </TableCell>
+         ):(
+          <TableCell className="font-medium flex items-center gap-1">
+
+            Bulk
+            </TableCell>
+         )}
             <TableCell>{transaction.mainAmount}</TableCell>
             <TableCell>
               <Badge
