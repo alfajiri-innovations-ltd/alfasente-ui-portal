@@ -95,3 +95,6 @@ export const DeleteBeneficiaryRoute = (beneficiaryId: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/mnobeneficiary/${beneficiaryId}`;
 
 export const VerifyLoginOtp = `${import.meta.env.VITE_BACKEND_API_URL}/verifyLoginEmail`;
+
+
+export const ResendEmailOtp=()=>`${import.meta.env.VITE_BACKEND_API_URL}/resendEmailOtp`;
