@@ -44,7 +44,7 @@ jobs:
             cd ${{ vars.STAGING_APP_PATH }}
             git fetch origin
             git reset --hard origin/dev
-            npm install --legacy-peer-deps
+            npm i
             npm run build
 
   deploy-production:
@@ -65,5 +65,5 @@ jobs:
             cd ${{ vars.PRODUCTION_APP_PATH }}
             git fetch origin
             git reset --hard origin/main
-            npm install --legacy-peer-deps
+            npm i
             npm run build
