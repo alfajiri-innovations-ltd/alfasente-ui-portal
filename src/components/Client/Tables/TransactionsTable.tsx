@@ -13,6 +13,7 @@ import { ActionsPopover } from "../ActionsPopover";
 
 import { MdOutlineArrowDownward, MdOutlineArrowUpward } from "react-icons/md";
 import { ITransaction } from "@/lib/interfaces/interfaces";
+import { formatMoney } from "@/lib/utils";
 
 interface TransactionsTableProps {
   transactions?: ITransaction[];
@@ -83,7 +84,7 @@ export function TransactionsTable({
             Bulk
             </TableCell>
          )}
-            <TableCell>{transaction.mainAmount}</TableCell>
+            <TableCell>{formatMoney(transaction.mainAmount)}</TableCell>
             <TableCell>
               <Badge
                 className={`border rounded-full py-1 px-1.5 text-[14px] ${getStatusBadge(transaction.status)}`}

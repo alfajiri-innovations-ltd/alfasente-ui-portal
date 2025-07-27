@@ -21,7 +21,6 @@ import { Download, EyeIcon } from "lucide-react";
 import { useState } from "react";
 
 import { MdOutlineArrowDownward, MdOutlineArrowUpward } from "react-icons/md";
-import { ScrollArea } from "../ui/scroll-area";
 import { Badge } from "../ui/badge";
 import { getStatusBadge } from "./Tables/TransactionsTable";
 
@@ -38,7 +37,24 @@ export function ViewTransactionDialog({
   const handleClose = () => {
     setIsDialogOpen(false);
   };
+  function getStatusBadge(proofOfCredit: string | undefined) {
+    if (proofOfCredit) {
+      return "bg-[#FFECD1] text-[#B46600] border-[#F5DFFD]";
+    } else {
+      return "bg-[#F9EBFE] text-[#7E249A] border-[#F5DFFD]";
+    }
 
+    // switch (proofOfCredit) {
+    //   case "FAILED":
+    //     return "bg-[#F9EBFE] text-[#7E249A] border-[#F5DFFD]";
+
+    //   case "SUCCESSFUL":
+    //     return "bg-[#ECF8EF] text-[#308242] border-[#C5E9CD]";
+
+    //   default:
+    //     return "bg-[#FFECD1] text-red-500";
+    // }
+  }
   console.log(Transaction);
 
   return (
@@ -55,9 +71,9 @@ export function ViewTransactionDialog({
       </DialogTrigger>
       <DialogContent className="md:w-[450px] w-[90vw] lg:left-[80%] rounded-[10px] h-[90vh]">
         <DialogHeader className="">
-          <DialogTitle>Transation Details</DialogTitle>
+          <DialogTitle>Transaction Details</DialogTitle>
         </DialogHeader>
-        <div className="h-[400px] overflow-y-auto scrollbar-hide">
+        <div className=" overflow-y-auto scrollbar-hide">
           {loading ? (
             <p className="text-[13px] font-normal text-[#66666]">Loading...</p>
           ) : error ? (
@@ -88,7 +104,17 @@ export function ViewTransactionDialog({
                   <span>
                     {Transaction?.transactionType === "Disbursement Transaction"
                       ? `Sent to ${Transaction?.beneficiaryName || Transaction?.beneficiaryMobileNumber}`
-                      : "Deposited to Alfasente"}
+                      : "Deposited to Wallet"}
+
+                    {Transaction?.transactionType !==
+                      "Disbursement Transaction" && (
+                      <Badge
+                        className={`text-[10px] font-extralight px-1 mx-1  ${getStatusBadge(Transaction?.proofOfCredit)}`}
+                      >
+                        {" "}
+                        {Transaction?.proofOfCredit ? "Self" : "Manual"}
+                      </Badge>
+                    )}
                   </span>
                 </div>
 
@@ -104,7 +130,7 @@ export function ViewTransactionDialog({
                   <span className="text-[#7A8397] font-medium text-base">
                     Transaction ID
                   </span>
-                  <span className="font-medium tetx-base text-black/80">
+                  <span className="font-medium text-base text-black/80">
                     #{truncateUUID(Transaction?.transactionID || "")}
                   </span>
                 </div>
@@ -142,8 +168,8 @@ export function ViewTransactionDialog({
                   <span className="text-[#7A8397] font-medium text-base">
                     Recipient
                   </span>
-                  <span className="font-medium tetx-base text-black/80">
-                    {Transaction?.beneficiaryName || "Alfasente Wallet"}
+                  <span className="font-medium text-base text-black/80">
+                    {Transaction?.beneficiaryName || "Wallet"}
                   </span>
                 </div>
                 {Transaction?.transactionType ===
@@ -152,7 +178,7 @@ export function ViewTransactionDialog({
                     <span className="text-[#7A8397] font-medium text-base">
                       Beneficiary List
                     </span>
-                    <span className="font-medium tetx-base text-black/80">
+                    <span className="font-medium text-base text-black/80">
                       #TXN098657
                     </span>
                   </div>
@@ -161,31 +187,50 @@ export function ViewTransactionDialog({
                   <span className="text-[#7A8397] font-medium text-base">
                     Moblie Number
                   </span>
-                  <span className="font-medium tetx-base text-black/80">
-                    {Transaction?.beneficiaryMobileNumber}
+                  <span className="font-medium text-base text-black/80">
+                    0
+                    {Transaction?.beneficiaryMobileNumber ||
+                      Transaction?.sourceOfFunds}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-[#7A8397] font-medium text-base">
-                    Payer
-                  </span>
-                  <span className="font-medium tetx-base text-black/80">
-                    {Transaction?.payer}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[#7A8397] font-medium text-base">
-                    Reason
-                  </span>
-                  <span className="font-medium tetx-base text-black/80">
-                    {Transaction?.narration}
-                  </span>
-                </div>
+
+                {Transaction?.transactionType === "Disbursement Transaction" ? (
+                  <div className="flex justify-between">
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Payer
+                    </span>
+                    <span className="font-medium text-base text-black/80">
+                      {Transaction?.payer}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex justify-between">
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Funded By
+                    </span>
+                    <span className="font-medium text-base text-black/80">
+                      {Transaction?.userName}
+                    </span>
+                  </div>
+                )}
+
+                {Transaction?.transactionType ===
+                  " Disbursement Transaction" && (
+                  <div className="flex justify-between">
+                    <span className="text-[#7A8397] font-medium text-base">
+                      Reason
+                    </span>
+                    <span className="font-medium text-base text-black/80">
+                      {Transaction?.narration}
+                    </span>
+                  </div>
+                )}
+
                 <div className="flex justify-between">
                   <span className="text-[#7A8397] font-medium text-base">
                     Amount
                   </span>
-                  <span className="font-medium tetx-base text-black/80">
+                  <span className="font-medium text-base text-black/80">
                     {formatMoney(Transaction?.mainAmount ?? 0)}
                   </span>
                 </div>
@@ -193,7 +238,7 @@ export function ViewTransactionDialog({
                   <span className="text-[#7A8397] font-medium text-base">
                     {Transaction?.mtnCharge ? "Mtn Charges" : "Airtel Charges"}
                   </span>
-                  <span className="font-medium tetx-base text-black/80">
+                  <span className="font-medium text-base text-black/80">
                     {Transaction?.mtnCharge
                       ? `${formatMoney(Transaction?.mtnCharge ?? 0)}`
                       : `${formatMoney(Transaction?.airtelCharge ?? 0)}`}
@@ -203,7 +248,7 @@ export function ViewTransactionDialog({
                   <span className="text-[#7A8397] font-medium text-base">
                     ServiceFee
                   </span>
-                  <span className="font-medium tetx-base text-black/80">
+                  <span className="font-medium text-base text-black/80">
                     {formatMoney(Transaction?.alfasenteCharge ?? 0)}
                   </span>
                 </div>
@@ -211,7 +256,7 @@ export function ViewTransactionDialog({
                   <span className="text-[#7A8397] font-medium text-base">
                     Total Cost
                   </span>
-                  <span className="font-medium tetx-base text-black/80">
+                  <span className="font-medium text-base text-black/80">
                     {Transaction
                       ? formatMoney(getTotalCost(Transaction))
                       : "N/A"}
