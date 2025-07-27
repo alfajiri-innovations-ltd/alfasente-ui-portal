@@ -44,7 +44,7 @@ const FormSchema = z.object({
       },
       {
         message: "You must be at least 18 years old",
-      }
+      },
     ),
   lastName: z.string().min(2, { message: "Field is Required" }),
 
@@ -113,13 +113,12 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
           userId: userId,
         };
 
-
         const clientFormData = new FormData();
         for (const [key, value] of Object.entries(clientDataToSend)) {
           if (value instanceof File) {
-            clientFormData.append(key, value); 
+            clientFormData.append(key, value);
           } else {
-            clientFormData.append(key, String(value)); 
+            clientFormData.append(key, String(value));
           }
         }
 

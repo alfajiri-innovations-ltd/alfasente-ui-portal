@@ -168,7 +168,7 @@ export function OrganizationDetailsForm({
 
                       if (file.size > maxSizeInBytes) {
                         alert(
-                          "File size exceeds 5MB. Please choose a smaller file."
+                          "File size exceeds 5MB. Please choose a smaller file.",
                         );
                         e.target.value = "";
                         setFileName(null); // Reset the input

@@ -1,36 +1,47 @@
-import { useEffect, useState } from "react";
-
-import { IAuditLogs } from "../interfaces/interfaces";
-import { getAuthUser, getUserToken } from "../cookies/UserMangementCookie";
-import {  GetAuditLogsByOrganization } from "../api-routes";
+import useSWR from "swr";
+import { auditService } from "./FetchAllAuditLogs";
+import { useState } from "react";
 
 export function useGetOrganizationLogs() {
-  const [AuditLogs, setAuditLogs] = useState<IAuditLogs[]>([]);
-  const token = getUserToken();
-  const clientID = getAuthUser().clientID;
+  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    data: organizationAuditLogs,
+    error: organizationAuditLogsError,
+    isLoading: auditLogsLoading,
+  } = useSWR(
+    "organization-audit-logs",
+    () => auditService.fetchOrganizationAuditLogs(),
+    {
+      // Optional: Add SWR configuration
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+    },
+  );
+  const AuditLogsPerPage = 8;
+  const clientLogs = organizationAuditLogs ? organizationAuditLogs : [];
+  const totalPages = Math.ceil(clientLogs.length / AuditLogsPerPage);
+  const currentAuditLogs = clientLogs?.slice(
+    (currentPage - 1) * AuditLogsPerPage,
+    currentPage * AuditLogsPerPage,
+  );
 
-  useEffect(() => {
-    const fetchlogs = async () => {
-      try {
-        const response = await fetch(GetAuditLogsByOrganization(clientID), {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-
-          console.log(data);
-
-          setAuditLogs(data.AuditLogs);
-        } else {
-        }
-      } catch (error) {}
-    };
-
-    fetchlogs();
-  }, []);
-
-  return AuditLogs;
+  const admin = clientLogs?.filter(
+    (auditlog) => auditlog.role === "client_admin",
+  );
+  const employee = clientLogs?.filter(
+    (auditlog) => auditlog.role === "client_employee",
+  );
+  const system = clientLogs?.filter((auditlog) => auditlog.role === "System");
+  return {
+    clientLogs,
+    organizationAuditLogsError,
+    auditLogsLoading,
+    totalPages,
+    currentAuditLogs,
+    currentPage,
+    setCurrentPage,
+    admin,
+    employee,
+    system,
+  };
 }

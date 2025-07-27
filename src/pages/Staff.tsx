@@ -1,48 +1,36 @@
-
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-import { Filter } from "lucide-react";
+import { Filter, Loader2 } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 import { UsersTable } from "@/components/Client/Tables/UsersTable";
 import { InviteStaff } from "@/components/Client/InviteStaffDialog";
-import { GetUsers } from "@/lib/services/GetUsersByOrganization";
 import Layout from "@/components/Commons/Layout";
-
+import useStaff from "@/hooks/useStaff";
 
 function Staff() {
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const users = GetUsers();
- 
+  const {
+    staffData,
+    totalPages,
+    setCurrentPage,
+    staffLoading,
+    currentPage,
+    currentUsers,
+    active,
+    inactive,
+    admin,
+    employee,
+  } = useStaff();
 
   const [activeTab, setActiveTab] = useState<
     "all" | "makers" | "admin" | "checkers" | "employee"
   >("all");
-
-  const UsersPerPage = 8;
-
-  const totalPages = Math.ceil(users.length / UsersPerPage);
-  const currentusers = users.slice(
-    (currentPage - 1) * UsersPerPage,
-    currentPage * UsersPerPage
-  );
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
-
-  const active = users.filter((user) => user.status === "maker");
-  const inactive = users.filter((user) => user.status === "checker");
-  const admin = users.filter(
-    (user) => user.role_name.roleName === "client_admin"
-  );
-  const employee = users.filter(
-    (user) => user.role_name.roleName === "client_employee"
-  );
 
   return (
     <Layout title="Staff">
@@ -51,30 +39,33 @@ function Staff() {
           <div className="flex flex-col sm:flex-row items-center p-1.5 justify-center">
             <div className="flex sm:flex-row flex-col md:gap-2  text-[15px] font-medium">
               <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "all"
-                  ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                  : "  border-[#F7F9FD]"
-                  }  px-2 py-[2px]`}
+                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
+                  activeTab === "all"
+                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                    : "  border-[#F7F9FD]"
+                }  px-2 py-[2px]`}
                 onClick={() => setActiveTab("all")}
               >
-                All <span className="mx-1">({users.length})</span>
+                All <span className="mx-1">({staffData.length})</span>
               </h4>
 
               <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "makers"
-                  ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                  : "  border-[#F7F9FD]"
-                  }  px-2 py-[2px]`}
+                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
+                  activeTab === "makers"
+                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                    : "  border-[#F7F9FD]"
+                }  px-2 py-[2px]`}
                 onClick={() => setActiveTab("makers")}
               >
                 Makers
                 <span className="mx-1">({active.length})</span>
               </h4>
               <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "checkers"
-                  ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                  : "  border-[#F7F9FD]"
-                  }  px-2 py-[2px]`}
+                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
+                  activeTab === "checkers"
+                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                    : "  border-[#F7F9FD]"
+                }  px-2 py-[2px]`}
                 onClick={() => setActiveTab("checkers")}
               >
                 Checkers
@@ -82,10 +73,11 @@ function Staff() {
               </h4>
 
               <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "admin"
-                  ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                  : "  border-[#F7F9FD]"
-                  }  px-2 py-[2px]`}
+                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
+                  activeTab === "admin"
+                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                    : "  border-[#F7F9FD]"
+                }  px-2 py-[2px]`}
                 onClick={() => setActiveTab("admin")}
               >
                 Admin
@@ -93,10 +85,11 @@ function Staff() {
               </h4>
 
               <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${activeTab === "employee"
-                  ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                  : "  border-[#F7F9FD]"
-                  }  px-2 py-[2px]`}
+                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
+                  activeTab === "employee"
+                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
+                    : "  border-[#F7F9FD]"
+                }  px-2 py-[2px]`}
                 onClick={() => setActiveTab("employee")}
               >
                 Employees
@@ -117,19 +110,26 @@ function Staff() {
           </div>
         </div>
 
-        <div className="my-5">
-          {activeTab === "all" && <UsersTable users={currentusers} />}
-          {activeTab === "makers" && <UsersTable users={active} />}
-          {activeTab === "checkers" && <UsersTable users={inactive} />}
-          {activeTab === "admin" && <UsersTable users={admin} />}
+        {staffLoading ? (
+          <>
+            <div className="flex flex-col items-center justify-center">
+              <Loader2 />
+            </div>
+          </>
+        ) : (
+          <div className="my-5">
+            {activeTab === "all" && <UsersTable users={currentUsers} />}
+            {activeTab === "makers" && <UsersTable users={active} />}
+            {activeTab === "checkers" && <UsersTable users={inactive} />}
+            {activeTab === "admin" && <UsersTable users={admin} />}
 
-          {activeTab === "employee" && <UsersTable users={employee} />}
-        </div>
-
+            {activeTab === "employee" && <UsersTable users={employee} />}
+          </div>
+        )}
         <div className="flex justify-between  items-center ">
           <div className="">
             <span className="font-normal text-[15px]  ">
-              Showing {currentusers.length} of {users.length} results
+              Showing {currentUsers.length} of {staffData.length} results
             </span>
           </div>
           <div className="">

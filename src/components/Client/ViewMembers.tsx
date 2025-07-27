@@ -22,14 +22,14 @@ function ViewMembers() {
   const user = getAuthUser();
   const loggedInUserId = user?.userId;
 
-  console.log(loggedInUserId)
+  console.log(loggedInUserId);
 
   const MembersPerPage = 8;
 
   const totalPages = Math.ceil(members?.length / MembersPerPage);
   const currentMembers = members?.slice(
     (currentPage - 1) * MembersPerPage,
-    currentPage * MembersPerPage
+    currentPage * MembersPerPage,
   );
 
   const handlePageChange = (page: number) => {
@@ -37,7 +37,7 @@ function ViewMembers() {
       setCurrentPage(page);
     }
   };
-console.log("---->",list)
+  // console.log("---->",list)
   return (
     <div className="mx-5 my-3">
       <div

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { EmailOtpForm } from "../AuthForms/EmailOtp";
+import { LoginOtpForm } from "../AuthForms/LoginOtp";
 
-function VerifyEmail() {
-  const email = localStorage.getItem("email");
-
+interface VerifyLoginProps {
+  email: string;
+}
+function VerifyLoginEmail({ email }: VerifyLoginProps) {
   const [resetTimer] = useState(false);
 
   const handleResendOtp = async () => {};
@@ -15,7 +16,7 @@ function VerifyEmail() {
         Enter the verification code sent to
         <span className="font-semibold"> {email}</span>
       </span>
-      <EmailOtpForm resetTimer={resetTimer} />
+      <LoginOtpForm resetTimer={resetTimer} email={email} />
 
       <div className="my-4 flex justify-center">
         <h4 className="text-inactive">
@@ -29,4 +30,4 @@ function VerifyEmail() {
   );
 }
 
-export default VerifyEmail;
+export default VerifyLoginEmail;

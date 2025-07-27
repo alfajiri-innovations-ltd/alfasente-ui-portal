@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
+import { setAuthUser, setUserToken } from "@/lib/cookies/UserMangementCookie";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +20,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useEffect, useState } from "react";
-import { VerifyEmail } from "@/lib/api-routes";
+import { VerifyLoginOtp } from "@/lib/api-routes";
 import { toast } from "@/hooks/use-toast";
 
 const FormSchema = z.object({
@@ -29,15 +30,14 @@ const FormSchema = z.object({
 });
 interface IEmailOtpProps {
   resetTimer: boolean;
+  email: string;
 }
 
-export function EmailOtpForm({ resetTimer }: IEmailOtpProps) {
+export function LoginOtpForm({ resetTimer, email }: IEmailOtpProps) {
   const [value, setValue] = useState("");
   const [timeLeft, setTimeLeft] = useState(600);
   const [isSubmitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
-
-  const email = localStorage.getItem("email");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -75,7 +75,7 @@ export function EmailOtpForm({ resetTimer }: IEmailOtpProps) {
     const otpNumber = parseInt(value, 10);
 
     try {
-      const response = await fetch(VerifyEmail, {
+      const response = await fetch(VerifyLoginOtp, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -86,17 +86,23 @@ export function EmailOtpForm({ resetTimer }: IEmailOtpProps) {
         }),
       });
 
-      if (response.ok) {
-        toast({
-          variant: "success",
-          title: "Successful",
-          description: "OTP verified successfully",
-        });
-        setTimeout(() => {
-          navigate("/wait-approval");
-        }, 3000);
+      const data = await response.json();
+      console.log(data);
 
-        localStorage.removeItem("email");
+      if (response.ok) {
+        setUserToken(data.token);
+        setAuthUser(data.userData);
+        setTimeout(() => {
+          toast({
+            variant: "success",
+            title: "Successful",
+            description: "Login Successful , Redirecting...",
+          });
+        }, 1000);
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
       } else {
         toast({
           variant: "destructive",

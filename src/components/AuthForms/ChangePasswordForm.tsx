@@ -66,8 +66,7 @@ export function ChangePasswordForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full    md:w-[30vw] "
       >
-
-         <h3 className="font-medium text-[18px] ">Update password</h3>
+        <h3 className="font-medium text-[18px] ">Update password</h3>
         <FormField
           control={form.control}
           name="currentPassword"
@@ -104,15 +103,9 @@ export function ChangePasswordForm() {
           control={form.control}
           name="newPassword"
           render={({ field }) => (
-            <FormItem
-              className={`md:my-4 my-2 space-y-[3px] md:space-y-2 `}
-            >
+            <FormItem className={`md:my-4 my-2 space-y-[3px] md:space-y-2 `}>
               {" "}
-              <FormLabel
-               
-              >
-                New Password
-              </FormLabel>
+              <FormLabel>New Password</FormLabel>
               <FormControl>
                 <div className="flex border justify-between bg-[#fffff0] items-center pr-4 rounded-[8px] overflow-hidden">
                   <Input
@@ -142,15 +135,9 @@ export function ChangePasswordForm() {
           control={form.control}
           name="confirmPassword"
           render={({ field }) => (
-            <FormItem
-              className={`md:my-4 my-2 space-y-[3px] md:space-y-2 }`}
-            >
+            <FormItem className={`md:my-4 my-2 space-y-[3px] md:space-y-2 }`}>
               {" "}
-              <FormLabel
-             
-              >
-                Confirm Password
-              </FormLabel>
+              <FormLabel>Confirm Password</FormLabel>
               <FormControl>
                 <div className="flex border justify-between bg-[#fffff0] items-center pr-4 rounded-[8px] overflow-hidden">
                   <Input
@@ -177,7 +164,9 @@ export function ChangePasswordForm() {
           )}
         />
 
-        <Button type="submit" className="w-full">Save changes</Button>
+        <Button type="submit" className="w-full">
+          Save changes
+        </Button>
       </form>
     </Form>
   );

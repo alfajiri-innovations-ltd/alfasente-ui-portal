@@ -1,5 +1,5 @@
-import { jwtDecode } from "jwt-decode";
-import { IClient } from "../interfaces/interfaces";
+// import { jwtDecode } from "jwt-decode";
+import { IClient, User } from "../interfaces/interfaces";
 
 const setClient = (client: IClient) => {
   localStorage.setItem("client", JSON.stringify(client));
@@ -32,20 +32,20 @@ const getUserToken = () => {
   return localStorage.getItem("alfasente_user_tkn") ?? null;
 };
 
-const getAuthUser = () => {
+const getAuthUser = (): User | undefined => {
   const user =
     typeof window !== "undefined" && localStorage.getItem("alfasente_user");
 
   if (user) {
     try {
-      return JSON.parse(user);
+      return JSON.parse(user) as User;
     } catch (error) {
       console.error("Error parsing user data:", error);
-      return null;
+      return undefined;
     }
   }
 
-  return null;
+  return undefined;
 };
 
 const deleteUserToken = () => {
@@ -61,36 +61,41 @@ const logout = () => {
   localStorage.removeItem("alfasente_user");
 };
 
-const isAuthTokenExpired = (expirationTime: number) => {
-  const currentTime = Math.floor(Date.now() / 1000);
+// const isAuthTokenExpired = (expirationTime: number) => {
+//   const currentTime = Math.floor(Date.now() / 1000);
 
-  return expirationTime < currentTime;
-};
+//   return expirationTime < currentTime;
+// };
 
-const decodeToken = (token: string) => {
-  return jwtDecode(token);
-};
+// const decodeToken = (token: string) => {
+//   return jwtDecode(token);
+// };
 
-const isAuthenticated = () => {
-  if (typeof window !== "undefined") {
-    const token = localStorage.getItem("alfasente_user_tkn") ?? null;
-    console.log("Token:", token);
-    if (token) {
-      const decodedToken = decodeToken(token);
-      if (decodedToken.exp !== undefined) {
-        const isTokenExpired = isAuthTokenExpired(decodedToken.exp);
-        return !isTokenExpired;
-      }
-    }
-  }
-  return false;
-};
+// const isAuthenticated = () => {
+//   if (typeof window !== "undefined") {
+//     const token = localStorage.getItem("alfasente_user_tkn") ?? null;
+//     // console.log("Token:", token);
+//     if (token) {
+//       const decodedToken = decodeToken(token);
+//       if (decodedToken.exp !== undefined) {
+//         const isTokenExpired = isAuthTokenExpired(decodedToken.exp);
+//         if (isTokenExpired) {
+//           console.log("Token expired");
+//           localStorage.removeItem("alfasente_user_tkn");
+
+//         }
+//         return !isTokenExpired;
+//       }
+//     }
+//   }
+//   return false;
+// };
 
 export {
   setUserToken,
   setClient,
   getClient,
-  isAuthenticated,
+  // isAuthenticated,
   getUserToken,
   deleteUserToken,
   setAuthUser,

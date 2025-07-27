@@ -12,13 +12,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import React, { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { setAuthUser, setUserToken } from "@/lib/cookies/UserMangementCookie";
 import { LogIn } from "@/lib/api-routes";
 import { toast } from "@/hooks/use-toast";
 
+interface LoginFormProps {
+  HandleNextStep: () => void;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+}
 
 const FormSchema = z.object({
   user_email: z.string().min(2, { message: "Field is Required" }).email(),
@@ -26,7 +29,7 @@ const FormSchema = z.object({
   password: z.string().min(8, { message: "Field is Required" }),
 });
 
-export function LoginForm() {
+export function LoginForm({ HandleNextStep, setEmail }: LoginFormProps) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -72,21 +75,9 @@ export function LoginForm() {
       const message = res?.result?.code;
 
       if (response.status === 200) {
+        setEmail(data.user_email);
         setTimeout(() => {
-          toast({
-            variant: "success",
-            title: "Successful",
-            description: "Login Successful , Redirecting...",
-          });
-        }, 1000);
-        setUserToken(res.token);
-        setAuthUser(res.userData);
-        setTimeout(() => {
-          if (res.userData?.role_name === "admin") {
-            window.location.replace("/dashboard");
-          } else {
-            window.location.replace("/dashboard");
-          }
+          HandleNextStep();
         }, 2000);
       } else {
         switch (message) {
@@ -135,7 +126,7 @@ export function LoginForm() {
                 <FormLabel>Personal Email</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="johndoe@gmail"
+                    placeholder="example@gmail"
                     disabled={submitting}
                     className=" border-[#DCE1EC]"
                     {...field}

@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -19,18 +17,18 @@ function Organisations() {
   >("all");
   const organizations = GetClients();
   const approvedOrganizations = organizations.filter(
-    (org) => org?.isApproved === "Approved"
+    (org) => org?.isApproved === "Approved",
   );
 
   console.log(organizations);
   const organizationsPerPage = 8;
 
   const totalPages = Math.ceil(
-    approvedOrganizations.length / organizationsPerPage
+    approvedOrganizations.length / organizationsPerPage,
   );
   const currentorganizations = approvedOrganizations.slice(
     (currentPage - 1) * organizationsPerPage,
-    currentPage * organizationsPerPage
+    currentPage * organizationsPerPage,
   );
 
   const handlePageChange = (page: number) => {

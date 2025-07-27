@@ -31,8 +31,6 @@ const FormSchema = z
       .min(1000, { message: "Amount must be at least 1,000" })
       .max(3000000, { message: "Amount cannot exceed 3,000,000" }),
 
-  
-
     accountNumber: z
       .string()
       .min(9, { message: "Enter a valid number" })

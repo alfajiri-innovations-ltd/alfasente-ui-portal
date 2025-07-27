@@ -1,36 +1,62 @@
-import { useEffect, useState } from "react";
-
-import {  ITransaction } from "../interfaces/interfaces";
+import { ITransaction } from "../interfaces/interfaces";
 import { getAuthUser, getUserToken } from "../cookies/UserMangementCookie";
-import {  GetaTransactionsByOrganization } from "../api-routes";
+import { GetaTransactionsByOrganization } from "../api-routes";
 
-export function GetOrganizationTransactions() {
-  const [Transactions, setTransactions] = useState<ITransaction[]>([]);
-  const token = getUserToken();
-  const clientID = getAuthUser().clientID;
+export const organizationService = {
+  token: getUserToken(),
+  clientId: getAuthUser()?.clientID ?? 0,
+  transactionUrlData: GetaTransactionsByOrganization(
+    getAuthUser()?.clientID ?? 0,
+  ),
+  organizationData: async function (): Promise<ITransaction[]> {
+    console.log(this.clientId);
+    const response = await fetch(this.transactionUrlData, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
+      redirect: "follow",
+    });
 
-  useEffect(() => {
-    const fetchtransactions = async () => {
-      try {
-        const response = await fetch(GetaTransactionsByOrganization(clientID), {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+    if (response.ok === false) {
+      throw new Error("Network response was not ok");
+    } else {
+      const data = await response.json();
+      console.log(data);
+      return data.transactions;
+    }
+  },
+};
+// GetOrganizationTransactions() {
+// const [Transactions, setTransactions] = useState<ITransaction[]>([]);
+// const [loadingTrasactions, setLoadingTransactions] = useState(false);
+// const token = getUserToken();
+// const clientID = getAuthUser().clientID;
+// const { } = useSWR(GetaTransactionsByOrganization(clientID), );
+//   useEffect(() => {
+//     (async function () {
+//       setLoadingTransactions(true);
+//       try {
+//         const response = await fetch(GetaTransactionsByOrganization(clientID), {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         });
 
-        if (response.ok) {
-          const data = await response.json();
+//         if (response.ok) {
+//           const data = await response.json();
 
-          console.log(data);
+//           console.log(data);
 
-          setTransactions(data.transactions);
-        } else {
-        }
-      } catch (error) {}
-    };
+//           setTransactions(data.transactions);
+//           setLoadingTransactions(false);
+//         }
+//       } catch (error) {
+//         console.log(error);
+//         setLoadingTransactions(false);
+//       }
+//     })();
+//   }, [clientID, token]);
 
-    fetchtransactions();
-  }, []);
-
-  return Transactions;
-}
+//   return { Transactions, loadingTrasactions };
+// }

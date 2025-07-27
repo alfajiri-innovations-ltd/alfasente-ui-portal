@@ -111,71 +111,76 @@ export function SendFunds() {
     setCheckedList(isAlreadyChecked ? null : list);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setSubmitting(true);
+
     const payer = `${loggedInUser?.firstName} ${loggedInUser?.lastName}`;
-    try {
-      if (!checkedList || checkedList.members.length === 0) {
-        console.warn("No members selected.");
-        return;
-      }
 
-      const payload = {
-        clientID: clientId,
-        payer,
-        members: checkedList.members.map((member) => {
-          let cleanNumber = member.mobileMoneyNumber;
+    if (!checkedList || checkedList.members.length === 0) {
+      console.warn("No members selected.");
+      setSubmitting(false); // Important to stop loader if exiting early
+      return;
+    }
 
-          if (typeof cleanNumber === "string" && cleanNumber.startsWith("0")) {
-            cleanNumber = cleanNumber.slice(1);
-          }
+    const payload = {
+      clientID: clientId,
+      payer,
+      members: checkedList.members.map((member) => {
+        let cleanNumber = member.mobileMoneyNumber;
 
-          return {
-            ...member,
-            mobileMoneyNumber: cleanNumber,
-          };
-        }),
-      };
+        if (typeof cleanNumber === "string" && cleanNumber.startsWith("0")) {
+          cleanNumber = cleanNumber.slice(1);
+        }
 
+        return {
+          ...member,
+          mobileMoneyNumber: cleanNumber,
+        };
+      }),
+    };
 
-      const response = await fetch(SendMoney(), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        toast({
-          variant: "success",
-          title: "Successful",
-          description: "Funds sent successfully!",
+    (async () => {
+      try {
+        const response = await fetch(SendMoney(), {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
         });
 
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 1000);
-      } else {
+        const result = await response.json();
+
+        if (response.ok) {
+          toast({
+            variant: "success",
+            title: "Successful",
+            description: "Transactions Initiated Successfully!",
+          });
+
+          setTimeout(() => {
+            navigate("/transactions");
+          }, 1000);
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Failure",
+            description: result?.message || "Failed to send funds.",
+          });
+        }
+      } catch (error) {
         toast({
           variant: "destructive",
-          title: "Failure",
-          description: result?.message || "Failed to send funds.",
+          title: "Error",
+          description: `An error occurred: ${error instanceof Error ? error.message : "Failed to send funds."}`,
         });
+      } finally {
+        setSubmitting(false);
       }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: `An error occurred: ${error instanceof Error ? error.message : "Failed to send funds."}`,
-      });
-    } finally {
-      setSubmitting(false);
-    }
+    })();
   };
+
   return (
     <>
       <div className="flex flex-col  h-screen scrollbar-hide">
@@ -304,7 +309,7 @@ export function SendFunds() {
                           <span className="text-capitalize">members</span>
                         </div>
                       </div>
-                    )
+                    ),
                   )
                 ) : (
                   <p className="text-center text-gray-500">

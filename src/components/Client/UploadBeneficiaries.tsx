@@ -30,15 +30,16 @@ import { getUserToken, getAuthUser } from "@/lib/cookies/UserMangementCookie";
 import { toast } from "@/hooks/use-toast";
 import { useClientListsWithMembers } from "@/lib/services/FetchClientLists";
 import { useNavigate } from "react-router-dom";
-import { GetUsers } from "@/lib/services/GetUsersByOrganization";
-
+import useStaff from "@/hooks/useStaff";
+// interface RowType extends Array<string | number | null> { }
+// interface HeadersType extends Array<string> { }
 export function UploadBeneficiaries() {
   const [file, setFile] = useState<File | null>(null);
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
-    null
+    null,
   );
   const { mutate } = useClientListsWithMembers();
-
+  const { staffData } = useStaff();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<number>();
   const [selectedUserName, setSelectedUserName] = useState<string>("");
@@ -52,17 +53,17 @@ export function UploadBeneficiaries() {
   const [submit, setIsSubmitting] = useState(false);
   const token = getUserToken();
   const nuser = getAuthUser();
-  const clientID = nuser.clientID;
+  const clientID = nuser?.clientID;
   const loggedInUser = getAuthUser();
 
-  const users = GetUsers();
+  const users = staffData;
 
   const filteredUsers = users.filter((user) => {
-    if (loggedInUser.role_name === "client_admin") {
+    if (loggedInUser?.role_name === "client_admin") {
       return true;
     }
 
-    return user.userId !== loggedInUser.userId;
+    return user.userId !== loggedInUser?.userId;
   });
 
   const handleTogglePreview = () => {
@@ -113,34 +114,39 @@ export function UploadBeneficiaries() {
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
 
-      const [headers, ...rows] = XLSX.utils.sheet_to_json(sheet, {
+      const sheetData = XLSX.utils.sheet_to_json(sheet, {
         header: 1,
         defval: null,
-      }) as any;
+      }) as Array<Array<string | number | null>>;
 
-      const validRows = rows.filter((row: any[]) =>
-          row.some((cell) => cell !== null && cell !== "")
-        );
+      const [headersRaw, ...rows] = sheetData;
+      const headers: string[] = Array.isArray(headersRaw)
+        ? headersRaw.map((h) => String(h))
+        : [];
 
-        
-
-      const formattedMembers = validRows.map((row: any[]) =>
-        headers.reduce(
-          (acc: any, header: string, index: number) => {
-            let value = row[index] || null;
-
-            if (header === "mobileMoneyNumber" && value !== null) {
-              value = String(value).padStart(10, "0");
-            }
-
-            acc[header] = value;
-            return acc;
-          },
-          {
-            clientID: isNaN(Number(clientID)) ? 0 : Number(clientID),
-          }
-        )
+      const validRows: unknown[] = rows.filter(
+        (row) =>
+          Array.isArray(row) &&
+          row.some((cell) => cell !== null && cell !== ""),
       );
+
+      const formattedMembers = validRows.map((row) => {
+        const member: any = {};
+        headers.forEach((header, index) => {
+          let value = (row as Array<string | number | null>)[index] || null;
+          if (header === "mobileMoneyNumber" && value !== null) {
+            value = String(value).padStart(10, "0");
+          }
+          member[header] = value;
+        });
+        return {
+          beneficiaryName: member.beneficiaryName ?? "",
+          reason: member.reason ?? "",
+          amount: member.amount ?? "",
+          mobileMoneyNumber: member.mobileMoneyNumber ?? "",
+          serviceProvider: member.serviceProvider ?? "",
+        };
+      });
 
       const payload = {
         name: `${sheetName}`,
@@ -148,19 +154,18 @@ export function UploadBeneficiaries() {
         assignedTo: value,
         clientID: isNaN(Number(clientID)) ? 0 : Number(clientID),
       };
-
       const optimisticList = {
         id: Date.now(),
         name: payload.name,
-        members: payload.members,
+        members: formattedMembers, // Use formattedMembers which matches IMembers[]
         clientID: payload.clientID,
         createdAt: new Date().toISOString(),
-        createdBy: nuser.name,
+        createdBy: `${nuser?.firstName ?? ""} ${nuser?.lastName ?? ""}`.trim(),
         assignedUserId: value,
-
         status: "Pending",
       };
 
+      mutate((prev) => [optimisticList, ...(prev || [])], false);
       mutate((prev) => [optimisticList, ...(prev || [])], false);
 
       fetch(UploadList, {
@@ -203,6 +208,7 @@ export function UploadBeneficiaries() {
         title: "Failure",
         description: "Failed to upload the list.",
       });
+      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -348,12 +354,12 @@ export function UploadBeneficiaries() {
                                 const selected = filteredUsers.find(
                                   (u) =>
                                     `${u.firstName} ${u.lastName}` ===
-                                    currentValue
+                                    currentValue,
                                 );
                                 if (selected) {
                                   setValue(selected.userId);
                                   setSelectedUserName(
-                                    `${selected.firstName} ${selected.lastName}`
+                                    `${selected.firstName} ${selected.lastName}`,
                                   );
                                 }
                                 setOpen(false);
@@ -365,7 +371,7 @@ export function UploadBeneficiaries() {
                                     "mr-2 h-4 w-4",
                                     value === user.userId
                                       ? "opacity-100"
-                                      : "opacity-0"
+                                      : "opacity-0",
                                   )}
                                 />
                                 {user.firstName} {user.lastName}

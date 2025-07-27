@@ -1,0 +1,69 @@
+name: Deploy AlfaSente API
+
+on:
+  push:
+    branches:
+      - dev     # For staging
+      - main    # For production
+
+jobs:
+  checks:
+    name: Run Linting, Tests, and Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Build Project
+        run: npm run build
+
+  deploy-staging:
+    name: Deploy to Staging
+    needs: checks
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.STAGING_HOST }}
+          username: ${{ vars.STAGING_USERNAME }}
+          port: ${{ vars.STAGING_PORT }}
+          key: ${{ secrets.STAGING_PRIVATE_KEY }}
+          script: |
+            git config --global --add safe.directory ${{ vars.STAGING_APP_PATH }}
+            cd ${{ vars.STAGING_APP_PATH }}
+            git fetch origin
+            git reset --hard origin/dev
+            npm i
+            npm run build
+
+  deploy-production:
+    name: Deploy to Production
+    needs: checks
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.PRODUCTION_HOST }}
+          username: ${{ vars.PRODUCTION_USERNAME }}
+          port: ${{ vars.PRODUCTION_PORT }}
+          key: ${{ secrets.PRODUCTION_PRIVATE_KEY }}
+          script: |
+            git config --global --add safe.directory ${{ vars.PRODUCTION_APP_PATH }}
+            cd ${{ vars.PRODUCTION_APP_PATH }}
+            git fetch origin
+            git reset --hard origin/main
+            npm i
+            npm run build

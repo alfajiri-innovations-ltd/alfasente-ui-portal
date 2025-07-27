@@ -10,18 +10,18 @@ import { PiUsersThreeFill } from "react-icons/pi";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
 import { GrSend } from "react-icons/gr";
 
-
 import { Link } from "react-router-dom";
 import { useUser } from "@/hooks/UserContext";
 import { GetClient } from "@/lib/services/GetClientById";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { GetUsers } from "@/lib/services/GetUsersByOrganization";
+import useStaff from "@/hooks/useStaff";
+// import { GetUsers } from "@/lib/services/GetUsersByOrganization";
 
 function SideBar() {
   const currentPath = window.location.pathname;
   const user = useUser();
-
-  const users = GetUsers();
+  const { staffData } = useStaff();
+  const users = staffData;
   const isMobile = useIsMobile();
   const client = GetClient();
 
@@ -45,10 +45,7 @@ function SideBar() {
       href: "/send-funds",
       roles: ["client_employee", "client_admin"],
     },
-    
-   
-    
-   
+
     {
       title: "Beneficiaries",
       icon: <CircleUserRound />,
@@ -61,8 +58,6 @@ function SideBar() {
       href: "/staff",
       roles: ["client_employee", "client_admin"],
     },
-   
-    
 
     {
       title: "Transactions",
@@ -70,7 +65,7 @@ function SideBar() {
       href: "/transactions",
       roles: ["client_employee", "client_admin"],
     },
-    
+
     {
       title: "Audit Logs",
       icon: <ClipboardListIcon />,

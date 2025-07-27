@@ -62,14 +62,18 @@ export default function SuccessStories() {
         <div className="flex justify-end items-center gap-3 py-4 ">
           <div
             className={`prev rounded-full p-1 flex justify-center items-center w-6 h-6 md:h-10 md:w-10 border  ${
-              currentIndex === 0 ? "bg-[white] border-[#C8CFDE] text-[#1B2029]" : "bg-[#E59339] border-none text-white"
+              currentIndex === 0
+                ? "bg-[white] border-[#C8CFDE] text-[#1B2029]"
+                : "bg-[#E59339] border-none text-white"
             } `}
           >
             <ChevronLeft className="h-6 w-6 " />
           </div>
           <div
             className={`next rounded-full p-1 h-6 w-6 md:w-10 md:h-10 border flex justify-center items-center  border-[#CDCED7] ${
-              currentIndex !== 0 ? "bg-[white] border-[#C8CFDE] text-[#1B2029]" : "bg-[#E59339] text-white border-none"
+              currentIndex !== 0
+                ? "bg-[white] border-[#C8CFDE] text-[#1B2029]"
+                : "bg-[#E59339] text-white border-none"
             }`}
           >
             <ChevronRight className={`h-6 w-6 `} />
@@ -110,13 +114,17 @@ export default function SuccessStories() {
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-medium text-black/80 text-base ">{testimonial.author}</p>
+                  <p className="font-medium text-black/80 text-base ">
+                    {testimonial.author}
+                  </p>
                   <p className="text-sm font-normal text-[#5C6474] ">
                     {testimonial.designation}
                   </p>
                 </div>
               </div>
-              <p className="font-normal text-[17px] leading-[22px] text-black/60">"{testimonial.quote}"</p>
+              <p className="font-normal text-[17px] leading-[22px] text-black/60">
+                "{testimonial.quote}"
+              </p>
             </div>
           </SwiperSlide>
         ))}

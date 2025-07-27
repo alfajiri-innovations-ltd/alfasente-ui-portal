@@ -46,7 +46,6 @@ export function RejectListForm({ listId, handleClose }: RejectListFormProps) {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setSubmitting(true);
 
-    
     try {
       const response = await fetch(RejectList(), {
         method: "POST",

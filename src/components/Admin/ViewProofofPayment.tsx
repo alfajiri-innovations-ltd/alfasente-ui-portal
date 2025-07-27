@@ -12,8 +12,8 @@ export function ViewProof({ proof }: RejectApplicationProps) {
 
   const BASERUL = `${import.meta.env.VITE_BACKEND_API_URL}`;
 
- const imageUrl = `${BASERUL}/${proof}`;
- console.log("Image URL:", imageUrl);
+  const imageUrl = `${BASERUL}/${proof}`;
+  console.log("Image URL:", imageUrl);
 
   //   const handleClose = () => {
   //     setIsDialogOpen(false);
@@ -35,7 +35,6 @@ export function ViewProof({ proof }: RejectApplicationProps) {
             className="h-full w-full  object-contain"
           />
         </div>
-       
       </DialogContent>
     </Dialog>
   );

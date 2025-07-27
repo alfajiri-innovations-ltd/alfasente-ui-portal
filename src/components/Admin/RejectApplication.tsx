@@ -8,10 +8,13 @@ import {
 import { useState } from "react";
 import { RejectApplicationForm } from "./Forms/RejectApplicationForm";
 export interface RejectApplicationProps {
-    clientID: number;
-    onClose: () => void;
+  clientID: number;
+  onClose: () => void;
 }
-export function RejectAplication({ clientID ,onClose }: RejectApplicationProps) {
+export function RejectAplication({
+  clientID,
+  onClose,
+}: RejectApplicationProps) {
   const [, setIsDialogOpen] = useState(false);
 
   const handleClose = () => {
@@ -19,11 +22,12 @@ export function RejectAplication({ clientID ,onClose }: RejectApplicationProps) 
   };
 
   return (
-     <Dialog open={true} onOpenChange={(isOpen) => {
-          if (!isOpen) onClose();
-        }}>
-   
-
+    <Dialog
+      open={true}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+    >
       <DialogContent className="w-[30vw]">
         <DialogHeader>
           <DialogTitle>Reject Application</DialogTitle>

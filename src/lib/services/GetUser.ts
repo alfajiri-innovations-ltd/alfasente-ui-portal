@@ -6,19 +6,18 @@ import { FetchUser } from "../api-routes";
 
 export function GetUser() {
   const [user, setUser] = useState<IUsers>();
-  const email = getAuthUser().user_email;
-
-  
+  const email = getAuthUser()?.user_email;
 
   useEffect(() => {
     const fetchuser = async () => {
       try {
-        const response = await fetch(FetchUser(email));
-        if (response.ok) {
-          const data = await response.json();
-          setUser(data);
-          console.log(data);
-        } else {
+        if (typeof email === "string") {
+          const response = await fetch(FetchUser(email));
+          if (response.ok) {
+            const data = await response.json();
+            setUser(data);
+          } else {
+          }
         }
       } catch (error) {}
     };

@@ -58,7 +58,7 @@ export function BeneficiariesTable({
       <TableBody>
         {lists?.map((list, index) => (
           <TableRow
-          className="cursor-pointer hover:bg-[#F5F6F9] transition-all duration-200"
+            className="cursor-pointer hover:bg-[#F5F6F9] transition-all duration-200"
             key={index}
             onClick={() => {
               navigate(`/view-members/${list.id}`);

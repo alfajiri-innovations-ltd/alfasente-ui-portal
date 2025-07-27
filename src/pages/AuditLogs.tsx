@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-import { Download, Filter } from "lucide-react";
+import { Download, Filter, Loader2 } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 import { AuditlogsTable } from "@/components/Client/Tables/AuditLogsTable";
-
 
 import { useGetOrganizationLogs } from "@/lib/services/FetchOrganizationAuditLogs";
 
@@ -12,39 +11,32 @@ import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
 import Layout from "@/components/Commons/Layout";
 
 function AuditLogs() {
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
 
+  const {
+    totalPages,
+    admin,
+    employee,
+    setCurrentPage,
+    currentPage,
+    system,
+    auditLogsLoading,
+    currentAuditLogs,
+    clientLogs,
+  } = useGetOrganizationLogs();
 
-  const ClientLogs = useGetOrganizationLogs();
-
-  console.log("ClientLogs", ClientLogs);
+  console.log("ClientLogs", clientLogs);
 
   const [activeTab, setActiveTab] = useState<
     "all" | "admin" | "employee" | "system"
   >("all");
-  const role_name = getAuthUser().role_name;
-
-  const AuditLogsPerPage = 8;
-
-  const totalPages = Math.ceil(ClientLogs?.length / AuditLogsPerPage);
-  const currentauditlogs = ClientLogs?.slice(
-    (currentPage - 1) * AuditLogsPerPage,
-    currentPage * AuditLogsPerPage
-  );
+  const role_name = getAuthUser()?.role_name;
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
-
-  const admin = ClientLogs?.filter(
-    (auditlog) => auditlog.role === "client_admin"
-  );
-  const employee = ClientLogs?.filter(
-    (auditlog) => auditlog.role === "client_employee"
-  );
-  const system = ClientLogs?.filter((auditlog) => auditlog.role === "System");
 
   return (
     <Layout title="Audit Logs">
@@ -61,7 +53,7 @@ function AuditLogs() {
                   }  px-2 py-[2px]`}
                   onClick={() => setActiveTab("all")}
                 >
-                  All <span className="mx-1">({ClientLogs?.length})</span>
+                  All <span className="mx-1">({clientLogs.length})</span>
                 </h4>
 
                 <h4
@@ -118,25 +110,33 @@ function AuditLogs() {
           </div>
         </div>
 
-        <div className="my-5">
-          {activeTab === "all" && (
-            <AuditlogsTable
-              auditlogs={currentauditlogs}
-              role_name={role_name}
-            />
-          )}
+        {auditLogsLoading ? (
+          <div className="flex justify-center items-center h-[50vh] w-full">
+            <Loader2 />
+          </div>
+        ) : (
+          <div className="my-5">
+            {activeTab === "all" && (
+              <AuditlogsTable
+                auditlogs={currentAuditLogs}
+                role_name={role_name}
+              />
+            )}
 
-          {activeTab === "admin" && <AuditlogsTable auditlogs={admin} />}
+            {activeTab === "admin" && <AuditlogsTable auditlogs={admin} />}
 
-          {activeTab === "employee" && <AuditlogsTable auditlogs={employee} />}
+            {activeTab === "employee" && (
+              <AuditlogsTable auditlogs={employee} />
+            )}
 
-          {activeTab === "system" && <AuditlogsTable auditlogs={system} />}
-        </div>
+            {activeTab === "system" && <AuditlogsTable auditlogs={system} />}
+          </div>
+        )}
 
         <div className="flex justify-between  items-center ">
           <div className="">
             <span className="font-normal text-[15px]  ">
-              Showing {currentauditlogs?.length} of {ClientLogs?.length} results
+              Showing {currentAuditLogs.length} of {clientLogs.length} results
             </span>
           </div>
           <div className="">

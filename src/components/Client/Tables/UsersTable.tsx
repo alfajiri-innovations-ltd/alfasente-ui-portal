@@ -12,8 +12,6 @@ import { FaRegUser } from "react-icons/fa";
 import { IUsers } from "@/lib/interfaces/interfaces";
 import { formatDate } from "@/lib/Utilities/FormatDate";
 
-
-
 export interface IUsersTableProps {
   users?: IUsers[];
   user?: IUsers;
@@ -68,9 +66,9 @@ export function UsersTable({ users }: IUsersTableProps) {
             <TableCell>{user.user_email}</TableCell>
             <TableCell>
               <Badge
-                className={`border capitalize rounded-full py-1 px-1.5 text-[14px] ${getStatusBadge(user.status || 'checker')}`}
+                className={`border capitalize rounded-full py-1 px-1.5 text-[14px] ${getStatusBadge(user.status || "checker")}`}
               >
-                {user.status || 'checker'}
+                {user.status || "checker"}
               </Badge>
             </TableCell>
             <TableCell>
@@ -87,7 +85,9 @@ export function UsersTable({ users }: IUsersTableProps) {
                   : "Employee"}
               </Badge>
             </TableCell>
-            <TableCell>{user.createdAt ? formatDate(user.createdAt) : user.date_of_birth}</TableCell>
+            <TableCell>
+              {user.createdAt ? formatDate(user.createdAt) : user.date_of_birth}
+            </TableCell>
             <TableCell>
               <ActionsPopover />{" "}
             </TableCell>

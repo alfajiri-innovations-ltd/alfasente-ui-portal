@@ -37,7 +37,7 @@ function BeneficiariesPage() {
   const totalPages = Math.ceil((Lists?.length ?? 0) / ListsPerPage);
   const currentLists = Lists?.slice(
     (currentPage - 1) * ListsPerPage,
-    currentPage * ListsPerPage
+    currentPage * ListsPerPage,
   );
 
   const handlePageChange = (page: number) => {
@@ -137,13 +137,13 @@ function BeneficiariesPage() {
               </div>
 
               <div className="flex items-center gap-2">
-              <Button
-                onClick={() => {
-                  navigate("/uploadlist");
-                }}
-              >
-                Upload List
-              </Button>
+                <Button
+                  onClick={() => {
+                    navigate("/uploadlist");
+                  }}
+                >
+                  Upload List
+                </Button>
                 <Button variant={"outline"}>
                   <span>
                     <Filter />
