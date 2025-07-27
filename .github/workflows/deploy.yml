@@ -1,4 +1,4 @@
-name: Deploy AlfaSente API
+name: Deploy AlfaSente UI Portal
 
 on:
   push:
