@@ -5,6 +5,7 @@ import { PaginationDemo } from "@/components/Client/Pagination";
 import { TransactionsTable } from "@/components/Client/Tables/TransactionsTable";
 import Layout from "@/components/Commons/Layout";
 import useTransactions from "@/hooks/useTransactions";
+import { useClientBulkLists } from "@/lib/services/FectchBulkLists";
 
 function Transactions() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,7 +27,10 @@ function Transactions() {
     organizationLoading,
   } = useTransactions();
 
-  const bulkTransactions = transactions;
+  const bulkTransactions = useClientBulkLists().data;
+
+
+  console.log(bulkTransactions)
 
   const handlePageChange = (page: number) => {
     if (totalPages && page >= 1 && page <= totalPages) {
@@ -35,7 +39,6 @@ function Transactions() {
   };
 
   useEffect(() => {
-    // Wait for DOM to mount and refs to be attached
     const timeout = setTimeout(() => {
       const el = tabRefs.current[activeState];
       if (el) {

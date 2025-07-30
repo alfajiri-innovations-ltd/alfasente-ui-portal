@@ -13,17 +13,24 @@ import { ViewApplication } from "../Admin/ReviewApplication";
 import { ViewTransactionDialog } from "./ViewTransaction";
 import { ViewRequest } from "../Admin/Review-Request";
 import { InitiateTopUp } from "../Admin/InitiateTopUp";
+import { FaMoneyBillTransfer } from "react-icons/fa6";
 
 interface ActionProps {
   list?: listsWithMembers;
   listId?: number;
   transactionID?: string;
+  id?: number;
 
   clientID?: number;
   HandleClick?: (listId: number) => void;
 }
 
-export function ActionsPopover({ list, clientID, transactionID }: ActionProps) {
+export function ActionsPopover({
+  list,
+  clientID,
+  transactionID,
+  id,
+}: ActionProps) {
   const location = useLocation();
   const { pathname } = location;
 
@@ -58,14 +65,22 @@ export function ActionsPopover({ list, clientID, transactionID }: ActionProps) {
         )}
 
         {pathname === "/transactions" && (
-          <ViewTransactionDialog transactionID={transactionID} />
-        )}
-
-        {pathname === "/admin/manuals" && (
           <>
-            {" "}
-            <ViewRequest transactionID={transactionID} />
-            <InitiateTopUp transactionID={transactionID} triggerMode />
+            <ViewTransactionDialog transactionID={transactionID} />
+
+            <div
+              className="flex items-center gap-1 cursor-pointer text-[#000000CC]"
+              onClick={() => {
+                if (id) {
+                  navigate(`/view-transactions/${id}`);
+                }
+              }}
+            >
+              <span>
+                <FaMoneyBillTransfer className="w-3 h-3" />
+              </span>
+              <span>View transactions</span>
+            </div>
           </>
         )}
       </PopoverContent>

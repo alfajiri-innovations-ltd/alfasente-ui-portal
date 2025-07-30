@@ -125,6 +125,7 @@ export function SendFunds() {
     const payload = {
       clientID: clientId,
       payer,
+      id: checkedList.id,
       members: checkedList.members.map((member) => {
         let cleanNumber = member.mobileMoneyNumber;
 
@@ -309,7 +310,7 @@ export function SendFunds() {
                           <span className="text-capitalize">members</span>
                         </div>
                       </div>
-                    ),
+                    )
                   )
                 ) : (
                   <p className="text-center text-gray-500">

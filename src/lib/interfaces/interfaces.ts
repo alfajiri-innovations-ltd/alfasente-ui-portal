@@ -148,3 +148,14 @@ export type User = {
   userId: number;
   user_email: string;
 };
+
+
+export type BulkList={
+  id: number;
+  name: string;
+  createdAt: string;
+  clientID: number;
+  createdBy: string;
+  status: string;
+  assignedTo?: number;
+}
