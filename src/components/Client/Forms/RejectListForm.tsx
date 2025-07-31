@@ -31,7 +31,6 @@ export interface RejectListFormProps {
 }
 
 export function RejectListForm({ listId, handleClose }: RejectListFormProps) {
-  console.log(listId);
 
   const [submitting, setSubmitting] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({

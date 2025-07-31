@@ -33,7 +33,6 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
     clientId: ClientID,
   });
 
-  console.log(Charges);
 
   useEffect(() => {
     if (Charges?.errorMessage) {

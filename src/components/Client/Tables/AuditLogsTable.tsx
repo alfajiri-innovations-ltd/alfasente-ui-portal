@@ -12,15 +12,14 @@ import { ActionsPopover } from "../ActionsPopover";
 import { HiMiniUsers } from "react-icons/hi2";
 import { getRole } from "./UsersTable";
 import { IAuditLogs } from "@/lib/interfaces/interfaces";
-import { getRoleLabel } from "@/lib/utils";
 
 export interface IAuditLogsTable {
   auditlogs?: IAuditLogs[];
   auditlog?: IAuditLogs;
   role_name?: string;
 }
-
 export function AuditlogsTable({ auditlogs, role_name }: IAuditLogsTable) {
+
   return (
     <Table>
       <TableHeader>
@@ -51,21 +50,17 @@ export function AuditlogsTable({ auditlogs, role_name }: IAuditLogsTable) {
             </TableCell>
 
             <TableCell>
-              {role_name === "admin" ? (
-                <span>{auditlog.organization.organization_name}</span>
-              ) : (
-                <>
-                  <Badge
-                    variant={"outline"}
-                    className={`border rounded-full py-1 px-2 gap-1 text-[14px] flex items-center w-min`}
-                  >
-                    <div
-                      className={`${getRole(auditlog.role)} h-2 w-2 rounded-full`}
-                    ></div>
-                    {getRoleLabel(auditlog.role)}
-                  </Badge>
-                </>
-              )}{" "}
+              <>
+                <Badge
+                  variant={"outline"}
+                  className={`border rounded-full py-1 px-2 gap-1 text-[14px] flex items-center w-min`}
+                >
+                  <div
+                    className={`${getRole(auditlog.role)} h-2 w-2 rounded-full`}
+                  ></div>
+                  <span className="text-xs">{auditlog.role}</span>
+                </Badge>
+              </>
             </TableCell>
             <TableCell>{auditlog.event}</TableCell>
 

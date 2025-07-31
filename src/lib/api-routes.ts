@@ -40,6 +40,9 @@ export const RejectClient = () =>
 export const GetListbyId = (listId: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/getList/${listId}`;
 
+export const GetBulkListbyId = (id: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/getBulkList/${id}`;
+
 export const GetMembersByListId = (listId: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/mnobeneficiaries/${listId}`;
 
@@ -64,11 +67,17 @@ export const GetAllAuditLogs = () =>
 export const GetaTransactionsByOrganization = (clientID: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/transactions/${clientID}`;
 
+export const GetTransactionsByBulkId = (bulkId: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/bulkTransactions/${bulkId}`;
+
 export const GetAllTransactions = () =>
   `${import.meta.env.VITE_BACKEND_API_URL}/transactions`;
 
 export const GetTransactionById = (transactionID: string) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/transaction/${transactionID}`;
+
+export const GetBulkTransactionById = (id: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/bulktransaction/${id}`;
 
 export const GetWalletById = (walletID: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/wallet/${walletID}`;
@@ -95,3 +104,12 @@ export const DeleteBeneficiaryRoute = (beneficiaryId: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/mnobeneficiary/${beneficiaryId}`;
 
 export const VerifyLoginOtp = `${import.meta.env.VITE_BACKEND_API_URL}/verifyLoginEmail`;
+
+export const ResendEmailOtp = () =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/resendEmailOtp`;
+
+export const FetchClientBulkLists = (clientId: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/getBulkListsByClientId?clientID=${clientId}`;
+
+export const RetryTransactionById = () =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/retrytransaction`;
