@@ -87,7 +87,6 @@ export function LoginOtpForm({ resetTimer, email }: IEmailOtpProps) {
       });
 
       const data = await response.json();
-      console.log(data);
 
       if (response.ok) {
         setUserToken(data.token);

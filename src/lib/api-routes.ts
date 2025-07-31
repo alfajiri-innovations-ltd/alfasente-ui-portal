@@ -76,6 +76,9 @@ export const GetAllTransactions = () =>
 export const GetTransactionById = (transactionID: string) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/transaction/${transactionID}`;
 
+export const GetBulkTransactionById = (id: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/bulktransaction/${id}`;
+
 export const GetWalletById = (walletID: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/wallet/${walletID}`;
 
@@ -107,3 +110,6 @@ export const ResendEmailOtp = () =>
 
 export const FetchClientBulkLists = (clientId: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/getBulkListsByClientId?clientID=${clientId}`;
+
+export const RetryTransactionById = () =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/retrytransaction`;

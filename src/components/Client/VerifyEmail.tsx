@@ -11,7 +11,6 @@ function VerifyEmail() {
 
   const [submitting, setSubmitting] = useState(false);
 
-  console.log("Email from localStorage:", user);
 
   const [resetTimer] = useState(false);
 

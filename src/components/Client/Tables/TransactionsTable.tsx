@@ -21,6 +21,8 @@ interface TransactionsTableProps {
   activeState?: "all" | "bulk";
 }
 
+
+
 // export interface ITransactionsTableProps {
 // transactions?: ITransaction[] | BulkList[];
 //   transaction?: ITransaction;
@@ -53,6 +55,10 @@ export function TransactionsTable({
 }: TransactionsTableProps) {
   const location = useLocation();
   const { pathname } = location;
+
+
+ 
+
   return (
     <Table>
       <TableHeader>
@@ -81,7 +87,8 @@ export function TransactionsTable({
             {pathname.startsWith("/view-transactions") ? (
               <>
                 <TableCell>
-                  {"transactionID" in transaction && `#TXN${transaction.transactionID.slice(0, 6)}`}
+                  {"transactionID" in transaction &&
+                    `#TXN${transaction.transactionID.slice(0, 6)}`}
                 </TableCell>
               </>
             ) : activeState !== "bulk" && "transactionType" in transaction ? (
@@ -130,7 +137,7 @@ export function TransactionsTable({
                 {transaction.status}{" "}
               </Badge>
             </TableCell>
-            <TableCell>
+            <TableCell className="capitalize">
               {"beneficiaryName" in transaction
                 ? transaction.beneficiaryName ||
                   transaction.beneficiaryMobileNumber ||
@@ -149,9 +156,19 @@ export function TransactionsTable({
             </TableCell>
             <TableCell>
               {"transactionID" in transaction ? (
-                <ActionsPopover transactionID={transaction.transactionID} />
+                <ActionsPopover
+                  transactionID={transaction.transactionID}
+                  activeState={activeState}
+                  status={transaction.status}
+                />
               ) : "id" in transaction ? (
-                <ActionsPopover id={transaction.id} />
+                <ActionsPopover
+                  id={transaction.id}
+                  activeState={activeState}
+                  bulkStatus={transaction.status}
+                  failedCount={transaction.failed}
+                  failedTransactionIds={transaction.failedTransactionIds}
+                />
               ) : null}
             </TableCell>
           </TableRow>

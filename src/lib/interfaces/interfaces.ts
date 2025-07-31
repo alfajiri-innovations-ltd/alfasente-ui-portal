@@ -118,7 +118,7 @@ export interface ITransaction {
   beneficiaryName?: string;
   OrganisationName?: string;
   payer?: string;
-
+  listName?: string;
   transactionType: string;
   alfasenteCharge?: number;
   currency: string;
@@ -149,13 +149,25 @@ export type User = {
   user_email: string;
 };
 
-
-export type BulkList={
-  id: number;
+export type BulkList = {
   name: string;
-  createdAt: string;
-  clientID: number;
-  createdBy: string;
+  id: number;
+  amount: number;
   status: string;
-  assignedTo?: number;
-}
+  clientID: number;
+  members: number;
+  sender: string;
+  mtnCharges: number;
+  airtelCharges: number;
+  serviceFee: number;
+  totalAmount: number;
+  completedDate: Date;
+  success: number;
+  failed: number;
+  pending: number;
+  failedTransactionIds: string[];
+
+  createdBy: string;
+  assignedTo: number;
+  createdAt: Date;
+};

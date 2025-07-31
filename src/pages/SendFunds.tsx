@@ -118,7 +118,7 @@ export function SendFunds() {
 
     if (!checkedList || checkedList.members.length === 0) {
       console.warn("No members selected.");
-      setSubmitting(false); // Important to stop loader if exiting early
+      setSubmitting(false);
       return;
     }
 
@@ -140,46 +140,25 @@ export function SendFunds() {
       }),
     };
 
-    (async () => {
-      try {
-        const response = await fetch(SendMoney(), {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        });
+    // Fire and forget — don't await or chain .then()
+    fetch(SendMoney(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    }).catch((error) => {
+      console.error("SendMoney error (background):", error);
+    });
 
-        const result = await response.json();
+    toast({
+      variant: "success",
+      title: "Sent!",
+      description: "Processing in the background.",
+    });
 
-        if (response.ok) {
-          toast({
-            variant: "success",
-            title: "Successful",
-            description: "Transactions Initiated Successfully!",
-          });
-
-          setTimeout(() => {
-            navigate("/transactions");
-          }, 1000);
-        } else {
-          toast({
-            variant: "destructive",
-            title: "Failure",
-            description: result?.message || "Failed to send funds.",
-          });
-        }
-      } catch (error) {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: `An error occurred: ${error instanceof Error ? error.message : "Failed to send funds."}`,
-        });
-      } finally {
-        setSubmitting(false);
-      }
-    })();
+    navigate("/transactions");
   };
 
   return (

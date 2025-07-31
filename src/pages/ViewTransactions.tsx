@@ -1,10 +1,7 @@
 import { PaginationDemo } from "@/components/Client/Pagination";
-import { getStatusBadge } from "@/components/Client/Tables/BeneficiariesTables";
 import { TransactionsTable } from "@/components/Client/Tables/TransactionsTable";
 
 import Layout from "@/components/Commons/Layout";
-import { Badge } from "@/components/ui/badge";
-import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
 import {  useBulkTransactions } from "@/lib/services/GetBulkListById";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";

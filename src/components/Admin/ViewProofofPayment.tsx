@@ -8,12 +8,9 @@ export interface RejectApplicationProps {
 export function ViewProof({ proof }: RejectApplicationProps) {
   const [DialogOpen, setIsDialogOpen] = useState(false);
 
-  console.log(proof);
 
   const BASERUL = `${import.meta.env.VITE_BACKEND_API_URL}`;
 
-  const imageUrl = `${BASERUL}/${proof}`;
-  console.log("Image URL:", imageUrl);
 
   //   const handleClose = () => {
   //     setIsDialogOpen(false);

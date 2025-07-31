@@ -87,8 +87,7 @@ export function OrganizationForm({
     },
   });
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log("Submitted Data:", data);
-
+console.log("Form Data:", data);
     handleClick?.();
   };
 

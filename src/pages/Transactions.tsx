@@ -30,7 +30,6 @@ function Transactions() {
   const bulkTransactions = useClientBulkLists().data;
 
 
-  console.log(bulkTransactions)
 
   const handlePageChange = (page: number) => {
     if (totalPages && page >= 1 && page <= totalPages) {

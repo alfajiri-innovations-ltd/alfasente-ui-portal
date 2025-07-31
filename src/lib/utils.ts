@@ -20,7 +20,6 @@ export const getRoleLabel = (role: string) => {
 };
 export function truncateUUID(uuid: string, length: number = 10): string {
   if (!uuid) {
-    console.error("truncateUUID received an undefined or null value.");
     return "";
   }
   return uuid.slice(0, length);
