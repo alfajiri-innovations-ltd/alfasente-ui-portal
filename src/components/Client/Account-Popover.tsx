@@ -22,9 +22,12 @@ export function AccountPopover() {
       </PopoverTrigger>
       <PopoverContent className="w-40 -translate-x-6 translate-y-6">
         <div className="flex flex-col ">
-          <div className="flex items-center gap-1">
+          <div
+            className="flex items-center gap-1 cursor-pointer"
+            onClick={()=>navigate("/settings")}
+          >
             <span>
-              <CiUser />
+              <CiUser className="w-4 h-4 " />
             </span>
 
             <span>Profile</span>

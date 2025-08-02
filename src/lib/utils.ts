@@ -20,7 +20,6 @@ export const getRoleLabel = (role: string) => {
 };
 export function truncateUUID(uuid: string, length: number = 10): string {
   if (!uuid) {
-    console.error("truncateUUID received an undefined or null value.");
     return "";
   }
   return uuid.slice(0, length);
@@ -44,9 +43,9 @@ export const formatDateTime = (dateStringOrDate: string | Date) => {
 
 export const getTotalCost = (transaction: ITransaction) => {
   const mainAmount = parseFloat(transaction?.mainAmount || "0");
-  const alfasenteCharge = transaction?.alfasenteCharge;
-  const mtnCharge = transaction?.mtnCharge;
-  const airtelCharge = transaction?.airtelCharge;
+  const alfasenteCharge = Number(transaction?.alfasenteCharge);
+  const mtnCharge = Number(transaction?.mtnCharge);
+  const airtelCharge = Number(transaction?.airtelCharge);
 
   const telecomCharge =
     (mtnCharge ?? 0) > 0 ? (mtnCharge ?? 0) : (airtelCharge ?? 0);
@@ -55,7 +54,7 @@ export const getTotalCost = (transaction: ITransaction) => {
 
 export function formatMoney(
   amount: number | string,
-  currency: string = "UGX",
+  currency: string = "UGX"
 ): string {
   const num = typeof amount === "string" ? parseFloat(amount) : amount;
 
@@ -65,7 +64,7 @@ export function formatMoney(
 }
 
 export const formatNumberWithCommas = (
-  value: number | string | undefined | null,
+  value: number | string | undefined | null
 ): string => {
   if (value === undefined || value === null || value === "") return "";
 

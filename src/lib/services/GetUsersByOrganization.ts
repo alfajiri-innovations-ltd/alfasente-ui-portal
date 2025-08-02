@@ -2,19 +2,23 @@ import { getAuthUser, getUserToken } from "../cookies/UserMangementCookie";
 import { GetUsersByClientId } from "../api-routes";
 import { IUsers } from "../interfaces/interfaces";
 
+
 export const userService = {
-  token: getUserToken(),
-  clientId: getAuthUser()?.clientID ?? 0,
   fetchUsers: async function (): Promise<IUsers[]> {
-    const response = await fetch(GetUsersByClientId(this.clientId), {
+    const token = getUserToken();
+    const clientId = getAuthUser()?.clientID ?? 0;
+
+    const response = await fetch(GetUsersByClientId(clientId), {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${this.token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
-    if (response.ok === false) {
+
+    if (!response.ok) {
       throw new Error("Network response was not ok");
     }
+
     const data = await response.json();
     return data;
   },

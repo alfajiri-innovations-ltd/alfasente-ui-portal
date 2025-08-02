@@ -56,7 +56,6 @@ export function EditBeneficiaryForm({ member, handleClose }: EditProps) {
         throw new Error("Beneficiary information is missing or invalid.");
       }
 
-      console.log("sending data", data);
 
       const response = await fetch(UpdateBeneficiary(member.beneficiaryId), {
         method: "PUT",

@@ -44,7 +44,7 @@ const FormSchema = z.object({
       },
       {
         message: "You must be at least 18 years old",
-      },
+      }
     ),
   lastName: z.string().min(2, { message: "Field is Required" }),
 
@@ -137,6 +137,7 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
             description: `All set! please verify your email sent to ${email}`,
           });
 
+          localStorage.setItem("userData", JSON.stringify(userData));
           setTimeout(() => {
             setClientData({
               clientName: "",

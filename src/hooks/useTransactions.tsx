@@ -5,7 +5,6 @@ import React from "react";
 import useSWR from "swr";
 
 export default function useTransactions() {
-  // Use a consistent key for SWR - this should be a string identifier
   const swrKey = "organization-transactions";
 
   const {
