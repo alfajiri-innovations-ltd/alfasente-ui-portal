@@ -21,8 +21,6 @@ interface TransactionsTableProps {
   activeState?: "all" | "bulk";
 }
 
-
-
 // export interface ITransactionsTableProps {
 // transactions?: ITransaction[] | BulkList[];
 //   transaction?: ITransaction;
@@ -32,7 +30,13 @@ export function getStatusBadge(status: ITransaction["status"]) {
     case "FAILED":
       return "bg-[#FFEAE9] text-[#A9302D] border-[#FFD9D7]";
 
+    case "TF":
+      return "bg-[#FFEAE9] text-[#A9302D] border-[#FFD9D7]";
+
     case "SUCCESSFUL":
+      return "bg-[#ECF8EF] text-[#308242] border-[#C5E9CD]";
+
+    case "TS":
       return "bg-[#ECF8EF] text-[#308242] border-[#C5E9CD]";
 
     case "success":
@@ -55,9 +59,6 @@ export function TransactionsTable({
 }: TransactionsTableProps) {
   const location = useLocation();
   const { pathname } = location;
-
-
- 
 
   return (
     <Table>

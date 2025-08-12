@@ -108,6 +108,10 @@ export const VerifyLoginOtp = `${import.meta.env.VITE_BACKEND_API_URL}/verifyLog
 export const ResendEmailOtp = () =>
   `${import.meta.env.VITE_BACKEND_API_URL}/resendEmailOtp`;
 
+
+export const ResendLoginOtp = () =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/resendLoginOtp`;
+
 export const FetchClientBulkLists = (clientId: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/getBulkListsByClientId?clientID=${clientId}`;
 
