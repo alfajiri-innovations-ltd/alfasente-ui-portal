@@ -2,7 +2,7 @@ import { PaginationDemo } from "@/components/Client/Pagination";
 import { TransactionsTable } from "@/components/Client/Tables/TransactionsTable";
 
 import Layout from "@/components/Commons/Layout";
-import {  useBulkTransactions } from "@/lib/services/GetBulkListById";
+import { useBulkTransactions } from "@/lib/services/GetBulkListById";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -10,17 +10,13 @@ import { useParams } from "react-router-dom";
 function ViewTransactionsPage() {
   const { id } = useParams();
 
-  console.log(id);
   const parsedListId = parseInt(id || "", 10);
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const {transactions} = useBulkTransactions(parsedListId);
-
-  
+  const { transactions } = useBulkTransactions(parsedListId);
 
   const MembersPerPage = 8;
-
 
   const totalPages = Math.ceil((transactions?.length ?? 0) / MembersPerPage);
   const currentMembers = transactions.slice(
@@ -49,22 +45,11 @@ function ViewTransactionsPage() {
 
         <div className="flex items-center justify-between my-2">
           <div className="flex items-center gap-2 m">
-            <span className="font-semibold text-xl capitalize">
-              {" "}
-              {/* {list?.list?.name} ({transactions?.length}) */}
-            </span>
-            {/* <Badge
-              variant={"outline"}
-              className={`p-1.5 rounded-full capitalize ${getStatusBadge(list?.list?.status)}`}
-            >
-              {list?.list?.status}
-            </Badge> */}
+            <span className="font-semibold text-xl capitalize"> </span>
           </div>
         </div>
 
-        <TransactionsTable transactions={transactions ?? undefined} />
-
-        {/* <MembersTable members={currentMembers} /> */}
+        <TransactionsTable transactions={currentMembers ?? undefined} />
 
         <div className="flex justify-between  items-center my-1 ">
           <div className="">

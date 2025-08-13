@@ -67,7 +67,7 @@ export function ViewTransactionDialog({
     //     return "bg-[#FFECD1] text-red-500";
     // }
   }
-
+console.log(transactions);
 
   return (
     <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>

@@ -79,6 +79,7 @@ function Transactions() {
     ? Math.ceil(dataToRender.length / transactionsPerPage)
     : 0;
 
+
   return (
     <Layout title="Transactions">
       <div className="flex flex-col mx-5 my-5">
