@@ -48,12 +48,13 @@ function ConfirmPaymentDetails({
       });
 
       console.log(response);
+              const result = await response.json();
+                      console.log("Result:", result);
+
+
 
       if (response.status === 200) {
-        console.log("Response is 200");
-        const result = await response.json();
 
-        console.log("Result:", result);
 
         setFundDetails({
           ...details,
@@ -63,7 +64,7 @@ function ConfirmPaymentDetails({
         });
         handleNextStep();
       } else {
-        throw new Error("Network response was not ok");
+        throw new Error(`${result.message}`);
       }
     } catch (error) {
       toast({
