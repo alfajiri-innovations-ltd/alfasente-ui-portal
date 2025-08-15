@@ -166,7 +166,6 @@ export function UploadBeneficiaries() {
       };
 
       mutate((prev) => [optimisticList, ...(prev || [])], false);
-      mutate((prev) => [optimisticList, ...(prev || [])], false);
 
       fetch(UploadList, {
         method: "POST",
