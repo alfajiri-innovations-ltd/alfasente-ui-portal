@@ -47,19 +47,24 @@ function ConfirmPaymentDetails({
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      } else {
-        const result = await response.json();
+      console.log(response);
+              const result = await response.json();
+                      console.log("Result:", result);
+
+
+
+      if (response.status === 200) {
+
 
         setFundDetails({
           ...details,
           totalFee,
           transaction_id:
-            result.result.response.data.transaction.id ||
-            result.result.response.data.transaction.id,
+            result.result.transactionId || result.result.response.data.transaction.id,
         });
         handleNextStep();
+      } else {
+        throw new Error(`${result.message}`);
       }
     } catch (error) {
       toast({
@@ -106,14 +111,9 @@ function ConfirmPaymentDetails({
           <span>UGX {details?.amount.toLocaleString()}</span>
         </div>
 
-        <div className="flex items-center justify-between">
-          <span>Service Fee</span>
-          <span>UGX {serviceFee.toLocaleString()}</span>
-        </div>
-
         <div className="flex items-center justify-between font-semibold">
           <span>Total Fee</span>
-          <span>UGX {totalFee.toLocaleString()}</span>
+          <span>UGX {details?.amount.toLocaleString()}</span>
         </div>
 
         {warning && <div className="text-red-600 text-sm">{warning}</div>}

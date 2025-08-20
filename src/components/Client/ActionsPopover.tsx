@@ -49,7 +49,6 @@ export function ActionsPopover({
 
   const [submitting, setSubmitting] = useState(false);
 
-
   const navigate = useNavigate();
 
   const token = getUserToken() ?? "";
@@ -63,7 +62,12 @@ export function ActionsPopover({
         variant: "default",
       });
 
-      if (activeState === "bulk" && id && failedTransactionIds && failedTransactionIds.length > 0) {
+      if (
+        activeState === "bulk" &&
+        id &&
+        failedTransactionIds &&
+        failedTransactionIds.length > 0
+      ) {
         await retryTransaction(token, { transactionIDs: failedTransactionIds });
       } else if (transactionID) {
         await retryTransaction(token, { transactionID: transactionID });
@@ -124,7 +128,7 @@ export function ActionsPopover({
               id={id}
             />
 
-            {status !== "SUCCESSFUL" && activeState !== "bulk" && (
+            {status !== "TS" && activeState !== "bulk" && (
               <div
                 className="flex items-center gap-1 cursor-pointer text-destructive"
                 onClick={handleRetry}
@@ -154,7 +158,7 @@ export function ActionsPopover({
           </div>
         )}
 
-        {bulkStatus !== "success" && activeState === "bulk" &&  (
+        {bulkStatus !== "success" && activeState === "bulk" && (
           <div
             className="flex items-center gap-1 cursor-pointer text-destructive"
             onClick={handleRetry}

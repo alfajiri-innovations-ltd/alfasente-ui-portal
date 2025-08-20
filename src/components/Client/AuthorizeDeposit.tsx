@@ -74,7 +74,7 @@ function AuthorizeDeposit({ handleNextStep, details }: IAuthorizeDeposit) {
         </div>
         <p className="font-normal text-sm">
           {`A payment prompt has been sent to +256${details.accountNumber}. Enter your PIN to
-            authorize deposit of UGX ${details.totalFee?.toLocaleString()}.`}
+            authorize deposit of UGX ${details.amount?.toLocaleString()}.`}
         </p>
 
         {failed && (
