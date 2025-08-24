@@ -32,13 +32,13 @@ const FormSchema = z
 export function ResetPasswordForm() {
   const location = useLocation();
   const { pathname } = location;
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordVisible] = useState(false);
   const [newPasswordVisible, setnewPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
-  const togglePassword = () => {
-    setPasswordVisible(!passwordVisible);
-  };
+  // const togglePassword = () => {
+  //   setPasswordVisible(!passwordVisible);
+  // };
   const togglenewPassword = () => {
     setnewPasswordVisible(!passwordVisible);
   };

@@ -116,7 +116,7 @@ function FundWalletDetails({
               <SelectValue placeholder="Select Network " className="p-2 " />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="mtn">
+              {/* <SelectItem value="mtn">
                 <div className="flex items-center space-x-2">
                   <div className="bg-yellow-400 rounded-full w-8 h-8 items-center flex justify-center">
                     <img
@@ -128,7 +128,7 @@ function FundWalletDetails({
 
                   <span>MTN MoMo</span>
                 </div>
-              </SelectItem>
+              </SelectItem> */}
               <SelectItem value="airtel">
                 <div className="flex items-center space-x-2 py-2">
                   <div className="bg-red-600 rounded-full w-8 h-8 items-center flex justify-center">
