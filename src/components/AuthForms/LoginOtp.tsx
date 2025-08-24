@@ -165,7 +165,7 @@ export function LoginOtpForm({ resetTimer, email }: IEmailOtpProps) {
 
         <Button
           type="submit"
-          className="w-full h-11 rounded-[8px]"
+          className="w-[70%] h-11 rounded-[8px]"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Verifying..." : "Verify"}
