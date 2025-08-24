@@ -52,7 +52,7 @@ function Dashboard() {
     <Layout title="Dashboard">
       <div className="flex flex-col sm:mx-20 m-4">
         <div className="flex sm:flex-row flex-col justify-between">
-          <div>
+          <div className="my-4">
             <span className="font-bold text-base">
               Welcome,
               {!user ? (
@@ -158,7 +158,7 @@ function Dashboard() {
           </div>
         )}
 
-        <div className="my-5">
+        <div className="my-8">
           <h3 className="font-medium text-xl mb-2">Quick Actions</h3>
           <div className="grid grid-cols-1 bg-[#F7F9FD] p-4  rounded-lg sm:grid-cols-2 lg:grid-cols-3 gap-4 ">
             {[

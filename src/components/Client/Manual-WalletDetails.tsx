@@ -271,7 +271,7 @@ function ManualWalletDetails({
                   />
 
                   {/* MTN Wallet Allocation */}
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name="mtnAllocation"
                     render={({ field }) => (
@@ -284,6 +284,8 @@ function ManualWalletDetails({
                             </span>
                             <Input
                               {...field}
+                              disabled
+                              readOnly
                               type="number"
                               onChange={(e) => {
                                 setEditing("mtn");
@@ -296,7 +298,7 @@ function ManualWalletDetails({
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                  /> */}
                 </div>
 
                 {balanceMsg && (

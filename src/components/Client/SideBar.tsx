@@ -28,54 +28,97 @@ function SideBar() {
   const sidebarItems = [
     {
       title: "Dashboard",
-      icon: <LayoutDashboard />,
-      href: "/dashboard",
+icon: (
+        <LayoutDashboard
+          className={` flex items-center p-2 rounded  w-8 h-8 ${
+            currentPath === "/dashboard" ? "text-[#8D35AA]" : ""
+          }`}
+        />
+      ),      href: "/dashboard",
       roles: ["client_employee", "client_admin"],
     },
     {
       title: "Fund Wallet",
-      icon: <Wallet className="w-6 h-6" />,
+      icon: (
+        <Wallet
+          className={` flex items-center p-2 rounded  w-8 h-8 ${
+            currentPath === "/fundwallet" ? "text-[#8D35AA]" : ""
+          }`}
+        />
+      ),
       href: "/fundwallet",
       roles: ["client_employee", "client_admin"],
     },
 
     {
       title: "Send Funds",
-      icon: <GrSend className="w-6 h-6" />,
+      icon: (
+        <GrSend
+          className={` flex items-center p-2 rounded  w-8 h-8 ${
+            currentPath === "/send-funds" ? "text-[#8D35AA]" : ""
+          }`}
+        />
+      ),
       href: "/send-funds",
       roles: ["client_employee", "client_admin"],
     },
 
     {
       title: "Beneficiaries",
-      icon: <CircleUserRound />,
+      icon: (
+        <CircleUserRound
+          className={` flex items-center p-2 rounded  w-8 h-8 ${
+            currentPath === "/beneficiaries" ? "text-[#8D35AA]" : ""
+          }`}
+        />
+      ),
       href: "/beneficiaries",
       roles: ["client_employee", "client_admin"],
     },
     {
       title: "Staff",
-      icon: <PiUsersThreeFill className="w-6 h-6" />,
-      href: "/staff",
+icon: (
+        <PiUsersThreeFill
+          className={` flex items-center p-2 rounded  w-8 h-8 ${
+            currentPath === "/staff" ? "text-[#8D35AA]" : ""
+          }`}
+        />
+      ),      href: "/staff",
       roles: ["client_employee", "client_admin"],
     },
 
     {
       title: "Transactions",
-      icon: <FaMoneyBillTransfer className="w-6 h-6" />,
-      href: "/transactions",
+icon: (
+        <FaMoneyBillTransfer
+          className={` flex items-center p-2 rounded  w-8 h-8 ${
+            currentPath === "/transactions" ? "text-[#8D35AA]" : ""
+          }`}
+        />
+      ),      href: "/transactions",
       roles: ["client_employee", "client_admin"],
     },
 
     {
       title: "Audit Logs",
-      icon: <ClipboardListIcon />,
-      href: "/audit-logs",
+icon: (
+        <ClipboardListIcon
+          className={` flex items-center p-2 rounded  w-8 h-8 ${
+            currentPath === "/audit-logs" ? "text-[#8D35AA]" : ""
+          }`}
+        />
+      ),      href: "/audit-logs",
       roles: ["admin", "client_employee", "client_admin"],
     },
     {
       title: "Settings",
-      icon: <SettingsIcon />,
-      href: "/settings",
+icon: (
+        <SettingsIcon
+          className={` flex items-center p-2 rounded  w-8 h-8 ${
+            currentPath === "/settings" ? "text-[#8D35AA]" : ""
+          }`}
+        />
+      ),      href: "/settings",
       roles: ["admin", "client_employee", "client_admin"],
     },
   ];
