@@ -28,6 +28,9 @@ import { FundWallet } from "./pages/FundWallet";
 import { SendFunds } from "./pages/SendFunds";
 import { UploadBeneficiaries } from "./components/Client/UploadBeneficiaries";
 import ViewTransactionsPage from "./pages/ViewTransactions";
+import EnterPasswordPage from "./pages/EnterPasswordPage";
+import SetPassword from "./pages/SetPassword";
+import AccessDashboard from "./pages/AccessDashboard";
 
 function App() {
   return (
@@ -67,6 +70,12 @@ function App() {
               <Route path="/wait-approval" element={<WaitScreen />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/view-members/:listId" element={<MemebersPage />} />
+              <Route
+                path="/accept-invitation/:id"
+                element={<EnterPasswordPage />}
+              />
+              <Route path="/access-dashboard" element={<AccessDashboard />} />
+              <Route path="/set-password" element={<SetPassword />} />
 
               <Route path="/register" element={<Register />} />
               <Route path="/about" element={<AboutUs />} />
