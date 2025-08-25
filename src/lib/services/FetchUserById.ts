@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { IUsers } from "../interfaces/interfaces";
+import { IUser} from "../interfaces/interfaces";
 
 import { GetUserById } from "../api-routes";
 
 export function FetchUserById(userId: number) {
-  const [user, setUser] = useState<IUsers>();
+  const [user, setUser] = useState<IUser>();
 
   useEffect(() => {
     const fetchuser = async () => {
@@ -20,7 +20,7 @@ export function FetchUserById(userId: number) {
     };
 
     fetchuser();
-  }, [user]);
+  }, []);
 
   return user;
 }

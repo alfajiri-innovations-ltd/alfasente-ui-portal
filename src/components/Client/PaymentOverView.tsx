@@ -33,7 +33,6 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
     clientId: ClientID,
   });
 
-
   useEffect(() => {
     if (Charges?.errorMessage) {
       showErrorMessage(true);
@@ -43,14 +42,14 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
   return (
     <div className="space-y-1 md:h-[350px] overflow-y-auto scrollbar-hide">
       <div className="flex items-center justify-between gap-3">
-        <div className="border flex items-center justify-between grow bg-[#FBFDFF] border-[#848EA2] p-2 rounded-md">
+        <div className={` ${Charges?.airtelRawTotal ? "flex" : "hidden"} border  items-center justify-between grow bg-[#FBFDFF] border-[#848EA2] p-2 rounded-md `}>
           <div className="bg-red-600 rounded-full w-8 h-8 items-center object-cover overflow-hidden flex justify-center">
             <img src="/images/logos/Airtel.svg" alt="Airtel" />
           </div>
           <span>{formatMoney(Wallet?.airtelWalletBalance ?? 0)}</span>
         </div>
 
-        <div className="border flex items-center justify-between bg-[#FBFDFF] border-[#848EA2] grow p-2 rounded-md">
+        <div className={` ${Charges?.mtnRawTotal ? "flex" : "hidden"} border  items-center justify-between grow bg-[#FBFDFF] border-[#848EA2] p-2 rounded-md `}>
           <div className="bg-yellow-400 rounded-full w-8 h-8 items-center overflow-hidden object-cover flex justify-center">
             <img src="/images/logos/MTN.svg" alt="MTN" />
           </div>
@@ -77,37 +76,49 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
             {list?.name}
           </span>
         </div>
-        <div className="flex justify-between items-center">
+        <div
+          className={` justify-between items-center ${Charges?.mtnRawTotal ? "flex" : "hidden"}`}
+        >
           <span>Total Mtn Payout</span>
           <span className="text-[#000000CC] font-bold">
             {formatMoney(Charges?.mtnRawTotal ?? 0)}
           </span>
         </div>
-        <div className="flex justify-between  items-center">
+        <div
+          className={` justify-between items-center ${Charges?.airtelRawTotal ? "flex" : "hidden"}`}
+         >
           <span>Total Airtel Payout</span>
           <span className="text-[#000000CC] font-bold">
             {formatMoney(Charges?.airtelRawTotal ?? 0)}
           </span>
         </div>
-        <div className="flex justify-between  items-center">
+        <div 
+          className={` justify-between items-center ${Charges?.airtelCharges ? "flex" : "hidden"}`}
+        >
           <span>Airtel charges</span>
           <span className="text-[#000000CC] font-bold">
             {formatMoney(Charges?.airtelCharges ?? 0)}
           </span>
         </div>
-        <div className="flex justify-between  items-center">
+        <div 
+          className={` justify-between items-center ${Charges?.mtnCharges ? "flex" : "hidden"}`}
+        >
           <span>Mtn charges</span>
           <span className="text-[#000000CC] font-bold">
             {formatMoney(Charges?.mtnCharges ?? 0)}
           </span>
         </div>
-        <div className="flex justify-between  items-center">
+        <div
+          className={` justify-between items-center ${Charges?.mtnTotal ? "flex" : "hidden"}`}
+         >
           <span>Total Mtn Amount</span>
           <span className="text-[#000000CC] font-bold">
             {formatMoney(Charges?.mtnTotal ?? 0)}
           </span>
         </div>
-        <div className="flex justify-between  items-center">
+        <div
+          className={` justify-between items-center ${Charges?.airtelTotal ? "flex" : "hidden"}`}
+         >
           <span>Total Airtel Amount</span>
           <span className="text-[#000000CC] font-bold">
             {formatMoney(Charges?.airtelTotal ?? 0)}

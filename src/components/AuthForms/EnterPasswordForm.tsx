@@ -79,6 +79,8 @@ export function PasswordForm() {
       const message = res?.result?.code;
 
       if (response.status === 200) {
+        localStorage.setItem('email', data.user_email)
+        navigate('/set-password')
         // setEmail(data.user_email);
         // setTimeout(() => {
         //   HandleNextStep();

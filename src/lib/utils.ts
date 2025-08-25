@@ -79,3 +79,12 @@ export const parseFormattedNumber = (formatted: string): number => {
   const cleaned = formatted?.replace(/,/g, "");
   return parseInt(cleaned || "0", 10);
 };
+
+
+export function getInitials(name: string) {
+  return name
+    .split(" ")                 // split by spaces
+    .map((word) => word[0])     // take first letter
+    .join("")                   // join them
+    .toUpperCase();             // uppercase
+}

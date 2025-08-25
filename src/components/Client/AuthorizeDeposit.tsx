@@ -14,7 +14,13 @@ function AuthorizeDeposit({ handleNextStep, details }: IAuthorizeDeposit) {
 
   const transactionID = details.transaction_id;
 
+
+  console.log("---->TID", transactionID)
+
   const { Transaction } = GetTransaction(transactionID ?? "");
+
+
+  console.log("Transaction",Transaction)
 
   setTimeout(() => {});
 
