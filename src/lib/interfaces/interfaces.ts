@@ -29,6 +29,7 @@ export interface IUsers {
   user_email: string;
   date_of_birth: string;
   userId: number;
+  invitedBy?:string;
 
   role_name: {
     roleId: number;
@@ -45,6 +46,7 @@ export interface IUser {
   user_email: string;
   date_of_birth: string;
   userId: number;
+  invitedBy?:string;
 
   role_name: string;
   createdAt?: string;
