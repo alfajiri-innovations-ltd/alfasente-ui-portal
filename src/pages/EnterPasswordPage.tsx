@@ -12,7 +12,11 @@ function EnterPasswordPage() {
   const user = FetchUserById(userId ?? 0);
   const organization = useGetClient(user?.clientID ?? 0);
 
-  const isLoading = !user || !organization; // 👈 both must be loaded
+  organization
+    ? localStorage.setItem("organizationName", organization?.clientName)
+    : "";
+  user ? localStorage.setItem("role", user.role_name) : "";
+  const isLoading = !user || !organization;
 
   if (isLoading) {
     return (

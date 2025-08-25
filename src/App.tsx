@@ -28,7 +28,6 @@ import { FundWallet } from "./pages/FundWallet";
 import { SendFunds } from "./pages/SendFunds";
 import { UploadBeneficiaries } from "./components/Client/UploadBeneficiaries";
 import ViewTransactionsPage from "./pages/ViewTransactions";
-import AcceptInvitation from "./pages/AcceptInvitation";
 import EnterPasswordPage from "./pages/EnterPasswordPage";
 import SetPassword from "./pages/SetPassword";
 import AccessDashboard from "./pages/AccessDashboard";
