@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 
 export function SendFunds() {
   const [previewList] = useState(false);
-  const [items, setItems] = useState<listsWithMembers[]>([]);
+  const [, setItems] = useState<listsWithMembers[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isChecked] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState<IUser>();
@@ -73,7 +73,6 @@ export function SendFunds() {
     setIsLoading(true);
 
     try {
-      console.log(items);
       setItems(approvedLists || []);
     } catch (error) {
       console.error("Error fetching lists:", error);

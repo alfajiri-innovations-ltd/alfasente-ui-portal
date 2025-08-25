@@ -23,7 +23,7 @@ export function GetUser() {
     };
 
     fetchuser();
-  }, []);
+  }, [email]);
 
   return user;
 }
