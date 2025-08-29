@@ -48,19 +48,16 @@ function ConfirmPaymentDetails({
       });
 
       console.log(response);
-              const result = await response.json();
-                      console.log("Result:", result);
-
-
+      const result = await response.json();
+      console.log("Result:", result);
 
       if (response.status === 200) {
-
-
         setFundDetails({
           ...details,
           totalFee,
           transaction_id:
-            result.result.transactionId || result.result.response.data.transaction.id,
+            result.result.transactionId ||
+            result.result.response.data.transaction.id,
         });
         handleNextStep();
       } else {

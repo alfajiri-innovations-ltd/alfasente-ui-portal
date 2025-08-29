@@ -3,36 +3,35 @@ import * as XLSX from "xlsx";
 import { PaginationDemo } from "./Pagination";
 import { PreviewMembersTable } from "./Tables/PreviewMembersTable";
 import { IMembers } from "@/lib/interfaces/interfaces";
-import { useFetchListName } from "@/lib/services/GetListName";
-import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
-import { toast } from "@/hooks/use-toast";
+// import { useFetchListName } from "@/lib/services/GetListName";
+// import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
 
 interface PreviewListProps {
   fileContent?: any;
-  setIsTaken: (isTaken: boolean) => void;
+  // setIsTaken: (isTaken: boolean) => void;
   Asignee: string;
-  isTaken: boolean;
+  // isTaken: boolean;
 }
 
 function PreviewList({
   fileContent,
-  setIsTaken,
+  // setIsTaken,
   Asignee,
-  isTaken,
+  // isTaken,
 }: PreviewListProps) {
   const [sheetName, setSheetName] = useState<string>("");
 
-  const clientId = getAuthUser()?.clientID;
+  // const clientId = getAuthUser()?.clientID;
 
-  const CheckListName = useFetchListName(
-    sheetName && clientId ? { listName: sheetName, clientId } : null,
-  );
+  // const CheckListName = useFetchListName(
+  //   sheetName && clientId ? { listName: sheetName, clientId } : null,
+  // );
 
-  useEffect(() => {
-    if (CheckListName) {
-      setIsTaken(CheckListName?.isTaken);
-    }
-  }, [CheckListName]);
+  // useEffect(() => {
+  //   if (CheckListName) {
+  //     setIsTaken(CheckListName?.isTaken);
+  //   }
+  // }, [CheckListName]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [members, setMembers] = useState<IMembers[]>([]);
@@ -41,7 +40,7 @@ function PreviewList({
   const totalPages = Math.ceil(members.length / MembersPerPage);
   const currentMembers = members.slice(
     (currentPage - 1) * MembersPerPage,
-    currentPage * MembersPerPage,
+    currentPage * MembersPerPage
   );
 
   useEffect(() => {
@@ -62,14 +61,14 @@ function PreviewList({
         const [headers, ...rows] = jsonData;
 
         const validRows = rows.filter((row: any[]) =>
-          row.some((cell) => cell !== null && cell !== ""),
+          row.some((cell) => cell !== null && cell !== "")
         );
 
         const parsedMembers = validRows.map((row: any[]) =>
           headers.reduce((acc: any, header: string, index: number) => {
             acc[header] = row[index] || null;
             return acc;
-          }, {}),
+          }, {})
         );
 
         setMembers(parsedMembers);
@@ -85,14 +84,14 @@ function PreviewList({
     }
   };
 
-  useEffect(() => {
-    if (isTaken) {
-      toast({
-        variant: "destructive",
-        description: "List name already exists",
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isTaken) {
+  //     toast({
+  //       variant: "destructive",
+  //       description: "List name already exists",
+  //     });
+  //   }
+  // }, []);
 
   return (
     <div className="-mt-16  w-[60vw]">

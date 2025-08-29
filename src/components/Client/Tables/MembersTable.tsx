@@ -10,7 +10,6 @@ import { HiMiniUsers } from "react-icons/hi2";
 
 import { EditBeneficiary } from "../EditBeneficiary";
 import { DeleteBeneficiary } from "../DeleteBeneficiary";
-import { useLocation } from "react-router-dom";
 import { formatMoney } from "@/lib/utils";
 
 export interface IMembers {
@@ -32,8 +31,6 @@ export const getRandomColor = () => {
 };
 
 export function MembersTable({ members }: IMembersTable) {
-  const location = useLocation();
-  const { pathname } = location;
   return (
     <Table>
       <TableHeader>
@@ -66,7 +63,7 @@ export function MembersTable({ members }: IMembersTable) {
             <TableCell className="">{formatMoney(member.amount)}</TableCell>
 
             <TableCell>{member.reason}</TableCell>
-            {pathname !== "/dashboard" && (
+            
               <TableCell>
                 <div className="flex items-center gap-3">
                   <EditBeneficiary member={member} />
@@ -75,7 +72,7 @@ export function MembersTable({ members }: IMembersTable) {
                   )}
                 </div>
               </TableCell>
-            )}
+            
           </TableRow>
         ))}
       </TableBody>
