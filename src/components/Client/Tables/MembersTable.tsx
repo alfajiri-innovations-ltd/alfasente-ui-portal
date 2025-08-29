@@ -63,16 +63,15 @@ export function MembersTable({ members }: IMembersTable) {
             <TableCell className="">{formatMoney(member.amount)}</TableCell>
 
             <TableCell>{member.reason}</TableCell>
-            
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <EditBeneficiary member={member} />
-                  {member.beneficiaryId !== undefined && (
-                    <DeleteBeneficiary beneficiaryId={member.beneficiaryId} />
-                  )}
-                </div>
-              </TableCell>
-            
+
+            <TableCell>
+              <div className="flex items-center gap-3">
+                <EditBeneficiary member={member} />
+                {member.beneficiaryId !== undefined && (
+                  <DeleteBeneficiary beneficiaryId={member.beneficiaryId} />
+                )}
+              </div>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
