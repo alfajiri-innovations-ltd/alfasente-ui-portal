@@ -60,11 +60,12 @@ export function BeneficiariesTable({
           <TableRow
             className="cursor-pointer hover:bg-[#F5F6F9] transition-all duration-200"
             key={index}
-            onClick={() => {
-              navigate(`/view-members/${list.id}`);
-            }}
+            
           >
-            <TableCell className="font-medium flex items-center gap-1.5 ">
+            <TableCell className="font-medium flex items-center gap-1.5 " onClick={(e) => {
+              e.stopPropagation()
+              navigate(`/view-members/${list.id}`);
+            }}>
               <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
                 <HiMiniUsers
                   style={{

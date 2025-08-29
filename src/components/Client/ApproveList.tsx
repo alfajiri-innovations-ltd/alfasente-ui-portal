@@ -12,7 +12,11 @@ import { ApproveListEndPoint } from "@/lib/api-routes";
 import { RejectListProps } from "./RejectList";
 import { toast } from "@/hooks/use-toast";
 
-export function ApproveList({ listId }: RejectListProps) {
+interface ApproveListProps extends RejectListProps {
+  onApproved?: (listId: number) => void;
+}
+
+export function ApproveList({ listId, onApproved }: ApproveListProps) {
   const [submitting, setSubmitting] = useState(false);
   const [DialogOpen, setIsDialogOpen] = useState(false);
 
@@ -46,8 +50,12 @@ export function ApproveList({ listId }: RejectListProps) {
             description: "List approved successfully!",
           });
         }, 1000);
+        onApproved?.(listId);
 
         handleClose();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } else {
         toast({
           variant: "destructive",
