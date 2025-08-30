@@ -10,8 +10,10 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 export interface RejectListProps {
   listId: number;
+    onRejected?: (listId: number) => void; 
+
 }
-export function RejectList({ listId }: RejectListProps) {
+export function RejectList({ listId,onRejected }: RejectListProps) {
   const [DialogOpen, setIsDialogOpen] = useState(false);
 
   const handleClose = () => {
@@ -33,7 +35,7 @@ export function RejectList({ listId }: RejectListProps) {
         <DialogHeader>
           <DialogTitle>Reject List</DialogTitle>
         </DialogHeader>
-        <RejectListForm listId={listId} handleClose={handleClose} />
+        <RejectListForm listId={listId} handleClose={handleClose} onRejected={onRejected} />
       </DialogContent>
     </Dialog>
   );

@@ -123,12 +123,12 @@ export function LoginForm({ HandleNextStep, setEmail }: LoginFormProps) {
             name="user_email"
             render={({ field }) => (
               <FormItem className="col-span-2">
-                <FormLabel>Personal Email</FormLabel>
+                <FormLabel className="md:text-lg">Personal Email</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="example@gmail"
                     disabled={submitting}
-                    className=" border-[#DCE1EC]"
+                    className=" border-[#DCE1EC] py-6"
                     {...field}
                   />
                 </FormControl>
@@ -143,9 +143,11 @@ export function LoginForm({ HandleNextStep, setEmail }: LoginFormProps) {
             name="password"
             render={({ field }) => (
               <FormItem className="  space-y-1 col-span-2">
-                <FormLabel className="font-medium text-sm ">Password</FormLabel>
+                <FormLabel className="font-medium text-sm md:text-lg ">
+                  Password
+                </FormLabel>
                 <FormControl>
-                  <div className="flex border border-input h-10 justify-between items-center pr-4 rounded-md overflow-hidden">
+                  <div className="flex border border-input h-14 justify-between items-center pr-4 rounded-md overflow-hidden">
                     <Input
                       type={passwordVisible ? "text" : "password"}
                       placeholder="Enter your password"
@@ -185,8 +187,12 @@ export function LoginForm({ HandleNextStep, setEmail }: LoginFormProps) {
           <div className="col-span-2">
             <Button
               type="submit"
-              className="w-full my-2 bg-[#8D35AA]"
-              disabled={submitting}
+              className="w-full my-2 py-5 bg-[#8D35AA]"
+              disabled={
+                submitting ||
+                form.watch("password") === "" ||
+                form.watch("user_email") === ""
+              }
             >
               {submitting ? "Submitting..." : " Login"}
             </Button>

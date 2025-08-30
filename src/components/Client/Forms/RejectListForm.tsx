@@ -28,10 +28,14 @@ const FormSchema = z.object({
 export interface RejectListFormProps {
   listId: number;
   handleClose: () => void;
+  onRejected?: (listId: number) => void;
 }
 
-export function RejectListForm({ listId, handleClose }: RejectListFormProps) {
-
+export function RejectListForm({
+  listId,
+  handleClose,
+  onRejected,
+}: RejectListFormProps) {
   const [submitting, setSubmitting] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -66,8 +70,13 @@ export function RejectListForm({ listId, handleClose }: RejectListFormProps) {
           title: "Success",
           description: "List rejected successfully!",
         });
+        onRejected?.(listId);
 
         handleClose();
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } else {
         toast({
           variant: "destructive",

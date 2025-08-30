@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { IUser} from "../interfaces/interfaces";
+import { IUser } from "../interfaces/interfaces";
 
 import { GetUserById } from "../api-routes";
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
@@ -31,8 +31,6 @@ import { toast } from "@/hooks/use-toast";
 import { useClientListsWithMembers } from "@/lib/services/FetchClientLists";
 import { useNavigate } from "react-router-dom";
 import useStaff from "@/hooks/useStaff";
-// interface RowType extends Array<string | number | null> { }
-// interface HeadersType extends Array<string> { }
 export function UploadBeneficiaries() {
   const [file, setFile] = useState<File | null>(null);
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
@@ -44,7 +42,7 @@ export function UploadBeneficiaries() {
   const [value, setValue] = useState<number>();
   const [selectedUserName, setSelectedUserName] = useState<string>("");
 
-  const [isTaken, setIsTaken] = useState<boolean>(false);
+  // const [isTaken, setIsTaken] = useState<boolean>(false);
 
   const handleClose = () => {
     setFileContent(null);
@@ -54,16 +52,15 @@ export function UploadBeneficiaries() {
   const token = getUserToken();
   const nuser = getAuthUser();
   const clientID = nuser?.clientID;
-  const loggedInUser = getAuthUser();
 
   const users = staffData;
 
   const filteredUsers = users.filter((user) => {
-    if (loggedInUser?.role_name === "client_admin") {
+    if (nuser?.role_name === "client_admin") {
       return true;
     }
 
-    return user.userId !== loggedInUser?.userId;
+    return user.userId !== nuser?.userId;
   });
 
   const handleTogglePreview = () => {
@@ -98,7 +95,7 @@ export function UploadBeneficiaries() {
     setFileContent(null);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     setIsSubmitting(true);
     if (!fileContent) {
       toast({
@@ -157,17 +154,17 @@ export function UploadBeneficiaries() {
       const optimisticList = {
         id: Date.now(),
         name: payload.name,
-        members: formattedMembers, // Use formattedMembers which matches IMembers[]
+        members: formattedMembers, 
         clientID: payload.clientID,
         createdAt: new Date().toISOString(),
         createdBy: `${nuser?.firstName ?? ""} ${nuser?.lastName ?? ""}`.trim(),
         assignedUserId: value,
-        status: "Pending",
+        status: "pending",
       };
 
       mutate((prev) => [optimisticList, ...(prev || [])], false);
 
-      fetch(UploadList, {
+      await fetch(UploadList, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -183,7 +180,10 @@ export function UploadBeneficiaries() {
               description: "List submitted successfully.",
             });
             mutate();
+
             navigate("/beneficiaries");
+                        window.location.reload();
+
           } else {
             mutate();
             toast({
@@ -213,14 +213,14 @@ export function UploadBeneficiaries() {
     }
   };
 
-  useEffect(() => {
-    if (isTaken) {
-      toast({
-        variant: "destructive",
-        description: "List Name already exists",
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isTaken) {
+  //     toast({
+  //       variant: "destructive",
+  //       description: "List Name already exists",
+  //     });
+  //   }
+  // }, []);
 
   return (
     <div>
@@ -391,8 +391,8 @@ export function UploadBeneficiaries() {
             <PreviewList
               fileContent={fileContent}
               Asignee={selectedUserName}
-              setIsTaken={setIsTaken}
-              isTaken={isTaken}
+              // setIsTaken={setIsTaken}
+              // isTaken={isTaken}
             />
           )}
           <div
@@ -422,7 +422,7 @@ export function UploadBeneficiaries() {
                 type="submit"
                 className="bg-[#8D35AA]"
                 onClick={handleSubmit}
-                disabled={submit || isTaken}
+                disabled={submit }
               >
                 {submit ? "Submitting..." : "Submit for Approval"}
               </Button>
