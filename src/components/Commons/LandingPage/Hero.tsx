@@ -15,22 +15,22 @@ function Hero() {
       <h3 className="font-extrabold text-3xl text-[#000000E5] text-center leading-[46px] lg:text-[54px] lg:leading-[120%]">
         Simplify Payments To Many
         <br className="hidden xl:flex" />
-        <span className=" lg:text xl:mx-24">With One Platform</span>
+        <span className=" lg:text xl:mx-24 mx-3">With One Platform</span>
       </h3>
-      <p className="text-[#666666] text-center text-[18px] leading-6 font-normal px-1  mt-4">
+      <p className="text-[#666666] text-center text-[18px] px-6 leading-6 font-normal xl:px-1  mt-4">
         Alfasente empowers businesses to process bulk payments,
         <br className="hidden xl:flex" /> saving time, reducing errors, and
         growing business.
       </p>
 
-      <div className="flex flex-col lg:flex-row my-3  items-center gap-4">
+      <div className="flex flex-col lg:flex-row my-3 w-[82%] md:w-[14%] items-center gap-4">
         <Button
           onClick={HandleClick}
           style={{
             boxShadow:
               "inset 0px 2.2px 2px 0px rgba(255, 255, 255, 0.5), inset 0px -2.2px 2px 0px rgba(0, 0, 0, 0.15)",
           }}
-          className="text-white text-[15px] rounded-[40px] mt-3 h-12 p-5 mb-[18px] bg-[#8D35AA] hover:bg-[#7E249A] hover:text-white 
+          className="text-white text-[15px] rounded-[40px] w-full mt-3 h-12 p-5 mb-[18px] bg-[#8D35AA] hover:bg-[#7E249A] hover:text-white 
   shadow-[-2px_7px_40px_-8px_rgba(0,0,0,0.3)]   "
         >
           Manage payments{" "}
@@ -39,7 +39,7 @@ function Hero() {
           </span>
         </Button>
       </div>
-      <div className="w-[70vw] relative  xl:h-[60vh] overflow-clip xl:mt-8  ">
+      <div className="md:w-[70vw] px-5 relative  xl:h-[60vh] overflow-clip xl:mt-8  ">
         <img src="/images/heroimage.webp" alt="AdminDashboard" />
       </div>
     </div>
