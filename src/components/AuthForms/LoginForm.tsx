@@ -128,7 +128,7 @@ export function LoginForm({ HandleNextStep, setEmail }: LoginFormProps) {
                   <Input
                     placeholder="example@gmail"
                     disabled={submitting}
-                    className=" border-[#DCE1EC] py-6"
+                    className=" border-[#DCE1EC] py-5"
                     {...field}
                   />
                 </FormControl>
@@ -147,7 +147,7 @@ export function LoginForm({ HandleNextStep, setEmail }: LoginFormProps) {
                   Password
                 </FormLabel>
                 <FormControl>
-                  <div className="flex border border-input h-14 justify-between items-center pr-4 rounded-md overflow-hidden">
+                  <div className="flex border border-input h-11 justify-between items-center pr-4 rounded-md overflow-hidden">
                     <Input
                       type={passwordVisible ? "text" : "password"}
                       placeholder="Enter your password"
