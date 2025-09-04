@@ -115,7 +115,7 @@ export function ActionsPopover({
               <span>View members</span>
             </div>
             <RenameList list={list} />
-            <DeleteList />
+            <DeleteList listId={list?.id ?? 0} />
           </>
         )}
 
