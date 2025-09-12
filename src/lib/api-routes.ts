@@ -119,3 +119,6 @@ export const FetchClientBulkLists = (clientId: number) =>
 
 export const RetryTransactionById = () =>
   `${import.meta.env.VITE_BACKEND_API_URL}/retrytransaction`;
+
+export const GetUserDetails = (msisdn: string) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/userdetails/${msisdn}`;

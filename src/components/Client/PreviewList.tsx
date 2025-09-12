@@ -10,28 +10,18 @@ interface PreviewListProps {
   fileContent?: any;
   // setIsTaken: (isTaken: boolean) => void;
   Asignee: string;
+  fileName?: string;
   // isTaken: boolean;
 }
 
 function PreviewList({
   fileContent,
+  fileName,
   // setIsTaken,
   Asignee,
   // isTaken,
 }: PreviewListProps) {
-  const [sheetName, setSheetName] = useState<string>("");
-
-  // const clientId = getAuthUser()?.clientID;
-
-  // const CheckListName = useFetchListName(
-  //   sheetName && clientId ? { listName: sheetName, clientId } : null,
-  // );
-
-  // useEffect(() => {
-  //   if (CheckListName) {
-  //     setIsTaken(CheckListName?.isTaken);
-  //   }
-  // }, [CheckListName]);
+  const [, setSheetName] = useState<string>("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const [members, setMembers] = useState<IMembers[]>([]);
@@ -84,20 +74,11 @@ function PreviewList({
     }
   };
 
-  // useEffect(() => {
-  //   if (isTaken) {
-  //     toast({
-  //       variant: "destructive",
-  //       description: "List name already exists",
-  //     });
-  //   }
-  // }, []);
-
   return (
     <div className="-mt-16  w-[60vw]">
       <div className="flex items-center  justify-between my-2">
         <div className="flex items-center justify-between w-full">
-          <span className="font-semibold text-xl uppercase">{sheetName}</span>
+          <span className="font-semibold text-xl uppercase">{fileName}</span>
 
           <div className="flex items-center gap-2">
             <span>Assigned To:</span>

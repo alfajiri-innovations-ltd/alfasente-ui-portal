@@ -7,11 +7,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { IMembers } from "@/lib/interfaces/interfaces";
+import { FetchUserDetails } from "@/lib/services/FetchUserName";
 import { HiMiniUsers } from "react-icons/hi2";
+import { useEffect, useState } from "react";
 
 export interface IMembersTable {
   members?: IMembers[];
-  member?: IMembers;
 }
 
 export const getRandomColor = () => {
@@ -20,40 +21,77 @@ export const getRandomColor = () => {
 };
 
 export function PreviewMembersTable({ members }: IMembersTable) {
+  const [registeredNames, setRegisteredNames] = useState<
+    Record<string, string>
+  >({});
+
+  console.log(members);
+
+  useEffect(() => {
+    if (!members) return;
+
+    const fetchNames = async () => {
+      const results: Record<string, string> = {};
+
+      for (const member of members) {
+        try {
+          const res: any = await FetchUserDetails(
+            `0${member.mobileMoneyNumber}`
+          );
+
+          console.log(res);
+          results[member.mobileMoneyNumber] = res?.first_name
+            ? `${res.first_name} ${res.last_name}`
+            : "N/A";
+        } catch (error) {
+          console.error(
+            `Failed to fetch details for ${member.mobileMoneyNumber}`,
+            error
+          );
+          results[member.mobileMoneyNumber] = "N/A";
+        }
+      }
+
+      setRegisteredNames(results);
+    };
+
+    fetchNames();
+  }, [members]);
+  console.log(registeredNames);
+
   return (
-    <div className="rounded-lg">
+    <div className="rounded-lg overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="">Name</TableHead>
+            <TableHead>Name</TableHead>
             <TableHead>Mobile Number</TableHead>
             <TableHead>Amount (UGX)</TableHead>
-            <TableHead className="">Reason</TableHead>
-            <TableHead className="">Service Provider</TableHead>
+            <TableHead>Reason</TableHead>
+            <TableHead>Registered Beneficiary Name</TableHead>
+            <TableHead>Service Provider</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {members?.map((member, index) => (
             <TableRow
               key={index}
-              className="h-[50px]  odd:bg-[#F7F9FD] border-b-0  even:bg-[#FBFDFF]"
+              className="h-[50px] odd:bg-[#F7F9FD] even:bg-[#FBFDFF]"
             >
               <TableCell className="font-medium flex items-center gap-1">
                 <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
-                  <HiMiniUsers
-                    style={{
-                      fill: getRandomColor(),
-                    }}
-                  />
+                  <HiMiniUsers style={{ fill: getRandomColor() }} />
                 </span>
-
                 {member.beneficiaryName}
               </TableCell>
+
               <TableCell>{member.mobileMoneyNumber}</TableCell>
-
-              <TableCell className="">{member.amount}</TableCell>
-
+              <TableCell>{member.amount}</TableCell>
               <TableCell>{member.reason}</TableCell>
+
+              <TableCell>
+                {registeredNames[member.mobileMoneyNumber] || "Loading..."}
+              </TableCell>
 
               <TableCell>{member.serviceProvider}</TableCell>
             </TableRow>
