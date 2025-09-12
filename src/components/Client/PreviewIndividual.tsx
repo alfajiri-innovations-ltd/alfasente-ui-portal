@@ -11,6 +11,7 @@ import { SendMoney } from "@/lib/api-routes";
 import { Wallet2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+import { FetchUserDetails } from "@/lib/services/FetchUserName";
 
 interface PaymentOverViewProps {
   beneficiary: IMembers;
@@ -20,6 +21,7 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
   const client = GetClient();
   const token = getUserToken();
   const [loggedInUser, setLoggedInUser] = useState<IUser>();
+  const [registeredUser, setRegisteredUser] = useState<any>(null);
 
   const [submitting, setSubmitting] = useState(false);
   const clientId = client?.clientID;
@@ -33,6 +35,20 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
   }, []);
 
   const Wallet = client?.walletID;
+  useEffect(() => {
+    if (!beneficiary?.mobileMoneyNumber) return;
+
+    const fetchUser = async () => {
+      try {
+        const res = await FetchUserDetails(beneficiary.mobileMoneyNumber);
+        setRegisteredUser(res);
+      } catch (err) {
+        console.error("Failed to fetch registered user", err);
+      }
+    };
+
+    fetchUser();
+  }, [beneficiary?.mobileMoneyNumber]);
 
   const onSubmit = async () => {
     setSubmitting(true);
@@ -125,6 +141,12 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
       )}
 
       <div className="flex flex-col gap-3 my-3">
+        <div className="flex justify-between items-center">
+          <span>Registered Beneficiary Name</span>
+          <span className="text-[#000000CC] font-bold capitalize">
+            {`${registeredUser?.first_name} ${registeredUser?.last_name}`}
+          </span>
+        </div>
         <div className="flex justify-between items-center">
           <span>Beneficiary name</span>
           <span className="text-[#000000CC] font-bold capitalize">
