@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
@@ -34,7 +34,7 @@ import useStaff from "@/hooks/useStaff";
 export function UploadBeneficiaries() {
   const [file, setFile] = useState<File | null>(null);
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
-    null,
+    null
   );
   const { mutate } = useClientListsWithMembers();
   const { staffData } = useStaff();
@@ -95,7 +95,7 @@ export function UploadBeneficiaries() {
     setFileContent(null);
   };
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     setIsSubmitting(true);
     if (!fileContent) {
       toast({
@@ -123,8 +123,7 @@ export function UploadBeneficiaries() {
 
       const validRows: unknown[] = rows.filter(
         (row) =>
-          Array.isArray(row) &&
-          row.some((cell) => cell !== null && cell !== ""),
+          Array.isArray(row) && row.some((cell) => cell !== null && cell !== "")
       );
 
       const formattedMembers = validRows.map((row) => {
@@ -154,7 +153,7 @@ export function UploadBeneficiaries() {
       const optimisticList = {
         id: Date.now(),
         name: payload.name,
-        members: formattedMembers, 
+        members: formattedMembers,
         clientID: payload.clientID,
         createdAt: new Date().toISOString(),
         createdBy: `${nuser?.firstName ?? ""} ${nuser?.lastName ?? ""}`.trim(),
@@ -182,8 +181,7 @@ export function UploadBeneficiaries() {
             mutate();
 
             navigate("/beneficiaries");
-                        window.location.reload();
-
+            window.location.reload();
           } else {
             mutate();
             toast({
@@ -353,12 +351,12 @@ export function UploadBeneficiaries() {
                                 const selected = filteredUsers.find(
                                   (u) =>
                                     `${u.firstName} ${u.lastName}` ===
-                                    currentValue,
+                                    currentValue
                                 );
                                 if (selected) {
                                   setValue(selected.userId);
                                   setSelectedUserName(
-                                    `${selected.firstName} ${selected.lastName}`,
+                                    `${selected.firstName} ${selected.lastName}`
                                   );
                                 }
                                 setOpen(false);
@@ -370,7 +368,7 @@ export function UploadBeneficiaries() {
                                     "mr-2 h-4 w-4",
                                     value === user.userId
                                       ? "opacity-100"
-                                      : "opacity-0",
+                                      : "opacity-0"
                                   )}
                                 />
                                 {user.firstName} {user.lastName}
@@ -391,6 +389,7 @@ export function UploadBeneficiaries() {
             <PreviewList
               fileContent={fileContent}
               Asignee={selectedUserName}
+              fileName={file?.name}
               // setIsTaken={setIsTaken}
               // isTaken={isTaken}
             />
@@ -422,7 +421,7 @@ export function UploadBeneficiaries() {
                 type="submit"
                 className="bg-[#8D35AA]"
                 onClick={handleSubmit}
-                disabled={submit }
+                disabled={submit}
               >
                 {submit ? "Submitting..." : "Submit for Approval"}
               </Button>
