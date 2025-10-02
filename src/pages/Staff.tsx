@@ -16,14 +16,14 @@ function Staff() {
     staffLoading,
     currentPage,
     currentUsers,
-    active,
-    inactive,
+    // active,
+    // inactive,
     admin,
     employee,
   } = useStaff();
 
   const [activeTab, setActiveTab] = useState<
-    "all" | "makers" | "admin" | "checkers" | "employee"
+    "all" | "admin"  | "employee"
   >("all");
 
   const handlePageChange = (page: number) => {
@@ -49,28 +49,6 @@ function Staff() {
                 All <span className="mx-1">({staffData.length})</span>
               </h4>
 
-              <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                  activeTab === "makers"
-                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                    : "  border-[#F7F9FD]"
-                }  px-2 py-[2px]`}
-                onClick={() => setActiveTab("makers")}
-              >
-                Makers
-                <span className="mx-1">({active.length})</span>
-              </h4>
-              <h4
-                className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
-                  activeTab === "checkers"
-                    ? "text-[#1B2029]  border-[#1B2029]   rounded-[6px] font-semibold"
-                    : "  border-[#F7F9FD]"
-                }  px-2 py-[2px]`}
-                onClick={() => setActiveTab("checkers")}
-              >
-                Checkers
-                <span className="mx-1">({inactive.length})</span>
-              </h4>
 
               <h4
                 className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px]  ${
@@ -119,8 +97,6 @@ function Staff() {
         ) : (
           <div className="my-5">
             {activeTab === "all" && <UsersTable users={currentUsers} />}
-            {activeTab === "makers" && <UsersTable users={active} />}
-            {activeTab === "checkers" && <UsersTable users={inactive} />}
             {activeTab === "admin" && <UsersTable users={admin} />}
 
             {activeTab === "employee" && <UsersTable users={employee} />}
