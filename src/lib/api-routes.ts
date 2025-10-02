@@ -47,7 +47,7 @@ export const GetMembersByListId = (listId: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/mnobeneficiaries/${listId}`;
 
 export const GetUsersByClientId = (clientId: number) =>
-  `${import.meta.env.VITE_BACKEND_API_URL}/users/${clientId}`;
+  `${import.meta.env.VITE_BACKEND_API_URL}/usersByOrganization/${clientId}`;
 
 export const RejectList = () =>
   `${import.meta.env.VITE_BACKEND_API_URL}/rejectList`;
