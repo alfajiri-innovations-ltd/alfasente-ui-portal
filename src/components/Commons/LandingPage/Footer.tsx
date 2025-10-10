@@ -39,8 +39,8 @@ function Footer() {
         </div>
 
         <div className="flex xl:flex-row flex-col my-3 xl:my-0 gap-5 text-[15px] font-normal text-black/70">
-          <span>Terms of Use</span>
-          <span>Privacy Policy</span>
+          <a href="/terms">Terms of Use</a>
+          <a href="/privacy-policy">Privacy Policy</a>
         </div>
       </div>
     </footer>

@@ -31,6 +31,8 @@ import ViewTransactionsPage from "./pages/ViewTransactions";
 import EnterPasswordPage from "./pages/EnterPasswordPage";
 import SetPassword from "./pages/SetPassword";
 import AccessDashboard from "./pages/AccessDashboard";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfUse from "./pages/TermsOfUse";
 
 function App() {
   return (
@@ -79,6 +81,8 @@ function App() {
 
               <Route path="/register" element={<Register />} />
               <Route path="/about" element={<AboutUs />} />
+              <Route path ="/privacy-policy" element ={<PrivacyPolicy/>}/>
+              <Route path ="/terms" element ={<TermsOfUse/>}/>
               {/* end of non auth routes */}
 
               <Route path="*" element={<PageNotFound />} />
