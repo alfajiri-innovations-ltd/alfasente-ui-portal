@@ -316,11 +316,11 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
               <div className="mx-1">
                 I acknowledge that I have reviewed and agreed to Alfasente's{" "}
                 <span className="text-primary underline ">
-                  <Link to={"/privacy-policy"}>Terms and Conditions</Link>
+                  <Link to={"/terms"}>Terms and Conditions</Link>
                 </span>{" "}
                 and{" "}
                 <span className="text-primary underline">
-                  <Link to={"/terms-and-conditions"}>Privacy Policy</Link>
+                  <Link to={"/privacy-policy"}>Privacy Policy</Link>
                 </span>
               </div>
             }
