@@ -107,7 +107,7 @@ export default function SuccessStories() {
       >
         {testimonials.map((testimonial, index) => (
           <SwiperSlide key={index} data-hash={`slide${index + 1}`}>
-            <div className="flex flex-col gap-4  lg:min-h-[152px]  px-5 py-4 text-[#666666] rounded-[10px] border border-[#D4DAE6] hover:bg-[#F7F9FD] hover:border-none">
+            <div className="flex flex-col gap-4  lg:min-h-[152px]  px-5 py-4 text-[#666666] rounded-[10px] border border-[#D4DAE6] hover:bg-[#8D35AA] hover:border-none">
               <div className="flex items-center gap-[14px] mt-2  ">
                 <Avatar className="w-12 h-12">
                   <AvatarImage src="/images/user.png" alt="@shadcn" />
