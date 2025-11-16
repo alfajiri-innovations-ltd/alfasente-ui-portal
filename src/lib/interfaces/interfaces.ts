@@ -10,6 +10,7 @@ export interface IClient {
   created_at?: Date;
   dateRejected?: Date;
   dateApproved?: Date;
+  avatar?:string;
   // date_of_birth?: string;
   walletID?: {
     walletID: number;
@@ -94,6 +95,7 @@ export interface IDetails {
 }
 
 export interface IAuditLogs {
+  id?:number;
   created_by: string;
   role: string;
   created_at: string;
@@ -124,6 +126,7 @@ export interface ITransaction {
   transactionType: string;
   alfasenteCharge?: number;
   currency: string;
+  dateInitiated?:string;
   narration: string;
   status: string;
   liquidationDate: Date;

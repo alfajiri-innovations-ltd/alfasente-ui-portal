@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Filter, Loader } from "lucide-react";
+import {  Filter, Loader } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 import { TransactionsTable } from "@/components/Client/Tables/TransactionsTable";
 import Layout from "@/components/Commons/Layout";
 import useTransactions from "@/hooks/useTransactions";
 import { useClientBulkLists } from "@/lib/services/FectchBulkLists";
+import DatePicker from "@/components/DatePicker";
+import { BulkList, ITransaction } from "@/lib/interfaces/interfaces";
 
 function Transactions() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -13,26 +15,58 @@ function Transactions() {
     "all" | "deposit" | "success" | "sent" | "failed"
   >("all");
   const [activeState, setCurrentState] = useState<"all" | "bulk">("all");
+
   const tabRefs = useRef<Record<string, HTMLHeadingElement | null>>({});
   const [highlightStyle, setHighlightStyle] = useState({ left: 0, width: 0 });
 
-  const {
-    transactions,
-    // totalPages,
-    // currentTransactions,
-    sent,
-    deposit,
-    success,
-    failed,
-    organizationLoading,
-  } = useTransactions();
+  // FIXED: allow date setting
+  const [startDate] = useState<string>("");
+  const [endDate] = useState<string>("");
+
+  const { transactions, sent, deposit, success, failed, organizationLoading } =
+    useTransactions();
 
   const bulkTransactions = useClientBulkLists().data;
 
+  // FIXED: Base filter - applies tab filters first
+  const filteredTransactions = useMemo(() => {
+    const dataPool =
+      activeState === "all"
+        ? { all: transactions, deposit, sent, success, failed }
+        : {
+            all: bulkTransactions,
+            deposit: [],
+            sent: [],
+            success: [],
+            failed: [],
+          };
 
+    return dataPool[activeTab] ?? [];
+  }, [transactions, bulkTransactions, activeTab, activeState]);
+
+  const getTransactionDate = (tx: ITransaction | BulkList) => {
+    if (activeState === "all") {
+      return new Date((tx as ITransaction).recordDate);
+    }
+
+    // bulk transactions
+    return new Date((tx as BulkList).createdAt);
+  };
+
+  const dateFilteredTransactions = useMemo(() => {
+    if (!startDate || !endDate) return filteredTransactions;
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    return filteredTransactions.filter((tx) => {
+      const txDate = getTransactionDate(tx);
+      return txDate >= start && txDate <= end;
+    });
+  }, [filteredTransactions, startDate, endDate, activeState]);
 
   const handlePageChange = (page: number) => {
-    if (totalPages && page >= 1 && page <= totalPages) {
+    if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
@@ -49,36 +83,21 @@ function Transactions() {
     return () => clearTimeout(timeout);
   }, [activeState, transactions]);
 
-  const dataPool =
-    activeState === "all"
-      ? {
-          all: transactions,
-          deposit,
-          sent,
-          success,
-          failed,
-        }
-      : {
-          all: bulkTransactions,
-          deposit: [],
-          sent: [],
-          success: [],
-          failed: [],
-        };
-
-  const dataToRender = dataPool[activeTab];
-
   const transactionsPerPage = 8;
 
-  const paginatedData = dataToRender?.slice(
+  const paginatedData = dateFilteredTransactions.slice(
     (currentPage - 1) * transactionsPerPage,
     currentPage * transactionsPerPage
   );
 
-  const totalPages = dataToRender
-    ? Math.ceil(dataToRender.length / transactionsPerPage)
-    : 0;
+  const totalPages = Math.ceil(
+    dateFilteredTransactions.length / transactionsPerPage
+  );
 
+  const typedPaginatedData =
+    activeState === "all"
+      ? (paginatedData as ITransaction[])
+      : (paginatedData as BulkList[]);
 
   return (
     <Layout title="Transactions">
@@ -97,7 +116,7 @@ function Transactions() {
                   />
                   <h4
                     ref={(el) => (tabRefs.current["all"] = el)}
-                    className={`cursor-pointer text-sm  py-2 relative z-10 ${
+                    className={`cursor-pointer text-sm py-2 ${
                       activeState === "all"
                         ? "text-[#1B2029] font-semibold"
                         : "text-[#5C6474]"
@@ -108,7 +127,7 @@ function Transactions() {
                   </h4>
                   <h4
                     ref={(el) => (tabRefs.current["bulk"] = el)}
-                    className={`cursor-pointer text-sm  py-2 relative z-10 ${
+                    className={`cursor-pointer text-sm py-2 ${
                       activeState === "bulk"
                         ? "text-[#1B2029] font-semibold"
                         : "text-[#5C6474]"
@@ -119,44 +138,40 @@ function Transactions() {
                   </h4>
                 </div>
               )}
+
               <div className="flex items-center gap-2">
                 <Button variant={"outline"}>
                   <Filter /> Filter
                 </Button>
-                <Button>
-                  <Download /> <span>Export Records</span>
-                </Button>
+
+                <DatePicker
+                 dateFilteredTransactions={dateFilteredTransactions}
+                />
               </div>
             </div>
           </div>
 
+          {/* TAB FILTERING */}
           <div className="flex items-center p-1.5">
-            <div className={`flex md:gap-2 text-[15px] font-medium  `}>
+            <div className={`flex md:gap-2 text-[15px] font-medium`}>
               {(activeState === "bulk"
-                ? [{ key: "all", label: "All", data: dataPool.all }]
+                ? [{ key: "all", label: "All", data: filteredTransactions }]
                 : [
-                    { key: "all", label: "All", data: dataPool.all },
-                    {
-                      key: "deposit",
-                      label: "Deposited",
-                      data: dataPool.deposit,
-                    },
-                    { key: "sent", label: "Sent", data: dataPool.sent },
-                    // { key: "success", label: "Success", data: dataPool.success },
-                    // { key: "failed", label: "Failed", data: dataPool.failed },
+                    { key: "all", label: "All", data: filteredTransactions },
+                    { key: "deposit", label: "Deposited", data: deposit },
+                    { key: "sent", label: "Sent", data: sent },
                   ]
               ).map(({ key, label, data }) => (
                 <h4
                   key={key}
-                  className={`cursor-pointer border text-sm text-[#5C6474] rounded-[6px] px-2 py-[2px] ${
+                  className={`cursor-pointer border text-sm rounded-[6px] px-2 py-[2px] ${
                     activeTab === key
                       ? "text-[#1B2029] border-[#1B2029] font-semibold"
-                      : "border-[#F7F9FD]"
+                      : "text-[#5C6474] border-[#F7F9FD]"
                   }`}
                   onClick={() => setActiveTab(key as typeof activeTab)}
                 >
-                  {label}{" "}
-                  {data && <span className="mx-1">({data.length})</span>}
+                  {label} {data && <span>({data.length})</span>}
                 </h4>
               ))}
             </div>
@@ -170,20 +185,19 @@ function Transactions() {
         ) : (
           <div className="my-5">
             <TransactionsTable
-              transactions={paginatedData}
+              transactions={typedPaginatedData}
               activeState={activeState}
             />
           </div>
         )}
 
-        <div className="flex justify-between items-center ">
-          {dataToRender && transactions && (
-            <span className="font-normal text-[15px]  w-full">
-              Showing {paginatedData ? paginatedData.length : 0} of{" "}
-              {dataToRender ? dataToRender.length : 0} results
-            </span>
-          )}
-          {totalPages && (
+        <div className="flex justify-between items-center">
+          <span className="font-normal text-[15px] w-full">
+            Showing {paginatedData.length} of {dateFilteredTransactions.length}{" "}
+            results
+          </span>
+
+          {totalPages > 1 && (
             <PaginationDemo
               currentPage={currentPage}
               totalPages={totalPages}

@@ -17,12 +17,16 @@ import { getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { toast } from "@/hooks/use-toast";
 import { retryTransaction } from "@/lib/services/RetryTransaction";
 import { useState } from "react";
+import { ViewListDialog } from "./ViewList";
+import { ViewAuditLog } from "./ViewAuditLog";
 
 interface ActionProps {
   list?: listsWithMembers;
   listId?: number;
   transactionID?: string;
   id?: number;
+    auditLogId?:number;
+
   activeState?: string;
   bulkStatus?: string;
   failedCount?: number;
@@ -39,6 +43,8 @@ export function ActionsPopover({
   transactionID,
   activeState,
   bulkStatus,
+    auditLogId,
+
   status,
   failedCount,
   failedTransactionIds,
@@ -102,6 +108,7 @@ export function ActionsPopover({
 
         {pathname === "/beneficiaries" && (
           <>
+            <ViewListDialog listId={list?.id ?? 0} />
             <div
               className="flex items-center gap-1 cursor-pointer text-[#000000CC]"
               onClick={() => {
@@ -118,6 +125,9 @@ export function ActionsPopover({
             <DeleteList listId={list?.id ?? 0} />
           </>
         )}
+
+                {pathname === "/audit-logs" && <ViewAuditLog auditLogId={auditLogId} />}
+
 
         {(pathname === "/transactions" ||
           pathname.startsWith("/view-transactions")) && (
