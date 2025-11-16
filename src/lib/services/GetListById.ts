@@ -22,7 +22,6 @@ export function GetList(listId: number) {
           throw new Error("Failed to fetch list");
         }
 
-        console.log(listResponse);
 
         const listData = await listResponse.json();
 

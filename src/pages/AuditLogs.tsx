@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 
-import { Download, Filter, Loader2 } from "lucide-react";
+import {  Filter, Loader2 } from "lucide-react";
 import { PaginationDemo } from "@/components/Client/Pagination";
 import { AuditlogsTable } from "@/components/Client/Tables/AuditLogsTable";
 
@@ -9,6 +9,7 @@ import { useGetOrganizationLogs } from "@/lib/services/FetchOrganizationAuditLog
 
 import { getAuthUser } from "@/lib/cookies/UserMangementCookie";
 import Layout from "@/components/Commons/Layout";
+import LogsDatePicker from "@/components/LogsPicker";
 
 function AuditLogs() {
   // const [currentPage, setCurrentPage] = useState(1);
@@ -25,8 +26,8 @@ function AuditLogs() {
     clientLogs,
   } = useGetOrganizationLogs();
 
-  console.log("ClientLogs", clientLogs);
-
+  const [startDate] = useState<string>("");
+  const [endDate] = useState<string>("");
   const [activeTab, setActiveTab] = useState<
     "all" | "admin" | "employee" | "system"
   >("all");
@@ -37,7 +38,17 @@ function AuditLogs() {
       setCurrentPage(page);
     }
   };
+  const dateFilteredLogs = useMemo(() => {
+    if (!startDate || !endDate) return currentAuditLogs;
 
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    return currentAuditLogs.filter((tx) => {
+      const txDate = new Date(tx.created_at);
+      return txDate >= start && txDate <= end;
+    });
+  }, [currentAuditLogs, startDate, endDate, activeTab]);
   return (
     <Layout title="Audit Logs">
       <div className="flex flex-col mx-5 my-5">
@@ -103,10 +114,7 @@ function AuditLogs() {
               </span>
               Filter
             </Button>
-            <Button>
-              <Download />
-              <span>Export Logs</span>
-            </Button>{" "}
+            <LogsDatePicker dateFilteredLogs={dateFilteredLogs} />
           </div>
         </div>
 

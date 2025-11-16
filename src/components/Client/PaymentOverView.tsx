@@ -1,19 +1,12 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { MembersTable } from "./Tables/MembersTable";
-import { ScrollArea } from "@/components/ui/scroll-area";
+
+import { getRandomColor } from "./Tables/MembersTable";
 
 import { useCalculateCharge } from "@/lib/services/CalculateCharge";
 
 import { GetClient } from "@/lib/services/GetClientById";
 import { formatMoney } from "@/lib/utils";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Wallet2 } from "lucide-react";
+import { HiMiniUsers } from "react-icons/hi2";
 
 interface PaymentOverViewProps {
   list: any;
@@ -22,7 +15,6 @@ interface PaymentOverViewProps {
 }
 function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
   const client = GetClient();
-  const navigate = useNavigate();
 
   const Wallet = client?.walletID;
 
@@ -40,24 +32,156 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
   });
 
   return (
-    <div className="space-y-1 md:h-[350px] overflow-y-auto scrollbar-hide">
-      <div className="flex items-center justify-between gap-3">
-        <div className={` ${Charges?.airtelRawTotal ? "flex" : "hidden"} border  items-center justify-between grow bg-[#FBFDFF] border-[#848EA2] p-2 rounded-md `}>
-          <div className="bg-red-600 rounded-full w-8 h-8 items-center object-cover overflow-hidden flex justify-center">
-            <img src="/images/logos/Airtel.svg" alt="Airtel" />
-          </div>
-          <span>{formatMoney(Wallet?.airtelWalletBalance ?? 0)}</span>
+    <div className="space-y-1 flex flex-col gap-3 overflow-y-auto scrollbar-hide">
+      <div className="flex items-center justify-between gap-2  bg-[#F7F9FD] border rounded-md p-4 border-[#DCE1EC]">
+        <div className="flex items-center gap-3">
+          <span className="rounded-full border    flex justify-center items-center p-1.5">
+            <HiMiniUsers
+              style={{
+                fill: getRandomColor(),
+              }}
+            />
+          </span>
+          <span className="capitalize font-medium text-base">{list.name}</span>
         </div>
 
-        <div className={` ${Charges?.mtnRawTotal ? "flex" : "hidden"} border  items-center justify-between grow bg-[#FBFDFF] border-[#848EA2] p-2 rounded-md `}>
-          <div className="bg-yellow-400 rounded-full w-8 h-8 items-center overflow-hidden object-cover flex justify-center">
-            <img src="/images/logos/MTN.svg" alt="MTN" />
+        <span>{list.members.length} beneficiaries</span>
+      </div>
+
+      <div className="flex flex-col justify-between border rounded-md border-[#DCE1EC] p-4">
+        <h3 className="font-semibold text-lg mb-2">Current Wallet Balances</h3>
+        <div className="flex justify-between items-center gap-3">
+          <div
+            className={` flex border  items-center justify-between grow bg-[#FBFDFF] border-[#848EA2] p-2 rounded-md `}
+          >
+           <div className="flex items-center gap-3">
+
+             <div className="bg-red-600 rounded-full w-8 h-8 items-center object-cover overflow-hidden flex justify-center">
+              <img src="/images/logos/Airtel.svg" alt="Airtel" />
+            </div>
+                          <span>Airtel</span>
+
+           </div>
+            <span>{formatMoney(Wallet?.airtelWalletBalance ?? 0)}</span>
           </div>
-          <span> {formatMoney(Wallet?.mtnWalletBalance ?? 0)}</span>
+
+          <div
+            className={`flex border  items-center justify-between grow bg-[#FBFDFF] border-[#848EA2] p-2 rounded-md `}
+          >
+          <div className="flex items-center gap-3">
+              <div className="bg-yellow-400 rounded-full w-8 h-8 items-center overflow-hidden object-cover flex justify-center">
+              <img src="/images/logos/MTN.svg" alt="MTN" />
+            </div>
+            <span>MTN</span>
+          </div>
+            <span> {formatMoney(Wallet?.mtnWalletBalance ?? 0)}</span>
+          </div>
         </div>
       </div>
 
-      {Charges?.errorMessage && (
+      <div className="flex flex-col border border-[#DCE1EC] p-4 rounded-md">
+        <div className="flex">
+          <span className="font-semibold text-lg">Airtel Breakdown</span>
+        </div>{" "}
+        <div className="h-[.7px] border border-[#E4E8F1] my-2"></div>
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between items-center">
+            <span>Amount to Beneficiaries</span>
+            <span className="text-[#000000CC] font-bold">
+              {formatMoney(Charges?.airtelRawTotal ?? 0)}
+            </span>{" "}
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span>Charges</span>
+            <span className="text-[#000000CC] font-bold">
+              {formatMoney(Charges?.airtelCharges ?? 0)}
+            </span>{" "}
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="font-bold">Total</span>
+            <span className="text-[#000000CC] font-bold">
+              {formatMoney(Charges?.airtelTotal ?? 0)}
+            </span>{" "}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col border border-[#DCE1EC] p-4 rounded-md">
+        <div className="flex">
+          <span className="font-semibold font-lg">Mtn Breakdown</span>
+        </div>{" "}
+        <div className="h-[.7px] border border-[#E4E8F1] my-2"></div>
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between items-center">
+            <span>Amount to Beneficiaries</span>
+            <span className="text-[#000000CC] font-bold">
+              {formatMoney(Charges?.mtnRawTotal ?? 0)}
+            </span>{" "}
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span>Charges</span>
+            <span className="text-[#000000CC] font-bold">
+              {formatMoney(Charges?.mtnCharges ?? 0)}
+            </span>{" "}
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="font-bold">Total</span>
+            <span className="text-[#000000CC] font-bold">
+              {formatMoney(Charges?.mtnTotal ?? 0)}
+            </span>{" "}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col border border-[#DCE1EC] p-4 rounded-md">
+        <div className="flex ">
+          <div className="flex flex-col">
+            <span className="font-semibold text-lg">Payment summary</span>
+            <p className="text-[13px] text-[#5C6474]">Processing AIRTEL and MTN payments</p>
+          </div>
+        </div>{" "}
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between items-center">
+            <span>Total to Beneficiaries</span>
+            <span className="text-[#000000CC] font-bold">
+              {formatMoney(Charges?.airtelRawTotal + Charges?.mtnRawTotal)}
+            </span>{" "}
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span>Platform Charges</span>
+            <span className="text-[#000000CC] font-bold">
+              {formatMoney(Charges?.alfasenteCharge ?? 0)}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span>Total Charges</span>
+            <span className="text-[#000000CC] font-bold">
+              {formatMoney(
+                Charges?.airtelCharges +
+                  Charges?.mtnCharges +
+                  Charges?.alfasenteCharge
+              )}
+            </span>{" "}
+          </div>
+
+          <div className="h-[.7px] border border-[#E4E8F1] my-2"></div>
+
+          <div className="flex justify-between items-center">
+            <span className="font-bold">Grand Total</span>
+            <span className="text-[#000000CC] font-bold">
+              {formatMoney(Charges?.overallTotal ?? 0)}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* {Charges?.errorMessage && (
         <div
           onClick={() => {
             navigate("/fundwallet");
@@ -86,13 +210,13 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
         </div>
         <div
           className={` justify-between items-center ${Charges?.airtelRawTotal ? "flex" : "hidden"}`}
-         >
+        >
           <span>Total Airtel Payout</span>
           <span className="text-[#000000CC] font-bold">
             {formatMoney(Charges?.airtelRawTotal ?? 0)}
           </span>
         </div>
-        <div 
+        <div
           className={` justify-between items-center ${Charges?.airtelCharges ? "flex" : "hidden"}`}
         >
           <span>Airtel charges</span>
@@ -100,7 +224,7 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
             {formatMoney(Charges?.airtelCharges ?? 0)}
           </span>
         </div>
-        <div 
+        <div
           className={` justify-between items-center ${Charges?.mtnCharges ? "flex" : "hidden"}`}
         >
           <span>Mtn charges</span>
@@ -110,7 +234,7 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
         </div>
         <div
           className={` justify-between items-center ${Charges?.mtnTotal ? "flex" : "hidden"}`}
-         >
+        >
           <span>Total Mtn Amount</span>
           <span className="text-[#000000CC] font-bold">
             {formatMoney(Charges?.mtnTotal ?? 0)}
@@ -118,7 +242,7 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
         </div>
         <div
           className={` justify-between items-center ${Charges?.airtelTotal ? "flex" : "hidden"}`}
-         >
+        >
           <span>Total Airtel Amount</span>
           <span className="text-[#000000CC] font-bold">
             {formatMoney(Charges?.airtelTotal ?? 0)}
@@ -158,7 +282,7 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
             </AccordionItem>
           </Accordion>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -91,9 +91,7 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
         description: "Money sent Successfully",
       });
 
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
+    
     } catch (error) {
       toast({
         variant: "destructive",
