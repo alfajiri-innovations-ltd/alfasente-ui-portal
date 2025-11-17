@@ -17,6 +17,7 @@ import PaymentOverViewIndividual from "@/components/Client/PreviewIndividual";
 import { getRandomColor } from "@/components/Client/Tables/MembersTable";
 import PaymentOverView from "@/components/Client/PaymentOverView";
 import { useNavigate } from "react-router-dom";
+// import PaymentInitiated from "@/components/Client/PaymentInitiated";
 
 export function SendFunds() {
   const [previewList] = useState(false);
@@ -28,6 +29,7 @@ export function SendFunds() {
   const [, setFundWalletDialog] = useState(false);
   const client = GetClient();
   const token = getUserToken();
+  // const[transaction_id,setTransactionId]=useState<string>()
 
   const [submitting, setSubmitting] = useState(false);
   const clientId = client?.clientID;
@@ -58,9 +60,9 @@ export function SendFunds() {
     setCurrentStep((prev) => Math.min(prev + 1, 4));
   };
 
-  // const handlePreviousStep = () => {
-  //   setCurrentStep((prev) => Math.max(prev - 1, 1));
-  // };
+  const handlePreviousStep = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 1));
+  };
   // const itemsPerPage = 3;
   // const allLists = GetLists();
 
@@ -139,7 +141,6 @@ export function SendFunds() {
       }),
     };
 
-    // Fire and forget — don't await or chain .then()
     fetch(SendMoney(), {
       method: "POST",
       headers: {
@@ -147,9 +148,20 @@ export function SendFunds() {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload),
-    }).catch((error) => {
+    })
+    .then(async (res) => {
+    const data = await res.json();
+    console.log("Response:", data);
+
+  })
+    
+    .catch((error) => {
       console.error("SendMoney error (background):", error);
     });
+
+    // handleNextStep()
+
+    // setCurrentStep(3)
 
     toast({
       variant: "success",
@@ -308,6 +320,8 @@ export function SendFunds() {
             <p>No list selected</p>
           )}
 
+          {/* {activeTab === "Lists" && currentStep === 3 && <PaymentInitiated transaction_id="1"/>} */}
+
           <div className={`${previewList ? "w-full px-40" : "w-full "}`}>
             {activeTab === "Lists" &&
               (currentStep === 1 ? (
@@ -320,14 +334,25 @@ export function SendFunds() {
                   Continue
                 </Button>
               ) : (
-                <Button
-                  type="submit"
-                  className="bg-[#8D35AA] w-full"
-                  onClick={handleSubmit}
-                  disabled={!checkedListId || errorMessage || submitting}
-                >
-                  {submitting ? "Submitting..." : "Send "}
-                </Button>
+                <div className="flex justify-between items-center gap-3 my-5">
+                  <Button
+                    type="submit"
+                    disabled={!checkedListId}
+                    variant={"outline"}
+                    className=" w-full"
+                    onClick={handlePreviousStep}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="bg-[#8D35AA] w-full"
+                    onClick={handleSubmit}
+                    disabled={!checkedListId || errorMessage || submitting}
+                  >
+                    {submitting ? "Submitting..." : "Send Payments "}
+                  </Button>
+                </div>
               ))}
           </div>
         </div>

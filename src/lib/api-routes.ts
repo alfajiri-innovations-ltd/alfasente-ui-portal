@@ -122,3 +122,13 @@ export const RetryTransactionById = () =>
 
 export const GetUserDetails = (msisdn: string) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/userdetails/${msisdn}`;
+
+
+export const GetAuditLogById = (id: number) =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/auditlogs/${id}`;
+
+export const UploadLogo=()=>  `${import.meta.env.VITE_BACKEND_API_URL}/logo-upload`;
+
+
+export const UploadProfilePhoto=()=>  `${import.meta.env.VITE_BACKEND_API_URL}/profile-upload`;
+

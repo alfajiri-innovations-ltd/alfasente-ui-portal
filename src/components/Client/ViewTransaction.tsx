@@ -17,7 +17,7 @@ import {
   formatMoney,
 } from "@/lib/utils.ts";
 
-import { Download, EyeIcon } from "lucide-react";
+import { Download, EyeIcon, Wallet } from "lucide-react";
 import { useState } from "react";
 
 import { MdOutlineArrowDownward, MdOutlineArrowUpward } from "react-icons/md";
@@ -44,14 +44,14 @@ export function ViewTransactionDialog({
     id !== undefined ? GetBulkTransaction(id) : undefined;
 
   const transactions = bulkTransactionResult?.Transaction;
-
+  const BASERUL = `${import.meta.env.VITE_BACKEND_API_URL}`;
 
   const handleClose = () => {
     setIsDialogOpen(false);
   };
   function getBadgeStatus(proofOfCredit: string | undefined) {
     if (proofOfCredit) {
-      return "bg-[#FFECD1] text-[#B46600] border-[#F5DFFD]";
+      return "bg-[#FFECD1] text-[#B46600] border-[#FFDDB1]";
     } else {
       return "bg-[#F9EBFE] text-[#7E249A] border-[#F5DFFD]";
     }
@@ -67,7 +67,56 @@ export function ViewTransactionDialog({
     //     return "bg-[#FFECD1] text-red-500";
     // }
   }
-console.log(transactions);
+const handleExport = async () => {
+  const payload = activeState === "bulk"
+    ? {
+        type: "bulk",
+        id: transactions?.id,
+        name: transactions?.name,
+        status: transactions?.status,
+        amount: transactions?.totalAmount,
+        createdAt: transactions?.createdAt,
+        completedDate: transactions?.completedDate,
+        members: transactions?.members,
+        sender: transactions?.sender,
+        success: transactions?.success,
+        failed: transactions?.failed,
+        pending: transactions?.pending,
+      }
+    : {
+        type: "single",
+        id: Transaction?.transactionID,
+        amount: Transaction?.mainAmount,
+        status: Transaction?.status,
+        recordDate: Transaction?.recordDate,
+        beneficiary: Transaction?.beneficiaryName,
+        mobile: Transaction?.beneficiaryMobileNumber,
+        narration: Transaction?.narration,
+        proof: Transaction?.proofOfCredit,
+        charges: {
+          mtn: Transaction?.mtnCharge,
+          airtel: Transaction?.airtelCharge,
+          serviceFee: Transaction?.alfasenteCharge,
+          total: Transaction ? getTotalCost(Transaction) : 0,
+        },
+      };
+
+  const res = await fetch("/api/export-transaction", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const blob = await res.blob();
+  const url = window.URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${payload.type}-transaction.pdf`;
+  link.click();
+};
 
   return (
     <Dialog open={DialogOpen} onOpenChange={setIsDialogOpen}>
@@ -81,7 +130,7 @@ console.log(transactions);
           </span>
         </div>
       </DialogTrigger>
-      <DialogContent className="md:w-[450px] w-[90vw] lg:left-[80%] rounded-[10px] h-[90vh]">
+      <DialogContent className="md:w-[450px] w-[90vw] lg:left-[80%] rounded-[10px] h-[500px] overflow-scroll">
         <DialogHeader className="">
           <DialogTitle>Transaction Details</DialogTitle>
         </DialogHeader>
@@ -129,7 +178,7 @@ console.log(transactions);
                         className={`text-[10px] font-extralight px-1 mx-1  ${getBadgeStatus(Transaction?.proofOfCredit)}`}
                       >
                         {" "}
-                        {Transaction?.proofOfCredit ? "Self" : "Manual"}
+                        {Transaction?.proofOfCredit ? "Manual" : "Self"}
                       </Badge>
                     )}
                   </span>
@@ -156,7 +205,7 @@ console.log(transactions);
                     Status
                   </span>
                   <Badge
-                    className={`border rounded-full py-1 px-1.5 text-[14px] ${getStatusBadge(Transaction?.status ?? "")}`}
+                    className={`border rounded-full py-1 px-1.5 capitalize text-[14px] ${getStatusBadge(Transaction?.status ?? "")}`}
                   >
                     {Transaction?.status}{" "}
                   </Badge>
@@ -175,11 +224,20 @@ console.log(transactions);
                   <span className="text-[#7A8397] font-medium text-base">
                     Completed On
                   </span>
-                  <span className="font-medium text-base text-black/80">
-                    {Transaction?.liquidationDate
-                      ? `${formatDateTime(new Date(Transaction.liquidationDate)).date} ${formatDateTime(new Date(Transaction.liquidationDate)).time}`
-                      : "N/A"}
-                  </span>
+
+                  {Transaction?.proofOfCredit ? (
+                    <span className="font-medium text-base text-black/80">
+                      {Transaction?.dateInitiated
+                        ? `${formatDateTime(new Date(Transaction.dateInitiated)).date} ${formatDateTime(new Date(Transaction.dateInitiated)).time}`
+                        : "---"}
+                    </span>
+                  ) : (
+                    <span className="font-medium text-base text-black/80">
+                      {Transaction?.liquidationDate
+                        ? `${formatDateTime(new Date(Transaction.liquidationDate)).date} ${formatDateTime(new Date(Transaction.liquidationDate)).time}`
+                        : "N/A"}
+                    </span>
+                  )}
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[#7A8397] font-medium text-base">
@@ -251,34 +309,85 @@ console.log(transactions);
                     {formatMoney(Transaction?.mainAmount ?? 0)}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-[#7A8397] font-medium text-base">
-                    {Transaction?.mtnCharge ? "Mtn Charges" : "Airtel Charges"}
-                  </span>
-                  <span className="font-medium text-base text-black/80">
-                    {Transaction?.mtnCharge
-                      ? `${formatMoney(Transaction?.mtnCharge ?? 0)}`
-                      : `${formatMoney(Transaction?.airtelCharge ?? 0)}`}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[#7A8397] font-medium text-base">
-                    ServiceFee
-                  </span>
-                  <span className="font-medium text-base text-black/80">
-                    {formatMoney(Transaction?.alfasenteCharge ?? 0)}
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[#7A8397] font-medium text-base">
-                    Total Cost
-                  </span>
-                  <span className="font-medium text-base text-black/80">
-                    {Transaction
-                      ? formatMoney(getTotalCost(Transaction))
-                      : "N/A"}
-                  </span>
-                </div>
+
+                {Transaction?.proofOfCredit && (
+                  <div className="border h-[.7px] border-[#EDF0F7] my-4"></div>
+                )}
+
+                {Transaction?.proofOfCredit ? (
+                  <>
+                    <div className="flex flex-col ">
+                      <div className="flex items-center gap-2">
+                        <Wallet className="text-[#7A8397]" />
+                        <h3>Wallet Allocation</h3>
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <div className="flex justify-between">
+                          <span className="text-[#7A8397] font-medium text-base">
+                            Airtel Wallet Allocation
+                          </span>
+                          <span>
+                            {formatMoney(Transaction?.airtelWalletBalance ?? 0)}
+                          </span>
+                        </div>
+
+                        <div className="flex justify-between">
+                          <span className="text-[#7A8397] font-medium text-base">
+                            Mtn Wallet Allocation
+                          </span>
+                          <span>
+                            {formatMoney(Transaction?.mtnWalletBalance ?? 0)}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="border h-[.7px] border-[#EDF0F7] my-4"></div>
+
+                      <h3>Payment Proof</h3>
+
+                      <div className="bg-slate-300 h-[230px] rounded-2xl w-full overflow-hidden my-3">
+                        <img
+                          src={`${BASERUL}/${Transaction.proofOfCredit}`}
+                          alt="Proof of Payment"
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex justify-between">
+                      <span className="text-[#7A8397] font-medium text-base">
+                        {Transaction?.mtnCharge
+                          ? "Mtn Charges"
+                          : "Airtel Charges"}
+                      </span>
+                      <span className="font-medium text-base text-black/80">
+                        {Transaction?.mtnCharge
+                          ? `${formatMoney(Transaction?.mtnCharge ?? 0)}`
+                          : `${formatMoney(Transaction?.airtelCharge ?? 0)}`}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[#7A8397] font-medium text-base">
+                        ServiceFee
+                      </span>
+                      <span className="font-medium text-base text-black/80">
+                        {formatMoney(Transaction?.alfasenteCharge ?? 0)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[#7A8397] font-medium text-base">
+                        Total Cost
+                      </span>
+                      <span className="font-medium text-base text-black/80">
+                        {Transaction
+                          ? formatMoney(getTotalCost(Transaction))
+                          : "N/A"}
+                      </span>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           ) : (
@@ -445,7 +554,7 @@ console.log(transactions);
               Close
             </Button>
 
-            <Button type="submit" className="items-center gap-1">
+            <Button type="submit" className="items-center gap-1" onClick={handleExport}>
               <Download />
               Export
             </Button>

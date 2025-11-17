@@ -48,6 +48,9 @@ export function getStatusBadge(status: ITransaction["status"]) {
     case "processing":
       return "bg-[#FFECD1] text-[#B46600] border-[#FFDDB1]";
 
+     case "pending":
+      return "bg-[#FFECD1] text-[#B46600] border-[#FFDDB1]";  
+
     default:
       return "bg-red-100 text-red-500";
   }

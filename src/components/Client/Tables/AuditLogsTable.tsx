@@ -66,7 +66,7 @@ export function AuditlogsTable({ auditlogs, role_name }: IAuditLogsTable) {
 
             <TableCell>{auditlog.created_at}</TableCell>
             <TableCell>
-              <ActionsPopover />{" "}
+              <ActionsPopover auditLogId={auditlog.id} />
             </TableCell>
           </TableRow>
         ))}
