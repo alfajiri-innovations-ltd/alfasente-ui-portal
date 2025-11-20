@@ -50,7 +50,7 @@ export default function SuccessStories() {
 
   return (
     <section
-      className="flex flex-col mt-14 lg:mt-[98px] lg:px-[6.25vw] mx-4 xl:mx-0"
+      className="hidden flex-col mt-14 lg:mt-[98px] lg:px-[6.25vw] mx-4 xl:mx-0"
       id="testimonials"
     >
       <div className="flex items-center justify-between mb-3">
