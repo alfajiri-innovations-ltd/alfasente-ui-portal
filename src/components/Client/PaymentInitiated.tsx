@@ -2,22 +2,22 @@ import { Check } from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
-import { GetTransaction } from "@/lib/services/GetTransactionById";
-import { GetClient } from "@/lib/services/GetClientById";
 import { formatMoney } from "@/lib/utils";
+import { useUser } from "@/hooks/UserContext";
+
 
 interface ISuccessFulDeposit {
-  transaction_id: string;
+  listName: string;
+  amount:number;
+  beneficiaryName?:string
+
 }
-function PaymentInitiated({transaction_id}:ISuccessFulDeposit) {
+function PaymentInitiated({listName,amount,beneficiaryName}:ISuccessFulDeposit) {
   const navigate = useNavigate();
+    const user = useUser();
+  
 
-  const transactionID =transaction_id;
 
-  const { Transaction } = GetTransaction(transactionID ?? "");
-const network="mtn"
-  const client = GetClient();
-  const Wallet = client?.walletID;
 
   return (
     <div className="flex flex-col justify-center gap-2">
@@ -28,40 +28,38 @@ const network="mtn"
       </div>
 
       <div className="flex flex-col justify-center items-center">
-        <span>+UGX {0}</span>
+          <span>+{formatMoney(amount)}</span>
 
         <p>Payment initiated. You’ll be notified once completed</p>
         <span>Deposit Successful</span>
-        <span>
-          {Transaction?.liquidationDate
-            ? Transaction.liquidationDate instanceof Date
-              ? Transaction.liquidationDate.toLocaleString()
-              : Transaction.liquidationDate
-            : ""}
-        </span>
+         <span>
+          {new Intl.DateTimeFormat("en-GB", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+          }).format(new Date())}
+        </span>{" "}
       </div>
       <Separator className="dotted" />
 
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <span>Wallet balance</span>
-          <span>
-            {network === "mtn"
-              ? formatMoney(Wallet?.mtnWalletBalance ?? 0)
-              : formatMoney(Wallet?.airtelWalletBalance ?? 0)}
+          <span>{listName ? 'Beneficiary list':'Beneficiary Name'}</span>
+          <span className="capitalize">
+            {listName || beneficiaryName}
           </span>
         </div>
+       
         <div className="flex items-center justify-between">
-          <span>Transaction ID</span>
-          <span>#{Transaction?.transactionID.slice(0, 10)}</span>
+          <span>Performed by</span>
+          <span className="capitalize">{user?.firstName + " " + user?.lastName}</span>
         </div>
         <div className="flex items-center justify-between">
-          <span>Mobile number</span>
-          <span>+256{Transaction?.sourceOfFunds}</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span>Funder</span>
-          <span>{Transaction?.payer || Transaction?.userName}</span>
+          <span>Total amount sent</span>
+          <span>{formatMoney(amount)}</span>
         </div>
         <div className="flex justify- gap-4">
           <Button

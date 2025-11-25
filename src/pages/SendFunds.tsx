@@ -17,6 +17,7 @@ import PaymentOverViewIndividual from "@/components/Client/PreviewIndividual";
 import { getRandomColor } from "@/components/Client/Tables/MembersTable";
 import PaymentOverView from "@/components/Client/PaymentOverView";
 import { useNavigate } from "react-router-dom";
+import PaymentInitiated from "@/components/Client/PaymentInitiated";
 // import PaymentInitiated from "@/components/Client/PaymentInitiated";
 
 export function SendFunds() {
@@ -36,6 +37,8 @@ export function SendFunds() {
   const [errorMessage, showErrorMessage] = useState(false);
 
   const [Beneficiary, setBeneficiary] = useState<IMembers | null>(null);
+
+const [amount, setAmount] = useState<number>(0);
 
   const [checkedList, setCheckedList] = useState<listsWithMembers | null>(null);
 
@@ -149,19 +152,17 @@ export function SendFunds() {
       },
       body: JSON.stringify(payload),
     })
-    .then(async (res) => {
-    const data = await res.json();
-    console.log("Response:", data);
+      .then(async (res) => {
+        const data = await res.json();
+        console.log("Response:", data);
+      })
 
-  })
-    
-    .catch((error) => {
-      console.error("SendMoney error (background):", error);
-    });
+      .catch((error) => {
+        console.error("SendMoney error (background):", error);
+      });
 
-    // handleNextStep()
 
-    // setCurrentStep(3)
+    setCurrentStep(3);
 
     toast({
       variant: "success",
@@ -169,7 +170,7 @@ export function SendFunds() {
       description: "Processing in the background.",
     });
 
-    navigate("/transactions");
+    // navigate("/transactions");
   };
 
   return (
@@ -201,34 +202,37 @@ export function SendFunds() {
           /> */}
 
           <div className="">
-            <h3>Send Funds</h3>
+            {currentStep !== 3 && <h3>Send Funds</h3>}
+            {currentStep !== 3 && (
+              <div className="relative">
+                <div className="flex gap-10 text-[15px] py-2">
+                  {["Lists", "Individual"].map((tab) => (
+                    <div key={tab} className="relative">
+                      <h4
+                        className={`cursor-pointer ${
+                          activeTab === tab ? " font-semibold" : ""
+                        }`}
+                        onClick={() => setActiveTab(tab)}
+                      >
+                        {tab}
+                      </h4>
 
-            <div className="relative">
-              <div className="flex gap-10 text-[15px] py-2">
-                {["Lists", "Individual"].map((tab) => (
-                  <div key={tab} className="relative">
-                    <h4
-                      className={`cursor-pointer ${
-                        activeTab === tab ? " font-semibold" : ""
-                      }`}
-                      onClick={() => setActiveTab(tab)}
-                    >
-                      {tab}
-                    </h4>
-
-                    {activeTab === tab && (
-                      <div className="absolute left-1/2 -translate-x-1/2 -bottom-2.5 w-full h-[3px] bg-[#B66FCF] rounded-full"></div>
-                    )}
-                  </div>
-                ))}
+                      {activeTab === tab && (
+                        <div className="absolute left-1/2 -translate-x-1/2 -bottom-2.5 w-full h-[3px] bg-[#B66FCF] rounded-full"></div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <hr className="border-gray-300 " />
               </div>
-              <hr className="border-gray-300 " />
-            </div>
+            )}
             <h4 className="text-black my-3">
               {activeTab === "Lists" &&
                 (currentStep === 1
                   ? "1. Select beneficiary list"
-                  : "2.Payment Overview")}
+                  : currentStep === 2
+                    ? "2. Payment Overview"
+                    : "")}
             </h4>
           </div>
 
@@ -246,7 +250,9 @@ export function SendFunds() {
               {currentStep === 2 && Beneficiary && (
                 <PaymentOverViewIndividual
                   beneficiary={Beneficiary}
+                  setCurrentStep={setCurrentStep}
                   onClose={onClose}
+                  setAmount={setAmount}
                 />
               )}
             </>
@@ -312,15 +318,24 @@ export function SendFunds() {
               </div>
             </div>
           ) : checkedList ? (
-            <PaymentOverView
-              list={checkedList}
-              showErrorMessage={showErrorMessage}
-            />
+            currentStep !== 3 && (
+              <PaymentOverView
+                list={checkedList}
+                setAmount={setAmount}
+                showErrorMessage={showErrorMessage}
+              />
+            )
           ) : (
             <p>No list selected</p>
           )}
 
-          {/* {activeTab === "Lists" && currentStep === 3 && <PaymentInitiated transaction_id="1"/>} */}
+          {currentStep === 3 && (
+            <PaymentInitiated
+              amount={amount ?? 0}
+              listName={checkedList?.name ?? ""}
+              beneficiaryName={Beneficiary?.beneficiaryName}
+            />
+          )}
 
           <div className={`${previewList ? "w-full px-40" : "w-full "}`}>
             {activeTab === "Lists" &&
@@ -334,25 +349,27 @@ export function SendFunds() {
                   Continue
                 </Button>
               ) : (
-                <div className="flex justify-between items-center gap-3 my-5">
-                  <Button
-                    type="submit"
-                    disabled={!checkedListId}
-                    variant={"outline"}
-                    className=" w-full"
-                    onClick={handlePreviousStep}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    type="submit"
-                    className="bg-[#8D35AA] w-full"
-                    onClick={handleSubmit}
-                    disabled={!checkedListId || errorMessage || submitting}
-                  >
-                    {submitting ? "Submitting..." : "Send Payments "}
-                  </Button>
-                </div>
+                currentStep !== 3 && (
+                  <div className="flex justify-between items-center gap-3 my-5">
+                    <Button
+                      type="submit"
+                      disabled={!checkedListId}
+                      variant={"outline"}
+                      className=" w-full"
+                      onClick={handlePreviousStep}
+                    >
+                      Back
+                    </Button>
+                    <Button
+                      type="submit"
+                      className="bg-[#8D35AA] w-full"
+                      onClick={handleSubmit}
+                      disabled={!checkedListId || errorMessage || submitting}
+                    >
+                      {submitting ? "Submitting..." : "Send Payments "}
+                    </Button>
+                  </div>
+                )
               ))}
           </div>
         </div>
