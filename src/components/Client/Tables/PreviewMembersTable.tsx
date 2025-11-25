@@ -57,7 +57,6 @@ export function PreviewMembersTable({ members }: IMembersTable) {
 
     fetchNames();
   }, [members]);
-  console.log(registeredNames);
 
   return (
     <div className="rounded-lg overflow-x-auto">

@@ -13,13 +13,7 @@ function NavItems() {
         </a>
       </li>
 
-      {/* <li
-        className={`cursor-pointer text-[#000000CC] ${pathname === "/resources" && "text-texthighlight font-semibold"} active:text-primary   `}
-      >
-        <Link to="/resources" className="cursor-pointer">
-          Resources
-        </Link>
-      </li> */}
+    
       <li
         className={`cursor-pointer text-[#000000CC] ${pathname === "/about" && "text-texthighlight font-semibold"} active:text-primary   `}
       >

@@ -11,9 +11,10 @@ import { HiMiniUsers } from "react-icons/hi2";
 interface PaymentOverViewProps {
   list: any;
   showErrorMessage: React.Dispatch<React.SetStateAction<boolean>>;
+  setAmount:React.Dispatch<React.SetStateAction<number>>;
   // onClose?: () => void;
 }
-function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
+function PaymentOverView({ list, showErrorMessage,setAmount }: PaymentOverViewProps) {
   const client = GetClient();
 
   const Wallet = client?.walletID;
@@ -24,6 +25,9 @@ function PaymentOverView({ list, showErrorMessage }: PaymentOverViewProps) {
     listId: list.id,
     clientId: ClientID,
   });
+  
+
+  setAmount(Charges?.overallTotal)
 
   useEffect(() => {
     if (Charges?.errorMessage) {

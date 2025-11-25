@@ -6,7 +6,7 @@ import { GetClient } from "@/lib/services/GetClientById";
 import { Button } from "../ui/button";
 import { formatMoney } from "@/lib/utils";
 import { getAuthUser, getUserToken } from "@/lib/cookies/UserMangementCookie";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { SendMoney } from "@/lib/api-routes";
 import { Wallet2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -16,8 +16,10 @@ import { FetchUserDetails } from "@/lib/services/FetchUserName";
 interface PaymentOverViewProps {
   beneficiary: IMembers;
   onClose?: () => void;
+  setCurrentStep:React.Dispatch<SetStateAction<number>>;
+  setAmount:React.Dispatch<SetStateAction<number>>;
 }
-function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
+function PaymentOverViewIndividual({ beneficiary ,setCurrentStep,setAmount}: PaymentOverViewProps) {
   const client = GetClient();
   const token = getUserToken();
   const [loggedInUser, setLoggedInUser] = useState<IUser>();
@@ -49,6 +51,10 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
 
     fetchUser();
   }, [beneficiary?.mobileMoneyNumber]);
+
+
+    setAmount(Charges?.overallTotal)
+
 
   const onSubmit = async () => {
     setSubmitting(true);
@@ -86,6 +92,7 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
         });
       }
 
+      setCurrentStep(3)
       toast({
         variant: "success",
         description: "Money sent Successfully",
@@ -142,7 +149,8 @@ function PaymentOverViewIndividual({ beneficiary }: PaymentOverViewProps) {
         <div className="flex justify-between items-center">
           <span>Registered Beneficiary Name</span>
           <span className="text-[#000000CC] font-bold capitalize">
-            {`${registeredUser?.first_name} ${registeredUser?.last_name}`}
+            {registeredUser ? `${registeredUser?.first_name} ${registeredUser?.last_name}`:'Loading...'}
+            
           </span>
         </div>
         <div className="flex justify-between items-center">

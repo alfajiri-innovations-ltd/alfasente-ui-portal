@@ -15,14 +15,14 @@ function AuthorizeDeposit({ handleNextStep, details }: IAuthorizeDeposit) {
   const transactionID = details.transaction_id;
 
 
-  console.log("---->TID", transactionID)
+  console.log(details)
+
 
   const { Transaction } = GetTransaction(transactionID ?? "");
 
 
   console.log("Transaction",Transaction)
 
-  setTimeout(() => {});
 
   useEffect(() => {
     if (!transactionID) return;
