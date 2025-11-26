@@ -7,7 +7,10 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "prompt",
+      registerType: "autoUpdate",
+      devOptions: {
+        enabled: true,
+      },
       includeAssets: ["favicon.svg", "robots.txt", "apple-touch-icon.png"],
       manifest: {
         name: "Alfasente",
@@ -19,18 +22,18 @@ export default defineConfig({
         start_url: "/",
         icons: [
           {
-            src: "/icons/android-chrome-192x192.png",
+            src: "images/icons/android-chrome-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "/icons/android-chrome-512x512.png",
+            src: "images/icons/android-chrome-512x512.png",
 
             sizes: "512x512",
             type: "image/png",
           },
           {
-            src: "/icons/android-chrome-512x512.png",
+            src: "images/icons/android-chrome-512x512.png",
 
             sizes: "512x512",
             type: "image/png",
