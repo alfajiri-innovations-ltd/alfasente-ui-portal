@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IDetails } from "@/lib/interfaces/interfaces";
 import { GetTransaction } from "@/lib/services/GetTransactionById";
+import { useCurrency } from "@/hooks/useCurrency";
 interface IAuthorizeDeposit {
   handleNextStep: () => void;
   details: IDetails;
@@ -14,8 +15,8 @@ function AuthorizeDeposit({ handleNextStep, details }: IAuthorizeDeposit) {
 
   const transactionID = details.transaction_id;
 
+  const { currency: airtelCurrency } = useCurrency("airtel");
 
-  console.log(details)
 
 
   const { Transaction } = GetTransaction(transactionID ?? "");
@@ -80,7 +81,7 @@ function AuthorizeDeposit({ handleNextStep, details }: IAuthorizeDeposit) {
         </div>
         <p className="font-normal text-sm">
           {`A payment prompt has been sent to +256${details.accountNumber}. Enter your PIN to
-            authorize deposit of UGX ${details.amount?.toLocaleString()}.`}
+            authorize deposit of ${airtelCurrency} ${details.amount?.toLocaleString()}.`}
         </p>
 
         {failed && (

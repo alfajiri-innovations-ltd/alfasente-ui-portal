@@ -6,6 +6,7 @@ import { getAuthUser, getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { CollectMoney } from "@/lib/api-routes";
 import { useClientContext } from "@/hooks/ClientContext";
 import { toast } from "@/hooks/use-toast";
+import { useCurrency } from "@/hooks/useCurrency";
 
 interface IConfirmDetails {
   details: IDetails;
@@ -26,6 +27,7 @@ function ConfirmPaymentDetails({
 
   const serviceFee = client.clientData?.alfasenteCharge || Charge;
   const totalFee = Number(details.amount) + Number(serviceFee);
+  const { currency: airtelCurrency } = useCurrency("airtel");
 
   const [warning] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -105,12 +107,12 @@ function ConfirmPaymentDetails({
 
         <div className="flex items-center justify-between">
           <span>Amount</span>
-          <span>UGX {details?.amount.toLocaleString()}</span>
+          <span>{airtelCurrency}  {details?.amount.toLocaleString()}</span>
         </div>
 
         <div className="flex items-center justify-between font-semibold">
           <span>Total Fee</span>
-          <span>UGX {details?.amount.toLocaleString()}</span>
+          <span>{airtelCurrency} {details?.amount.toLocaleString()}</span>
         </div>
 
         {warning && <div className="text-red-600 text-sm">{warning}</div>}

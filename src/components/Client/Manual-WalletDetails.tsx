@@ -17,6 +17,7 @@ import { ManualTopUp } from "@/lib/api-routes";
 import { getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { toast } from "@/hooks/use-toast";
 import { ScrollArea } from "../ui/scroll-area";
+import { useCurrency } from "@/hooks/useCurrency";
 
 const FormSchema = z.object({
   amount: z.number().min(1000, { message: "Amount must be at least 1,000" }),
@@ -44,6 +45,8 @@ function ManualWalletDetails({
   const [editing, setEditing] = useState<"airtel" | "mtn" | null>(null);
   const user = useUser();
   const token = getUserToken();
+    const { currency: airtelCurrency } = useCurrency("airtel");
+  
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -167,7 +170,7 @@ function ManualWalletDetails({
                     <FormControl>
                       <div className="flex items-center border rounded-lg">
                         <span className="px-3 py-2 text-gray-700 rounded-l-md">
-                          UGX
+                          {airtelCurrency}
                         </span>
                         <Input
                           {...field}
@@ -252,7 +255,7 @@ function ManualWalletDetails({
                         <FormControl>
                           <div className="flex items-center border rounded-lg">
                             <span className="px-3 py-2 text-gray-700 rounded-l-md">
-                              UGX
+                              {airtelCurrency}
                             </span>
                             <Input
                               {...field}
