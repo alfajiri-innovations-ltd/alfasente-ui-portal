@@ -11,6 +11,7 @@ import { HiMiniUsers } from "react-icons/hi2";
 import { EditBeneficiary } from "../EditBeneficiary";
 import { DeleteBeneficiary } from "../DeleteBeneficiary";
 import { formatMoney } from "@/lib/utils";
+import { useCurrency } from "@/hooks/useCurrency";
 
 export interface IMembers {
   beneficiaryName: string;
@@ -31,13 +32,15 @@ export const getRandomColor = () => {
 };
 
 export function MembersTable({ members }: IMembersTable) {
+    const { currency: airtelCurrency } = useCurrency("airtel");
+
   return (
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead className="">Name</TableHead>
           <TableHead>Mobile Number</TableHead>
-          <TableHead>Amount (UGX)</TableHead>
+          <TableHead>Amount ({airtelCurrency})</TableHead>
           <TableHead className="">Reason</TableHead>
         </TableRow>
       </TableHeader>

@@ -15,7 +15,6 @@ function ViewMembers() {
   const { listId } = useParams();
   const parsedListId = parseInt(listId || "", 10);
   const [currentPage, setCurrentPage] = useState(1);
-
   const fetchedList = GetList(parsedListId);
 
   const [list, setList] = useState<any>(null);

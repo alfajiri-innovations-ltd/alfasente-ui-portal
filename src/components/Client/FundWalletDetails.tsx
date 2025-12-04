@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useCurrency } from "@/hooks/useCurrency";
+
 
 import { Button } from "@/components/ui/button";
 import {
@@ -77,6 +79,7 @@ function FundWalletDetails({
   details,
 }: IFundWalletDetails) {
   const [isFormReady] = useState(true);
+  const { currency: airtelCurrency } = useCurrency("airtel");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -163,13 +166,13 @@ function FundWalletDetails({
                   <FormLabel className="flex justify-between">
                     Enter Amount
                     <span className="text-[#7A8397] font-normal text-xs">
-                      Min: UGX 1,000 | Max: UGX 3,000,000
+                      `Min: {airtelCurrency} 1,000 | Max: {airtelCurrency} 3,000,000
                     </span>
                   </FormLabel>
                   <FormControl>
                     <div className="flex items-center border rounded-lg">
                       <span className="px-3 py-2 text-gray-700 rounded-l-md">
-                        UGX
+                        {airtelCurrency}
                       </span>
                       <Input
                         {...field}

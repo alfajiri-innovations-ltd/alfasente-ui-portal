@@ -15,6 +15,7 @@ import { MdOutlineArrowDownward, MdOutlineArrowUpward } from "react-icons/md";
 import { BulkList, ITransaction } from "@/lib/interfaces/interfaces";
 import { formatMoney } from "@/lib/utils";
 import { useLocation } from "react-router-dom";
+import { useCurrency } from "@/hooks/useCurrency";
 
 interface TransactionsTableProps {
   transactions?: ITransaction[] | BulkList[];
@@ -62,6 +63,7 @@ export function TransactionsTable({
 }: TransactionsTableProps) {
   const location = useLocation();
   const { pathname } = location;
+    const { currency: airtelCurrency } = useCurrency("airtel");
 
   return (
     <Table>
@@ -79,7 +81,7 @@ export function TransactionsTable({
             </>
           )}
 
-          <TableHead>Amount (UGX)</TableHead>
+          <TableHead>Amount ({airtelCurrency})</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Recipient</TableHead>
           <TableHead className="">Date and Time</TableHead>

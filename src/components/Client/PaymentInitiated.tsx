@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
 import { formatMoney } from "@/lib/utils";
 import { useUser } from "@/hooks/UserContext";
+import { useCurrency } from "@/hooks/useCurrency";
 
 
 interface ISuccessFulDeposit {
@@ -15,7 +16,7 @@ interface ISuccessFulDeposit {
 function PaymentInitiated({listName,amount,beneficiaryName}:ISuccessFulDeposit) {
   const navigate = useNavigate();
     const user = useUser();
-  
+    const { currency: airtelCurrency } = useCurrency("airtel");
 
 
 
@@ -59,7 +60,7 @@ function PaymentInitiated({listName,amount,beneficiaryName}:ISuccessFulDeposit) 
         </div>
         <div className="flex items-center justify-between">
           <span>Total amount sent</span>
-          <span>{formatMoney(amount)}</span>
+          <span>{formatMoney(amount,airtelCurrency)}</span>
         </div>
         <div className="flex justify- gap-4">
           <Button

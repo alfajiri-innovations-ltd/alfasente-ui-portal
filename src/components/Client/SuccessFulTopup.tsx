@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { useUser } from "@/hooks/UserContext";
 import { useNavigate } from "react-router-dom";
 import { formatMoney } from "@/lib/utils";
+import { useCurrency } from "@/hooks/useCurrency";
 
 interface SuccessFulTopUpProps {
   ManualTopUpDetails: any;
@@ -11,6 +12,9 @@ interface SuccessFulTopUpProps {
 
 function SuccessFulTopUp({ ManualTopUpDetails }: SuccessFulTopUpProps) {
   const user = useUser();
+    const { currency: airtelCurrency } = useCurrency("airtel");
+    const { currency: mtnCurrency } = useCurrency("mtn");
+  
 
   const navigate = useNavigate();
   return (
@@ -43,7 +47,7 @@ function SuccessFulTopUp({ ManualTopUpDetails }: SuccessFulTopUpProps) {
       <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <span>Amount to top-up</span>
-          <span>{formatMoney(ManualTopUpDetails.amount)}</span>
+          <span>{formatMoney(ManualTopUpDetails.amount,airtelCurrency)}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Request ID</span>
@@ -51,11 +55,11 @@ function SuccessFulTopUp({ ManualTopUpDetails }: SuccessFulTopUpProps) {
         </div>
         <div className="flex items-center justify-between">
           <span>Airtel Money wallet</span>
-          <span>{formatMoney(ManualTopUpDetails?.airtelAllocation) || 0}</span>
+          <span>{formatMoney(ManualTopUpDetails?.airtelAllocation,airtelCurrency) || 0}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Mtn Money wallet</span>
-          <span>{formatMoney(ManualTopUpDetails?.mtnAllocation) || 0}</span>
+          <span>{formatMoney(ManualTopUpDetails?.mtnAllocation,mtnCurrency) || 0}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>User</span>
