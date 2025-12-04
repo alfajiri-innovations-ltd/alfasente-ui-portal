@@ -13,6 +13,7 @@ import Layout from "@/components/Commons/Layout";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { formatMoney } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { useCurrency } from "@/hooks/useCurrency";
 
 function Dashboard() {
   const User = GetUser();
@@ -26,6 +27,8 @@ function Dashboard() {
   const [user, setUser] = useState(false);
   const [viewAirtelBalance, setViewAirtelBalance] = useState(false);
   const [viewMtnBalance, setViewMtnBalance] = useState(false);
+  const { currency: airtelCurrency } = useCurrency("airtel");
+  const { currency: mtnCurrency } = useCurrency("mtn");
 
   const HandleAirtelClick = () => {
     setViewAirtelBalance(!viewAirtelBalance);
@@ -114,7 +117,10 @@ function Dashboard() {
                   </div>
                   <span className="text-white text-lg font-bold ">
                     {viewAirtelBalance
-                      ? formatMoney(Wallet?.airtelWalletBalance ?? 0)
+                      ? formatMoney(
+                          Wallet?.airtelWalletBalance ?? 0,
+                          airtelCurrency
+                        )
                       : "XXXXXX"}
                   </span>
                 </div>
@@ -149,7 +155,7 @@ function Dashboard() {
                   </div>
                   <span className="text-white text-lg font-bold ">
                     {viewMtnBalance
-                      ? formatMoney(Wallet?.mtnWalletBalance ?? 0)
+                      ? formatMoney(Wallet?.mtnWalletBalance ?? 0, mtnCurrency)
                       : "XXXXXX"}
                   </span>
                 </div>

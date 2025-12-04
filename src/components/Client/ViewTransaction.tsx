@@ -25,6 +25,7 @@ import { Badge } from "../ui/badge";
 
 import { GetBulkTransaction } from "@/lib/services/fetchBulkTransactionById";
 import { getStatusBadge } from "./Tables/TransactionsTable";
+import { useCurrency } from "@/hooks/useCurrency";
 
 interface ViewTransactionDialogProp {
   transactionID?: string;
@@ -39,6 +40,8 @@ export function ViewTransactionDialog({
 }: ViewTransactionDialogProp) {
   const { Transaction, loading, error } = GetTransaction(transactionID || "");
   const [DialogOpen, setIsDialogOpen] = useState(false);
+    const { currency: airtelCurrency } = useCurrency("airtel");
+    const { currency: mtnCurrency } = useCurrency("mtn");
 
   const bulkTransactionResult =
     id !== undefined ? GetBulkTransaction(id) : undefined;
@@ -186,8 +189,8 @@ const handleExport = async () => {
 
                 <span>
                   {Transaction?.transactionType === "Disbursement Transaction"
-                    ? `- ${formatMoney(Transaction?.mainAmount ?? 0)}`
-                    : `${formatMoney(Transaction?.mainAmount ?? 0)}`}
+                    ? `- ${formatMoney(Transaction?.mainAmount ?? 0,airtelCurrency)}`
+                    : `${formatMoney(Transaction?.mainAmount ?? 0,airtelCurrency)}`}
                 </span>
               </div>
 
@@ -306,7 +309,7 @@ const handleExport = async () => {
                     Amount
                   </span>
                   <span className="font-medium text-base text-black/80">
-                    {formatMoney(Transaction?.mainAmount ?? 0)}
+                    {formatMoney(Transaction?.mainAmount ?? 0,airtelCurrency)}
                   </span>
                 </div>
 
@@ -327,7 +330,7 @@ const handleExport = async () => {
                             Airtel Wallet Allocation
                           </span>
                           <span>
-                            {formatMoney(Transaction?.airtelWalletBalance ?? 0)}
+                            {formatMoney(Transaction?.airtelWalletBalance ?? 0,airtelCurrency)}
                           </span>
                         </div>
 
@@ -336,7 +339,7 @@ const handleExport = async () => {
                             Mtn Wallet Allocation
                           </span>
                           <span>
-                            {formatMoney(Transaction?.mtnWalletBalance ?? 0)}
+                            {formatMoney(Transaction?.mtnWalletBalance ?? 0,mtnCurrency)}
                           </span>
                         </div>
                       </div>
@@ -364,8 +367,8 @@ const handleExport = async () => {
                       </span>
                       <span className="font-medium text-base text-black/80">
                         {Transaction?.mtnCharge
-                          ? `${formatMoney(Transaction?.mtnCharge ?? 0)}`
-                          : `${formatMoney(Transaction?.airtelCharge ?? 0)}`}
+                          ? `${formatMoney(Transaction?.mtnCharge ?? 0,mtnCurrency)}`
+                          : `${formatMoney(Transaction?.airtelCharge ?? 0,airtelCurrency)}`}
                       </span>
                     </div>
                     <div className="flex justify-between">
@@ -373,7 +376,7 @@ const handleExport = async () => {
                         ServiceFee
                       </span>
                       <span className="font-medium text-base text-black/80">
-                        {formatMoney(Transaction?.alfasenteCharge ?? 0)}
+                        {formatMoney(Transaction?.alfasenteCharge ?? 0,airtelCurrency)}
                       </span>
                     </div>
                     <div className="flex justify-between">
@@ -382,7 +385,7 @@ const handleExport = async () => {
                       </span>
                       <span className="font-medium text-base text-black/80">
                         {Transaction
-                          ? formatMoney(getTotalCost(Transaction))
+                          ? formatMoney(getTotalCost(Transaction),airtelCurrency)
                           : "N/A"}
                       </span>
                     </div>
@@ -406,7 +409,7 @@ const handleExport = async () => {
                 </div>
 
                 <span>
-                  {`- ${formatMoney(transactions?.totalAmount ?? 0)}`}
+                  {`- ${formatMoney(transactions?.totalAmount ?? 0,airtelCurrency)}`}
                 </span>
               </div>
 
@@ -477,7 +480,7 @@ const handleExport = async () => {
                     Amount
                   </span>
                   <span className="font-medium text-base text-black/80">
-                    {formatMoney(transactions?.totalAmount ?? 0)}
+                    {formatMoney(transactions?.totalAmount ?? 0,airtelCurrency)}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -485,7 +488,7 @@ const handleExport = async () => {
                     Airtel Charges
                   </span>
                   <span className="font-medium text-base text-black/80">
-                    {formatMoney(transactions?.airtelCharges ?? 0)}
+                    {formatMoney(transactions?.airtelCharges ?? 0,airtelCurrency)}
                   </span>
                 </div>
 
@@ -494,7 +497,7 @@ const handleExport = async () => {
                     Mtn Charges
                   </span>
                   <span className="font-medium text-base text-black/80">
-                    {formatMoney(transactions?.mtnCharges ?? 0)}
+                    {formatMoney(transactions?.mtnCharges ?? 0,mtnCurrency)}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -502,7 +505,7 @@ const handleExport = async () => {
                     Platform Fee
                   </span>
                   <span className="font-medium text-base text-black/80">
-                    {formatMoney(transactions?.serviceFee ?? 0)}
+                    {formatMoney(transactions?.serviceFee ?? 0,airtelCurrency)}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -510,7 +513,7 @@ const handleExport = async () => {
                     Total Cost
                   </span>
                   <span className="font-medium text-base text-black/80">
-                    {formatMoney(transactions?.totalAmount ?? 0)}
+                    {formatMoney(transactions?.totalAmount ?? 0,airtelCurrency)}
                   </span>
                 </div>
               </div>

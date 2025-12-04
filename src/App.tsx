@@ -34,6 +34,15 @@ import AccessDashboard from "./pages/AccessDashboard";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsOfUse";
 
+
+import { registerSW } from 'virtual:pwa-register';
+
+registerSW({
+  immediate: true,
+});
+
+
+
 function App() {
   return (
     <>
