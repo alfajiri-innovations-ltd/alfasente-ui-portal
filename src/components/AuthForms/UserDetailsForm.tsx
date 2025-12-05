@@ -161,7 +161,7 @@ export function UserDetailsForm({ handleClick }: IUserDetailsFormProps) {
         toast({
           variant: "destructive",
           title: "Failure",
-          description: `User creation failed. ${userError.message}`,
+          description: `${userError.message}`,
         });
       }
     } catch (error) {

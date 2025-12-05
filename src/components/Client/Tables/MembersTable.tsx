@@ -32,7 +32,7 @@ export const getRandomColor = () => {
 };
 
 export function MembersTable({ members }: IMembersTable) {
-    const { currency: airtelCurrency } = useCurrency("airtel");
+    const { currency: airtelCurrency } = useCurrency();
 
   return (
     <Table>

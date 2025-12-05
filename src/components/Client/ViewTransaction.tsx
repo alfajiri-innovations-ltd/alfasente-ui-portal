@@ -40,8 +40,7 @@ export function ViewTransactionDialog({
 }: ViewTransactionDialogProp) {
   const { Transaction, loading, error } = GetTransaction(transactionID || "");
   const [DialogOpen, setIsDialogOpen] = useState(false);
-    const { currency: airtelCurrency } = useCurrency("airtel");
-    const { currency: mtnCurrency } = useCurrency("mtn");
+    const { currency: airtelCurrency } = useCurrency();
 
   const bulkTransactionResult =
     id !== undefined ? GetBulkTransaction(id) : undefined;
@@ -339,7 +338,7 @@ const handleExport = async () => {
                             Mtn Wallet Allocation
                           </span>
                           <span>
-                            {formatMoney(Transaction?.mtnWalletBalance ?? 0,mtnCurrency)}
+                            {formatMoney(Transaction?.mtnWalletBalance ?? 0,airtelCurrency)}
                           </span>
                         </div>
                       </div>
@@ -367,7 +366,7 @@ const handleExport = async () => {
                       </span>
                       <span className="font-medium text-base text-black/80">
                         {Transaction?.mtnCharge
-                          ? `${formatMoney(Transaction?.mtnCharge ?? 0,mtnCurrency)}`
+                          ? `${formatMoney(Transaction?.mtnCharge ?? 0,airtelCurrency)}`
                           : `${formatMoney(Transaction?.airtelCharge ?? 0,airtelCurrency)}`}
                       </span>
                     </div>
@@ -497,7 +496,7 @@ const handleExport = async () => {
                     Mtn Charges
                   </span>
                   <span className="font-medium text-base text-black/80">
-                    {formatMoney(transactions?.mtnCharges ?? 0,mtnCurrency)}
+                    {formatMoney(transactions?.mtnCharges ?? 0,airtelCurrency)}
                   </span>
                 </div>
                 <div className="flex justify-between">

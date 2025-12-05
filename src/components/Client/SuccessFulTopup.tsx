@@ -12,8 +12,7 @@ interface SuccessFulTopUpProps {
 
 function SuccessFulTopUp({ ManualTopUpDetails }: SuccessFulTopUpProps) {
   const user = useUser();
-    const { currency: airtelCurrency } = useCurrency("airtel");
-    const { currency: mtnCurrency } = useCurrency("mtn");
+    const { currency: airtelCurrency } = useCurrency();
   
 
   const navigate = useNavigate();
@@ -59,7 +58,7 @@ function SuccessFulTopUp({ ManualTopUpDetails }: SuccessFulTopUpProps) {
         </div>
         <div className="flex items-center justify-between">
           <span>Mtn Money wallet</span>
-          <span>{formatMoney(ManualTopUpDetails?.mtnAllocation,mtnCurrency) || 0}</span>
+          <span>{formatMoney(ManualTopUpDetails?.mtnAllocation,airtelCurrency) || 0}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>User</span>
