@@ -27,7 +27,7 @@ function ConfirmPaymentDetails({
 
   const serviceFee = client.clientData?.alfasenteCharge || Charge;
   const totalFee = Number(details.amount) + Number(serviceFee);
-  const { currency: airtelCurrency } = useCurrency("airtel");
+  const { currency: airtelCurrency } = useCurrency();
 
   const [warning] = useState("");
   const [submitting, setSubmitting] = useState(false);

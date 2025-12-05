@@ -17,8 +17,7 @@ interface PaymentOverViewProps {
 }
 function PaymentOverView({ list, showErrorMessage,setAmount }: PaymentOverViewProps) {
   const client = GetClient();
-  const { currency: airtelCurrency } = useCurrency("airtel");
-    const { currency: mtnCurrency } = useCurrency("mtn");
+  const { currency: airtelCurrency } = useCurrency();
   const Wallet = client?.walletID;
 
   const ClientID = list.clientID.clientID;
@@ -80,7 +79,7 @@ function PaymentOverView({ list, showErrorMessage,setAmount }: PaymentOverViewPr
             </div>
             <span>MTN</span>
           </div>
-            <span> {formatMoney(Wallet?.mtnWalletBalance ?? 0,mtnCurrency)}</span>
+            <span> {formatMoney(Wallet?.mtnWalletBalance ?? 0,airtelCurrency)}</span>
           </div>
         </div>
       </div>
@@ -123,21 +122,21 @@ function PaymentOverView({ list, showErrorMessage,setAmount }: PaymentOverViewPr
           <div className="flex justify-between items-center">
             <span>Amount to Beneficiaries</span>
             <span className="text-[#000000CC] font-bold">
-              {formatMoney(Charges?.mtnRawTotal ?? 0,mtnCurrency)}
+              {formatMoney(Charges?.mtnRawTotal ?? 0,airtelCurrency)}
             </span>{" "}
           </div>
 
           <div className="flex justify-between items-center">
             <span>Charges</span>
             <span className="text-[#000000CC] font-bold">
-              {formatMoney(Charges?.mtnCharges ?? 0,mtnCurrency)}
+              {formatMoney(Charges?.mtnCharges ?? 0,airtelCurrency)}
             </span>{" "}
           </div>
 
           <div className="flex justify-between items-center">
             <span className="font-bold">Total</span>
             <span className="text-[#000000CC] font-bold">
-              {formatMoney(Charges?.mtnTotal ?? 0,mtnCurrency)}
+              {formatMoney(Charges?.mtnTotal ?? 0,airtelCurrency)}
             </span>{" "}
           </div>
         </div>

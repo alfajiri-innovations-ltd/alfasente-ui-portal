@@ -16,7 +16,7 @@ interface ISuccessFulDeposit {
 function PaymentInitiated({listName,amount,beneficiaryName}:ISuccessFulDeposit) {
   const navigate = useNavigate();
     const user = useUser();
-    const { currency: airtelCurrency } = useCurrency("airtel");
+    const { currency: airtelCurrency } = useCurrency();
 
 
 

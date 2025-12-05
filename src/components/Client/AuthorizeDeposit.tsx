@@ -15,7 +15,7 @@ function AuthorizeDeposit({ handleNextStep, details }: IAuthorizeDeposit) {
 
   const transactionID = details.transaction_id;
 
-  const { currency: airtelCurrency } = useCurrency("airtel");
+  const { currency: airtelCurrency } = useCurrency();
 
 
 
