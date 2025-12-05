@@ -63,7 +63,7 @@ export function TransactionsTable({
 }: TransactionsTableProps) {
   const location = useLocation();
   const { pathname } = location;
-    const { currency: airtelCurrency } = useCurrency("airtel");
+    const { currency: airtelCurrency } = useCurrency();
 
   return (
     <Table>

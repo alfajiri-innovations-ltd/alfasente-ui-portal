@@ -79,7 +79,7 @@ function FundWalletDetails({
   details,
 }: IFundWalletDetails) {
   const [isFormReady] = useState(true);
-  const { currency: airtelCurrency } = useCurrency("airtel");
+  const { currency: airtelCurrency } = useCurrency();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

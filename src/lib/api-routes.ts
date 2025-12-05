@@ -132,11 +132,6 @@ export const UploadLogo=()=>  `${import.meta.env.VITE_BACKEND_API_URL}/logo-uplo
 
 export const UploadProfilePhoto=()=>  `${import.meta.env.VITE_BACKEND_API_URL}/profile-upload`;
 
-export const GetAirtelCurrency=()=>  `${import.meta.env.VITE_BACKEND_API_URL}/airtelCurrency`;
+export const GetPlatformCurrency=()=>  `${import.meta.env.VITE_BACKEND_API_URL}/platformCurreny`;
 
-export const GetMTNCurrency=()=>  `${import.meta.env.VITE_BACKEND_API_URL}/mtnCurrency`;
-
-export const GetAirtelCountry=()=>  `${import.meta.env.VITE_BACKEND_API_URL}/airtelCountry`;
-
-export const GetMTNCountry=()=>  `${import.meta.env.VITE_BACKEND_API_URL}/mtnCountry`;
 

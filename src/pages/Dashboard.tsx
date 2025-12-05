@@ -27,8 +27,7 @@ function Dashboard() {
   const [user, setUser] = useState(false);
   const [viewAirtelBalance, setViewAirtelBalance] = useState(false);
   const [viewMtnBalance, setViewMtnBalance] = useState(false);
-  const { currency: airtelCurrency } = useCurrency("airtel");
-  const { currency: mtnCurrency } = useCurrency("mtn");
+  const { currency: airtelCurrency } = useCurrency();
 
   const HandleAirtelClick = () => {
     setViewAirtelBalance(!viewAirtelBalance);
@@ -155,7 +154,7 @@ function Dashboard() {
                   </div>
                   <span className="text-white text-lg font-bold ">
                     {viewMtnBalance
-                      ? formatMoney(Wallet?.mtnWalletBalance ?? 0, mtnCurrency)
+                      ? formatMoney(Wallet?.mtnWalletBalance ?? 0, airtelCurrency)
                       : "XXXXXX"}
                   </span>
                 </div>

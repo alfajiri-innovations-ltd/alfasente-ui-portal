@@ -45,7 +45,7 @@ function ManualWalletDetails({
   const [editing, setEditing] = useState<"airtel" | "mtn" | null>(null);
   const user = useUser();
   const token = getUserToken();
-    const { currency: airtelCurrency } = useCurrency("airtel");
+    const { currency: airtelCurrency } = useCurrency();
   
 
   const form = useForm<z.infer<typeof FormSchema>>({
