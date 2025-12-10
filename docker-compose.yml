@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  alfasente-ui-portal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: alfasente-ui-portal
+    ports:
+      - "3005:80"
+    restart: unless-stopped
+    networks:
+      - alfasente-network
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  alfasente-network:
+    driver: bridge
+
