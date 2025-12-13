@@ -3,21 +3,24 @@ import { GetClient } from "@/lib/services/GetClientById";
 import { Button } from "../ui/button";
 import { Cloud, Trash } from "lucide-react";
 import { UploadLogo } from "@/lib/api-routes";
+import { toast } from "@/hooks/use-toast";
 
 function OrganizationSettings() {
   const client = GetClient();
   const baseUrl = import.meta.env.VITE_BACKEND_API_URL;
 
   const [logoPreview, setLogoPreview] = useState<string | null>(
-    client?.avatar
-      ? `${baseUrl}/${client.avatar}`
-      : "/images/user.png"
+    client?.avatar ? `${baseUrl}/${client.avatar}` : "/images/user.png"
   );
   const [, setLogoFile] = useState<File | null>(null);
 
- const [uploading, setUploading] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+
+  console.log("Client data in OrganizationSettings:", client);
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file || !client?.clientID) return;
 
@@ -36,14 +39,26 @@ function OrganizationSettings() {
       const result = await response.json();
 
       if (response.ok) {
-        setLogoFile(result.avatar); 
-        alert("Logo uploaded successfully!");
+        setLogoFile(result.avatar);
+        toast({
+          variant: "success",
+          title: "Successful",
+          description: "Logo uploaded successfully",
+        });
       } else {
-        alert(result.error || "Upload failed");
+        toast({
+          variant: "destructive",
+          title: "Failure",
+          description: "Upload failed",
+        });
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong while uploading.");
+      toast({
+        variant: "destructive",
+        title: "Failure",
+        description: "Upload failed",
+      });
     } finally {
       setUploading(false);
     }
@@ -53,7 +68,6 @@ function OrganizationSettings() {
     setLogoFile(null);
     setLogoPreview("/images/user.png");
   };
-
 
   return (
     <div className="rounded-md border border-[#D4DAE6] flex flex-col gap-2 py-4 px-5">
@@ -77,7 +91,12 @@ function OrganizationSettings() {
               className="hidden"
               onChange={handleFileChange}
             />
-            <Button variant="outline" className="text-[#8D35AA]" disabled={uploading} asChild>
+            <Button
+              variant="outline"
+              className="text-[#8D35AA]"
+              disabled={uploading}
+              asChild
+            >
               <span className="flex items-center gap-1 cursor-pointer">
                 <Cloud size={16} />
                 Upload logo
