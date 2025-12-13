@@ -1,4 +1,4 @@
-name: Deploy AlfaSente UI Portal
+name: Deploy AlfaSente Bulk Payments UI Portal
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install dependencies
         run: npm i
@@ -44,8 +44,7 @@ jobs:
             cd ${{ vars.STAGING_APP_PATH }}
             git fetch origin
             git reset --hard origin/dev
-            npm i
-            npm run build
+            docker compose up --build -d
 
   deploy-production:
     name: Deploy to Production
@@ -65,5 +64,4 @@ jobs:
             cd ${{ vars.PRODUCTION_APP_PATH }}
             git fetch origin
             git reset --hard origin/main
-            npm i
-            npm run build
+            docker compose up --build -d
