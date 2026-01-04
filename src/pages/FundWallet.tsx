@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { ArrowLeft, X } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
-import FundWalletDetails from "@/components/Client/FundWalletDetails";
-import ConfirmPaymentDetails from "@/components/Client/ConfirmPaymentDetails";
-import AuthorizeDeposit from "@/components/Client/AuthorizeDeposit";
-import SuccessFulDeposit from "@/components/Client/SuccessFulDeposit";
+// import { Progress } from "@/components/ui/progress";
+// import FundWalletDetails from "@/components/Client/FundWalletDetails";
+// import ConfirmPaymentDetails from "@/components/Client/ConfirmPaymentDetails";
+// import AuthorizeDeposit from "@/components/Client/AuthorizeDeposit";
+// import SuccessFulDeposit from "@/components/Client/SuccessFulDeposit";
 import ManualWalletDetails from "@/components/Client/Manual-WalletDetails";
 import SuccessFulTopUp from "@/components/Client/SuccessFulTopup";
 import { useNavigate } from "react-router-dom";
 
 export function FundWallet() {
-  const [Details, setDetails] = useState({
-    amount: 0,
-    accountNumber: "",
-    network: "",
-  });
+  // const [Details, setDetails] = useState({
+  //   amount: 0,
+  //   accountNumber: "",
+  //   network: "",
+  // });
 
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ export function FundWallet() {
     transactionID: "",
   });
 
-  const [activeTab, setActiveTab] = useState("Self Top-up");
+  const [activeTab, setActiveTab] = useState("Manual Top-up");
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleNextStep = () => {
@@ -62,7 +62,7 @@ export function FundWallet() {
       </div>
       <div className="flex flex-col  items-center ">
         <div className="flex items-center gap-10 md:-mt-5  ">
-          {currentStep !== 3 &&
+          {/* {currentStep !== 3 &&
             !(activeTab === "Manual Top-up" && currentStep === 2) && (
               <Progress
                 value={
@@ -70,7 +70,7 @@ export function FundWallet() {
                 }
                 className="w-[40vw] my-4"
               />
-            )}
+            )} */}
         </div>
 
         <div className="md:w-[40vw] w-[80vw]">
@@ -83,7 +83,7 @@ export function FundWallet() {
             !(activeTab === "Manual Top-up" && currentStep === 2) && (
               <div className="relative">
                 <div className="flex gap-10 text-[15px] py-2">
-                  {["Self Top-up", "Manual Top-up"].map((tab) => (
+                  {["Manual Top-up"].map((tab) => (
                     <div key={tab} className="relative">
                       <h4
                         className={`cursor-pointer ${
@@ -104,33 +104,33 @@ export function FundWallet() {
               </div>
             )}
 
-          {activeTab === "Self Top-up" && currentStep === 1 && (
+          {/* {activeTab === "Self Top-up" && currentStep === 1 && (
             <FundWalletDetails
               handleNextStep={handleNextStep}
               setFundDetails={setDetails}
               details={Details}
             />
-          )}
+          )} */}
 
-          {activeTab === "Self Top-up" && currentStep === 2 && (
+          {/* {activeTab === "Self Top-up" && currentStep === 2 && (
             <ConfirmPaymentDetails
               handleNextStep={handleNextStep}
               details={Details}
               setFundDetails={setDetails}
               handlePreviousStep={handlePreviousStep}
             />
-          )}
+          )} */}
 
-          {activeTab === "Self Top-up" && currentStep === 3 && (
+          {/* {activeTab === "Self Top-up" && currentStep === 3 && (
             <AuthorizeDeposit
               handleNextStep={handleNextStep}
               details={Details}
             />
-          )}
-
+          )} */}
+{/* 
           {activeTab === "Self Top-up" && currentStep === 4 && (
             <SuccessFulDeposit details={Details} />
-          )}
+          )} */}
 
           {activeTab === "Manual Top-up" && currentStep === 1 && (
             <ManualWalletDetails
