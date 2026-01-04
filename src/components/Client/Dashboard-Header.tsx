@@ -5,6 +5,7 @@ import { AccountPopover } from "./Account-Popover";
 import { useUser } from "@/hooks/UserContext";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { signal } from "@preact/signals";
+import { AppSwitcher } from "../AppSwitcher";
 interface DashboardHeaderProps {
   PageTitle: string;
   triggerSidebar: (x: boolean) => void;
@@ -16,7 +17,8 @@ function DashboardHeader({ PageTitle, triggerSidebar }: DashboardHeaderProps) {
   const trigger = signal(false);
   return (
     <div className="w-full flex justify-between border-b border-[#DCE1EC] items-center px-4 py-3 ">
-      {isMobile && (
+      <div>
+        {isMobile && (
         <div className="flex flex-row items-center justify-between">
           <MenuIcon
             onClick={() => {
@@ -32,7 +34,10 @@ function DashboardHeader({ PageTitle, triggerSidebar }: DashboardHeaderProps) {
       {!isMobile && (
         <span className="sm:text-2xl text-lg mx-1 font-bold">{PageTitle}</span>
       )}
-      {/* search component */}
+      </div>
+
+      <div className="flex items-center gap-10">
+         {/* search component */}
       {!isMobile && (
         <div className="flex  bg-[#EDF0F7] items-center px-1 rounded-full  lg:px-3 lg:rounded-[10px]">
           <Search className=" w-3 h-3 lg:h-4 lg:w-4" />
@@ -44,6 +49,7 @@ function DashboardHeader({ PageTitle, triggerSidebar }: DashboardHeaderProps) {
           />
         </div>
       )}
+      <AppSwitcher/>
       {/* component */}
       <div className="flex items-center sm:gap-2">
         <Avatar>
@@ -64,6 +70,9 @@ function DashboardHeader({ PageTitle, triggerSidebar }: DashboardHeaderProps) {
 
         <AccountPopover />
       </div>
+      </div>
+      
+     
     </div>
   );
 }
