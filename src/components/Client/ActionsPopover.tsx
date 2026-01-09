@@ -19,6 +19,7 @@ import { retryTransaction } from "@/lib/services/RetryTransaction";
 import { useState } from "react";
 import { ViewListDialog } from "./ViewList";
 import { ViewAuditLog } from "./ViewAuditLog";
+import { GrSend } from "react-icons/gr";
 
 interface ActionProps {
   list?: listsWithMembers;
@@ -108,6 +109,8 @@ export function ActionsPopover({
 
         {pathname === "/beneficiaries" && (
           <>
+
+          
             <ViewListDialog listId={list?.id ?? 0} />
             <div
               className="flex items-center gap-1 cursor-pointer text-[#000000CC]"
@@ -121,6 +124,13 @@ export function ActionsPopover({
 
               <span>View members</span>
             </div>
+            {list?.status==="Approved" && (
+            <div className="flex items-center gap-1 cursor-pointer text-[#000000CC]">
+              <GrSend className="h-4 w-4"/>
+              <span>Send funds</span>
+
+            </div>
+          )}
             <RenameList list={list} />
             <DeleteList listId={list?.id ?? 0} />
           </>

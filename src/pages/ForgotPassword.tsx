@@ -29,13 +29,13 @@ function ForgotPasswordPage() {
         />
       </div>
 
-      <div className="flex flex-col  mt-10 items-center md:justify-center  ">
+      <div className="flex flex-col   mt-10 items-center md:justify-center  ">
         <Progress
           value={(currentStep / 3) * 100}
           className="md:w-[40vw] w-[80vw] translate-y-8 "
         />
 
-        <div className="md:w-[40vw] w-[80vw]">
+        <div className="md:w-[40vw]  w-[80vw]">
           {currentStep === 1 && (
             <div className=" mt-16">
               <h5 className="font-semibold text-[22px] my-2">

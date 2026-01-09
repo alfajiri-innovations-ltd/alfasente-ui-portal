@@ -16,7 +16,7 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen ">
       <div className="rounded-full ml-auto -translate-x-10 translate-y-5 md:translate-y-10 w-min p-2 bg-[#EDF0F7]">
         <X
           className=" right-2 cursor-pointer text-gray-500 hover:text-gray-700"
@@ -26,7 +26,7 @@ function LoginPage() {
         />
       </div>
 
-      <div className="flex flex-col md:mt-32 mt-10 items-center md:justify-center  ">
+      <div className="flex flex-col md:mt-32 mt-10 items-center   h-[60vh] md:justify-center  ">
         {currentStep === 1 && (
           <div className="md:w-[30vw] w-[80vw]">
             <h5 className="text-left my-2 font-semibold text-[22px]">

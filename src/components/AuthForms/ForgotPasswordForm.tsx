@@ -90,7 +90,7 @@ export function ForgotPasswordForm({ handleClick }: IUserDetailsFormProps) {
               <FormControl>
                 <Input
                   placeholder="johndoe@gmail"
-                  className=" border-[#DCE1EC]"
+                  className=" border-[#DCE1EC] py-5"
                   {...field}
                 />
               </FormControl>
@@ -103,7 +103,7 @@ export function ForgotPasswordForm({ handleClick }: IUserDetailsFormProps) {
         <div className="col-span-2">
           <Button
             type="submit"
-            className="w-full my-2 bg-[#8D35AA]"
+            className="w-full my-5 font-bold text-lg py-6 bg-[#8D35AA]"
             disabled={submitting}
           >
             {submitting ? "Submitting..." : " Reset Password"}
