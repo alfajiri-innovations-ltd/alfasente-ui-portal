@@ -128,7 +128,7 @@ export function LoginForm({ HandleNextStep, setEmail }: LoginFormProps) {
                   <Input
                     placeholder="example@gmail"
                     disabled={submitting}
-                    className=" border-[#DCE1EC] py-5"
+                    className=" border-[#DCE1EC] py-5 "
                     {...field}
                   />
                 </FormControl>
