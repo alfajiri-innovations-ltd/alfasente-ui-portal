@@ -26,7 +26,7 @@ export function FundWallet() {
     transactionID: "",
   });
 
-  const [activeTab, setActiveTab] = useState("Manual Top-up");
+  // const [activeTab, setActiveTab] = useState("Manual Top-up");
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleNextStep = () => {
@@ -74,11 +74,10 @@ export function FundWallet() {
         </div>
 
         <div className="md:w-[40vw] w-[80vw]">
-          {(activeTab === "Self Top-up" && currentStep <= 2) ||
-          (activeTab === "Manual Top-up" && currentStep === 1) ? (
-            <h3 className="font-bold">Fund your Wallet</h3>
+          {currentStep === 1 ? (
+            <h3 className="font-bold text-[28px]">Fund your Wallet</h3>
           ) : null}
-
+          {/* 
           {currentStep !== 4 &&
             !(activeTab === "Manual Top-up" && currentStep === 2) && (
               <div className="relative">
@@ -102,7 +101,7 @@ export function FundWallet() {
                 </div>
                 <hr className="border-gray-300 " />
               </div>
-            )}
+            )} */}
 
           {/* {activeTab === "Self Top-up" && currentStep === 1 && (
             <FundWalletDetails
@@ -127,19 +126,19 @@ export function FundWallet() {
               details={Details}
             />
           )} */}
-{/* 
+          {/* 
           {activeTab === "Self Top-up" && currentStep === 4 && (
             <SuccessFulDeposit details={Details} />
           )} */}
 
-          {activeTab === "Manual Top-up" && currentStep === 1 && (
+          {currentStep === 1 && (
             <ManualWalletDetails
               handleNextStep={handleNextStep}
               setManualDetails={setManualDetails}
             />
           )}
 
-          {activeTab === "Manual Top-up" && currentStep === 2 && (
+          {currentStep === 2 && (
             <SuccessFulTopUp ManualTopUpDetails={ManualDetails} />
           )}
         </div>
