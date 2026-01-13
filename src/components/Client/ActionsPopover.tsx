@@ -112,6 +112,13 @@ export function ActionsPopover({
 
           
             <ViewListDialog listId={list?.id ?? 0} />
+            {list?.status==="Approved" && (
+            <div className="flex items-center gap-1 cursor-pointer text-[#000000CC]">
+              <GrSend className="h-4 w-4"/>
+              <span>Send money</span>
+
+            </div>
+          )}
             <div
               className="flex items-center gap-1 cursor-pointer text-[#000000CC]"
               onClick={() => {
@@ -124,13 +131,7 @@ export function ActionsPopover({
 
               <span>View members</span>
             </div>
-            {list?.status==="Approved" && (
-            <div className="flex items-center gap-1 cursor-pointer text-[#000000CC]">
-              <GrSend className="h-4 w-4"/>
-              <span>Send funds</span>
-
-            </div>
-          )}
+            
             <RenameList list={list} />
             <DeleteList listId={list?.id ?? 0} />
           </>

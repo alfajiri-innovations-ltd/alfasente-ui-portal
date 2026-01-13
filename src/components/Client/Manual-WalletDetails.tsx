@@ -18,6 +18,7 @@ import { getUserToken } from "@/lib/cookies/UserMangementCookie";
 import { toast } from "@/hooks/use-toast";
 import { ScrollArea } from "../ui/scroll-area";
 import { useCurrency } from "@/hooks/useCurrency";
+import { Copy, Check } from "lucide-react";
 
 const FormSchema = z.object({
   amount: z.number().min(1000, { message: "Amount must be at least 1,000" }),
@@ -38,6 +39,7 @@ function ManualWalletDetails({
 }: IManualWalletDetails) {
   const [fileName, setFileName] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const [isFormReady, setIsFormReady] = useState(true);
 
@@ -45,8 +47,7 @@ function ManualWalletDetails({
   const [editing, setEditing] = useState<"airtel" | "mtn" | null>(null);
   const user = useUser();
   const token = getUserToken();
-    const { currency: airtelCurrency } = useCurrency();
-  
+  const { currency: airtelCurrency } = useCurrency();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -151,12 +152,70 @@ function ManualWalletDetails({
     }
   }
 
+  const valueToCopy = "9030027385973";
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(valueToCopy);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
   return (
     <>
       <div className="space-y-4">
-        <h3 className="text-base font-medium my-3">
-          Ensure you have completed the payment before submitting this request.
+        <h3 className="text-base font-medium mb-3 text-[#5C6474] ">
+          Deposit to the bank account below first. After your deposit is
+          successful, submit your manual top-up request{" "}
         </h3>
+        <div className="border border-[#E4E8F1] bg-[#F7F9FD] rounded-[10px] p-4">
+          <h4 className="font-semibold text-base text-[#000000CC] border-b pb-1 mb-3 border-[#EDF0F7]">
+            Stanbic Bank - Deposit details
+          </h4>
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-between items-center  border-b pb-1 border-[#EDF0F7]">
+              <span className="text-[#7A8397] text-[15px]">Account Name</span>
+              <span className="font-medium text-[15px] text-[#000000CC]">
+                THE BYTE VILLAGE (U) LTD
+              </span>
+            </div>
+
+            <div className="flex justify-between items-center  border-b pb-1 border-[#EDF0F7]">
+              <span className="text-[#7A8397] text-[15px]">Account Number</span>
+              <p className="font-medium text-[15px] flex items-center gap-2 text-[#000000CC]">
+                {valueToCopy}
+                <span
+                  onClick={handleCopy}
+                  className="cursor-pointer"
+                  title="Copy"
+                >
+                  {copied ? (
+                    <Check className="text-green-600" size={15} />
+                  ) : (
+                    <Copy className="text-[#8D35AA] cursor-pointer" size={15} />
+                  )}
+                </span>
+              </p>
+            </div>
+
+            <div className="flex justify-between items-center  ">
+              <span className="text-[#7A8397] text-[15px]">Branch</span>
+              <span className="font-medium text-[15px] text-[#000000CC]">
+                Lugogo Branch{" "}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="border border-[#EDF0F7] "></div>
+
+        <div>
+          <h5 className="font-semibold text-base">
+            Submit manual top-up request
+          </h5>
+          <p className="text-[#5C6474] text-sm">
+            Enter the deposited amount and upload proof of deposit
+          </p>
+        </div>
 
         <ScrollArea className="h-[400px] w-full">
           <Form {...form}>
@@ -315,7 +374,7 @@ function ManualWalletDetails({
 
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full py-6 text-lg"
                 disabled={submitting || !isFormReady}
               >
                 {submitting ? "Submitting..." : "Submit Request"}
