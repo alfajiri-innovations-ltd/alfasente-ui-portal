@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
-import { Input } from "@/components/ui/input";
-import { ArrowLeft, Check, Search, X } from "lucide-react";
-import { HiMiniUsers } from "react-icons/hi2";
+import { ArrowLeft, X } from "lucide-react";
 
 import { IMembers, IUser, listsWithMembers } from "@/lib/interfaces/interfaces";
 import { useClientListsWithMembers } from "@/lib/services/FetchClientLists";
@@ -14,24 +12,23 @@ import { SendMoney } from "@/lib/api-routes";
 import { toast } from "@/hooks/use-toast";
 import { AddBeneficiaryForm } from "@/components/Client/Forms/AddBeneficiaryForm";
 import PaymentOverViewIndividual from "@/components/Client/PreviewIndividual";
-import { getRandomColor } from "@/components/Client/Tables/MembersTable";
 import PaymentOverView from "@/components/Client/PaymentOverView";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PaymentInitiated from "@/components/Client/PaymentInitiated";
+import { GetList } from "@/lib/services/GetListById";
 // import PaymentInitiated from "@/components/Client/PaymentInitiated";
 
-export function SendFunds() {
+export function SendFundsCharges() {
   const [previewList] = useState(false);
   const [, setItems] = useState<listsWithMembers[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isChecked] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState<IUser>();
-  const [checkedListId, setCheckedListId] = useState<number | null>(null);
+  const [checkedListId] = useState<number | null>(null);
   const [, setFundWalletDialog] = useState(false);
   const client = GetClient();
   const token = getUserToken();
   // const[transaction_id,setTransactionId]=useState<string>()
-
+  const { id } = useParams();
   const [submitting, setSubmitting] = useState(false);
   const clientId = client?.clientID;
   const [errorMessage, showErrorMessage] = useState(false);
@@ -40,7 +37,7 @@ export function SendFunds() {
 
   const [amount, setAmount] = useState<number>(0);
 
-  const [checkedList, setCheckedList] = useState<listsWithMembers | null>(null);
+  const checkedList = GetList(Number(id || 0));
 
   const [activeTab, setActiveTab] = useState("Lists");
 
@@ -60,12 +57,7 @@ export function SendFunds() {
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleNextStep = () => {
-    if (activeTab === "Lists" && currentStep === 1) {
-      navigate(`/send-funds/${checkedListId}`);
-      return;
-    } else {
-      setCurrentStep((prev) => Math.min(prev + 1, 4));
-    }
+    setCurrentStep((prev) => Math.min(prev + 1, 4));
   };
 
   const handlePreviousStep = () => {
@@ -113,19 +105,12 @@ export function SendFunds() {
   //     setPreviewList(!previewList);
   //   };
 
-  const HandleCheck = (list: listsWithMembers) => {
-    const isAlreadyChecked = checkedListId === list.id;
-
-    setCheckedListId(isAlreadyChecked ? null : list.id);
-    setCheckedList(isAlreadyChecked ? null : list);
-  };
-
   const handleSubmit = () => {
     setSubmitting(true);
 
     const payer = `${loggedInUser?.firstName} ${loggedInUser?.lastName}`;
 
-    if (!checkedList || checkedList.members.length === 0) {
+    if (!checkedList || checkedList?.members?.length === 0) {
       console.warn("No members selected.");
       setSubmitting(false);
       return;
@@ -134,8 +119,8 @@ export function SendFunds() {
     const payload = {
       clientID: clientId,
       payer,
-      id: checkedList.id,
-      members: checkedList.members.map((member) => {
+      id: checkedList?.list?.id,
+      members: checkedList?.members?.map((member) => {
         let cleanNumber = member.mobileMoneyNumber;
 
         if (typeof cleanNumber === "string" && cleanNumber.startsWith("0")) {
@@ -166,15 +151,13 @@ export function SendFunds() {
         console.error("SendMoney error (background):", error);
       });
 
-    setCurrentStep(3);
+    setCurrentStep(2);
 
     toast({
       variant: "success",
       title: "Sent!",
       description: "Processing in the background.",
     });
-
-    // navigate("/transactions");
   };
 
   return (
@@ -206,8 +189,8 @@ export function SendFunds() {
           /> */}
 
           <div className="">
-            {currentStep !== 3 && <h3>Send Funds</h3>}
-            {currentStep !== 3 && (
+            {currentStep !== 2 && <h3>Send Funds</h3>}
+            {currentStep !== 2 && (
               <div className="relative">
                 <div className="flex gap-10 text-[15px] py-2">
                   {["Lists", "Individual"].map((tab) => (
@@ -232,11 +215,8 @@ export function SendFunds() {
             )}
             <h4 className="text-black my-3">
               {activeTab === "Lists" &&
-                (currentStep === 1
-                  ? "1. Select beneficiary list"
-                  : currentStep === 2
-                    ? "2. Payment Overview"
-                    : "")}
+                currentStep === 1 &&
+                "1.Payment Overview"}
             </h4>
           </div>
 
@@ -260,100 +240,37 @@ export function SendFunds() {
                 />
               )}
             </>
-          ) : currentStep === 1 ? (
-            <div className="w-full">
-              <div className="flex bg-[#EDF0F7] items-center px-1 rounded-full sm:px-3 sm:rounded-[10px]">
-                <Search className="sm:w-4 sm:h-4 h-5 w-5" />
-                <Input
-                  type="search"
-                  placeholder="Search for list"
-                  className="hidden sm:flex sm:w-full border-none outline-none bg-[#EDF0F7] focus:ring-0 focus-visible:ring-0 shadow-none placeholder:text-sm"
-                />
-              </div>
-
-              <div className="sm:h-[200px] overflow-auto my-4 scrollbar-hide ">
-                {(approvedLists?.length ?? 0) > 0 ? (
-                  approvedLists?.map(
-                    (item: listsWithMembers, index: number) => (
-                      <div
-                        key={index}
-                        className="flex px-3  gap-64 relative items-center border rounded-md my-2 "
-                      >
-                        <div
-                          className={`rounded-full p-[2px] h-4 w-4 flex items-center justify-center border absolute right-2 top-2 border-[#C8CFDE] ${checkedListId === item.id && "bg-black"}
-`}
-                          onClick={() => {
-                            HandleCheck(item);
-                          }}
-                        >
-                          {checkedListId === item.id && (
-                            <Check size={15} className="text-white" />
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2 my-3">
-                          <span className="rounded-full bg-[#E4E8F1] flex justify-center items-center p-1.5">
-                            <HiMiniUsers
-                              style={{
-                                fill: getRandomColor(),
-                              }}
-                            />
-                          </span>
-                          <span
-                            className={`capitalize ${isChecked ? "font-medium" : "font-normal"}`}
-                          >
-                            {item.name}
-                          </span>
-                        </div>
-                        <div className="flex  gap-1 text-[#5C6474]">
-                          {item.members.length}
-
-                          <span className="text-capitalize">members</span>
-                        </div>
-                      </div>
-                    ),
-                  )
-                ) : (
-                  <p className="text-center text-gray-500">
-                    No approved lists yet
-                  </p>
-                )}
-
-                {isLoading && <p>Loading...</p>}
-              </div>
-            </div>
-          ) : checkedList ? (
-            currentStep !== 3 && (
+          ) : (
+            currentStep === 1 && (
               <PaymentOverView
                 list={checkedList}
                 setAmount={setAmount}
                 showErrorMessage={showErrorMessage}
               />
             )
-          ) : (
-            <p>No list selected</p>
           )}
 
-          {currentStep === 3 && (
+          {currentStep === 2 && (
             <PaymentInitiated
               amount={amount ?? 0}
-              listName={checkedList?.name ?? ""}
+              listName={checkedList?.list?.name ?? ""}
               beneficiaryName={Beneficiary?.beneficiaryName}
             />
           )}
 
-          <div className={`${previewList ? "w-full px-40" : "w-full "}`}>
+          <div className={`${previewList ? "w-full px-40 " : "w-full "} my-5`}>
             {activeTab === "Lists" &&
               (currentStep === 1 ? (
                 <Button
                   type="submit"
-                  disabled={!checkedListId}
                   className="bg-[#8D35AA] w-full"
-                  onClick={handleNextStep}
+                  onClick={handleSubmit}
+                  disabled={errorMessage || submitting}
                 >
-                  Continue
+                  {submitting ? "Submitting..." : "Send Payments "}
                 </Button>
               ) : (
-                currentStep !== 3 && (
+                currentStep !== 2 && (
                   <div className="flex justify-between items-center gap-3 my-5">
                     <Button
                       type="submit"
