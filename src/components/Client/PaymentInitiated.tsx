@@ -21,7 +21,7 @@ function PaymentInitiated({listName,amount,beneficiaryName}:ISuccessFulDeposit) 
 
 
   return (
-    <div className="flex flex-col justify-center gap-2">
+    <div className="flex flex-col justify-center gap-2  h-screen">
       <div className="bg-[#ECF8EF] w-16 h-16 rounded-full mx-auto flex justify-center items-center">
         <div className="bg-[#3DA755] flex   justify-center items-center w-10 h-10 p-3 rounded-full">
           <Check className="text-white w-5 h-5" />
