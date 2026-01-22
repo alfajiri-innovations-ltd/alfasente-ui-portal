@@ -36,6 +36,7 @@ import TermsOfUse from "./pages/TermsOfUse";
 
 import { registerSW } from "virtual:pwa-register";
 import { SendFundsCharges } from "./pages/SendFundsCharges";
+import CustomerSupport from "./pages/CustomerSupport";
 
 registerSW({
   immediate: true,
@@ -72,6 +73,10 @@ function App() {
                   path="/view-transactions/:id"
                   element={<ViewTransactionsPage />}
                 />
+
+                                <Route path="/customer-support" element={<CustomerSupport />} />
+
+
               </Route>
               {/* end of auth routes */}
 
