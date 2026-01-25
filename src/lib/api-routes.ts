@@ -108,11 +108,20 @@ export const DeleteListRoute = (listID: number) =>
 
 export const VerifyLoginOtp = `${import.meta.env.VITE_BACKEND_API_URL}/verifyLoginEmail`;
 
+export const VerifySendMoneyOtp = `${import.meta.env.VITE_BACKEND_API_URL}/verifySendMoneyOtp`;
+
+
 export const ResendEmailOtp = () =>
   `${import.meta.env.VITE_BACKEND_API_URL}/resendEmailOtp`;
 
 export const ResendLoginOtp = () =>
   `${import.meta.env.VITE_BACKEND_API_URL}/resendLoginOtp`;
+
+export const ResendSendMoneyOtp = () =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/resendSendMoneyOtp`;
+
+export const SendMoneyOtp = () =>
+  `${import.meta.env.VITE_BACKEND_API_URL}/sendMoneyOtp`;
 
 export const FetchClientBulkLists = (clientId: number) =>
   `${import.meta.env.VITE_BACKEND_API_URL}/getBulkListsByClientId?clientID=${clientId}`;
