@@ -5,6 +5,7 @@ import {
   LayoutDashboard,
   CircleUserRound,
   Wallet,
+  Headset,
 } from "lucide-react";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
@@ -28,13 +29,14 @@ function SideBar() {
   const sidebarItems = [
     {
       title: "Dashboard",
-icon: (
+      icon: (
         <LayoutDashboard
           className={` flex items-center p-2 rounded  w-8 h-8 ${
             currentPath === "/dashboard" ? "text-[#8D35AA]" : ""
           }`}
         />
-      ),      href: "/dashboard",
+      ),
+      href: "/dashboard",
       roles: ["client_employee", "client_admin"],
     },
     {
@@ -77,48 +79,65 @@ icon: (
     },
     {
       title: "Staff",
-icon: (
+      icon: (
         <PiUsersThreeFill
           className={` flex items-center p-2 rounded  w-8 h-8 ${
             currentPath === "/staff" ? "text-[#8D35AA]" : ""
           }`}
         />
-      ),      href: "/staff",
+      ),
+      href: "/staff",
       roles: ["client_employee", "client_admin"],
     },
 
     {
       title: "Transactions",
-icon: (
+      icon: (
         <FaMoneyBillTransfer
           className={` flex items-center p-2 rounded  w-8 h-8 ${
             currentPath === "/transactions" ? "text-[#8D35AA]" : ""
           }`}
         />
-      ),      href: "/transactions",
+      ),
+      href: "/transactions",
       roles: ["client_employee", "client_admin"],
     },
 
     {
       title: "Audit Logs",
-icon: (
+      icon: (
         <ClipboardListIcon
           className={` flex items-center p-2 rounded  w-8 h-8 ${
             currentPath === "/audit-logs" ? "text-[#8D35AA]" : ""
           }`}
         />
-      ),      href: "/audit-logs",
+      ),
+      href: "/audit-logs",
+      roles: ["admin", "client_employee", "client_admin"],
+    },
+
+    {
+      title: "Customer Support",
+      icon: (
+        <Headset
+          className={` flex items-center p-2 rounded  w-8 h-8 ${
+            currentPath === "/customer-support" ? "text-[#8D35AA]" : ""
+          }`}
+        />
+      ),
+      href: "/customer-support",
       roles: ["admin", "client_employee", "client_admin"],
     },
     {
       title: "Settings",
-icon: (
+      icon: (
         <SettingsIcon
           className={` flex items-center p-2 rounded  w-8 h-8 ${
             currentPath === "/settings" ? "text-[#8D35AA]" : ""
           }`}
         />
-      ),      href: "/settings",
+      ),
+      href: "/settings",
       roles: ["admin", "client_employee", "client_admin"],
     },
   ];

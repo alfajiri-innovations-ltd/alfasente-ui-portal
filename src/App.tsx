@@ -34,14 +34,13 @@ import AccessDashboard from "./pages/AccessDashboard";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfUse from "./pages/TermsOfUse";
 
-
-import { registerSW } from 'virtual:pwa-register';
+import { registerSW } from "virtual:pwa-register";
+import { SendFundsCharges } from "./pages/SendFundsCharges";
+import CustomerSupport from "./pages/CustomerSupport";
 
 registerSW({
   immediate: true,
 });
-
-
 
 function App() {
   return (
@@ -68,10 +67,16 @@ function App() {
 
                 <Route path="/send-funds" element={<SendFunds />} />
 
+                <Route path="/send-funds/:id" element={<SendFundsCharges />} />
+
                 <Route
                   path="/view-transactions/:id"
                   element={<ViewTransactionsPage />}
                 />
+
+                                <Route path="/customer-support" element={<CustomerSupport />} />
+
+
               </Route>
               {/* end of auth routes */}
 
@@ -90,8 +95,8 @@ function App() {
 
               <Route path="/register" element={<Register />} />
               <Route path="/about" element={<AboutUs />} />
-              <Route path ="/privacy-policy" element ={<PrivacyPolicy/>}/>
-              <Route path ="/terms" element ={<TermsOfUse/>}/>
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfUse />} />
               {/* end of non auth routes */}
 
               <Route path="*" element={<PageNotFound />} />

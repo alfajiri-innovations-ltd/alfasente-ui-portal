@@ -26,7 +26,7 @@ interface ActionProps {
   listId?: number;
   transactionID?: string;
   id?: number;
-    auditLogId?:number;
+  auditLogId?: number;
 
   activeState?: string;
   bulkStatus?: string;
@@ -44,7 +44,7 @@ export function ActionsPopover({
   transactionID,
   activeState,
   bulkStatus,
-    auditLogId,
+  auditLogId,
 
   status,
   failedCount,
@@ -109,16 +109,18 @@ export function ActionsPopover({
 
         {pathname === "/beneficiaries" && (
           <>
-
-          
             <ViewListDialog listId={list?.id ?? 0} />
-            {list?.status==="Approved" && (
-            <div className="flex items-center gap-1 cursor-pointer text-[#000000CC]">
-              <GrSend className="h-4 w-4"/>
-              <span>Send money</span>
-
-            </div>
-          )}
+            {list?.status === "Approved" && (
+              <div
+                className="flex items-center gap-1 cursor-pointer text-[#000000CC]"
+                onClick={() => {
+                  navigate(`/send-funds/${list?.id}`);
+                }}
+              >
+                <GrSend className="h-4 w-4" />
+                <span>Send money</span>
+              </div>
+            )}
             <div
               className="flex items-center gap-1 cursor-pointer text-[#000000CC]"
               onClick={() => {
@@ -131,14 +133,13 @@ export function ActionsPopover({
 
               <span>View members</span>
             </div>
-            
+
             <RenameList list={list} />
             <DeleteList listId={list?.id ?? 0} />
           </>
         )}
 
-                {pathname === "/audit-logs" && <ViewAuditLog auditLogId={auditLogId} />}
-
+        {pathname === "/audit-logs" && <ViewAuditLog auditLogId={auditLogId} />}
 
         {(pathname === "/transactions" ||
           pathname.startsWith("/view-transactions")) && (

@@ -38,7 +38,7 @@ export function SendFunds() {
 
   const [Beneficiary, setBeneficiary] = useState<IMembers | null>(null);
 
-const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number>(0);
 
   const [checkedList, setCheckedList] = useState<listsWithMembers | null>(null);
 
@@ -60,7 +60,12 @@ const [amount, setAmount] = useState<number>(0);
   const [currentStep, setCurrentStep] = useState(1);
 
   const handleNextStep = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, 4));
+    if (activeTab === "Lists" && currentStep === 1) {
+      navigate(`/send-funds/${checkedListId}`);
+      return;
+    } else {
+      setCurrentStep((prev) => Math.min(prev + 1, 4));
+    }
   };
 
   const handlePreviousStep = () => {
@@ -160,7 +165,6 @@ const [amount, setAmount] = useState<number>(0);
       .catch((error) => {
         console.error("SendMoney error (background):", error);
       });
-
 
     setCurrentStep(3);
 
@@ -306,7 +310,7 @@ const [amount, setAmount] = useState<number>(0);
                           <span className="text-capitalize">members</span>
                         </div>
                       </div>
-                    )
+                    ),
                   )
                 ) : (
                   <p className="text-center text-gray-500">

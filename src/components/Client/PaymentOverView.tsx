@@ -20,10 +20,10 @@ function PaymentOverView({ list, showErrorMessage,setAmount }: PaymentOverViewPr
   const { currency: airtelCurrency } = useCurrency();
   const Wallet = client?.walletID;
 
-  const ClientID = list.clientID.clientID;
+  const ClientID = list?.list?.clientID?.clientID;
 
   const Charges = useCalculateCharge({
-    listId: list.id,
+    listId: list?.list?.id,
     clientId: ClientID,
   });
   
@@ -36,6 +36,7 @@ function PaymentOverView({ list, showErrorMessage,setAmount }: PaymentOverViewPr
     }
   });
 
+
   return (
     <div className="space-y-1 flex flex-col gap-3 overflow-y-auto scrollbar-hide">
       <div className="flex items-center justify-between gap-2  bg-[#F7F9FD] border rounded-md p-4 border-[#DCE1EC]">
@@ -47,7 +48,7 @@ function PaymentOverView({ list, showErrorMessage,setAmount }: PaymentOverViewPr
               }}
             />
           </span>
-          <span className="capitalize font-medium text-base">{list.name}</span>
+          <span className="capitalize font-medium text-base">{list?.list?.name}</span>
         </div>
 
         <span>{list.members.length} beneficiaries</span>
